@@ -1,0 +1,19 @@
+{
+  "name": "lor-card-maker",
+  "version": "0.0.0",
+  "description": "A mobile friendly LoR card maker",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muggy8/lor-card-maker.git"
+  },
+  "author": "Muggy Ate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muggy8/lor-card-maker/issues"
+  },
+  "homepage": "https://github.com/muggy8/lor-card-maker#readme"
+}
