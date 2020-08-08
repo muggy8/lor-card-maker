@@ -17,8 +17,20 @@
 		/>
 	</clipPath>
 
-	<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-400" y="0" href="./test.webp"/>
+	<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-400" y="0" href="./test.webp" />
 
-	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./framegemless.png"/>
+	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./frameepic.png"/>
 	<image id="card-clan" width="360" height="84" x="160" y="14" href="./typing.png"/>
+	<image id="card-region" width="100" height="100" x="290" y="864" href="./piltoverzaun.png"/>
+
+
+	<rect id="clan-text-area" width="200" height="46" x="240" y="32"  fill="#CFF" opacity="0.75"/>
+
+	<ellipse id="mana-cost" ry="60" rx="60" cx="88" cy="104" fill="#CFF" opacity="0.75"/>
+
+	<rect id="power" width="86" height="58" x="44" y="883" fill="#CFF" opacity="0.75"/>
+
+	<rect id="health" width="86" height="58" x="552" y="883" fill="#CFF" opacity="0.75"/>
+
+	<rect id="effect-text" width="560" height="192" fill="#CFF" x="60" y="660" opacity="0.75"/>
 </svg>
