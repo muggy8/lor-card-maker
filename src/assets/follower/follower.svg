@@ -34,7 +34,7 @@
 
 	<rect id="effect-text" width="560" height="192" fill="#CFF" x="60" y="660" opacity="0.75"/>
 
-	<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="585" opacity="0.75"/>
+	<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="590" opacity="0.75"/>
 
-	<rect id="name" width="560" height="70" fill="#CFF" x="60" y="510" opacity="0.75"/>
+	<rect id="name" width="560" height="70" fill="#CFF" x="60" y="520" opacity="0.75"/>
 </svg>
