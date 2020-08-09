@@ -49,6 +49,7 @@ function createWideKeyword(keyword, keywordImg){
 	<svg
 		width="${contentLength + 28 + 28}" height="100"
 		xmlns="http://www.w3.org/2000/svg"
+		viewbox="0 0 ${contentLength + 28 + 28} 100"
 	>
 		<image id="card-frame-r" width="28" height="104" x="0" y="0" href="./keyword/keywordleft.png"/>
 		<image id="card-frame-m" width="203" height="104" x="28" y="0" href="./keyword/keywordmiddle.png"/>
