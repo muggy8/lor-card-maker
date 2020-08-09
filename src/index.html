@@ -14,18 +14,22 @@
 		<meta http-equiv="Content-Style-Type" content="text/css">
 		<meta http-equiv="Content-Script-Type" content="text/javascript">
 
-		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b/flex-box.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b/flex-box.gutters.min.css">
+		<link rel="stylesheet" href="css/generals.css">
+		<link rel="stylesheet" href="css/customs.css">
 
-		<script>
-			const dependencies = {
-				proxymity: "https://cdn.jsdelivr.net/npm/proxymity@2.0.0-rc2/dist/proxymity.min.js",
-			}
-		</script>
+		<script src="https://cdn.jsdelivr.net/npm/proxymity@2.0.0-rc2/dist/proxymity.min.js"></script>
 	</head>
 
 	<body>
+		<div class="flex hcenter gutter-rl">
+			<h1>LoR Card Maker App</h1>
+		</div>
 
+		{:this.app.currentView:}|{currentView}|
 
-		<script src="js/app.js"></script>
+		<script src="js/main.js"></script>
+		<script src="js/card-type-selector.js"></script>
 	</body>
 </html>
