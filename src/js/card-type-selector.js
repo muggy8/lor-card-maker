@@ -2,12 +2,12 @@
 	let controller = {}
 	let view = proxymity(template, controller)
 
-	controller.focus = function(){
-		app.currentView = view
+	let focus = controller.focus = function(){
+		App.currentView = view
 	}
 
-	controller.focus()
-	app.cardTypePicker = controller
+	focus()
+	App.cardTypePicker = controller
 })(`
 <div class="flex hcenter">
 	<h2>I want to create a...</h2>
@@ -15,7 +15,7 @@
 <main class="gutter-trbl-.5 flex">
 	<div class="gutter-trbl-.5 box-xs-6 box-l-3 flex column vhcenter">
 		<strong>Champion Lv 1</strong>
-		<div class="clickable">
+		<div class="clickable" onclick="App.championLv1Builder.focus()">
 			<img src="./assets/champion/frame1gem.png" />
 		</div>
 	</div>

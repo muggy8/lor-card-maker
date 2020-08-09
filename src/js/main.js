@@ -1,4 +1,4 @@
-const app = (function(){
+const App = (function(){
 	let controller = {
 		currentView: undefined,
 	}
