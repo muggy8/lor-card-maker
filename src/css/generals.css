@@ -13,7 +13,8 @@
 }
 
 body, html {
-	font-family: BeaufortforLOLBold, serif;
+	/* font-family: BeaufortforLOLBold, serif; */
+	font-family: sans-serif;
 	padding: 0;
 	margin: 0;
 	background-color: #000;
@@ -23,4 +24,16 @@ body, html {
 img {
 	max-width: 100%;
 	height: auto;
+}
+
+.key-text {
+	font-family: BeaufortforLOLBold, serif;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.clickable {
+	cursor: pointer;
 }
