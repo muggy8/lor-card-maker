@@ -16,6 +16,8 @@ body, html {
 	font-family: BeaufortforLOLBold, serif;
 	padding: 0;
 	margin: 0;
+	background-color: #000;
+	color: #FFF;
 }
 
 img {
