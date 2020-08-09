@@ -47,7 +47,7 @@ function createWideKeyword(keyword, keywordImg){
 
 	let svg = `
 	<svg
-		width="500" height="100"
+		width="${contentLength + 28 + 28}" height="100"
 		xmlns="http://www.w3.org/2000/svg"
 	>
 		<image id="card-frame-r" width="28" height="104" x="0" y="0" href="./keyword/keywordleft.png"/>
@@ -59,7 +59,7 @@ function createWideKeyword(keyword, keywordImg){
 			? ((contentStart += 68), `<image id="keyword-icon" width="45" height="37" x="${contentStart - 68}" y="17" href="${keywordImg}" transform="scale(1.5)"/>`)
 			: ""
 		}
-		<text y="70" x="${contentStart + (keywordImg ? 10 : 0)}" stroke="#EDCB75" fill="#EDCB75" font-size="48" class="lor-font">${keyword}</text>
+		<text y="70" x="${contentStart + (keywordImg ? 10 : 0)}" stroke="#EDCB75" fill="#EDCB75" font-size="48" class="key-text">${keyword}</text>
 	</svg>`
 
 	return svg2dom(svg)
