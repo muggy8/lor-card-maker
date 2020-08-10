@@ -1,7 +1,14 @@
-App.cardOptions = (function(template){
+App.cardOptions = (function(template, subTemplates){
 	return function(card){
-		let controller = {}
+		let controller = {subTemplates}
 		controller.card = card
+
+		let rarityOptions = this.rarityOptions = [
+			"none",
+			"common",
+			"rare",
+			"epic"
+		]
 
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
@@ -15,7 +22,7 @@ App.cardOptions = (function(template){
 		<div>
 			<strong>Mana Cost</strong>
 		</div>
-		<div class="flex">
+		<div class="flex gutter-b">
 			<input
 				class="box-12"
 				name="mana-cost"
@@ -26,5 +33,32 @@ App.cardOptions = (function(template){
 			>
 		</div>
 	</label>
+	<label>
+		<div>
+			<strong>Card Name</strong>
+		</div>
+		<div class="flex gutter-b">
+			<input
+				class="box-12"
+				name="card-name"
+				type="text"
+				data-value="{:this.app.card.name:}|{card.name}|"
+				onchange="this.app.card.name = this.value || ''"
+				onkeyup="this.app.card.name = this.value || ''"
+			>
+		</div>
+	</label>
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
 </div>
-`)
+`, {
+	raritySelectorUI: `
+		<label>
+			<div>
+				<strong>Rarity</strong>
+			</div>
+			<div class="flex">
+
+			</div>
+		</label>
+	`
+})

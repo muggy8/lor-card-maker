@@ -41,9 +41,10 @@
 			<image id="card-frame" width="680" height="1024" x="0" y="0" href="./assets/spell/frame${card.speed}${card.rarity}.png"/>
 
 			<circle id="mana-cost" r="60" cx="91" cy="104" opacity="0"></circle>
-			<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="72" fill="#fff" stroke="#fff" font-wight="bold">${card.mana}</text>
+			<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="72" fill="#fff" stroke="#fff" font-style="bold">${card.mana}</text>
 
-			<rect id="name" width="550" height="70" fill="#CFF" x="60" y="585" opacity="0.75"/>
+			<rect id="name" width="550" height="70" x="60" y="585" opacity="0"/>
+			<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="bold">${card.name ? card.name.toUpperCase() : ""}</text>
 
 			<rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/>
 
