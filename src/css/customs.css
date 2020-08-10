@@ -3,3 +3,34 @@
 	background-color: #000;
 	border-bottom: solid 1px #555;
 }
+
+.mobile-config-footer {
+	width: 100%;
+	background-color: #000;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	border-top: solid 1px #555;
+}
+
+
+@media (max-width:45.9375rem){
+	.card-configs .slide-up {
+		width: 100%;
+		height: calc(100vh - 7rem);
+		background-color: #000;
+		position: fixed;
+		top: 100%;
+		left: 0;
+		border-top: solid 1px #555;
+	}
+	.card-configs .slide-up.active{
+		top: 4rem;
+	}
+}
+
+@media (min-width:46rem){
+	.mobile-config-footer {
+		display: none;
+	}
+}

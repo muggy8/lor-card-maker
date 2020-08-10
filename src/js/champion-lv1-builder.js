@@ -17,6 +17,7 @@
 		card.attack = 0
 		card.health = 0
 		card.art = ""
+		card.faction = ""
 	}
 	clearCard()
 
@@ -29,7 +30,7 @@
 })(`
 	<main class="flex hcenter">
 		<div class="card-preview box-xs-12 box-s-10 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.lvup},{card.mana},{card.clan},{card.attack},{card.health},{card.art}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.lvup},{card.mana},{card.clan},{card.attack},{card.health},{card.art},{card.faction}|
 		</div>
 		<div class="card-configs box-xs-12 box-s-10 box-m-6 box-l-4 box-xl-3"></div>
 	</main>

@@ -21,7 +21,7 @@ body, html {
 	color: #FFF;
 }
 
-img {
+img, svg {
 	max-width: 100%;
 	height: auto;
 }
@@ -36,4 +36,8 @@ img {
 
 .clickable {
 	cursor: pointer;
+}
+
+.hide {
+	display: none;
 }

@@ -13,7 +13,7 @@
 	<h2>I want to create a...</h2>
 </div>
 <main class="gutter-trbl-.5 flex">
-	<div class="gutter-trbl-.5 box-xs-6 box-l-3 flex column vhcenter">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
 		<strong>Champion Lv 1</strong>
 		<div class="clickable" onclick="App.championLv1Builder.focus()">
 			<img src="./assets/champion/frame1gem.png" />
