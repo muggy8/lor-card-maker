@@ -5,6 +5,8 @@ App.cardOptions = (function(template, subTemplates){
 
 		let rarityOptions = controller.rarityOptions = cardOptionsData.rarityOptions
 		let factionOptions = controller.factionOptions = cardOptionsData.factionOptions
+		let keywords = controller.keywords = Object.keys(cardOptionsData.icons)
+		console.log(keywords)
 
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
@@ -18,6 +20,7 @@ App.cardOptions = (function(template, subTemplates){
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
 </div>
 `, {
 	regionSelectorUI: `
@@ -82,4 +85,19 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 		</label>
 	`,
+	keywordChoiceUI: `
+		<div>
+			<div>
+				<strong>Select Keywords</strong>
+			</div>
+			<div class="flex">
+				<!--key: "index" -->
+					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable">
+						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]):}"></div>
+						{:this.app.keywords[this.index]:}
+					</label>
+				<!-- in: keywords -->
+			</div>
+		</div>
+	`
 })

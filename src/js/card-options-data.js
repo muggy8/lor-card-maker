@@ -5,7 +5,7 @@ const cardOptionsData = {
 		"rare",
 		"epic"
 	],
-	factionOptions [
+	factionOptions: [
 		"",
 		"piltoverzaun",
 		"noxus",

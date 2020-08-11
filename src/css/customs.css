@@ -18,6 +18,7 @@
 	.card-configs .slide-up {
 		width: 100%;
 		height: calc(100vh - 7rem);
+		overflow: auto;
 		background-color: #000;
 		position: fixed;
 		top: 100%;

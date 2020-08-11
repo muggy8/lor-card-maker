@@ -41,3 +41,7 @@ img, svg {
 .hide {
 	display: none;
 }
+
+ghost {
+	opacity: 0.5;
+}
