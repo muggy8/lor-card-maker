@@ -34,7 +34,7 @@
 			<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-430" y="-122" href="${card.art}" />
 
 			<image id="card-background" width="634" height="470" x="23" y="463" href="/assets/spell/background.png"/>
-			${card.region
+			${card.faction
 				? `<image id="card-region" width="100" height="100" x="285" y="836" href="./assets/regions/${card.faction}.png"/>`
 				: ""
 			}

@@ -3,12 +3,8 @@ App.cardOptions = (function(template, subTemplates){
 		let controller = {subTemplates}
 		controller.card = card
 
-		let rarityOptions = controller.rarityOptions = [
-			"none",
-			"common",
-			"rare",
-			"epic"
-		]
+		let rarityOptions = controller.rarityOptions = cardOptionsData.rarityOptions
+		let factionOptions = controller.factionOptions = cardOptionsData.factionOptions
 
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
@@ -21,15 +17,30 @@ App.cardOptions = (function(template, subTemplates){
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
 </div>
 `, {
+	regionSelectorUI: `
+		<label>
+			<div>
+				<strong>faction</strong>
+			</div>
+			<div class="flex gutter-b">
+				<select name="rarity" class="box-12" onchange="this.app.card.faction = this.value" data-value="{:this.app.card.faction:}|{card.faction}|">
+					<!-- key: "index" -->
+						<option value="{:this.app.factionOptions[this.index]:}">{:this.app.factionOptions[this.index] || "none":}</option>
+					<!-- in: factionOptions -->
+				</select>
+			</div>
+		</label>
+	`,
 	raritySelectorUI: `
 		<label>
 			<div>
 				<strong>Rarity</strong>
 			</div>
-			<div class="flex">
-				<select name="rarity" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
+			<div class="flex gutter-b">
+				<select name="rarity" class="box-12" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
 					<!-- key: "rarityIndex" -->
 						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:this.app.rarityOptions[this.rarityIndex]:}</option>
 					<!-- in: rarityOptions -->
