@@ -42,6 +42,6 @@ img, svg {
 	display: none;
 }
 
-ghost {
+.ghost {
 	opacity: 0.5;
 }

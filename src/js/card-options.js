@@ -6,7 +6,16 @@ App.cardOptions = (function(template, subTemplates){
 		let rarityOptions = controller.rarityOptions = cardOptionsData.rarityOptions
 		let factionOptions = controller.factionOptions = cardOptionsData.factionOptions
 		let keywords = controller.keywords = Object.keys(cardOptionsData.icons)
-		console.log(keywords)
+
+		let toggleKeyword = controller.toggleKeyword = function(word){
+			let wordIndex = card.keywords.indexOf(word)
+			if (wordIndex === -1){
+				card.keywords.push(word)
+			}
+			else{
+				card.keywords.splice(wordIndex, 1)
+			}
+		}
 
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
@@ -92,7 +101,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex">
 				<!--key: "index" -->
-					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable">
+					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
 						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]):}"></div>
 						{:this.app.keywords[this.index]:}
 					</label>
