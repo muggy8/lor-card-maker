@@ -5,6 +5,11 @@ const cardOptionsData = {
 		"rare",
 		"epic"
 	],
+	spellSpeedOptions: [
+		"slow",
+		"fast",
+		"burst"
+	],
 	factionOptions: [
 		"",
 		"piltoverzaun",
@@ -15,7 +20,7 @@ const cardOptionsData = {
 		"shadowisles",
 		"bilgewater",
 		"targon",
-		"ixlal",
+		"ixtal",
 		"bandlecity",
 		"void",
 		"shurima",

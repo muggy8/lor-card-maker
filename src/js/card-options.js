@@ -5,6 +5,7 @@ App.cardOptions = (function(template, subTemplates){
 
 		let rarityOptions = controller.rarityOptions = cardOptionsData.rarityOptions
 		let factionOptions = controller.factionOptions = cardOptionsData.factionOptions
+		let spellSpeedOptions = controller.spellSpeedOptions = cardOptionsData.spellSpeedOptions
 		let keywords = controller.keywords = Object.keys(cardOptionsData.icons)
 
 		let toggleKeyword = controller.toggleKeyword = function(word){
@@ -27,7 +28,9 @@ App.cardOptions = (function(template, subTemplates){
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
 </div>
@@ -44,8 +47,7 @@ App.cardOptions = (function(template, subTemplates){
 					<!-- in: factionOptions -->
 				</select>
 			</div>
-		</label>
-	`,
+		</label>`,
 	raritySelectorUI: `
 		<label>
 			<div>
@@ -94,6 +96,22 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 		</label>
 	`,
+	cardEffectUI: `
+		<label>
+			<div>
+				<strong>Card Effect</strong>
+			</div>
+			<div class="flex gutter-b">
+				<textarea
+					class="box-12"
+					name="card-name"
+					type="text"
+					data-value="{:this.app.card.effect:}|{card.effect}|"
+					onchange="this.app.card.effect = this.value || ''"
+				></textarea>
+			</div>
+		</label>
+	`,
 	keywordChoiceUI: `
 		<div>
 			<div>
@@ -108,5 +126,19 @@ App.cardOptions = (function(template, subTemplates){
 				<!-- in: keywords -->
 			</div>
 		</div>
+	`,
+	speedSelectorUI: `
+		<label>
+			<div>
+				<strong>Speed</strong>
+			</div>
+			<div class="flex gutter-b">
+				<select name="rarity" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
+					<!-- key: "index" -->
+						<option value="{:this.app.spellSpeedOptions[this.index]:}">{:this.app.spellSpeedOptions[this.index]:}</option>
+					<!-- in: spellSpeedOptions -->
+				</select>
+			</div>
+		</label>
 	`
 })

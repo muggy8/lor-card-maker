@@ -48,6 +48,8 @@
 			}, "")
 		}
 
+		let testEffect = card.effect.split(/\s/g).map(word=>`<tspan>${word}</tspan>`).join(" ")
+
 		let svg = `
 		<svg
 			width="680" height="1024"
@@ -76,7 +78,8 @@
 			<!-- <rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
 			${keywordSvgs}
 
-			<rect id="effect" width="550" height="145" fill="#CFF" x="60" y="725" opacity="0.75"/>
+			<rect id="effect" width="550" height="145" x="60" y="740" opacity="0"/>
+			<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'top', size: [24, 34]})).catch(()=>{}):}" fill="#fff" stroke="#fff">${card.effect}</text>
 
 		</svg>`
 
@@ -101,6 +104,10 @@
 
 		if (config.shape){
 			wrapCall.shape(config.shape)
+		}
+
+		if (config.size){
+			wrapCall.size(config.size)
 		}
 
 		wrapCall.draw()
