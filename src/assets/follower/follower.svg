@@ -26,7 +26,7 @@
 
 	<rect id="clan-text-area" width="200" height="46" x="240" y="32"  fill="#CFF" opacity="0.75"/>
 
-	<ellipse id="mana-cost" ry="60" rx="60" cx="88" cy="104" fill="#CFF" opacity="0.75"/>
+	<rect id="mana-cost" width="120" height="120" x="31" y="44" fill="#CFF" opacity="0.75"/>
 
 	<rect id="power" width="86" height="58" x="44" y="883" fill="#CFF" opacity="0.75"/>
 

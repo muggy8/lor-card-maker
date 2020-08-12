@@ -102,7 +102,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div class="flex">
 				<!--key: "index" -->
 					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
-						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]):}"></div>
+						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 						{:this.app.keywords[this.index]:}
 					</label>
 				<!-- in: keywords -->

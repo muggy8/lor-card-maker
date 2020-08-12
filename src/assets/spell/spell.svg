@@ -13,7 +13,7 @@
 	<image id="card-region" width="100" height="100" x="285" y="836" href="./piltoverzaun.png"/>
 	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./frameslowcommon.png"/>
 
-	<ellipse id="mana-cost" ry="60" rx="60" cx="91" cy="104" fill="#CFF" opacity="0.75"/>
+	<rect id="mana-cost" width="120" height="120" x="31" y="44" fill="#CFF" opacity="0.75"/>
 
 	<rect id="name" width="550" height="70" fill="#CFF" x="60" y="585" opacity="0.75"/>
 

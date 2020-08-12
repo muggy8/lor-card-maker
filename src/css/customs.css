@@ -24,6 +24,8 @@
 		top: 100%;
 		left: 0;
 		border-top: solid 1px #555;
+		padding-right: var(--flex-box-gutter);
+		padding-left: var(--flex-box-gutter);
 	}
 	.card-configs .slide-up.active{
 		top: 4rem;
