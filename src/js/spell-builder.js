@@ -15,6 +15,8 @@
 		card.keywords = []
 		card.mana = 0
 		card.art = ""
+		card.artHeight = 0
+		card.artWidth = 0
 		card.rarity = "none"
 		card.speed = "slow"
 		card.faction = ""
@@ -56,8 +58,15 @@
 			if (!blueWord){
 				return cardEffect
 			}
-			return cardEffect.split(blueWord).join(`<span fill="#49a0f8" style="color: #49a0f8" xmlns="http://www.w3.org/1999/xhtml">${blueWord}</span>`)
+			return cardEffect.split(blueWord).join(`<span style="color: #49a0f8" xmlns="http://www.w3.org/1999/xhtml">${blueWord}</span>`)
 		}, card.effect)
+
+		updatedEffect = card.orangeWords.reduce((cardEffect, orangeWord)=>{
+			if (!orangeWord){
+				return cardEffect
+			}
+			return cardEffect.split(orangeWord).join(`<span style="color: #fad65a" xmlns="http://www.w3.org/1999/xhtml">${orangeWord}</span>`)
+		}, updatedEffect)
 
 		let svg = `
 		<svg
@@ -136,7 +145,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.artHeight},{card.artWidth},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}

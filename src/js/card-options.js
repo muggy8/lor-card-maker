@@ -30,6 +30,7 @@ App.cardOptions = (function(template, subTemplates){
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "blueWords") ? proxymity(this.app.subTemplates.blueWordsUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "orangeWords") ? proxymity(this.app.subTemplates.orangeWordsUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
@@ -165,5 +166,29 @@ App.cardOptions = (function(template, subTemplates){
 				</label>
 			<!-- in: card.blueWords -->
 		</div>
-	`
+	`,
+	orangeWordsUI: `
+		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-.5' : '' :}|{card.orangeWords.length}|">
+			<div class="flex gutter-b-.5">
+				<div class="grow">
+					<strong>Key Words and Special Text mentioned in Effect Text</strong>
+				</div>
+				<button onclick="this.app.card.orangeWords.push('')">Add Mention</button>
+			</div>
+			<!-- key: "index" -->
+				<label class="flex gutter-tb-.5">
+					<div class="grow flex gutter-r">
+						<input
+							class="box-12"
+							name="mentions-{:this.index:}"
+							data-value="{:this.app.card.orangeWords[this.index]:}|{card.orangeWords[this.index]}|"
+							onchange="this.app.card.orangeWords[this.index] = this.value"
+							onkeyup="this.app.card.orangeWords[this.index] = this.value"
+						/>
+					</div>
+					<button onclick="this.app.card.orangeWords.splice(this.index, 1)">X</button>
+				</label>
+			<!-- in: card.orangeWords -->
+		</div>
+	`,
 })
