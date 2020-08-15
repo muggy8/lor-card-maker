@@ -18,6 +18,54 @@ App.cardOptions = (function(template, subTemplates){
 			}
 		}
 
+		function getCursorPos(input) {
+			// function source: https://stackoverflow.com/questions/7745867/how-do-you-get-the-cursor-position-in-a-textarea
+		    if ("selectionStart" in input && document.activeElement == input) {
+		        return {
+		            start: input.selectionStart,
+		            end: input.selectionEnd
+		        };
+		    }
+		    else if (input.createTextRange) {
+		        var sel = document.selection.createRange();
+		        if (sel.parentElement() === input) {
+		            var rng = input.createTextRange();
+		            rng.moveToBookmark(sel.getBookmark());
+		            for (var len = 0;
+		                     rng.compareEndPoints("EndToStart", rng) > 0;
+		                     rng.moveEnd("character", -1)) {
+		                len++;
+		            }
+		            rng.setEndPoint("StartToStart", input.createTextRange());
+		            for (var pos = { start: 0, end: len };
+		                     rng.compareEndPoints("EndToStart", rng) > 0;
+		                     rng.moveEnd("character", -1)) {
+		                pos.start++;
+		                pos.end++;
+		            }
+		            return pos;
+		        }
+		    }
+		    return -1;
+		}
+
+		function stringSplice(string, start, delCount, newSubStr) {
+	        return string.slice(0, start) + newSubStr + string.slice(start + Math.abs(delCount));
+	    };
+
+		let insertEffectSymbol = controller.insertEffectSymbol = function(word){
+			let cursorPos = controller.cursorPos
+			if (cursorPos.start === cursorPos.end){
+				card.effect = stringSplice(card.effect, cursorPos, 0, `<${word}/>`)
+			}
+		}
+
+		controller.cursorPos = {start: 0, end: 0}
+		let rememberCursorPosition = controller.rememberCursorPosition = function(){
+			let foundCursorPos = getCursorPos(controller.effectInputArea)
+			foundCursorPos !== -1 && (controller.cursorPos = foundCursorPos)
+		}
+
 		let processArtUpload = controller.processArtUpload = function(imgInput){
 			let reader = new FileReader()
 			let file = imgInput.files[0]
@@ -120,12 +168,23 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex gutter-b">
 				<textarea
+					data-init="{:this.app.effectInputArea = this:}"
 					class="box-12"
 					name="card-name"
 					type="text"
 					data-value="{:this.app.card.effect:}|{card.effect}|"
 					onchange="this.app.card.effect = this.value || ''"
+					onkeyup="this.app.rememberCursorPosition()"
+					onclick="this.app.rememberCursorPosition()"
 				></textarea>
+			</div>
+			<div>
+				<strong>Key Symobols to insert into effect text</strong>
+			</div>
+			<div class="flex">
+				<!--key: "index" -->
+					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
+				<!-- in: keywords -->
 			</div>
 		</label>
 	`,
@@ -138,7 +197,6 @@ App.cardOptions = (function(template, subTemplates){
 				<!--key: "index" -->
 					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
 						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
-						{:this.app.keywords[this.index]:}
 					</label>
 				<!-- in: keywords -->
 			</div>
@@ -162,7 +220,7 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.blueWords.length ? 'gutter-b-.5' : '' :}|{card.blueWords.length}|">
 			<div class="flex gutter-b-.5">
 				<div class="grow">
-					<strong>Other Cards Mentioned in Effect Text</strong>
+					<strong>Other Cards Mentioned in Effect</strong>
 				</div>
 				<button onclick="this.app.card.blueWords.push('')">Add Mention</button>
 			</div>
@@ -186,7 +244,7 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-.5' : '' :}|{card.orangeWords.length}|">
 			<div class="flex gutter-b-.5">
 				<div class="grow">
-					<strong>Key Words and Special Text mentioned in Effect Text</strong>
+					<strong>Key Text mentioned in Effect</strong>
 				</div>
 				<button onclick="this.app.card.orangeWords.push('')">Add Mention</button>
 			</div>
