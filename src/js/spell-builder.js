@@ -76,6 +76,8 @@
 			updatedEffect = updatedEffect.split(expectedIconText).join(`<img xmlns="http://www.w3.org/1999/xhtml" src="./assets/symbol/${cardOptionsData.icons[iconName]}" style="height: 0.8em; width: auto"/>`)
 		})
 
+		updatedEffect = updatedEffect.split("\n").map(sentence=>`<div>${sentence}</div>`).join("")
+
 		let svg = `
 		<svg
 			width="680" height="1024"
