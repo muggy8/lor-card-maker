@@ -45,3 +45,7 @@ img, svg {
 .ghost {
 	opacity: 0.5;
 }
+
+.grow {
+	flex-grow: 1;
+}

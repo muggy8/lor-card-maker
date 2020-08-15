@@ -8,6 +8,7 @@
 	}
 
 	let card = controller.card = {}
+	let cardEffectMinSize = 24
 	let clearCard = controller.clearCard = function(){
 		card.name = ""
 		card.effect = ""
@@ -17,6 +18,9 @@
 		card.rarity = "none"
 		card.speed = "slow"
 		card.faction = ""
+		card.blueWords = []
+		card.orangeWords = []
+		card.effectFontSize = 34 // min should be 24
 	}
 	clearCard()
 
@@ -48,7 +52,12 @@
 			}, "")
 		}
 
-		let testEffect = card.effect.split(/\s/g).map(word=>`<tspan>${word}</tspan>`).join(" ")
+		let updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
+			if (!blueWord){
+				return cardEffect
+			}
+			return cardEffect.split(blueWord).join(`<span fill="#49a0f8" style="color: #49a0f8" xmlns="http://www.w3.org/1999/xhtml">${blueWord}</span>`)
+		}, card.effect)
 
 		let svg = `
 		<svg
@@ -73,13 +82,14 @@
 			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
 			<rect id="name" width="550" height="70" x="60" y="585" opacity="0"/>
-			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>
+			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
 			<!-- <rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
 			${keywordSvgs}
 
-			<rect id="effect" width="550" height="145" x="60" y="740" opacity="0"/>
-			<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'top', size: [24, 34]})).catch(()=>{}):}" fill="#fff" stroke="#fff">${card.effect}</text>
+			<foreignObject id="effect" width="550" height="145" x="60" y="740">
+				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%;" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${updatedEffect}</div>
+			</foreignObject>
 
 		</svg>`
 
@@ -113,12 +123,20 @@
 		wrapCall.draw()
 	}
 
+	let effectResize = controller.effectResize = async function(effectDiv){
+		let useableHeight = effectDiv.offsetHeight
+		while (effectDiv.scrollHeight > useableHeight && card.effectFontSize > cardEffectMinSize){
+			card.effectFontSize--
+			await proxymity.on.renderend
+		}
+	}
+
 	App.spellBuilder = controller
 	let view = proxymity(template, controller)
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction},{card.speed}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}
