@@ -56,7 +56,7 @@ App.cardOptions = (function(template, subTemplates){
 		let insertEffectSymbol = controller.insertEffectSymbol = function(word){
 			let cursorPos = controller.cursorPos
 			if (cursorPos.start === cursorPos.end){
-				card.effect = stringSplice(card.effect, cursorPos, 0, `<${word}/>`)
+				card.effect = stringSplice(card.effect, cursorPos.start, 0, `<${word}/>`)
 			}
 		}
 
@@ -79,6 +79,8 @@ App.cardOptions = (function(template, subTemplates){
 				reader.readAsDataURL(file)
 			}
 		}
+
+		console.log(controller)
 
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
@@ -178,6 +180,8 @@ App.cardOptions = (function(template, subTemplates){
 					onclick="this.app.rememberCursorPosition()"
 				></textarea>
 			</div>
+		</label>
+		<div>
 			<div>
 				<strong>Key Symobols to insert into effect text</strong>
 			</div>
@@ -186,7 +190,7 @@ App.cardOptions = (function(template, subTemplates){
 					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 				<!-- in: keywords -->
 			</div>
-		</label>
+		</div>
 	`,
 	keywordChoiceUI: `
 		<div>
