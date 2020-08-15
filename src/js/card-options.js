@@ -18,6 +18,20 @@ App.cardOptions = (function(template, subTemplates){
 			}
 		}
 
+		let processArtUpload = controller.processArtUpload = function(imgInput){
+			let reader = new FileReader()
+			let file = imgInput.files[0]
+
+			reader.addEventListener("load", function(){
+				card.art = reader.result
+			})
+
+			if (file){
+				console.log(file)
+				reader.readAsDataURL(file)
+			}
+		}
+
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
 	}
@@ -28,6 +42,7 @@ App.cardOptions = (function(template, subTemplates){
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "art") ? proxymity(this.app.subTemplates.artUploadUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "blueWords") ? proxymity(this.app.subTemplates.blueWordsUI, this.app) : undefined:}
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "orangeWords") ? proxymity(this.app.subTemplates.orangeWordsUI, this.app) : undefined:}
@@ -190,5 +205,13 @@ App.cardOptions = (function(template, subTemplates){
 				</label>
 			<!-- in: card.orangeWords -->
 		</div>
+	`,
+	artUploadUI: `
+		<label class="flex hcenter">
+			<div class="gutter-trbl">
+				<strong>Upload Image</strong>
+			</div>
+			<input class="hide" type="file" id="uplaod-art" name="art" accept="image/*" onchange="this.app.processArtUpload(this)"/>
+		</label>
 	`,
 })

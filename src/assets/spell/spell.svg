@@ -21,4 +21,33 @@
 
 	<rect id="effect" width="550" height="145" fill="#CFF" x="60" y="725" opacity="0.75"/>
 
+	<g>
+		<path d="
+			M 340, 10
+			l 35, 60
+			h -70
+			Z
+		" fill="#fff" opacity="0.8" id="arrow-up"/>
+		<path d="
+			M 340, 575
+			l 35, -60
+			h -70
+			Z
+		" fill="#fff" opacity="0.8" id="arrow-down"/>
+		<path d="
+			M 55, 300
+			l 60, -35
+			v 70
+			Z
+		" fill="#fff" opacity="0.8" id="arrow-left"/>
+		<path d="
+			M 625, 300
+			l -60, -35
+			v 70
+			Z
+		" fill="#fff" opacity="0.8" id="arrow-right"/>
+
+		<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8">+</text>
+		<text font-size="156" x="390" y="345" fill="#fff" stroke="#fff" opacity="0.8">-</text>
+	</g>
 </svg>

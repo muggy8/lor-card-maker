@@ -15,8 +15,11 @@
 		card.keywords = []
 		card.mana = 0
 		card.art = ""
-		card.artHeight = 0
-		card.artWidth = 0
+		card.transform = {
+			x: 0,
+			y: 0,
+			scale: 1,
+		}
 		card.rarity = "none"
 		card.speed = "slow"
 		card.faction = ""
@@ -78,7 +81,16 @@
 				<ellipse rx="240" ry="240" cx="340" cy="294"/>
 			</clipPath>
 
-			<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-430" y="-122" href="${card.art}" />
+			<image
+				id="card-art"
+				clip-path="url(#art-mask)"
+				href="${card.art}"
+				x="{:this.app.card.transform.x:}|{card.transform.x}|"
+				y="{:this.app.card.transform.y:}|{card.transform.y}|"
+				preserveAspectRatio="xMidYMid meet"
+				width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
+				height="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
+			/>
 
 			<image id="card-background" width="634" height="470" x="23" y="463" href="/assets/spell/background-inverted.png"/>
 			${card.faction
@@ -99,6 +111,36 @@
 			<foreignObject id="effect" width="550" height="145" x="60" y="740">
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%;" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${updatedEffect}</div>
 			</foreignObject>
+
+			<g class="{:this.app.card.art ? '' : 'hide' :}|{card.art}|">
+				<path d="
+					M 340, 10
+					l 35, 60
+					h -70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+				<path d="
+					M 340, 575
+					l 35, -60
+					h -70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+				<path d="
+					M 55, 300
+					l 60, -35
+					v 70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+				<path d="
+					M 625, 300
+					l -60, -35
+					v 70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+
+				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
+				<text font-size="156" x="390" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
+			</g>
 
 		</svg>`
 
@@ -145,7 +187,11 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.artHeight},{card.artWidth},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
+
+			<div class="{:this.app.card.art ? '' : 'hide' :}|{card.art}|" id="art-controls">
+
+			</div>
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}

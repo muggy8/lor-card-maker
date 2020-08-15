@@ -46,6 +46,17 @@ img, svg {
 	opacity: 0.5;
 }
 
+.invisable {
+	opacity: 0;
+}
+
+.hide {
+	display: none;
+}
+
 .grow {
 	flex-grow: 1;
 }
+
+.relative { position: relative }
+.absolute { position: absolute }
