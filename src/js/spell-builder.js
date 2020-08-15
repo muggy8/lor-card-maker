@@ -71,6 +71,11 @@
 			return cardEffect.split(orangeWord).join(`<span style="color: #fad65a" xmlns="http://www.w3.org/1999/xhtml">${orangeWord}</span>`)
 		}, updatedEffect)
 
+		Object.keys(cardOptionsData.icons).forEach(iconName=>{
+			let expectedIconText = `<${iconName}/>`
+			updatedEffect = updatedEffect.split(expectedIconText).join(`<img xmlns="http://www.w3.org/1999/xhtml" src="./assets/symbol/${cardOptionsData.icons[iconName]}" style="height: 0.8em; width: auto"/>`)
+		})
+
 		let svg = `
 		<svg
 			width="680" height="1024"
