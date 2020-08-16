@@ -80,8 +80,6 @@ App.cardOptions = (function(template, subTemplates){
 			}
 		}
 
-		console.log(controller)
-
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
 	}
@@ -187,7 +185,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex">
 				<!--key: "index" -->
-					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
+					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 				<!-- in: keywords -->
 			</div>
 		</div>
@@ -200,7 +198,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div class="flex">
 				<!--key: "index" -->
 					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
-						<div data-init="{:this.innerHTML = createMiniKeyword('./assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
+						<div data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 					</label>
 				<!-- in: keywords -->
 			</div>

@@ -1,7 +1,7 @@
 function createMiniKeyword(keywordImg){
 	let svg = `
-		<image id="keyword-frame" width="120" height="100" x="0" y="0" href="./assets/keyword/keywordmini.png"/>
-		<image id="keyword-icon" width="45" height="37" x="18" y="16" href="${keywordImg}" transform="scale(1.5)"/>`
+		<image class="keyword-frame" width="120" height="100" x="0" y="0" xlink:href="/assets/keyword/keywordmini.png"/>
+		<image class="keyword-icon" width="45" height="37" x="18" y="16" xlink:href="${keywordImg}" transform="scale(1.5)"/>`
 
 	return {width: 120, height: 100, content: svg, svg: `
 		<svg
@@ -25,12 +25,12 @@ function createWideKeyword(keyword, keywordImg){
 
 	for(let safety = 0; keywordLength > contentLength && safety < 20; safety++){
 		if (keywordLength > (contentLength + extentionLength)){
-			extentions += `<image id="card-frame-m-extention" width="63" height="104" x="${contentLength + 28}" y="0" href="./assets/keyword/keywordmiddleextend.png"/>`
+			extentions += `<image id="card-frame-m-extention" width="63" height="104" x="${contentLength + 28}" y="0" xlink:href="/assets/keyword/keywordmiddleextend.png"/>`
 			contentLength += extentionLength
 		}
 		else{
 			let remanderLength = (keywordLength - contentLength)
-			extentions += `<image id="card-frame-m-extention" width="${remanderLength}" height="104" x="${contentLength + 28}" y="0" href="./assets/keyword/keywordmiddleextend.png" preserveAspectRatio="xMidYMin slice"/>`
+			extentions += `<image id="card-frame-m-extention" width="${remanderLength}" height="104" x="${contentLength + 28}" y="0" xlink:href="/assets/keyword/keywordmiddleextend.png" preserveAspectRatio="xMidYMin slice"/>`
 			contentLength += remanderLength
 		}
 	}
@@ -44,13 +44,13 @@ function createWideKeyword(keyword, keywordImg){
 	}
 
 	let svg = `
-		<image id="card-frame-r" width="28" height="104" x="0" y="0" href="./assets/keyword/keywordleft.png"/>
-		<image id="card-frame-m" width="203" height="104" x="28" y="0" href="./assets/keyword/keywordmiddle.png"/>
+		<image id="card-frame-r" width="28" height="104" x="0" y="0" xlink:href="/assets/keyword/keywordleft.png"/>
+		<image id="card-frame-m" width="203" height="104" x="28" y="0" xlink:href="/assets/keyword/keywordmiddle.png"/>
 		${extentions}
-		<image id="card-frame-r" width="28" height="104" x="${contentLength + 28}" y="0" href="./assets/keyword/keywordright.png"/>
+		<image id="card-frame-r" width="28" height="104" x="${contentLength + 28}" y="0" xlink:href="/assets/keyword/keywordright.png"/>
 
 		${keywordImg
-			? ((contentStart += 68), `<image id="keyword-icon" width="45" height="37" x="${contentStart - 68}" y="17" href="${keywordImg}" transform="scale(1.5)"/>`)
+			? ((contentStart += 68), `<image id="keyword-icon" width="45" height="37" x="${contentStart - 68}" y="17" xlink:href="${keywordImg}" transform="scale(1.5)"/>`)
 			: ""
 		}
 		<text y="70" x="${contentStart + (keywordImg ? 10 : 0)}" stroke="#EDCB75" fill="#EDCB75" font-size="48" class="key-text">${keyword}</text>`
