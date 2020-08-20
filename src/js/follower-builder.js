@@ -46,7 +46,7 @@
 		}
 		else if (keywordSvgs.lenght === 1){
 			keywordSvgs = `
-			<gtransform="translate(${(680 / 2) - (keywordSvgs[0].width / 2)}, 572)">
+			<gtransform="translate(${(680 / 2) - (keywordSvgs[0].width / 2)}, 565)">
 				${keywordSvgs[0].content}
 			</g>`
 		}
@@ -56,7 +56,7 @@
 			let xOffset = 0
 			keywordSvgs = keywordSvgs.reduce((sum, svg)=>{
 				let summation = sum + `
-					<g transform="translate(${startX + xOffset}, 572)">
+					<g transform="translate(${startX + xOffset}, 565)">
 						${svg.content}
 					</g>`
 				xOffset += svg.width
@@ -90,6 +90,7 @@
 				width="680" height="1024"
 				xmlns="http://www.w3.org/2000/svg"
 				viewbox="0 0 680 1024"
+				class="{:this.app.cardInstance = this:}"
 			>
 
 				<clipPath id="art-mask">
@@ -120,7 +121,7 @@
 					: ""
 				}
 
-				<image id="card-frame" width="680" height="1024" x="0" y="0" href="/assets/follower/frame${card.rarity}.png"/>
+				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/follower/frame${card.rarity}.png"/>
 
 				${card.faction
 					? `<image id="card-region" width="100" height="100" x="290" y="864" xlink:href="/assets/regions/${card.faction}.png"/>`
@@ -129,7 +130,7 @@
 
 				${card.clan
 					? `
-						<image id="card-clan" width="360" height="84" x="160" y="14" href="/assets/follower/typing.png"/>
+						<image id="card-clan" width="360" height="84" x="160" y="14" xlink:href="/assets/follower/typing.png"/>
 						<rect id="clan-text-area" width="200" height="46" x="240" y="32" opacity="0"/>
 						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>`
 					: ""
@@ -155,6 +156,36 @@
 					<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 520 : 520 + 70 }" opacity="0"/>
 					${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 				</g>
+
+				<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
+				<path d="
+					M 340, 10
+					l 35, 60
+					h -70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+				<path d="
+					M 340, 980
+					l 35, -60
+					h -70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+				<path d="
+					M 0, 550
+					l 60, -35
+					v 70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+				<path d="
+					M 680, 550
+					l -60, -35
+					v 70
+					Z
+				" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+
+				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
+				<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
+			</g>
 			</svg>
 		`
 
@@ -212,8 +243,8 @@
 
 		controller.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
-		await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`)
-		// await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
+		// await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`)
+		await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
 
 		controller.exporting = false
 	}
