@@ -28,6 +28,8 @@
 		card.blueWords = []
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
+
+		controller.exporting = false
 	}
 	clearCard()
 
@@ -158,8 +160,6 @@
 
 		</svg>`
 
-		controller.exporting = false
-
 		return proxymity(svg, controller)
 	}
 
@@ -234,7 +234,12 @@
 			<div class="gutter-b-3"></div>
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}
+			{:this.app.cardOptionsController = App.cardOptions(this.app.card, [
+				"none",
+				"common",
+				"rare",
+				"epic"
+			]):}
 		</div>
 	</main>
 `)

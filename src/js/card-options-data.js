@@ -1,10 +1,4 @@
 const cardOptionsData = {
-	rarityOptions: [
-		"none",
-		"common",
-		"rare",
-		"epic"
-	],
 	spellSpeedOptions: [
 		"slow",
 		"fast",

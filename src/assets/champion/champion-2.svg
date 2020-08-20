@@ -27,9 +27,9 @@
 
 	<rect id="mana-cost" width="120" height="120" x="31" y="44" fill="#CFF" opacity="0.75"/>
 
-	<rect id="power" width="86" height="58" x="44" y="883" fill="#CFF" opacity="0.75"/>
+	<rect id="power" width="86" height="82" x="44" y="873" fill="#CFF" opacity="0.75"/>
 
-	<rect id="health" width="86" height="58" x="552" y="883" fill="#CFF" opacity="0.75"/>
+	<rect id="health" width="86" height="82" x="552" y="873" fill="#CFF" opacity="0.75"/>
 
 	<rect id="effect-text" width="560" height="192" fill="#CFF" x="60" y="660" opacity="0.75"/>
 

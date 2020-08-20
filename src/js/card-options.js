@@ -1,9 +1,8 @@
 App.cardOptions = (function(template, subTemplates){
-	return function(card){
-		let controller = {subTemplates}
+	return function(card, rarityOptions){
+		let controller = {subTemplates, rarityOptions}
 		controller.card = card
 
-		let rarityOptions = controller.rarityOptions = cardOptionsData.rarityOptions
 		let factionOptions = controller.factionOptions = cardOptionsData.factionOptions
 		let spellSpeedOptions = controller.spellSpeedOptions = cardOptionsData.spellSpeedOptions
 		let keywords = controller.keywords = Object.keys(cardOptionsData.icons)
@@ -89,14 +88,30 @@ App.cardOptions = (function(template, subTemplates){
 </div>
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "clan") ? proxymity(this.app.subTemplates.cardClanUI, this.app) : undefined:}
+	<!-- text break -->
+	<div class="flex power-health">
+		{:Object.prototype.hasOwnProperty.call(this.app.card, "power") ? proxymity(this.app.subTemplates.powerUI, this.app) : undefined:}
+		<!-- text break -->
+		{:Object.prototype.hasOwnProperty.call(this.app.card, "health") ? proxymity(this.app.subTemplates.healthUI, this.app) : undefined:}
+	</div>
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "art") ? proxymity(this.app.subTemplates.artUploadUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "blueWords") ? proxymity(this.app.subTemplates.blueWordsUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "orangeWords") ? proxymity(this.app.subTemplates.orangeWordsUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
+	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
 </div>
 `, {
@@ -144,6 +159,40 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 		</label>
 	`,
+	powerUI: `
+		<label class="grow">
+			<div>
+				<strong>Card Power</strong>
+			</div>
+			<div class="flex gutter-b">
+				<input
+					class="box-12"
+					name="power"
+					type="number"
+					data-value="{:this.app.card.power:}|{card.power}|"
+					onchange="this.app.card.power = this.valueAsNumber || 0"
+					onkeyup="this.app.card.power = this.valueAsNumber || 0"
+				>
+			</div>
+		</label>
+	`,
+	healthUI: `
+		<label class="grow">
+			<div>
+				<strong>Card Health</strong>
+			</div>
+			<div class="flex gutter-b">
+				<input
+					class="box-12"
+					name="power"
+					type="number"
+					data-value="{:this.app.card.health:}|{card.health}|"
+					onchange="this.app.card.health = this.valueAsNumber || 0"
+					onkeyup="this.app.card.health = this.valueAsNumber || 0"
+				>
+			</div>
+		</label>
+	`,
 	cardNameUI: `
 		<label>
 			<div>
@@ -157,6 +206,23 @@ App.cardOptions = (function(template, subTemplates){
 					data-value="{:this.app.card.name:}|{card.name}|"
 					onchange="this.app.card.name = this.value || ''"
 					onkeyup="this.app.card.name = this.value || ''"
+				>
+			</div>
+		</label>
+	`,
+	cardClanUI: `
+		<label>
+			<div>
+				<strong>Card Clan (eg: Elete)</strong>
+			</div>
+			<div class="flex gutter-b">
+				<input
+					class="box-12"
+					name="card-name"
+					type="text"
+					data-value="{:this.app.card.clan:}|{card.clan}|"
+					onchange="this.app.card.clan = this.value || ''"
+					onkeyup="this.app.card.clan = this.value || ''"
 				>
 			</div>
 		</label>
