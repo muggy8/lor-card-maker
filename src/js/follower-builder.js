@@ -15,6 +15,7 @@
 		card.name = ""
 		card.clan = ""
 		card.effect = ""
+		card.effectHeight = 0
 		card.keywords = []
 		card.mana = 0
 		card.art = ""
@@ -36,6 +37,33 @@
 	clearCard()
 
 	let createPreview = controller.createPreview = function(){
+		let keywordSvgs = card.keywords.length > 1
+			? card.keywords.map(word=>createMiniKeyword("/assets/symbol/" + cardOptionsData.icons[word]))
+			: card.keywords.map(word=>createWideKeyword(word, "/assets/symbol/" + cardOptionsData.icons[word]))
+
+		if (keywordSvgs.lenght <= 0){
+			keywordSvgs = ""
+		}
+		else if (keywordSvgs.lenght === 1){
+			keywordSvgs = `
+			<gtransform="translate(${(680 / 2) - (keywordSvgs[0].width / 2)}, 572)">
+				${keywordSvgs[0].content}
+			</g>`
+		}
+		else{
+			let sumWidth = keywordSvgs.reduce((sum, svg)=>sum + svg.width, 0)
+			let startX = (680 / 2) - (sumWidth / 2)
+			let xOffset = 0
+			keywordSvgs = keywordSvgs.reduce((sum, svg)=>{
+				let summation = sum + `
+					<g transform="translate(${startX + xOffset}, 572)">
+						${svg.content}
+					</g>`
+				xOffset += svg.width
+				return summation
+			}, "")
+		}
+
 		let updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
 			if (!blueWord){
 				return cardEffect
@@ -99,15 +127,13 @@
 					: ""
 				}
 
-
 				${card.clan
 					? `
 						<image id="card-clan" width="360" height="84" x="160" y="14" href="/assets/follower/typing.png"/>
-						<rect id="clan-text-area" width="200" height="46" x="240" y="32"  fill="#CFF" opacity="0.75"/>
+						<rect id="clan-text-area" width="200" height="46" x="240" y="32" opacity="0"/>
 						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>`
 					: ""
 				}
-
 
 				<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
@@ -118,14 +144,15 @@
 				<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>
 
-				<g id="group-moveable">
+				<g id="group-moveable" transform="translate(0, {: 192 - this.app.card.effectHeight > 0 ? 192 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
 					<foreignObject id="effect" width="550" height="192" x="60" y="660">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${updatedEffect}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${updatedEffect}</div>
 					</foreignObject>
 
-					<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="590" opacity="0.75"/>
+					<!--<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="590" opacity="0.75"/>-->
+					${keywordSvgs}
 
-					<rect id="name" width="560" height="70" x="60" y="520" opacity="0"/>
+					<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 520 : 520 + 70 }" opacity="0"/>
 					${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 				</g>
 			</svg>

@@ -213,7 +213,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardClanUI: `
 		<label>
 			<div>
-				<strong>Card Clan (eg: Elete)</strong>
+				<strong>Card Clan (eg: Elite)</strong>
 			</div>
 			<div class="flex gutter-b">
 				<input
