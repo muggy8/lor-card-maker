@@ -153,7 +153,7 @@
 					<!--<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="590" opacity="0.75"/>-->
 					${keywordSvgs}
 
-					<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 520 : 520 + 70 }" opacity="0"/>
+					<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 515 : 515 + 70 }" opacity="0"/>
 					${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 				</g>
 
