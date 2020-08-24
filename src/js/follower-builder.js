@@ -64,12 +64,19 @@
 			}, "")
 		}
 
-		let updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
+		let updatedEffect = card.effect
+
+		Object.keys(cardOptionsData.icons).forEach(iconName=>{
+			let expectedIconText = `<${iconName}/>`
+			updatedEffect = updatedEffect.split(expectedIconText).join(`<div xmlns="http://www.w3.org/1999/xhtml" style="height: 0.8em; width: 1em; display:inline-block; background-repeat: no-repeat; background-size: contain; background-image: url('${iconCache[iconName]}');"></div>`)
+		})
+
+		updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
 			if (!blueWord){
 				return cardEffect
 			}
 			return cardEffect.split(blueWord).join(`<span style="color: #49a0f8" xmlns="http://www.w3.org/1999/xhtml">${blueWord}</span>`)
-		}, card.effect)
+		}, updatedEffect)
 
 		updatedEffect = card.orangeWords.reduce((cardEffect, orangeWord)=>{
 			if (!orangeWord){
@@ -77,11 +84,6 @@
 			}
 			return cardEffect.split(orangeWord).join(`<span style="color: #fad65a" xmlns="http://www.w3.org/1999/xhtml">${orangeWord}</span>`)
 		}, updatedEffect)
-
-		Object.keys(cardOptionsData.icons).forEach(iconName=>{
-			let expectedIconText = `<${iconName}/>`
-			updatedEffect = updatedEffect.split(expectedIconText).join(`<div xmlns="http://www.w3.org/1999/xhtml" style="height: 0.8em; width: 1em; display:inline-block; background-repeat: no-repeat; background-size: contain; background-image: url('${iconCache[iconName]}');"></div>`)
-		})
 
 		updatedEffect = updatedEffect.split("\n").map(sentence=>`<div>${sentence}</div>`).join("")
 
