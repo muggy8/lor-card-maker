@@ -79,6 +79,19 @@ App.cardOptions = (function(template, subTemplates){
 			}
 		}
 
+		controller.levelPos = {start: 0, end: 0}
+		let rememberLevelCursorPosition = controller.rememberLevelCursorPosition = function(){
+			let foundCursorPos = getCursorPos(controller.levelInputArea)
+			foundCursorPos !== -1 && (controller.levelPos = foundCursorPos)
+		}
+
+		let insertLevelEffectSymbol = controller.insertLevelEffectSymbol = function(word){
+			let cursorPos = controller.levelPos
+			if (cursorPos.start === cursorPos.end){
+				card.lvup = stringSplice(card.lvup, cursorPos.start, 0, `<${word}/>`)
+			}
+		}
+
 		controller.mbShowConfigs = false
 		return proxymity(template, controller)
 	}
@@ -101,6 +114,8 @@ App.cardOptions = (function(template, subTemplates){
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "art") ? proxymity(this.app.subTemplates.artUploadUI, this.app) : undefined:}
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "lvup") ? proxymity(this.app.subTemplates.cardLevelUI, this.app) : undefined:}
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "blueWords") ? proxymity(this.app.subTemplates.blueWordsUI, this.app) : undefined:}
 	<!-- text break -->
@@ -237,7 +252,6 @@ App.cardOptions = (function(template, subTemplates){
 					data-init="{:this.app.effectInputArea = this:}"
 					class="box-12"
 					name="card-name"
-					type="text"
 					data-value="{:this.app.card.effect:}|{card.effect}|"
 					onchange="this.app.card.effect = this.value || ''"
 					onkeyup="this.app.rememberCursorPosition()"
@@ -252,6 +266,34 @@ App.cardOptions = (function(template, subTemplates){
 			<div class="flex">
 				<!--key: "index" -->
 					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
+				<!-- in: keywords -->
+			</div>
+		</div>
+	`,
+	cardLevelUI: `
+		<label>
+			<div>
+				<strong>Level Up Condition</strong>
+			</div>
+			<div class="flex gutter-b">
+				<textarea
+					data-init="{:this.app.levelInputArea = this:}"
+					class="box-12"
+					name="level-cond"
+					data-value="{:this.app.card.lvup:}|{card.lvup}|"
+					onchange="this.app.card.lvup = this.value || ''"
+					onkeyup="this.app.rememberLevelCursorPosition()"
+					onclick="this.app.rememberLevelCursorPosition()"
+				></textarea>
+			</div>
+		</label>
+		<div>
+			<div>
+				<strong>Key Symobols to insert into effect text</strong>
+			</div>
+			<div class="flex">
+				<!--key: "index" -->
+					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertLevelEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 				<!-- in: keywords -->
 			</div>
 		</div>
