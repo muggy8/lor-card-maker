@@ -1,7 +1,9 @@
 const { src, dest, series, parallel } = require('gulp')
-const uglify = require('gulp-uglify')
+// const uglify = require('gulp-uglify')
+const terser = require('gulp-terser')
 const cleanCSS = require('gulp-clean-css')
 const imagemin = require('gulp-imagemin')
+const htmlmin = require('gulp-htmlmin')
 
 let copy = exports.copy = function() {
 	return src('src/**/*.*')
@@ -10,7 +12,7 @@ let copy = exports.copy = function() {
 
 let minifyJs = exports.minifyJs = function() {
 	return src('src/**/*.js')
-		.pipe(uglify())
+		.pipe(terser())
 		.pipe(dest('docs/'))
 }
 
@@ -37,7 +39,7 @@ exports.default = series(
 	parallel(
 		minifyJs,
 		minifyCss,
-		minifyPng,
+		//gulpminifyPng,
 		minifyHtml,
 	)
 )
