@@ -243,7 +243,7 @@
 
 		controller.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
-		await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`)
+		await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`, {width: 680, height: 1024,})
 		// await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
 
 		controller.exporting = false
