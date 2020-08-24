@@ -68,6 +68,7 @@
 				width="680" height="1024"
 				xmlns="http://www.w3.org/2000/svg"
 				viewbox="0 0 680 1024"
+				class="{:this.app.cardInstance = this:}"
 			>
 
 				<clipPath id="art-mask">
@@ -127,7 +128,7 @@
 
 				<g id="all-text-group" transform="translate(0, {: 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0:}|{card.lvupHeight}|)">
 					<foreignObject id="level-up-condition" width="560" height="130" x="60" y="720">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${decorateText(card.lvup)}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					<image id="card-level-bar" width="680" height="44" x="0" y="680" xlink:href="/assets/champion/levelupbar.png"/>
@@ -270,6 +271,8 @@
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
 			</div>
+
+			<div class="gutter-b-3"></div>
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}
