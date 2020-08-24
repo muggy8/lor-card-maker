@@ -37,7 +37,7 @@ let minifyHtml = exports.minifyHtml = function() {
 
 let pathReplace = exports.pathReplace = function(){
 	return src('docs/**/*.*')
-		.pipe(replace('/assets/', './assets/'))
+		.pipe(replace(/([^\.])\/assets\//g, '$1./assets/'))
 		.pipe(dest('docs/'))
 }
 
