@@ -9,3 +9,4 @@ Todo:
 - offline support
 - cleaner UI
 - better user feedback when error happens
+- rework keywords and support "Immobile"
