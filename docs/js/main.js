@@ -1,0 +1,1 @@
+const App=function(){let t={currentView:void 0};proxymity(document.body,t);return t}();

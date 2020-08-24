@@ -1,0 +1,39 @@
+<svg
+	width="680" height="1024"
+	xmlns="http://www.w3.org/2000/svg"
+	viewbox="0 0 680 1024"
+>
+	<clipPath id="art-mask">
+		<path
+			d="
+				M 25, 50
+				h 630
+				v 900
+				l -315, 15
+				l -315, -15
+				Z
+			"
+		/>
+	</clipPath>
+
+	<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-700" y="0" href="./test.webp" />
+
+	<image id="art-shade" width="680" height="1024" x="0" y="0" href="./theencrouchingdarkness.png"/>
+	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./frame2.png"/>
+	<image id="card-clan" width="360" height="84" x="160" y="14" href="./typing.png"/>
+	<image id="card-region" width="100" height="100" x="290" y="864" href="./piltoverzaun.png"/>
+
+	<rect id="clan-text-area" width="200" height="46" x="240" y="32"  fill="#CFF" opacity="0.75"/>
+
+	<rect id="mana-cost" width="120" height="120" x="31" y="44" fill="#CFF" opacity="0.75"/>
+
+	<rect id="power" width="86" height="82" x="44" y="873" fill="#CFF" opacity="0.75"/>
+
+	<rect id="health" width="86" height="82" x="552" y="873" fill="#CFF" opacity="0.75"/>
+
+	<rect id="effect-text" width="560" height="192" fill="#CFF" x="60" y="660" opacity="0.75"/>
+
+	<rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="590" opacity="0.75"/>
+
+	<rect id="name" width="560" height="70" fill="#CFF" x="60" y="520" opacity="0.75"/>
+</svg>
