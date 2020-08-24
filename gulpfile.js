@@ -4,6 +4,7 @@ const terser = require('gulp-terser')
 const cleanCSS = require('gulp-clean-css')
 const imagemin = require('gulp-imagemin')
 const htmlmin = require('gulp-htmlmin')
+const replace = require('gulp-replace')
 
 let copy = exports.copy = function() {
 	return src('src/**/*.*')
