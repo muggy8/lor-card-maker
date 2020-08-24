@@ -157,34 +157,34 @@
 				</g>
 
 				<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
-				<path d="
-					M 340, 10
-					l 35, 60
-					h -70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
-				<path d="
-					M 340, 980
-					l 35, -60
-					h -70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
-				<path d="
-					M 0, 550
-					l 60, -35
-					v 70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
-				<path d="
-					M 680, 550
-					l -60, -35
-					v 70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+					<path d="
+						M 340, 10
+						l 35, 60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+					<path d="
+						M 340, 980
+						l 35, -60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+					<path d="
+						M 0, 550
+						l 60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+					<path d="
+						M 680, 550
+						l -60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
 
-				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
-				<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
-			</g>
+					<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
+					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
+				</g>
 			</svg>
 		`
 

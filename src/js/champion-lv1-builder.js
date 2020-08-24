@@ -7,6 +7,7 @@
 	}
 
 	let card = controller.card = {}
+	let cardEffectMinSize = 24
 	let clearCard = controller.clearCard = function(){
 		card.name = ""
 		card.clan = ""
@@ -142,6 +143,36 @@
 						<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 380 : 380 + 70 }" opacity="0"/>
 						${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 					</g>
+				</g>
+
+				<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
+					<path d="
+						M 340, 10
+						l 35, 60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+					<path d="
+						M 340, 980
+						l 35, -60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+					<path d="
+						M 0, 550
+						l 60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+					<path d="
+						M 680, 550
+						l -60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+
+					<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
+					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
 				</g>
 			</svg>`
 		return proxymity(svg, controller)
