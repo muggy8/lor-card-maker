@@ -34,6 +34,12 @@ let minifyHtml = exports.minifyHtml = function() {
 		.pipe(dest('docs/'))
 }
 
+let pathReplace = exports.pathReplace = function(){
+	return src('docs/**/*.*')
+		.pipe(replace('="/assets/', '="/.assets/'))
+		.pipe(dest('docs/'))
+}
+
 exports.default = series(
 	copy,
 	parallel(
@@ -41,5 +47,6 @@ exports.default = series(
 		minifyCss,
 		minifyPng,
 		minifyHtml,
-	)
+	),
+	pathReplace,
 )
