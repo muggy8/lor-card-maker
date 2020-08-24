@@ -29,7 +29,7 @@ let minifyPng = exports.minifyPng = function() {
 }
 
 let minifyHtml = exports.minifyHtml = function() {
-	return src('src/**/*.png')
+	return src('src/**/*.html')
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(dest('docs/'))
 }
@@ -39,7 +39,7 @@ exports.default = series(
 	parallel(
 		minifyJs,
 		minifyCss,
-		//gulpminifyPng,
+		minifyPng,
 		minifyHtml,
 	)
 )
