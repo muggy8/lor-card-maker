@@ -2,7 +2,7 @@
 	box-sizing: border-box
 }
 
-body, html {
+body, html, #effect, #level-up-condition {
 	/* font-family: BeaufortforLOLBold, serif; */
 	font-family: sans-serif;
 	padding: 0;
