@@ -129,14 +129,14 @@
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>
 
 				<g id="all-text-group" transform="translate(0, {: 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0:}|{card.lvupHeight}|)">
-					<foreignObject id="level-up-condition" width="560" height="130" x="60" y="720">
+					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
 						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					<image id="card-level-bar" width="680" height="44" x="0" y="680" xlink:href="/assets/champion/levelupbar.png"/>
 
 					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
-						<foreignObject id="effect" width="560" height="162" x="60" y="520">
+						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="560" height="162" x="60" y="520">
 							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${decorateText(card.effect)}</div>
 						</foreignObject>
 

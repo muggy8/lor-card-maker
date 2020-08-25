@@ -127,7 +127,7 @@
 			<!-- <rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
 			${keywordSvgs}
 
-			<foreignObject id="effect" width="550" height="145" x="60" y="740">
+			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="550" height="145" x="60" y="740">
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${updatedEffect}</div>
 			</foreignObject>
 
