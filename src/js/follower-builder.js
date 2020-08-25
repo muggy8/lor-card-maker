@@ -37,6 +37,7 @@
 	clearCard()
 
 	let createPreview = controller.createPreview = function(){
+		card.effectFontSize = 34
 		let keywordSvgs = card.keywords.length > 1
 			? card.keywords.map(word=>createMiniKeyword("/assets/symbol/" + cardOptionsData.icons[word]))
 			: card.keywords.map(word=>createWideKeyword(word, "/assets/symbol/" + cardOptionsData.icons[word]))
