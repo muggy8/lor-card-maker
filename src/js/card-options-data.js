@@ -48,5 +48,7 @@ const cardOptionsData = {
 		"challenger": "challenger.png",
 		"fearsome": "fearsome.png",
 		"regeneration": "regeneration.png",
+		"spellshield": "spellshield.png",
+		"fury": "fury.png",
 	}
 }
