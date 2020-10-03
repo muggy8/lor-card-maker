@@ -10,7 +10,9 @@
 			App.currentView = view
 			clearCard()
 			window.scroll(0,0)
-			history.pushState({}, "Spell Builder")
+			history.pushState({
+				focus: "spellBuilder"
+			}, "Spell Builder")
 		})
 	}
 
