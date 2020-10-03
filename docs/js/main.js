@@ -1,1 +1,1 @@
-const App=function(){let t={currentView:void 0};proxymity(document.body,t);return t}();
+const App=function(){let t={currentView:void 0};proxymity(document.body,t);return window.addEventListener("popstate",(function(t){let o=t.state;o.focus&&App[o.focus].focus()})),t}();
