@@ -93,10 +93,20 @@ App.cardOptions = (function(template, subTemplates){
 		}
 
 		controller.mbShowConfigs = false
+		controller.toggleMBShow = function(){
+			controller.mbShowConfigs = ! controller.mbShowConfigs
+
+			if (controller.mbShowConfigs === false){
+				history.back()
+			}
+			else{
+				history.pushState({}, "Configuring Card")
+			}
+		}
 		return proxymity(template, controller)
 	}
 })(`
-<div class="mobile-config-footer gutter-trbl flex hcenter clickable" onclick="this.app.mbShowConfigs = !this.app.mbShowConfigs">
+<div class="mobile-config-footer gutter-trbl flex hcenter clickable" onclick="this.app.toggleMBShow()">
 	<strong>Card Configs</strong>
 </div>
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">

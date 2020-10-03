@@ -2,7 +2,13 @@
 	let controller = {}
 
 	let focus = controller.focus = function(){
+		if (App.currentView === view){
+			return
+		}
 		App.currentView = view
+		history.replaceState({
+			focus: "cardTypePicker"
+		}, "LoR Card Makern")
 	}
 
 	App.cardTypePicker = controller

@@ -3,9 +3,16 @@
 
 	let focus = controller.focus = function(){
 		iconCache.promise.then(()=>{
+			controller.cardOptionsController.app.mbShowConfigs = false
+			if (App.currentView === view){
+				return
+			}
 			App.currentView = view
 			clearCard()
 			window.scroll(0,0)
+			history.pushState({
+				focus: "championLv2Builder"
+			}, "Champion Lv2 Builder")
 		})
 	}
 
