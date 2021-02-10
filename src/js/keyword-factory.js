@@ -8,6 +8,7 @@ function createMiniKeyword(keywordImg){
 			width="120" height="100"
 			xmlns="http://www.w3.org/2000/svg"
 			viewbox="0 0 120 100"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
 		>${svg}</svg>`
 	}
 }
@@ -61,6 +62,7 @@ function createWideKeyword(keyword, keywordImg){
 			width="${contentLength + 28 + 28}" height="100"
 			xmlns="http://www.w3.org/2000/svg"
 			viewbox="0 0 ${contentLength + 28 + 28} 100"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
 		>${svg}</svg>`
 	}
 }

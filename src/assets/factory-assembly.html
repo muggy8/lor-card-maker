@@ -2,19 +2,26 @@
 	<head>
 		<link rel="stylesheet" href="../css/generals.css">
 		<style>
+			@font-face{
+				font-family: BeaufortforLOLBold;
+				src:
+					url("/css/BeaufortforLOLBold.ttf")
+					format("opentype");
+			}
 			body {font-family: "BeaufortforLOLBold", sans-serif}
 		</style>
 	</head>
 	<body>
-		<script src="./keyword-factory.js"></script>
-		<script src="./svg-to-dom.js"></script>
+		<script src="../js/keyword-factory.js"></script>
+		<script src="../js/svg-to-dom.js"></script>
 		<script>
-			document.body.append(createMiniKeyword("./symbol/frostbite.png"))
-			document.body.append(createMiniKeyword("./symbol/lifesteal.png"))
-			document.body.append(createWideKeyword("frostbite", "./symbol/frostbite.png"))
-			document.body.append(createWideKeyword("skill", "./symbol/skill.png"))
-			document.body.append(createWideKeyword("overwhelm", "./symbol/overwhelm.png"))
-			document.body.append(createWideKeyword("trap"))
+			console.log((createMiniKeyword("./symbol/frostbite.png").svg))
+			document.body.append(svg2dom(createMiniKeyword("./symbol/frostbite.png").svg))
+			document.body.append(svg2dom(createMiniKeyword("./symbol/lifesteal.png").svg))
+			document.body.append(svg2dom(createWideKeyword("frostbite", "./symbol/frostbite.png").svg))
+			document.body.append(svg2dom(createWideKeyword("skill", "./symbol/skill.png").svg))
+			document.body.append(svg2dom(createWideKeyword("overwhelm", "./symbol/overwhelm.png").svg))
+			document.body.append(svg2dom(createWideKeyword("trap").svg))
 
 			//let charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 			// for(let i = 0; i < charset.length; document.body.append(createWideKeyword(charset[i++])));
