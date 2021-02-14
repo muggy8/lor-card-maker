@@ -123,10 +123,10 @@
 				height="{:1024 * this.app.card.transform.scale:}|{card.transform.scale}|"
 			 />
 
-			<image id="card-frame" width="680" height="1024" x="0" y="0" href="/assets/landmark/frame${card.rarity}.png"/>
+			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/landmark/frame${card.rarity}.png"/>
 
 			${card.faction
-				? `<image id="card-region" width="100" height="100" x="290" y="820" href="/assets/regions/${card.faction}.png"/>`
+				? `<image id="card-region" width="100" height="100" x="290" y="820" xlink:href="/assets/regions/${card.faction}.png"/>`
 				: ""
 			}
 
