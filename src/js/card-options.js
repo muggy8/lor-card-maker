@@ -387,7 +387,7 @@ App.cardOptions = (function(template, subTemplates){
 	`,
 	artUploadUI: `
 		<label class="flex hcenter gutter-b">
-			<button class="gutter-trbl grow">
+			<button class="gutter-trbl grow" onclick="document.getElementById('uplaod-art').click()">
 				<strong>Upload Image</strong>
 			</button>
 			<input class="hide" type="file" id="uplaod-art" name="art" accept="image/*" onchange="this.app.processArtUpload(this)"/>

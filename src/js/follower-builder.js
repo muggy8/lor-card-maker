@@ -76,7 +76,7 @@
 
 		Object.keys(cardOptionsData.icons).forEach(iconName=>{
 			let expectedIconText = `<${iconName}/>`
-			updatedEffect = updatedEffect.split(expectedIconText).join(`<div xmlns="http://www.w3.org/1999/xhtml" style="height: 0.8em; width: 1em; display:inline-block; background-repeat: no-repeat; background-size: contain; background-image: url('${iconCache[iconName]}');"></div>`)
+			updatedEffect = updatedEffect.split(expectedIconText).join(`<div xmlns="http://www.w3.org/1999/xhtml" style="height: 1.2em; width: 1.2em; display:inline-block; background-repeat: no-repeat; background-size: contain; background-image: url('${iconCache[iconName]}');vertical-align: middle;"></div>`)
 		})
 
 		updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
@@ -168,34 +168,34 @@
 				</g>
 
 				<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
-				<path d="
-					M 340, 10
-					l 35, 60
-					h -70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
-				<path d="
-					M 340, 980
-					l 35, -60
-					h -70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
-				<path d="
-					M 0, 550
-					l 60, -35
-					v 70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
-				<path d="
-					M 680, 550
-					l -60, -35
-					v 70
-					Z
-				" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+					<path d="
+						M 340, 10
+						l 35, 60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+					<path d="
+						M 340, 980
+						l 35, -60
+						h -70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+					<path d="
+						M 0, 550
+						l 60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+					<path d="
+						M 680, 550
+						l -60, -35
+						v 70
+						Z
+					" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
 
-				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
-				<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
-			</g>
+					<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
+					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
+				</g>
 			</svg>
 		`
 

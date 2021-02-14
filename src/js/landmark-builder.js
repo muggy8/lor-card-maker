@@ -11,8 +11,8 @@
 			clearCard()
 			window.scroll(0,0)
 			history.pushState({
-				focus: "spellBuilder"
-			}, "Spell Builder")
+				focus: "landmarkBuilder"
+			}, "Landmark Builder")
 		})
 	}
 
@@ -21,7 +21,8 @@
 	let clearCard = controller.clearCard = function(){
 		card.name = ""
 		card.effect = ""
-		card.keywords = []
+		card.effectHeight = 0
+		card.keywords = ["landmark"]
 		card.mana = 0
 		card.art = ""
 		card.transform = {
@@ -29,9 +30,8 @@
 			y: 0,
 			scale: 1,
 		}
-		card.rarity = "none"
-		card.speed = "slow"
 		card.faction = ""
+		card.rarity = "gemless"
 		card.blueWords = []
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
@@ -51,7 +51,7 @@
 		}
 		else if (keywordSvgs.lenght === 1){
 			keywordSvgs = `
-			<gtransform="translate(${(680 / 2) - (keywordSvgs[0].width / 2)}, 635)">
+			<gtransform="translate(${(680 / 2) - (keywordSvgs[0].width / 2)}, 544)">
 				${keywordSvgs[0].content}
 			</g>`
 		}
@@ -61,7 +61,7 @@
 			let xOffset = 0
 			keywordSvgs = keywordSvgs.reduce((sum, svg)=>{
 				let summation = sum + `
-					<g transform="translate(${startX + xOffset}, 635)">
+					<g transform="translate(${startX + xOffset}, 544)">
 						${svg.content}
 					</g>`
 				xOffset += svg.width
@@ -100,43 +100,51 @@
 			class="{:this.app.cardInstance = this:}"
 		>
 			<clipPath id="art-mask">
-				<ellipse rx="240" ry="240" cx="340" cy="294"/>
+				<path
+					d="
+						M 50, 60
+						h 580
+						v 830
+						l -290, 65
+						l -290, -65
+						Z
+					"
+				/>
 			</clipPath>
 
-			${card.art
-				? `
-				<image
-					id="card-art"
-					clip-path="url(#art-mask)"
-					xlink:href="${card.art}"
-					x="{:this.app.card.transform.x:}|{card.transform.x}|"
-					y="{:this.app.card.transform.y:}|{card.transform.y}|"
-					preserveAspectRatio="xMidYMid meet"
-					width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
-					height="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
-				/>`
-				: ""
-			}
+			<image
+				id="card-art"
+				clip-path="url(#art-mask)"
+				xlink:href="${card.art}"
+				x="{:this.app.card.transform.x:}|{card.transform.x}|"
+				y="{:this.app.card.transform.y:}|{card.transform.y}|"
+				preserveAspectRatio="xMidYMid meet"
+				width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
+				height="{:1024 * this.app.card.transform.scale:}|{card.transform.scale}|"
+			 />
 
-			<image id="card-background" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
+			<image id="card-frame" width="680" height="1024" x="0" y="0" href="/assets/landmark/frame${card.rarity}.png"/>
+
 			${card.faction
-				? `<image id="card-region" width="100" height="100" x="285" y="836" xlink:href="/assets/regions/${card.faction}.png"/>`
+				? `<image id="card-region" width="100" height="100" x="290" y="820" href="/assets/regions/${card.faction}.png"/>`
 				: ""
 			}
-			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.rarity}.png"/>
 
 			<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
 			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
-			<rect id="name" width="550" height="70" x="60" y="585" opacity="0"/>
-			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
-			<!-- <rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
-			${keywordSvgs}
+			<g id="group-moveable" transform="translate(0, {: 192 - this.app.card.effectHeight > 0 ? 192 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
+				<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="500" height="192" x="90" y="640">
+					<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${updatedEffect}</div>
+				</foreignObject>
 
-			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="550" height="145" x="60" y="740">
-				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${updatedEffect}</div>
-			</foreignObject>
+				<!--<rect id="keywords" width="500" height="70" fill="#CFF" x="90" y="570" opacity="0.75"/>-->
+				${keywordSvgs}
+
+				<rect id="name" width="500" height="70" x="90" y="${card.keywords.length ? 500 : 500 + 70}" opacity="0"/>
+				${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
+			</g>
 
 			<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
 				<path d="
@@ -146,19 +154,19 @@
 					Z
 				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
 				<path d="
-					M 340, 575
+					M 340, 980
 					l 35, -60
 					h -70
 					Z
 				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
 				<path d="
-					M 55, 300
+					M 0, 550
 					l 60, -35
 					v 70
 					Z
 				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
 				<path d="
-					M 625, 300
+					M 680, 550
 					l -60, -35
 					v 70
 					Z
@@ -167,8 +175,8 @@
 				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
 				<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
 			</g>
-
-		</svg>`
+		</svg>
+		`
 
 		return proxymity(svg, controller)
 	}
@@ -209,33 +217,38 @@
 	}
 
 	let exportCard = controller.exportCard = async function(){
-		let replaceJob = Array.from(controller.cardInstance.querySelectorAll("image"))
-			.map(el=>
-				getBase64FromImageUrl(el.href.baseVal)
-				.then(uri=>
-					el.setAttribute("xlink:href", uri)
-				)
-			)
+		//~ let replaceJob = Array.from(controller.cardInstance.querySelectorAll("image"))
+			//~ .map(el=>
+				//~ getBase64FromImageUrl(el.href.baseVal)
+				//~ .then(uri=>
+					//~ el.setAttribute("xlink:href", uri)
+				//~ )
+			//~ )
 
-		controller.exporting = true
-		replaceJob.push(proxymity.on.renderend)
+		//~ controller.exporting = true
+		//~ replaceJob.push(proxymity.on.renderend)
 
-		await Promise.all(replaceJob)
+		//~ console.log("waiting on replace job")
+
+		//~ await Promise.all(replaceJob)
+
+		console.log("replace job done")
 
 		controller.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
+		console.log("saving")
 		await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`, {width: 680, height: 1024, scale: 1/(window.devicePixelRatio || 1)})
-		// await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
+		//~ await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
 
 		controller.exporting = false
 	}
 
-	App.spellBuilder = controller
+	App.landmarkBuilder = controller
 	let view = proxymity(template, controller)
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.rarity},{card.faction},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction},{card.blueWords.*},{card.rarity},{card.orangeWords.*}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
@@ -245,10 +258,10 @@
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			{:this.app.cardOptionsController = App.cardOptions(this.app.card, [
-				"none",
+				"gemless",
 				"common",
 				"rare",
-				"epic"
+				"epic",
 			]):}
 		</div>
 	</main>
