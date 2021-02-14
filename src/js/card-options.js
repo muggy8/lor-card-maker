@@ -122,6 +122,9 @@ App.cardOptions = (function(template, subTemplates){
 		{:Object.prototype.hasOwnProperty.call(this.app.card, "health") ? proxymity(this.app.subTemplates.healthUI, this.app) : undefined:}
 	</div>
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "art") ? proxymity(this.app.subTemplates.artUploadUI, this.app) : undefined:}
+
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "effect") ? proxymity(this.app.subTemplates.cardEffectUI, this.app) : undefined:}
 	<!-- text break -->
@@ -136,8 +139,6 @@ App.cardOptions = (function(template, subTemplates){
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
-	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
 </div>
 `, {
 	regionSelectorUI: `
@@ -385,10 +386,10 @@ App.cardOptions = (function(template, subTemplates){
 		</div>
 	`,
 	artUploadUI: `
-		<label class="flex hcenter">
-			<div class="gutter-trbl">
+		<label class="flex hcenter gutter-b">
+			<button class="gutter-trbl grow">
 				<strong>Upload Image</strong>
-			</div>
+			</button>
 			<input class="hide" type="file" id="uplaod-art" name="art" accept="image/*" onchange="this.app.processArtUpload(this)"/>
 		</label>
 	`,

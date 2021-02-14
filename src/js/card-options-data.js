@@ -22,6 +22,7 @@ const cardOptionsData = {
 	],
 	icons: {
 		"attune": "attune.png",
+		"augment": "augment.png",
 		"checkbox": "checkbox.png",
 		"fleeting": "fleeting.png",
 		"scout": "scout.png",
@@ -36,6 +37,7 @@ const cardOptionsData = {
 		"can't attack": "cantattack.png",
 		"elusive": "elusive.png",
 		"lifesteal": "lifesteal.png",
+		"landmark": "landmark.png",
 		"stun": "stun.png",
 		"can't block": "cantblock.png",
 		"ephemeral": "ephemeral.png",
