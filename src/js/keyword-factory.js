@@ -1,7 +1,7 @@
 function createMiniKeyword(keywordImg){
 	let svg = `
 		<image class="keyword-frame" width="120" height="100" x="0" y="0" xlink:href="/assets/keyword/keywordmini.png"/>
-		<image class="keyword-icon" width="45" height="37" x="18" y="16" xlink:href="${keywordImg}" transform="scale(1.5)"/>`
+		<image class="keyword-icon" width="45" height="45" x="18" y="12" xlink:href="${keywordImg}" transform="scale(1.5)"/>`
 
 	return {width: 120, height: 100, content: svg, svg: `
 		<svg
@@ -36,12 +36,15 @@ function createWideKeyword(keyword, keywordImg){
 		}
 	}
 
-	let contentStart = 10
+	let contentStart = 15
 	if (keywordLength < contentLength){
 		contentStart = 28 + (contentLength / 2) - (keywordLength / 2)
 		if (keywordImg){
-			contentStart -= 68 - 45
+			contentStart -= 20
 		}
+	}
+	else if (!keywordImg){
+		contentStart = 28
 	}
 
 	let svg = `
@@ -51,10 +54,13 @@ function createWideKeyword(keyword, keywordImg){
 		<image id="card-frame-r" width="28" height="104" x="${contentLength + 28}" y="0" xlink:href="/assets/keyword/keywordright.png"/>
 
 		${keywordImg
-			? ((contentStart += 68), `<image id="keyword-icon" width="45" height="37" x="${contentStart - 68}" y="17" xlink:href="${keywordImg}" transform="scale(1.5)"/>`)
+			? (
+				(contentStart += 65),
+				`<image id="keyword-icon" width="40" height="40" x="${contentStart - 65}" y="17" xlink:href="${keywordImg}" transform="scale(1.5)"/>`
+			)
 			: ""
 		}
-		<text y="70" x="${contentStart + (keywordImg ? 10 : 0)}" stroke="#EDCB75" fill="#EDCB75" font-size="48" class="key-text">${keyword}</text>`
+		<text y="70" x="${contentStart}" stroke="#EDCB75" fill="#EDCB75" font-size="48" class="key-text">${keyword}</text>`
 
 	// return svg2dom(svg)
 	return {width: contentLength + 28 + 28, height: 100, content: svg, svg: `

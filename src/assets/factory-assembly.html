@@ -15,13 +15,15 @@
 		<script src="../js/keyword-factory.js"></script>
 		<script src="../js/svg-to-dom.js"></script>
 		<script>
-			console.log((createMiniKeyword("./symbol/frostbite.png").svg))
 			document.body.append(svg2dom(createMiniKeyword("./symbol/frostbite.png").svg))
 			document.body.append(svg2dom(createMiniKeyword("./symbol/lifesteal.png").svg))
 			document.body.append(svg2dom(createWideKeyword("frostbite", "./symbol/frostbite.png").svg))
-			document.body.append(svg2dom(createWideKeyword("skill", "./symbol/skill.png").svg))
+			document.body.append(svg2dom(createWideKeyword("skill", "./symbol/keywordskill.png").svg))
 			document.body.append(svg2dom(createWideKeyword("overwhelm", "./symbol/overwhelm.png").svg))
 			document.body.append(svg2dom(createWideKeyword("trap").svg))
+			document.body.append(svg2dom(createWideKeyword("dissassemble").svg))
+
+			document.body.append(svg2dom(createWideKeyword("landmark", "./symbol/keywordlandmark.png").svg))
 
 			//let charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ "
 			// for(let i = 0; i < charset.length; document.body.append(createWideKeyword(charset[i++])));
