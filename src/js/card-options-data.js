@@ -52,5 +52,7 @@ const cardOptionsData = {
 		"regeneration": "regeneration.png",
 		"spellshield": "spellshield.png",
 		"fury": "fury.png",
+		"focus": "focus.png",
+		"lurk": "lurk.png",
 	}
 }
