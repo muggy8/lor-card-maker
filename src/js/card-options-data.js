@@ -2,8 +2,7 @@ const cardOptionsData = {
 	spellSpeedOptions: [
 		"slow",
 		"fast",
-		"burst",
-		"focus"
+		"burst"
 	],
 	factionOptions: [
 		"",
