@@ -2,7 +2,7 @@
 	let controller = {}
 
 	let focus = controller.focus = function(){
-		iconCache.promise.then(()=>{
+		return iconCache.promise.then(()=>{
 			controller.cardOptionsController.app.mbShowConfigs = false
 			if (App.currentView === view){
 				return
@@ -42,7 +42,8 @@
 	}
 	clearCard()
 
-	let createPreview = controller.createPreview = function(){
+	let createPreview = controller.createPreview = function(cardData){
+		let card = cardData || controller.card
 		card.effectFontSize = 34
 		let keywordSvgs = card.keywords.length > 1
 			? card.keywords.map(word=>createMiniKeyword("/assets/symbol/" + cardOptionsData.icons[word]))
@@ -258,6 +259,16 @@
 		controller.exporting = false
 	}
 
+	controller.cardId = ""
+	let saveCard = controller.saveCard = function(){
+		controller.cardId = App.storage.saveChampion2(controller.card, controller.cardId)
+	}
+
+	let deleteCard = controller.deleteCard = function(){
+		App.storage.delSavedChampion2(controller.cardId)
+		window.location.reload()
+	}
+
 	App.championLv2Builder = controller
 	let view = proxymity(template, controller)
 })(`
@@ -267,6 +278,10 @@
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
+				<div class="gutter-rl"></div>
+				<button onclick="this.app.saveCard()">Save Card</button>
+				<div class="gutter-rl"></div>
+				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
 			</div>
 
 			<div class="gutter-b-3"></div>

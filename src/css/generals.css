@@ -16,6 +16,14 @@ img, svg {
 	height: auto;
 }
 
+button {
+	display: block;
+	padding: 1em;
+	background-color: #FFF;
+	border-radius: 0.2em;
+	border:none;
+}
+
 .key-text {
 	font-family: BeaufortforLOLBold, serif;
 }
@@ -38,10 +46,6 @@ img, svg {
 
 .invisable {
 	opacity: 0;
-}
-
-.hide {
-	display: none;
 }
 
 .grow {
