@@ -33,7 +33,7 @@
 
 			localStorage.setItem(key, JSON.stringify(storedCards))
 
-			localStorage.setItem(newCardId, JSON.stringify(cardData))
+			localStorage.setItem(cardId, JSON.stringify(cardData))
 
 			return cardId
 		}
