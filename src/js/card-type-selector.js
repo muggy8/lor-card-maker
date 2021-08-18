@@ -9,14 +9,18 @@
 		history.replaceState({
 			focus: "cardTypePicker"
 		}, "LoR Card Makern")
+		App.storage.getSavedChampion1().then(data=>controller.savedChampions1 = data)
+		App.storage.getSavedChampion2().then(data=>controller.savedChampions2 = data)
+		App.storage.getSavedFollower().then(data=>controller.savedFollowers = data)
+		App.storage.getSavedLandmark().then(data=>controller.savedLandmarks = data)
+		App.storage.getSavedSpell().then(data=>controller.savedSpells = data)
 	}
 
-	await App.swReady
-	controller.savedChampions1 = await App.storage.getSavedChampion1()
-	controller.savedChampions2 = await App.storage.getSavedChampion2()
-	controller.savedFollowers = await App.storage.getSavedFollower()
-	controller.savedLandmarks = await App.storage.getSavedLandmark()
-	controller.savedSpells = await App.storage.getSavedSpell()
+	controller.savedChampions1 = []
+	controller.savedChampions2 = []
+	controller.savedFollowers = []
+	controller.savedLandmarks = []
+	controller.savedSpells = []
 
 	controller.transferData = function(target, source){
 		Object.keys(source).forEach(function(key){

@@ -66,6 +66,8 @@
 				storedCards = []
 			}
 
+			console.log(storedCards)
+
 			return Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
@@ -101,7 +103,7 @@
 				body: JSON.stringify(storedCards)
 			})
 
-			await fetch("./pseudo-api/card/" + cardId, {
+			await fetch("./pseudo-api/card/" + id, {
 				method: "DEL",
 				headers: {
 		      'Content-Type': 'application/json'
