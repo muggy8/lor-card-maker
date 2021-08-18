@@ -11,6 +11,7 @@
 		}, "LoR Card Makern")
 	}
 
+	await App.swReady
 	controller.savedChampions1 = await App.storage.getSavedChampion1()
 	controller.savedChampions2 = await App.storage.getSavedChampion2()
 	controller.savedFollowers = await App.storage.getSavedFollower()

@@ -19,7 +19,14 @@
 
 	function cardSaverFactory(key){
 		return async function(cardData, cardId){
-			let storedCards = await fetch("./pseudo-api/card-list/" + key).json()
+			let storedCards
+			try{
+				storedCards = await fetch("./pseudo-api/card-list/" + key).then(res=>res.json())
+			}
+			catch(uwu){
+				console.error(uwu)
+				storedCards = []
+			}
 
 			let newCardId = Date.now().toString()
 
@@ -52,16 +59,17 @@
 		return async function(){
 			let storedCards
 			try{
-				storedCards = await fetch("./pseudo-api/card-list/" + key).json()
+				storedCards = await fetch("./pseudo-api/card-list/" + key).then(res=>res.json())
 			}
 			catch(uwu){
+				console.error(uwu)
 				storedCards = []
 			}
 
 			return Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
-					cardData: await fetch("./pseudo-api/card/" + cardId)
+					cardData: await fetch("./pseudo-api/card/" + cardId).then(res=>res.json())
 				}
 			}))
 		}
@@ -70,7 +78,14 @@
 
 	function cardDeleterFactory(key){
 		return async function(id){
-			let storedCards = await fetch("./pseudo-api/card-list/" + key).json()
+			let storedCards
+			try{
+				storedCards = await fetch("./pseudo-api/card-list/" + key).then(res=>res.json())
+			}
+			catch(uwu){
+				console.error(uwu)
+				storedCards = []
+			}
 
 			let storedIndex = storedCards.indexOf(id)
 

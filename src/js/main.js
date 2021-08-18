@@ -1,15 +1,4 @@
 const App = (function(){
-	if ('serviceWorker' in navigator) {
-	  navigator.serviceWorker.register('./service-worker.js')
-	  .then(function(registration) {
-	    console.log('Registration successful, scope is:', registration.scope);
-	  })
-	  .catch(function(error) {
-	    console.log('Service worker registration failed, error:', error);
-	  });
-	}
-
-
 	let controller = {
 		currentView: undefined,
 	}
@@ -20,6 +9,16 @@ const App = (function(){
 
 		state.focus && App[state.focus].focus()
 	})
+
+	if ('serviceWorker' in navigator) {
+	  controller.swReady = navigator.serviceWorker.register('./service-worker.js')
+		  .then(function(registration) {
+		    console.log('Registration successful, scope is:', registration.scope);
+		  })
+		  .catch(function(error) {
+		    console.log('Service worker registration failed, error:', error);
+		  });
+	}
 
 	return controller
 })()

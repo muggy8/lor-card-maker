@@ -40,8 +40,11 @@ const cardDataPath = "pseudo-api/card/"
 async function saveCardList(req, path){
   let data = await req.text()
   let cache = await caches.open(cacheLocation)
-  let dataResponse = new Response(data)
-  await cache.put(path, dataResponse)
+  let dataResponse = new Response(data, {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
+  await cache.put(path, dataResponse.clone())
   return dataResponse
 }
 
@@ -51,14 +54,20 @@ async function getSavedCardList(req, path){
   if (cachedData){
     return cachedData
   }
-  return new Response("[]")
+  return new Response("[]", {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
 }
 
 async function saveCardData(req, path){
   let data = await req.text()
   let cache = await caches.open(cacheLocation)
-  let dataResponse = new Response(data)
-  await cache.put(req, dataResponse)
+  let dataResponse = new Response(data, {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
+  await cache.put(path, dataResponse.clone())
   return dataResponse
 }
 
@@ -68,11 +77,17 @@ async function getSavedCard(req, path){
   if (cachedData){
     return cachedData
   }
-  return new Response("{}")
+  return new Response("{}", {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
 }
 
 async function deleteSavedCard(req, path){
   let cache = await caches.open(cacheLocation)
   await cache.delete(path)
-  return new Response("")
+  return new Response("{}", {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
 }
