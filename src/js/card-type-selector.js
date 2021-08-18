@@ -1,4 +1,4 @@
-(function(template){
+(async function(template){
 	let controller = {}
 
 	let focus = controller.focus = function(){
@@ -11,11 +11,11 @@
 		}, "LoR Card Makern")
 	}
 
-	controller.savedChampions1 = App.storage.getSavedChampion1()
-	controller.savedChampions2 = App.storage.getSavedChampion2()
-	controller.savedFollowers = App.storage.getSavedFollower()
-	controller.savedLandmarks = App.storage.getSavedLandmark()
-	controller.savedSpells = App.storage.getSavedSpell()
+	controller.savedChampions1 = await App.storage.getSavedChampion1()
+	controller.savedChampions2 = await App.storage.getSavedChampion2()
+	controller.savedFollowers = await App.storage.getSavedFollower()
+	controller.savedLandmarks = await App.storage.getSavedLandmark()
+	controller.savedSpells = await App.storage.getSavedSpell()
 
 	controller.transferData = function(target, source){
 		Object.keys(source).forEach(function(key){

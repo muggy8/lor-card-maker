@@ -18,60 +18,81 @@
 	}
 
 	function cardSaverFactory(key){
-		return function(cardData, cardId){
-			let storedCards = localStorage.getItem(key)
-			storedCards = storedCards 
-				? JSON.parse(storedCards) 
-				: []
+		return async function(cardData, cardId){
+			let storedCards = await fetch("./pseudo-api/card-list/" + key).json()
 
 			let newCardId = Date.now().toString()
 
 			if (!cardId){
-				storedCards.push(newCardId)
 				cardId = newCardId
+				storedCards.push(cardId)
 			}
 
-			localStorage.setItem(key, JSON.stringify(storedCards))
+			await fetch("./pseudo-api/card-list/" + key, {
+				method: "POST",
+				headers: {
+		      'Content-Type': 'application/json'
+		    },
+				body: JSON.stringify(storedCards)
+			})
 
-			localStorage.setItem(cardId, JSON.stringify(cardData))
+			await fetch("./pseudo-api/card/" + cardId, {
+				method: "POST",
+				headers: {
+		      'Content-Type': 'application/json'
+		    },
+				body: JSON.stringify(cardData)
+			})
 
 			return cardId
 		}
 	}
 
 	function cardGetterFactory(key){
-		return function(){
-			let storedCards = localStorage.getItem(key)
-			storedCards = storedCards 
-				? JSON.parse(storedCards) 
-				: []
+		return async function(){
+			let storedCards
+			try{
+				storedCards = await fetch("./pseudo-api/card-list/" + key).json()
+			}
+			catch(uwu){
+				storedCards = []
+			}
 
-			return storedCards.map(function(cardId){
+			return Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
-					cardData: JSON.parse(localStorage.getItem(cardId))
+					cardData: await fetch("./pseudo-api/card/" + cardId)
 				}
-			})
+			}))
 		}
 
 	}
 
 	function cardDeleterFactory(key){
-		return function(id){
-			let storedCards = localStorage.getItem(key)
-			storedCards = storedCards 
-				? JSON.parse(storedCards) 
-				: []
+		return async function(id){
+			let storedCards = await fetch("./pseudo-api/card-list/" + key).json()
 
 			let storedIndex = storedCards.indexOf(id)
-			
+
 			if (storedIndex > -1){
 				storedCards.splice(storedIndex, 1)
 			}
 
-			localStorage.setItem(key, JSON.stringify(storedCards))
+			await fetch("./pseudo-api/card-list/" + key, {
+				method: "POST",
+				headers: {
+		      'Content-Type': 'application/json'
+		    },
+				body: JSON.stringify(storedCards)
+			})
 
-			localStorage.removeItem(id)
+			await fetch("./pseudo-api/card/" + cardId, {
+				method: "DEL",
+				headers: {
+		      'Content-Type': 'application/json'
+		    },
+				body: JSON.stringify({key: key})
+			})
 
 			return !!storedIndex
 		}

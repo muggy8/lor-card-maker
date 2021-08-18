@@ -232,12 +232,12 @@
 	}
 
 	controller.cardId = ""
-	let saveCard = controller.saveCard = function(){
-		controller.cardId = App.storage.saveSpell(controller.card, controller.cardId)
+	let saveCard = controller.saveCard = async function(){
+		controller.cardId = await App.storage.saveSpell(controller.card, controller.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = function(){
-		App.storage.delSavedSpell(controller.cardId)
+	let deleteCard = controller.deleteCard = async function(){
+		await App.storage.delSavedSpell(controller.cardId)
 		window.location.reload()
 	}
 

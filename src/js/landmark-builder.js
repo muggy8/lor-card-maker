@@ -245,12 +245,12 @@
 	}
 
 	controller.cardId = ""
-	let saveCard = controller.saveCard = function(){
-		controller.cardId = App.storage.saveLandmark(controller.card, controller.cardId)
+	let saveCard = controller.saveCard = async function(){
+		controller.cardId = await App.storage.saveLandmark(controller.card, controller.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = function(){
-		App.storage.delSavedLandmark(controller.cardId)
+	let deleteCard = controller.deleteCard = async function(){
+		await App.storage.delSavedLandmark(controller.cardId)
 		window.location.reload()
 	}
 
