@@ -66,8 +66,6 @@
 				storedCards = []
 			}
 
-			console.log(storedCards)
-
 			return Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
