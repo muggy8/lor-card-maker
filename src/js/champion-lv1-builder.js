@@ -1,23 +1,9 @@
 (function(template){
-	let controller = {}
-
-	let focus = controller.focus = function(){
-		return iconCache.promise.then(()=>{
-			controller.cardOptionsController.app.mbShowConfigs = false
-			if (App.currentView === view){
-				return
-			}
-			App.currentView = view
-			clearCard()
-			window.scroll(0,0)
-			history.pushState({
-				focus: "championLv1Builder"
-			}, "Champion Lv1 Builder")
-		})
-	}
+	let controller = Object.create(App.baseBuilderController)
+	controller.cardId = ""
 
 	let card = controller.card = {}
-	let cardEffectMinSize = 24
+
 	let clearCard = controller.clearCard = function(){
 		card.name = ""
 		card.clan = ""
@@ -43,6 +29,7 @@
 
 		controller.exporting = false
 	}
+
 	clearCard()
 
 	let createPreview = controller.createPreview = function(cardData){
@@ -141,14 +128,14 @@
 
 				<g id="all-text-group" transform="translate(0, {: 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0:}|{card.lvupHeight}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${decorateText(card.lvup)}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					<image id="card-level-bar" width="680" height="44" x="0" y="680" xlink:href="/assets/champion/levelupbar.png"/>
 
 					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
 						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="560" height="162" x="60" y="520">
-							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${decorateText(card.effect)}</div>
+							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
 						<!-- <rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
@@ -192,103 +179,11 @@
 		return proxymity(svg, controller)
 	}
 
-	let decorateText = function(textSource){
-		let updatedEffect = textSource
-
-		Object.keys(cardOptionsData.icons).forEach(iconName=>{
-			let expectedIconText = `<${iconName}/>`
-			updatedEffect = updatedEffect.split(expectedIconText).join(`<div xmlns="http://www.w3.org/1999/xhtml" style="height: 1.2em; width: 1.2em; display:inline-block; background-repeat: no-repeat; background-size: contain; background-image: url('${iconCache[iconName]}');vertical-align: middle;"></div>`)
-		})
-
-		updatedEffect = card.blueWords.reduce((cardEffect, blueWord)=>{
-			if (!blueWord){
-				return cardEffect
-			}
-			return cardEffect.split(blueWord).join(`<span style="color: #49a0f8" xmlns="http://www.w3.org/1999/xhtml">${blueWord}</span>`)
-		}, updatedEffect)
-
-		updatedEffect = card.orangeWords.reduce((cardEffect, orangeWord)=>{
-			if (!orangeWord){
-				return cardEffect
-			}
-			return cardEffect.split(orangeWord).join(`<span style="color: #fad65a" xmlns="http://www.w3.org/1999/xhtml">${orangeWord}</span>`)
-		}, updatedEffect)
-
-		updatedEffect = updatedEffect.split("\n").map(sentence=>`<div>${sentence}</div>`).join("")
-
-		return updatedEffect
-	}
-
-	let wrapText = controller.wrapText = function(textEle, resize, config = {}){
-		let wrapCall = d3plus.textwrap()
-			.container(d3.select(textEle))
-			.resize(!!resize)
-
-		if (config.align){
-			wrapCall.align(config.align)
-		}
-		else{
-			wrapCall.align("middle")
-		}
-
-		if (config.valign){
-			wrapCall.valign(config.valign)
-		}
-
-		if (config.shape){
-			wrapCall.shape(config.shape)
-		}
-
-		if (config.size){
-			wrapCall.size(config.size)
-		}
-
-		wrapCall.draw()
-	}
-
-	let effectResize = controller.effectResize = async function(effectDiv, fontSizeProp){
-		let useableHeight = effectDiv.offsetHeight
-		while (effectDiv.scrollHeight > useableHeight && card[fontSizeProp] > cardEffectMinSize){
-			card[fontSizeProp]--
-			await proxymity.on.renderend
-		}
-	}
-
-	let exportCard = controller.exportCard = async function(){
-		let replaceJob = Array.from(controller.cardInstance.querySelectorAll("image"))
-			.map(el=>
-				getBase64FromImageUrl(el.href.baseVal)
-				.then(uri=>
-					el.setAttribute("xlink:href", uri)
-				)
-			)
-
-		controller.exporting = true
-		replaceJob.push(proxymity.on.renderend)
-
-		await Promise.all(replaceJob)
-
-		controller.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
-
-		await saveSvgAsPng(controller.cardInstance, `${card.name || "lor-card"}.png`, {width: 680, height: 1024, scale: 1/(window.devicePixelRatio || 1)})
-		// await saveSvg(controller.cardInstance, `${card.name || "lor-card"}.svg`)
-
-		controller.exporting = false
-	}
-
-	controller.cardId = ""
-	let saveCard = controller.saveCard = async function(){
-		controller.cardId = await App.storage.saveChampion1(controller.card, controller.cardId)
-	}
-
-	let deleteCard = controller.deleteCard = async function(){
-		await App.storage.delSavedChampion1(controller.cardId)
-		window.location.reload()
-	}
-
-
 	App.championLv1Builder = controller
+
 	let view = proxymity(template, controller)
+
+	controller.focus = controller.focusFactory(view, "championLv1Builder", "Champion Lv1 Builder")
 })(`
 	<main class="flex hcenter">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">

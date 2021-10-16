@@ -13,6 +13,9 @@
 	border-top: solid 1px #555;
 }
 
+svg span + span {
+  margin-left: 0.25em;
+}
 
 @media (max-width:45.9375rem){
 	.card-configs .slide-up {
@@ -37,4 +40,3 @@
 		display: none;
 	}
 }
-
