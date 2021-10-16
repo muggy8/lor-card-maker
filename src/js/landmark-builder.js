@@ -91,7 +91,8 @@
 			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/landmark/frame${card.rarity}.png"/>
 
 			${card.faction
-				? `<image id="card-region" width="100" height="100" x="290" y="820" xlink:href="/assets/regions/${card.faction}.png"/>`
+				? `<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/landmark/regionbox1.png"/>
+				<image id="card-region" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction}.png"/>`
 				: ""
 			}
 

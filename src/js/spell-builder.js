@@ -84,11 +84,13 @@
 			}
 
 			<image id="card-background" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
+			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.rarity}.png"/>
 			${card.faction
-				? `<image id="card-region" width="100" height="100" x="285" y="836" xlink:href="/assets/regions/${card.faction}.png"/>`
+				? `
+				<image id="card-region-box" width="220" height="280" x="405" y="56" href="/assets/regions/spell/regionbox1.png"/>
+				<image id="card-region" width="90" height="90" x="445" y="84" href="/assets/regions/${card.faction}.png"/>`
 				: ""
 			}
-			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.rarity}.png"/>
 
 			<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
 			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
