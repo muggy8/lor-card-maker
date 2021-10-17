@@ -57,10 +57,11 @@
 		wrapCall.draw()
 	}
 
-	let effectResize = controller.effectResize = async function(effectDiv, fontSizeProp){
+	let effectResize = controller.effectResize = async function(effectDiv, fontSizeProp = "effectFontSize"){
+		let context = this
 		let useableHeight = effectDiv.offsetHeight
-		while (effectDiv.scrollHeight > useableHeight && card[fontSizeProp] > cardEffectMinSize){
-			card[fontSizeProp]--
+		while (effectDiv.scrollHeight > useableHeight && context.card[fontSizeProp] > cardEffectMinSize){
+			context.card[fontSizeProp]--
 			await proxymity.on.renderend
 		}
 	}
