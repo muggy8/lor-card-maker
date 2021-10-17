@@ -17,6 +17,16 @@ App.cardOptions = (function(template, subTemplates){
 			}
 		}
 
+		let toggleFaction = controller.toggleFaction = function(factionName){
+			let wordIndex = card.faction.indexOf(factionName)
+			if (wordIndex === -1){
+				card.faction.push(factionName)
+			}
+			else{
+				card.faction.splice(wordIndex, 1)
+			}
+		}
+
 		function getCursorPos(input) {
 			// function source: https://stackoverflow.com/questions/7745867/how-do-you-get-the-cursor-position-in-a-textarea
 		    if ("selectionStart" in input && document.activeElement == input) {
@@ -147,11 +157,11 @@ App.cardOptions = (function(template, subTemplates){
 				<strong>faction</strong>
 			</div>
 			<div class="flex gutter-b">
-				<select name="rarity" class="box-12" onchange="this.app.card.faction = this.value" data-value="{:this.app.card.faction:}|{card.faction}|">
-					<!-- key: "index" -->
-						<option value="{:this.app.factionOptions[this.index]:}">{:this.app.factionOptions[this.index] || "none":}</option>
-					<!-- in: factionOptions -->
-				</select>
+				<!-- key: "index" -->
+					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
+						<img src="/assets/regions/{:this.app.factionOptions[this.index]:}.png" />
+					</div>
+				<!-- in: factionOptions -->
 			</div>
 		</label>`,
 	raritySelectorUI: `

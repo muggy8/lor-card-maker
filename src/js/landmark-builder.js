@@ -17,7 +17,7 @@
 			y: 0,
 			scale: 1,
 		}
-		card.faction = ""
+		card.faction = []
 		card.rarity = "gemless"
 		card.blueWords = []
 		card.orangeWords = []
@@ -90,11 +90,15 @@
 
 			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/landmark/frame${card.rarity}.png"/>
 
-			${card.faction
-				? `<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/landmark/regionbox1.png"/>
-				<image id="card-region" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction}.png"/>`
+			${card.faction.length
+				? `<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/landmark/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
+				<image id="card-region-1" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction[0]}.png"/>`
 				: ""
 			}
+
+			${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="574" y="156" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
+
+			${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="574" y="246" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
 
 			<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
 			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
@@ -154,7 +158,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction},{card.blueWords.*},{card.rarity},{card.orangeWords.*}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction.length},{card.blueWords.*},{card.rarity},{card.orangeWords.*}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>

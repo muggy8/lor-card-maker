@@ -6,7 +6,6 @@ const cardOptionsData = {
 		"focus"
 	],
 	factionOptions: [
-		"",
 		"piltoverzaun",
 		"noxus",
 		"demacia",

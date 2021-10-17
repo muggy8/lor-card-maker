@@ -21,7 +21,7 @@
 		}
 		card.power = 0
 		card.health = 0
-		card.faction = ""
+		card.faction = []
 		card.blueWords = []
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
@@ -102,12 +102,16 @@
 				<image id="art-shade" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/theencrouchingdarkness.png"/>
 				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/frame1gem.png"/>
 
-				${card.faction
+				${card.faction.length
 					? `
-						<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/champion1/regionbox1.png"/>
-						<image id="card-region" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction}.png"/>`
+						<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/champion1/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
+						<image id="card-region-1" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction[0]}.png"/>`
 					: ""
 				}
+
+				${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="574" y="156" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
+
+				${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="574" y="246" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
 
 				${card.clan
 					? `
@@ -189,7 +193,7 @@
 })(`
 	<main class="flex hcenter">
 		<div class="card-preview gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
