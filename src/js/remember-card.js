@@ -69,7 +69,12 @@
 			return Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
-					cardData: await fetch("./pseudo-api/card/" + cardId).then(res=>res.json())
+					cardData: await fetch("./pseudo-api/card/" + cardId).then(res=>res.json()).then(cardData=>{
+						// here we convert old data if we need to.
+						if (typeof cardData.faction === "string"){
+							cardData.faction = [cardData.faction]
+						}
+					})
 				}
 			}))
 		}
