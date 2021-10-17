@@ -54,5 +54,6 @@ const cardOptionsData = {
 		"fury": "fury.png",
 		"focus": "focus.png",
 		"lurk": "lurk.png",
+		"impact": "impact.png",
 	}
 }
