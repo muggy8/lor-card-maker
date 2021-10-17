@@ -116,7 +116,7 @@ App.cardOptions = (function(template, subTemplates){
 		return proxymity(template, controller)
 	}
 })(`
-<div class="mobile-config-footer gutter-trbl flex hcenter clickable" onclick="this.app.toggleMBShow()">
+<div class="mobile-config-footer gutter-trbl flex hcenter clickable" onclick="this.app.toggleMBShow()" data-init="{: document.body.style.setProperty('--footer-height', this.offsetHeight + 'px') :}|{ mbShowConfigs }|">
 	<strong>Card Configs</strong>
 </div>
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">

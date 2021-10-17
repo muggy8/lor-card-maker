@@ -20,7 +20,7 @@ svg span + span {
 @media (max-width:45.9375rem){
 	.card-configs .slide-up {
 		width: 100%;
-		height: calc(100vh - 7rem);
+		height: calc(100vh - var( --header-height , 4rem ) - var( --footer-height , 3rem ));
 		overflow: auto;
 		background-color: #000;
 		position: fixed;
@@ -29,9 +29,13 @@ svg span + span {
 		border-top: solid 1px #555;
 		padding-right: var(--flex-box-gutter);
 		padding-left: var(--flex-box-gutter);
+    transition: top 0.6s;
 	}
-	.card-configs .slide-up.active{
-		top: 4rem;
+	.card-configs .slide-up.active {
+		top: var( --header-height , 4rem );
+	}
+	.mobile-config-footer {
+		z-index: 1;
 	}
 }
 
