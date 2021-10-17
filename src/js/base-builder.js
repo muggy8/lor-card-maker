@@ -85,10 +85,46 @@
 
 		context.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
-		await saveSvgAsPng(context.cardInstance, `${context.card.name || "lor-card"}.png`, {width: 680, height: 1024, scale: 1/(window.devicePixelRatio || 1)})
-		// await saveSvg(controller.cardInstance, `${context.card.name || "lor-card"}.svg`)
+		let cardUri = await svgAsPngUri(
+			context.cardInstance,
+			// `${context.card.name || "lor-card"}.png`,
+			{
+				width: 680,
+				height: 1024,
+				scale: 1/(window.devicePixelRatio || 1)
+			},
+		)
 
 		context.exporting = false
+
+		openUri(cardUri)
+	}
+
+	function openUri(base64ImageData) {
+		const typeRegex = /data:([^;]+);base64,/
+		const matched = typeRegex.exec(base64ImageData)
+
+		const contentType = matched[1];
+
+		const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length));
+		const byteArrays = [];
+
+		for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+		    const slice = byteCharacters.slice(offset, offset + 1024);
+
+		    const byteNumbers = new Array(slice.length);
+		    for (let i = 0; i < slice.length; i++) {
+		        byteNumbers[i] = slice.charCodeAt(i);
+		    }
+
+		    const byteArray = new Uint8Array(byteNumbers);
+
+		    byteArrays.push(byteArray);
+		}
+		const blob = new Blob(byteArrays, {type: contentType});
+		const blobUrl = URL.createObjectURL(blob);
+
+		window.open(blobUrl, '_blank');
 	}
 
 	let saveCard = controller.saveCard = async function(){
