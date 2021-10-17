@@ -74,6 +74,7 @@
 						if (typeof cardData.faction === "string"){
 							cardData.faction = [cardData.faction]
 						}
+						return cardData
 					})
 				}
 			}))
