@@ -39,4 +39,8 @@ svg span + span {
 	.mobile-config-footer {
 		display: none;
 	}
+	.card-configs {
+		height: calc( 100vh - var( --header-height , 0 ) );
+		overflow-y: scroll;
+	}
 }
