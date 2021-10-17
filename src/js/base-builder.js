@@ -71,9 +71,11 @@
 		let replaceJob = Array.from(context.cardInstance.querySelectorAll("image"))
 			.map(el=>
 				getBase64FromImageUrl(el.href.baseVal)
-				.then(uri=>
+				.then(uri=>{
+					el.removeAttribute("href")
+					el.removeAttribute(":xlinkhref")
 					el.setAttribute("xlink:href", uri)
-				)
+				})
 			)
 
 		context.exporting = true
