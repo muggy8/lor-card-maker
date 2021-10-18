@@ -7,7 +7,7 @@ const htmlmin = require('gulp-htmlmin')
 const replace = require('gulp-replace')
 
 let copy = exports.copy = function() {
-	return src('src/**/*.*')
+	return src(['src/**/*.*', '!src/**/*.md'])
 		.pipe(dest('docs/'))
 }
 
