@@ -4,6 +4,7 @@ const terser = require('gulp-terser')
 const cleanCSS = require('gulp-clean-css')
 const imagemin = require('gulp-imagemin')
 const htmlmin = require('gulp-htmlmin')
+const jsonminify = require('gulp-jsonminify');
 const replace = require('gulp-replace')
 
 let copy = exports.copy = function() {
@@ -14,6 +15,7 @@ let copy = exports.copy = function() {
 let minifyJs = exports.minifyJs = function() {
 	return src('src/**/*.js')
 		.pipe(terser())
+		.pipe(replace(/(\\n)+(\\t)+/gm, " "))
 		.pipe(dest('docs/'))
 }
 
@@ -35,6 +37,12 @@ let minifyHtml = exports.minifyHtml = function() {
 		.pipe(dest('docs/'))
 }
 
+let minifyJson = exports.minifyJson = function(){
+	return src('src/**/*.json')
+		.pipe(jsonminify())
+		.pipe(dest('docs/'))
+}
+
 let pathReplace = exports.pathReplace = function(){
 	return src('docs/**/*.*')
 		.pipe(replace(/([^\.])\/assets\//g, '$1./assets/'))
@@ -48,6 +56,7 @@ exports.default = series(
 		minifyCss,
 		minifyPng,
 		minifyHtml,
+		minifyJson,
 	),
 	pathReplace,
 )
