@@ -1,5 +1,12 @@
 {
- "name": "App",
+ "name": "LoR Card Maker",
+ "start_url": ".",
+ "display": "standalone",
+ "background_color": "#000",
+ "description": "A mobile friendly Legends of Runeterra Card Builder.",
+ "lang": "en-US",
+ "orientation": "portrait",
+ "scope": ".",
  "icons": [
   {
    "src": ".\/android-icon-36x36.png",
