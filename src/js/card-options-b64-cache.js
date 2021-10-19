@@ -1,7 +1,7 @@
 let iconCache = {};
 iconCache.promise = Promise.all(Array.from(Object.keys(cardOptionsData.icons)).map(name=>{
 	let fileName = cardOptionsData.icons[name]
-	getBase64FromImageUrl("/assets/symbol/" + fileName).then(b64=>iconCache[name] = b64)
+	getBase64FromImageUrl("./assets/symbol/" + fileName).then(b64=>iconCache[name] = b64)
 }))
 
 function getBase64FromImageUrl(url) {

@@ -11,7 +11,9 @@ const App = (function(){
 	})
 
 	if ('serviceWorker' in navigator) {
-	  controller.swReady = navigator.serviceWorker.register('./service-worker.js')
+	  controller.swReady = navigator.serviceWorker.register('./service-worker.js', {
+		  scope: document.location.pathname,
+	  })
 		  .then(function(registration) {
 		    console.log('Registration successful, scope is:', registration.scope);
 		  })
