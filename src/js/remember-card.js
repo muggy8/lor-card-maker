@@ -66,7 +66,7 @@
 				storedCards = []
 			}
 
-			return Promise.all(storedCards.map(async function(cardId){
+			storedCards = await Promise.all(storedCards.map(async function(cardId){
 				return {
 					id: cardId,
 					cardData: await fetch("./pseudo-api/card/" + cardId).then(res=>res.json()).then(cardData=>{
@@ -78,6 +78,9 @@
 					})
 				}
 			}))
+
+			return storedCards.filter(card=>card.cardData.name)
+			
 		}
 
 	}
