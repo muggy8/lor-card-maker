@@ -28,6 +28,21 @@
 				storedCards = []
 			}
 
+			let cleanProcess = storedCards.map(async function(cardId){
+				try{
+					let existingCard = await fetch("./pseudo-api/card/" + cardId).then(res=>res.json())
+					if (existingCard.name){
+						return cardId
+					}
+					return false
+				}
+				catch(uwu){
+					return false
+				}
+			})
+
+			storedCards = (await Promise.all(cleanProcess)).filter(id=>!!id)
+
 			let newCardId = Date.now().toString()
 
 			if (!cardId){
@@ -80,7 +95,7 @@
 			}))
 
 			return storedCards.filter(card=>card.cardData.name)
-			
+
 		}
 
 	}
