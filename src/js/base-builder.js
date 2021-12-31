@@ -2,6 +2,13 @@
 	let cardEffectMinSize = 24
 	let controller = App.baseBuilderController = {}
 
+	// setup some default props that should be extended later on by parent classes
+	controller.card = {}
+
+	controller.clearCard = controller.createPreview = controller.saveCard = controller.deleteCard = function(){
+		console.warn("oops, you called a stub... probs should fix");
+	}
+
 	let decorateText = controller.decorateText = function(textSource){
 		let updatedEffect = textSource
 		let context = this
@@ -126,18 +133,7 @@
 
 		window.open(blobUrl, '_blank');
 	}
-
-	let saveCard = controller.saveCard = async function(){
-		let context = this
-		context.cardId = await App.storage.saveChampion1(context.card, context.cardId)
-	}
-
-	let deleteCard = controller.deleteCard = async function(){
-		let context = this
-		await App.storage.delSavedChampion1(context.cardId)
-		window.location.reload()
-	}
-
+	
 	let focusFactory = controller.focusFactory = function(view, focusName, pageTitle){
 		let context = this
 

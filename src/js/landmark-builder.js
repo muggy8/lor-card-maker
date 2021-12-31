@@ -151,6 +151,18 @@
 		return proxymity(svg, controller)
 	}
 
+	let saveCard = controller.saveCard = async function(){
+		let context = this
+		context.cardId = await App.storage.saveLandmark(context.card, context.cardId)
+	}
+
+	let deleteCard = controller.deleteCard = async function(){
+		let context = this
+		await App.storage.delSavedLandmark(context.cardId)
+		window.location.reload()
+	}
+
+
 	App.landmarkBuilder = controller
 	let view = proxymity(template, controller)
 

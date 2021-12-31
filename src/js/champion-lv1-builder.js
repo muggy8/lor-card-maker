@@ -185,6 +185,18 @@
 		return proxymity(svg, controller)
 	}
 
+	let saveCard = controller.saveCard = async function(){
+		let context = this
+		context.cardId = await App.storage.saveChampion1(context.card, context.cardId)
+	}
+
+	let deleteCard = controller.deleteCard = async function(){
+		let context = this
+		await App.storage.delSavedChampion1(context.cardId)
+		window.location.reload()
+	}
+
+
 	App.championLv1Builder = controller
 
 	let view = proxymity(template, controller)
