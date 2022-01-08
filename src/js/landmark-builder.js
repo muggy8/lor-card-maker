@@ -77,7 +77,8 @@
 				/>
 			</clipPath>
 
-			<image
+			${card.art
+			? `<image
 				id="card-art"
 				clip-path="url(#art-mask)"
 				xlink:href="${card.art}"
@@ -86,7 +87,9 @@
 				preserveAspectRatio="xMidYMid meet"
 				width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
 				height="{:1024 * this.app.card.transform.scale:}|{card.transform.scale}|"
-			 />
+			 />`
+			 :""			
+			}
 
 			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/landmark/frame${card.rarity}.png"/>
 
