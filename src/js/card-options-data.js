@@ -55,5 +55,6 @@ const cardOptionsData = {
 		"focus": "focus.png",
 		"lurk": "lurk.png",
 		"impact": "impact.png",
+		"fated": "fated.png"
 	}
 }
