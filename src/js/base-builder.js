@@ -77,7 +77,7 @@
 		let context = this
 		let replaceJob = Array.from(context.cardInstance.querySelectorAll("image"))
 			.map(el=>
-				getBase64FromImageUrl(el.href.baseVal)
+				el.href.baseVal && getBase64FromImageUrl(el.href.baseVal)
 				.then(uri=>{
 					el.removeAttribute("href")
 					el.removeAttribute(":xlinkhref")
