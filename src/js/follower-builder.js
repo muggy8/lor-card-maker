@@ -95,7 +95,7 @@
 					/>`
 					: ""
 				}
-				<image id="art-shade" width="680" height="1024" x="0" y="0" href="/assets/champion/theencrouchingdarkness.png"/>
+				<image id="art-shade" width="680" height="1024" x="0" y="0" href="/assets/common/theencrouchingdarkness.png"/>
 
 				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/follower/frame${card.rarity}.png"/>
 
