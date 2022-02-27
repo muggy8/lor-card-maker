@@ -15,8 +15,8 @@
 	App.championLv1Builder = controller
 
 	controller.gemOptions = [
+		"gemless",
 		"gem",
-		"gemless"
 	]
 
 	controller.framePath = "/assets/champion/frame1"

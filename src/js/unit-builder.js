@@ -1,13 +1,10 @@
 (function(template){
 	let controller = App.unitController = Object.create(App.baseBuilderController)
-	controller.cardId = ""
 
-	controller.card = {}
-
-	let clearCard = controller.clearCard = function(){
-		let context = this
-		let card = context.card = context.card || {}
-		context.cardId = ""
+	controller.clearCard = function(){
+		let controller = this
+		let card = controller.card = controller.card || {}
+		controller.cardId = ""
 
 		card.name = ""
 		card.clan = ""
@@ -23,7 +20,7 @@
 			y: 0,
 			scale: 1,
 		}
-		card.rarity = "gem"
+		card.rarity = "gemless"
 		card.power = 0
 		card.health = 0
 		card.faction = []
@@ -35,9 +32,9 @@
 		controller.exporting = false
 	}
 
-	let createPreview = controller.createPreview = function(cardData){
-		let context = this
-		let card = cardData || context.card
+	controller.createPreview = function(cardData){
+		let controller = this
+		let card = cardData || controller.card
 		card.effectFontSize = 34
 		card.levelFontSize = 34
 		let keywordSvgs = card.keywords.length > 1
@@ -104,7 +101,7 @@
 				}
 
 				<image id="art-shade" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
-				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${context.framePath}${card.rarity}.png"/>
+				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${controller.framePath}${card.rarity}.png"/>
 
 				${card.faction.length
 					? `
@@ -138,7 +135,7 @@
 
 				<g id="all-text-group" transform="translate(0, {: this.app.card.lvup ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight},{card.lvup}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${context.decorateText(card.lvup)}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					${
@@ -149,7 +146,7 @@
 
 					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
 						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="560" height="162" x="60" y="520">
-							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${context.decorateText(card.effect)}</div>
+							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
 						<!-- <rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
@@ -198,10 +195,13 @@
 	controller.framePath = "/assets/champion/frame1"
 
 	controller.template = template
+
+	let temp = `{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|`
 })(`
-	<main class="flex hcenter" data-init="{:this.app.clearCard():}">
+	<main class="flex hcenter" data-init="{: this.app.clearCard() :}">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
+
+		{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
