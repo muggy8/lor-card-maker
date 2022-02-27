@@ -20,6 +20,7 @@
 		}
 		card.power = 0
 		card.health = 0
+		card.rarity = "gemless"
 		card.faction = []
 		card.blueWords = []
 		card.orangeWords = []
@@ -96,7 +97,7 @@
 					: ""
 				}
 
-				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/frame2.png"/>
+				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/frame2${card.rarity}.png"/>
 
 				${card.faction.length
 					? `
@@ -205,7 +206,10 @@
 			<div class="gutter-b-3"></div>
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}
+			{:this.app.cardOptionsController = App.cardOptions(this.app.card, [
+				"gemless",
+				"gem"
+			]):}
 		</div>
 	</main>
 `)
