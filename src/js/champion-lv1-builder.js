@@ -19,6 +19,7 @@
 			y: 0,
 			scale: 1,
 		}
+		card.rarity = "gem"
 		card.power = 0
 		card.health = 0
 		card.faction = []
@@ -100,7 +101,7 @@
 				}
 
 				<image id="art-shade" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/theencrouchingdarkness.png"/>
-				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/frame1gem.png"/>
+				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/champion/frame1${card.rarity}.png"/>
 
 				${card.faction.length
 					? `
@@ -205,7 +206,7 @@
 })(`
 	<main class="flex hcenter">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
+			{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
@@ -218,7 +219,10 @@
 			<div class="gutter-b-3"></div>
 		</div>
 		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.cardOptionsController = App.cardOptions(this.app.card):}
+			{:this.app.cardOptionsController = App.cardOptions(this.app.card, [
+				"gem",
+				"gemless"
+			]):}
 		</div>
 	</main>
 `)
