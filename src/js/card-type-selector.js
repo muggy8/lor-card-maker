@@ -11,6 +11,7 @@
 		}, "LoR Card Makern")
 		App.storage.getSavedChampion1().then(data=>controller.savedChampions1 = data)
 		App.storage.getSavedChampion2().then(data=>controller.savedChampions2 = data)
+		App.storage.getSavedChampion3().then(data=>controller.savedChampions3 = data)
 		App.storage.getSavedFollower().then(data=>controller.savedFollowers = data)
 		App.storage.getSavedLandmark().then(data=>controller.savedLandmarks = data)
 		App.storage.getSavedSpell().then(data=>controller.savedSpells = data)
@@ -18,6 +19,7 @@
 
 	controller.savedChampions1 = []
 	controller.savedChampions2 = []
+	controller.savedChampions3 = []
 	controller.savedFollowers = []
 	controller.savedLandmarks = []
 	controller.savedSpells = []
@@ -45,7 +47,13 @@
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
 		<strong>Champion Lv 2</strong>
 		<div class="clickable"  onclick="App.championLv2Builder.focus()">
-			<img src="./assets/champion/frame2.png" />
+			<img src="./assets/champion/frame2gemless.png" />
+		</div>
+	</div>
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
+		<strong>Champion Lv 3</strong>
+		<div class="clickable"  onclick="App.championLv3Builder.focus()">
+			<img src="./assets/champion/frame3gemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
@@ -84,6 +92,15 @@
 		</div>
 	</div>
 	<!-- in: savedChampions2 -->
+
+	<!-- key: "index" -->
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
+		<strong>Edit</strong>
+		<div class="clickable" onclick="App.championLv3Builder.focus().then(_=>{this.app.transferData(App.championLv3Builder.card, this.app.savedChampions3[this.index].cardData); App.championLv3Builder.cardId = this.app.savedChampions3[this.index].id})">
+			{:App.championLv3Builder.createPreview(this.app.savedChampions3[this.index].cardData):}
+		</div>
+	</div>
+	<!-- in: savedChampions3 -->
 
 	<!-- key: "index" -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">

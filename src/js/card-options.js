@@ -144,7 +144,7 @@ App.cardOptions = (function(template, subTemplates){
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "orangeWords") ? proxymity(this.app.subTemplates.orangeWordsUI, this.app) : undefined:}
 	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") && this.app.rarityOptions ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
 	<!-- text break -->
