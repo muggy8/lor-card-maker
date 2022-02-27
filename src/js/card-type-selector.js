@@ -76,54 +76,54 @@
 	</div>
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.championLv1Builder.focus().then(_=>{this.app.transferData(App.championLv1Builder.card, this.app.savedChampions1[this.index].cardData); App.championLv1Builder.cardId = this.app.savedChampions1[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv1Builder.focus().then(_=>{this.app.transferData(App.championLv1Builder.card, this.app.savedChampions1[this.index].cardData); App.championLv1Builder.cardId = this.app.savedChampions1[this.index].id})">
+		<strong>Edit {: this.app.savedChampions1[this.index].cardData.name :}</strong>
+		<div>
 			{:App.championLv1Builder.createPreview(this.app.savedChampions1[this.index].cardData):}
 		</div>
 	</div>
 	<!-- in: savedChampions1 -->
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.championLv2Builder.focus().then(_=>{this.app.transferData(App.championLv2Builder.card, this.app.savedChampions2[this.index].cardData); App.championLv2Builder.cardId = this.app.savedChampions2[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv2Builder.focus().then(_=>{this.app.transferData(App.championLv2Builder.card, this.app.savedChampions2[this.index].cardData); App.championLv2Builder.cardId = this.app.savedChampions2[this.index].id})">
+		<strong>Edit {: this.app.savedChampions2[this.index].cardData.name :}</strong>
+		<div>
 			{:App.championLv2Builder.createPreview(this.app.savedChampions2[this.index].cardData):}
 		</div>
 	</div>
 	<!-- in: savedChampions2 -->
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.championLv3Builder.focus().then(_=>{this.app.transferData(App.championLv3Builder.card, this.app.savedChampions3[this.index].cardData); App.championLv3Builder.cardId = this.app.savedChampions3[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv3Builder.focus().then(_=>{this.app.transferData(App.championLv3Builder.card, this.app.savedChampions3[this.index].cardData); App.championLv3Builder.cardId = this.app.savedChampions3[this.index].id})">
+		<strong>Edit {: this.app.savedChampions3[this.index].cardData.name :}</strong>
+		<div>
 			{:App.championLv3Builder.createPreview(this.app.savedChampions3[this.index].cardData):}
 		</div>
 	</div>
 	<!-- in: savedChampions3 -->
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.landmarkBuilder.focus().then(_=>{this.app.transferData(App.landmarkBuilder.card, this.app.savedLandmarks[this.index].cardData); App.landmarkBuilder.cardId = this.app.savedLandmarks[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.landmarkBuilder.focus().then(_=>{this.app.transferData(App.landmarkBuilder.card, this.app.savedLandmarks[this.index].cardData); App.landmarkBuilder.cardId = this.app.savedLandmarks[this.index].id})">
+		<strong>Edit {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
+		<div>
 			{:App.landmarkBuilder.createPreview(this.app.savedLandmarks[this.index].cardData):}
 		</div>
 	</div>
 	<!-- in: savedLandmarks -->
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.spellBuilder.focus().then(_=>{this.app.transferData(App.spellBuilder.card, this.app.savedSpells[this.index].cardData); App.spellBuilder.cardId = this.app.savedSpells[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.spellBuilder.focus().then(_=>{this.app.transferData(App.spellBuilder.card, this.app.savedSpells[this.index].cardData); App.spellBuilder.cardId = this.app.savedSpells[this.index].id})">
+		<strong>Edit {: this.app.savedSpells[this.index].cardData.name :}</strong>
+		<div>
 			{:App.spellBuilder.createPreview(this.app.savedSpells[this.index].cardData):}
 		</div>
 	</div>
 	<!-- in: savedSpells -->
 
 	<!-- key: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Edit</strong>
-		<div class="clickable" onclick="App.followerBuilder.focus().then(_=>{this.app.transferData(App.followerBuilder.card, this.app.savedFollowers[this.index].cardData); App.followerBuilder.cardId = this.app.savedFollowers[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.followerBuilder.focus().then(_=>{this.app.transferData(App.followerBuilder.card, this.app.savedFollowers[this.index].cardData); App.followerBuilder.cardId = this.app.savedFollowers[this.index].id})">
+		<strong>Edit {: this.app.savedFollowers[this.index].cardData.name :}</strong>
+		<div>
 			{:App.followerBuilder.createPreview(this.app.savedFollowers[this.index].cardData):}
 		</div>
 	</div>
