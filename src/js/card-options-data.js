@@ -22,6 +22,7 @@ const cardOptionsData = {
 	],
 	icons: {
 		"attune": "attune.png",
+		"attach": "attach.png",
 		"augment": "augment.png",
 		"checkbox": "checkbox.png",
 		"fleeting": "fleeting.png",
