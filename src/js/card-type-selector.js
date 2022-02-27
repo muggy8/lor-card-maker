@@ -41,7 +41,7 @@
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
 		<strong>Champion Lv 1</strong>
 		<div class="clickable" onclick="App.championLv1Builder.focus()">
-			<img src="./assets/champion/frame1gem.png" />
+			<img src="./assets/champion/frame1gemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
