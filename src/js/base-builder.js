@@ -2,9 +2,6 @@
 	let cardEffectMinSize = 24
 	let controller = App.baseBuilderController = {}
 
-	// setup some default props that should be extended later on by parent classes
-	controller.card = {}
-
 	controller.clearCard = controller.createPreview = controller.saveCard = controller.deleteCard = function(){
 		console.warn("oops, you called a stub... probs should fix");
 	}
@@ -133,7 +130,7 @@
 
 		window.open(blobUrl, '_blank');
 	}
-	
+
 	let focusFactory = controller.focusFactory = function(view, focusName, pageTitle){
 		let context = this
 
