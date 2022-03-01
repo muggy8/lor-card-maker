@@ -75,6 +75,10 @@
 		</div>
 	</div>
 
+	<div class="gutter-trbl-.5 box-12 flex vhcenter">
+		<button onclick="App.batchExporter.focus()">Batch Export</button>
+	</div>
+
 	<!-- key: "index" -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv1Builder.focus().then(_=>{this.app.transferData(App.championLv1Builder.card, this.app.savedChampions1[this.index].cardData); App.championLv1Builder.cardId = this.app.savedChampions1[this.index].id})">
 		<strong>Edit {: this.app.savedChampions1[this.index].cardData.name :}</strong>
