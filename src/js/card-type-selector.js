@@ -9,12 +9,7 @@
 		history.replaceState({
 			focus: "cardTypePicker"
 		}, "LoR Card Makern")
-		App.storage.getSavedChampion1().then(data=>controller.savedChampions1 = data)
-		App.storage.getSavedChampion2().then(data=>controller.savedChampions2 = data)
-		App.storage.getSavedChampion3().then(data=>controller.savedChampions3 = data)
-		App.storage.getSavedFollower().then(data=>controller.savedFollowers = data)
-		App.storage.getSavedLandmark().then(data=>controller.savedLandmarks = data)
-		App.storage.getSavedSpell().then(data=>controller.savedSpells = data)
+		App.getSavedCards(controller)
 	}
 
 	controller.savedChampions1 = []

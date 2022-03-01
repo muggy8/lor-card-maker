@@ -195,8 +195,6 @@
 	controller.framePath = "/assets/champion/frame1"
 
 	controller.template = template
-
-	let temp = `{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|`
 })(`
 	<main class="flex hcenter" data-init="{: this.app.clearCard() :}">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
