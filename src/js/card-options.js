@@ -396,11 +396,17 @@ App.cardOptions = (function(template, subTemplates){
 		</div>
 	`,
 	artUploadUI: `
-		<label class="flex hcenter gutter-b">
+		<label class="flex hcenter">
 			<button class="gutter-trbl grow" onclick="document.getElementById('uplaod-art').click()">
 				<strong>Upload Image</strong>
 			</button>
 			<input class="hide" type="file" id="uplaod-art" name="art" accept="image/*" onchange="this.app.processArtUpload(this)"/>
+		</label>
+
+		<div class="flex hcenter">or enter image URL</div>
+
+		<label class="flex hcenter gutter-b">
+			<input class="box-12" type="url" placeholder="image URL" onchange="this.app.card.art = this.value">
 		</label>
 	`,
 })
