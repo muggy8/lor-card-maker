@@ -62,7 +62,7 @@
 			>
 				<!-- forEach: "index" -->
 					<g transform="translate({: this.app.cardWidth * (this.index % 2) :}, {: this.app.cardHeight * (Math.floor(this.index / 2)) :})">
-						{:this.app.createPreview(this.app.includedCards[this.index].cardData, this.app.includedCards[this.index].hostController) :}|{includedCards[this.index].id}|
+						{:this.app.createPreview(this.app.includedCards[this.index].cardData, this.app.includedCards[this.index].hostController) :}|{includedCards[this.index].cardData.id}|
 					</g>
 				<!-- in: includedCards -->
 			</svg>
