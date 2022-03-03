@@ -34,35 +34,20 @@
 	}
 
 	controller.addToExport = function(cardTypeController, cardData){
-		let customeController = Object.create(cardTypeController, {
-			card: {
-				value: cardData,
-				configurable: true,
-				writeable: true,
-				enumerable: true,
-			},
-			exporting: {
-				value: true,
-				configurable: true,
-				writeable: true,
-				enumerable: true,
-			}
-		})
+		
 		includedCards.push({
 			hostController: cardTypeController,
-			controller: customeController,
 			cardData: cardData,
 		})
 	}
 
-	controller.createPreview = function(cardData){
-		console.log(cardData)
-		proxymity(
-			`
-					{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
-			`,
-			cardData.controller
-		)
+	controller.createPreview = function(cardData, cardTypeController){
+		
+		let customeController = Object.create(Object.getPrototypeOf(cardTypeController))
+		Object.assign(customeController, cardTypeController)
+		customeController.clearCard()
+		App.cardTypePicker.transferData(customeController, cardData)
+		return customeController.createPreview()
 	}
 
 })(`
@@ -75,9 +60,9 @@
 				xmlns="http://www.w3.org/2000/svg"
 				viewbox="0 0 {:this.app.cardWidth * (this.app.includedCards.length > 1 ? 2 : this.app.includedCards.length):}|{includedCards.len}| {:this.app.cardHeight * Math.ceil(this.app.includedCards.length/2):}|{includedCards.len}|"
 			>
-				<!-- key: "index" -->
+				<!-- forEach: "index" -->
 					<g transform="translate({: this.app.cardWidth * (this.index % 2) :}, {: this.app.cardHeight * (Math.floor(this.index / 2)) :})">
-						{:this.app.createPreview(this.app.includedCards[this.index]):}|{includedCards[this.index].id}|
+						{:this.app.createPreview(this.app.includedCards[this.index].cardData, this.app.includedCards[this.index].hostController) :}|{includedCards[this.index].id}|
 					</g>
 				<!-- in: includedCards -->
 			</svg>
@@ -89,7 +74,7 @@
 			</div>
 			<div class="slide-up gutter-tb gutter-rl-.5 flex {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
 
-				<!-- key: "index" -->
+				<!-- forEach: "index" -->
 				<div class="gutter-trbl-.5 box-xs-4 flex column vhcenter clickable"onclick="this.app.addToExport(App.championLv1Builder, this.app.savedChampions1[this.index].cardData)">
 					<strong>Include {: this.app.savedChampions1[this.index].cardData.name :}</strong>
 					<div>

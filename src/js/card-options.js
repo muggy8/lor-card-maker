@@ -157,8 +157,8 @@ App.cardOptions = (function(template, subTemplates){
 				<strong>faction</strong>
 			</div>
 			<div class="flex gutter-b">
-				<!-- key: "index" -->
-					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
+				<!-- forEach: "index" -->
+					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:console.log('uwu'); this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
 						<img src="/assets/regions/{:this.app.factionOptions[this.index]:}.png" />
 					</div>
 				<!-- in: factionOptions -->
@@ -171,7 +171,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex gutter-b">
 				<select name="rarity" class="box-12" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
-					<!-- key: "rarityIndex" -->
+					<!-- forEach: "index" -->
 						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:this.app.rarityOptions[this.rarityIndex]:}</option>
 					<!-- in: rarityOptions -->
 				</select>
@@ -285,7 +285,7 @@ App.cardOptions = (function(template, subTemplates){
 				<strong>Key Symobols to insert into effect text</strong>
 			</div>
 			<div class="flex">
-				<!--key: "index" -->
+				<!-- forEach: "index" -->
 					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 				<!-- in: keywords -->
 			</div>
@@ -313,7 +313,7 @@ App.cardOptions = (function(template, subTemplates){
 				<strong>Key Symobols to insert into effect text</strong>
 			</div>
 			<div class="flex">
-				<!--key: "index" -->
+				<!-- forEach: "index" -->
 					<div class="box-2 flex column vhcenter gutter-trbl-.25 clickable" onclick="this.app.insertLevelEffectSymbol(this.app.keywords[this.index])" data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 				<!-- in: keywords -->
 			</div>
@@ -325,7 +325,7 @@ App.cardOptions = (function(template, subTemplates){
 				<strong>Select Keywords</strong>
 			</div>
 			<div class="flex">
-				<!--key: "index" -->
+				<!-- forEach: "index" -->
 					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
 						<div data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 					</label>
@@ -340,7 +340,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex gutter-b">
 				<select name="rarity" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
-					<!-- key: "index" -->
+					<!-- forEach: "index" -->
 						<option value="{:this.app.spellSpeedOptions[this.index]:}">{:this.app.spellSpeedOptions[this.index]:}</option>
 					<!-- in: spellSpeedOptions -->
 				</select>
@@ -355,7 +355,7 @@ App.cardOptions = (function(template, subTemplates){
 				</div>
 				<button onclick="this.app.card.blueWords.push('')">Add Mention</button>
 			</div>
-			<!-- key: "index" -->
+			<!-- forEach: "index" -->
 				<label class="flex gutter-tb-.5">
 					<div class="grow flex gutter-r">
 						<input
@@ -379,7 +379,7 @@ App.cardOptions = (function(template, subTemplates){
 				</div>
 				<button onclick="this.app.card.orangeWords.push('')">Add Mention</button>
 			</div>
-			<!-- key: "index" -->
+			<!-- forEach: "index" -->
 				<label class="flex gutter-tb-.5">
 					<div class="grow flex gutter-r">
 						<input

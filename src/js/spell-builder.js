@@ -108,7 +108,7 @@
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
-			<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
+			<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
 				<path d="
 					M 340, 10
 					l 35, 60

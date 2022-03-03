@@ -72,18 +72,7 @@
 				class="{:this.app.cardInstance = this:}"
 			>
 
-				<clipPath id="art-mask">
-					<path
-						d="
-							M 25, 50
-							h 630
-							v 900
-							l -315, 15
-							l -315, -15
-							Z
-						"
-					/>
-				</clipPath>
+				${controller.artMask}
 
 				${card.art
 				? `
@@ -133,7 +122,7 @@
 				<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>
 
-				<g id="all-text-group" transform="translate(0, {: this.app.card.lvup ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight},{card.lvup}|)">
+				<g id="all-text-group" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
 						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
@@ -157,7 +146,7 @@
 					</g>
 				</g>
 
-				<g class="{:!this.app.card.art || this.app.exporting ? 'hide' : '' :}|{card.art},{exporting}|">
+				<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
 					<path d="
 						M 340, 10
 						l 35, 60
@@ -187,6 +176,7 @@
 					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
 				</g>
 			</svg>`
+		console.log(";w;")
 		return proxymity(svg, controller)
 	}
 
@@ -195,11 +185,26 @@
 	controller.framePath = "/assets/champion/frame1"
 
 	controller.template = template
+
+	controller.artMask = `
+		<clipPath id="art-mask">
+			<path
+				d="
+					M 25, 50
+					h 630
+					v 900
+					l -315, 15
+					l -315, -15
+					Z
+				"
+			/>
+		</clipPath>
+	`
 })(`
 	<main class="flex hcenter" data-init="{: this.app.clearCard() :}">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 
-		{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.transform.x},{card.transform.y},{card.rarity},{card.transform.scale},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
+		{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
