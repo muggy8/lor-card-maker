@@ -158,7 +158,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex gutter-b">
 				<!-- forEach: "index" -->
-					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:console.log('uwu'); this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
+					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
 						<img src="/assets/regions/{:this.app.factionOptions[this.index]:}.png" />
 					</div>
 				<!-- in: factionOptions -->
