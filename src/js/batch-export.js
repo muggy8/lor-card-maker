@@ -1,6 +1,7 @@
 (function(template){
 
 	let controller = App.batchExporter = Object.create(App.baseBuilderController)
+	controller.exporting = false
 
 	let includedCards = controller.includedCards = []
 	controller.cardWidth = 680
@@ -71,7 +72,12 @@
 
 		<div class="export-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 			<div class="gutter-rl-2 gutter-tb-4 box-12 flex vhcenter">
-				<button class="box-12" onclick="this.app.exportCard(this.app.cardInstance)">Export Selection</button>
+				<button class="box-12" onclick="!this.app.exporting && this.app.includedCards.length && this.app.exportCard(this.app.cardInstance)">
+					<div class="icon {:!this.app.exporting ? 'hide' : '' :}|{exporting},{includedCards.length}|">
+						<i class="loading"></i>
+					</div>
+					<span class="{:this.app.exporting ? 'hide' : '' :}|{exporting}|" >Export Selection</span>
+				</button>
 			</div>
 			<svg
 				width="{:this.app.cardWidth * (this.app.includedCards.length > 1 ? 2 : this.app.includedCards.length):}|{includedCards.len}|"
@@ -86,6 +92,12 @@
 					</g>
 				<!-- in: includedCards -->
 			</svg>
+
+			<div class="{:this.app.includedCards.length ? 'hide' : '' :}|{includedCards.length}|">
+				<div class="flex hcenter ghost">
+					<h3>You haven't selected anything to export yet...</h3>
+				</div>
+			</div>
 		</div>
 
 		<div class="export-includes-choices gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">

@@ -88,18 +88,15 @@
 		context.exporting = true
 		replaceJob.push(proxymity.on.renderend)
 
-		console.log("awaiting replace job", replaceJob.length)
 		try{
 			await Promise.all(replaceJob)
 		}
 		catch(uwu){
 			console.warn(uwu)
 		}
-		console.log("replace job complete")
 
 		cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
-		console.log("awaiting PNG generation", cardInstance)
 		let cardUri = await svgAsPngUri(
 			cardInstance,
 			// `${context.card.name || "lor-card"}.png`,
@@ -109,7 +106,6 @@
 				scale: 1/(window.devicePixelRatio || 1)
 			},
 		)
-		console.log("PNG generation complete")
 
 		context.exporting = false
 
