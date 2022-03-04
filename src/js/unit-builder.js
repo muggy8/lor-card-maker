@@ -115,22 +115,20 @@
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
 
-				${
-					Object.prototype.hasOwnProperty.call(card, "power")
-							? `<rect id="power" width="86" height="82" x="44" y="873" opacity="0"/>
-							<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>`
-							: ""
+				${Object.prototype.hasOwnProperty.call(card, "power")
+					? `<rect id="power" width="86" height="82" x="44" y="873" opacity="0"/>
+					<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>`
+					: ""
 				}
 
-				${
-					Object.prototype.hasOwnProperty.call(card, "health")
-						? `<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
-						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>`
-						: ""
+				${Object.prototype.hasOwnProperty.call(card, "health")
+					? `<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
+					<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>`
+					: ""
 				}
 
 				<g id="all-text-group" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
-					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
+					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="510" height="130" x="85" y="720">
 						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
@@ -141,14 +139,14 @@
 					}
 
 					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
-						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="560" height="162" x="60" y="520">
+						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="510" height="162" x="85" y="520">
 							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
 						<!-- <rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
 						${keywordSvgs}
 
-						<rect id="name" width="560" height="70" x="60" y="${card.keywords.length ? 380 : 380 + 70 }" opacity="0"/>
+						<rect id="name" width="510" height="70" x="85" y="${card.keywords.length ? 380 : 380 + 70 }" opacity="0"/>
 						${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 					</g>
 				</g>
