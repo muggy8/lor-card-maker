@@ -16,7 +16,17 @@
 
 	controller.gemOptions = undefined
 
-	controller.framePath = "/assets/champion/frame3"
+	controller.rendererOptions = {
+		framePath: "/assets/champion/frame3",
+		clan: {
+			bgPath: "/assets/champion/typing.png"
+		},
+		region: {
+			bgPath: "/assets/regions/champion3/regionbox",
+			offsetBottom: 11,
+			offsetRight: 6,
+		},
+	}
 
 	let view = controller.generateView()
 

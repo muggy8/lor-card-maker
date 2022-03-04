@@ -41,7 +41,15 @@
 		"epic",
 	]
 
-	controller.framePath = "/assets/landmark/frame"
+	controller.rendererOptions = {
+		framePath: "/assets/landmark/frame",
+		clan: {
+			bgPath: "/assets/landmark/typing.png"
+		},
+		region: {
+			bgPath: "/assets/regions/landmark/regionbox",
+		},
+	}
 
 	let view = controller.generateView()
 

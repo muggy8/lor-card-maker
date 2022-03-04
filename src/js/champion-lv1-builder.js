@@ -19,7 +19,15 @@
 		"gem",
 	]
 
-	controller.framePath = "/assets/champion/frame1"
+	controller.rendererOptions = {
+		framePath: "/assets/champion/frame1",
+		clan: {
+			bgPath: "/assets/champion/typing.png"
+		},
+		region: {
+			bgPath: "/assets/regions/champion1/regionbox",
+		},
+	}
 
 	let view = controller.generateView()
 

@@ -90,22 +90,22 @@
 				}
 
 				<image id="art-shade" clip-path="url(#art-mask)" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
-				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${controller.framePath}${card.rarity}.png"/>
+				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${controller.rendererOptions.framePath}${card.rarity}.png"/>
 
 				${card.faction.length
 					? `
-						<image id="card-region-box" width="120" height="360" x="557" y="37" href="/assets/regions/champion1/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
-						<image id="card-region-1" width="90" height="90" x="574" y="66" href="/assets/regions/${card.faction[0]}.png"/>`
+						<image id="card-region-box" width="120" height="360" x="${550 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${37 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="${controller.rendererOptions.region.bgPath}${card.faction.length < 3 ? card.faction.length : 3}.png"/>
+						<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${66 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[0]}.png"/>`
 					: ""
 				}
 
-				${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="574" y="156" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
+				${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${156 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
 
-				${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="574" y="246" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
+				${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${246 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
 
 				${card.clan
 					? `
-						<image id="card-clan" width="360" height="84" x="160" y="14" xlink:href="/assets/champion/typing.png"/>
+						<image id="card-clan" width="360" height="84" x="160" y="14" xlink:href="${controller.rendererOptions.clan.bgPath}"/>
 						<rect id="clan-text-area" width="200" height="46" x="240" y="32" opacity="0"/>
 						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>`
 					: ""
@@ -185,8 +185,6 @@
 	}
 
 	controller.gemOptions = undefined
-
-	controller.framePath = "/assets/champion/frame1"
 
 	controller.template = template
 

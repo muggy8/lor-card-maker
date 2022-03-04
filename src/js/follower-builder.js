@@ -19,7 +19,16 @@
 		"epic",
 	]
 
-	controller.framePath = "/assets/follower/frame"
+	controller.rendererOptions = {
+		framePath: "/assets/follower/frame",
+		clan: {
+			bgPath: "/assets/follower/typing.png"
+		},
+		region: {
+			bgPath: "/assets/regions/follower/regionbox",
+			offsetRight: -7
+		},
+	}
 
 	let view = controller.generateView()
 

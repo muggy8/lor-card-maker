@@ -9,13 +9,21 @@ const replace = require('gulp-replace')
 
 let copy = exports.copy = function() {
 	return src([
-	'src/**/*.*',
-	'!src/**/*.md',
-	'!src/**/*.png',
-	'!src/**/*.svg',
-	'!src/**/*.webp',
+		'src/**/*.*',
+		'!src/**/*.md',
+		'!src/**/*.png',
+		'!src/**/*.svg',
+		'!src/**/*.webp',
 	])
-		.pipe(dest('docs/'))
+	.pipe(dest('docs/'))
+}
+let copyArt = exports.copyArt = function() {
+	return src([
+		'src/**/*.png',
+		'src/**/*.svg',
+		'src/**/*.webp',
+	])
+	.pipe(dest('docs/'))
 }
 
 let minifyJs = exports.minifyJs = function() {
@@ -55,14 +63,19 @@ let pathReplace = exports.pathReplace = function(){
 		.pipe(dest('docs/'))
 }
 
+
 exports.default = series(
 	copy,
 	parallel(
 		minifyJs,
 		minifyCss,
-		//~ minifyPng,
 		minifyHtml,
 		minifyJson,
 	),
 	pathReplace,
+)
+
+exports.art = series(
+	copyArt,
+	minifyPng,
 )
