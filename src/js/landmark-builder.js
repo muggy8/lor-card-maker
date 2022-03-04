@@ -1,6 +1,13 @@
 (function(){
 	let controller = Object.create(App.unitController)
 
+	controller.clearCard = function(){
+		App.unitController.clearCard.call(this)
+		let card = controller.card
+		delete card.power
+		delete card.health
+	}
+
 	let saveCard = controller.saveCard = async function(){
 		let context = this
 		context.cardId = await App.storage.saveLandmark(context.card, context.cardId)

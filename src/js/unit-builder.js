@@ -115,12 +115,19 @@
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
 
-				<rect id="power" width="86" height="82" x="44" y="873" opacity="0"/>
-				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>
+				${
+					Object.prototype.hasOwnProperty.call(card, "power")
+							? `<rect id="power" width="86" height="82" x="44" y="873" opacity="0"/>
+							<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>`
+							: ""
+				}
 
-
-				<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
-				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>
+				${
+					Object.prototype.hasOwnProperty.call(card, "health")
+						? `<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
+						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>`
+						: ""
+				}
 
 				<g id="all-text-group" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="560" height="130" x="60" y="720">
