@@ -8,7 +8,13 @@ const jsonminify = require('gulp-jsonminify');
 const replace = require('gulp-replace')
 
 let copy = exports.copy = function() {
-	return src(['src/**/*.*', '!src/**/*.md'])
+	return src([
+	'src/**/*.*',
+	'!src/**/*.md',
+	'!src/**/*.png',
+	'!src/**/*.svg',
+	'!src/**/*.webp',
+	])
 		.pipe(dest('docs/'))
 }
 
@@ -54,7 +60,7 @@ exports.default = series(
 	parallel(
 		minifyJs,
 		minifyCss,
-		minifyPng,
+		//~ minifyPng,
 		minifyHtml,
 		minifyJson,
 	),
