@@ -34,7 +34,7 @@
 	}
 
 	controller.addToExport = function(cardTypeController, cardData, cardId){
-		
+
 		includedCards.push({
 			hostController: cardTypeController,
 			cardData: cardData,
@@ -43,11 +43,12 @@
 	}
 
 	controller.createPreview = function(cardData, cardTypeController){
-		
+
 		let customeController = Object.create(Object.getPrototypeOf(cardTypeController))
 		Object.assign(customeController, cardTypeController)
 		customeController.clearCard()
 		App.cardTypePicker.transferData(customeController.card, cardData)
+		customeController.exporting = true
 		return customeController.createPreview()
 	}
 
