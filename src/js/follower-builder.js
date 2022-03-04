@@ -12,8 +12,6 @@
 		window.location.reload()
 	}
 
-	App.followerBuilder = controller
-
 	controller.gemOptions = [
 		"gemless",
 		"common",
@@ -23,7 +21,9 @@
 
 	controller.framePath = "/assets/follower/frame"
 
-	let view = proxymity(controller.template, controller)
+	let view = controller.generateView()
 
 	controller.focus = controller.focusFactory(view, "followerBuilder", "Follower Builder")
+
+	App.followerBuilder = controller
 })()

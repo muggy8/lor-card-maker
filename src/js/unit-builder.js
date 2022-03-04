@@ -89,7 +89,7 @@
 					: ""
 				}
 
-				<image id="art-shade" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
+				<image id="art-shade" clip-path="url(#art-mask)" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
 				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${controller.framePath}${card.rarity}.png"/>
 
 				${card.faction.length
@@ -206,24 +206,63 @@
 			/>
 		</clipPath>
 	`
-})(`
-	<main class="flex hcenter" data-init="{: this.app.clearCard() :}">
-		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 
-		{:this.app.createPreview():}|{card.name},{card.effect},{card.lvup},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.clan},{card.blueWords.*},{card.orangeWords.*},{card.power},{card.health}|
+	controller.generateView = function(){
+		let controller = this
 
-			<div class="flex hcenter gutter-tb">
-				<button onclick="this.app.exportCard()">Export</button>
-				<div class="gutter-rl"></div>
-				<button onclick="this.app.saveCard()">Save Card</button>
-				<div class="gutter-rl"></div>
-				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
-			</div>
+		controller.clearCard()
 
-			<div class="gutter-b-3"></div>
-		</div>
-		<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.cardOptionsController = App.cardOptions(this.app.card, this.app.gemOptions):}
-		</div>
-	</main>
-`)
+		let card = controller.card
+		
+		// generates the watcher subscriptions based on which props of hte watcherList exists on card
+		let watchersToSubscribe = Object.keys(controller.generateView.watcherList)
+			.map(potentiallyWatcheableProp=>{
+				if (Object.prototype.hasOwnProperty.call(card, potentiallyWatcheableProp)){
+					return `{${controller.generateView.watcherList[potentiallyWatcheableProp]}}`
+				}
+				return null
+			})
+			.filter(i=>!!i)
+			.join(",")
+
+		
+		let template = `
+			<main class="flex hcenter">
+				<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
+		
+				{:this.app.createPreview():}|${watchersToSubscribe}|
+		
+					<div class="flex hcenter gutter-tb">
+						<button onclick="this.app.exportCard()">Export</button>
+						<div class="gutter-rl"></div>
+						<button onclick="this.app.saveCard()">Save Card</button>
+						<div class="gutter-rl"></div>
+						<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
+					</div>
+		
+					<div class="gutter-b-3"></div>
+				</div>
+				<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
+					{:this.app.cardOptionsController = App.cardOptions(this.app.card, ${JSON.stringify(controller.gemOptions)}):}
+				</div>
+			</main>
+		` 
+		
+		return proxymity(template, controller)
+	}
+	controller.generateView.watcherList = {
+		name: "card.name",
+		effect: "card.effect",
+		lvup: "card.lvup",
+		keywords: "card.keywords.length",
+		mana: "card.mana",
+		art: "card.art",
+		rarity: "card.rarity",
+		faction: "card.faction.length",
+		clan: "card.clan",
+		blueWords: "card.blueWords.*",
+		orangeWords: "card.orangeWords.*",
+		power: "card.power",
+		health: "card.health",
+	}
+})()

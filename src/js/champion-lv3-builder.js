@@ -18,7 +18,7 @@
 
 	controller.framePath = "/assets/champion/frame3"
 
-	let view = proxymity(controller.template, controller)
+	let view = controller.generateView()
 
 	controller.focus = controller.focusFactory(view, "championLv3Builder", "Champion Lv3 Builder")
 })()

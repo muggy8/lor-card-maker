@@ -19,15 +19,6 @@
 		window.location.reload()
 	}
 
-	controller.gemOptions = [
-		"gemless",
-		"common",
-		"rare",
-		"epic",
-	]
-
-	controller.framePath = "/assets/landmark/frame"
-
 	controller.artMask = `
 		<clipPath id="art-mask">
 			<path
@@ -43,7 +34,16 @@
 		</clipPath>
 	`
 
-	let view = proxymity(controller.template, controller)
+	controller.gemOptions = [
+		"gemless",
+		"common",
+		"rare",
+		"epic",
+	]
+
+	controller.framePath = "/assets/landmark/frame"
+
+	let view = controller.generateView()
 
 	controller.focus = controller.focusFactory(view, "landmarkBuilder", "Landmark Builder")
 
