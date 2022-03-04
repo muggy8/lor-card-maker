@@ -171,7 +171,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex gutter-b">
 				<select name="rarity" class="box-12" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
-					<!-- forEach: "index" -->
+					<!-- forEach: "rarityIndex" -->
 						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:this.app.rarityOptions[this.rarityIndex]:}</option>
 					<!-- in: rarityOptions -->
 				</select>
