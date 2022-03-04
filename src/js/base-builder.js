@@ -70,34 +70,46 @@
 		}
 	}
 
-	let exportCard = controller.exportCard = async function(){
+	let exportCard = controller.exportCard = async function(cardInstance){
 		let context = this
-		let replaceJob = Array.from(context.cardInstance.querySelectorAll("image"))
-			.map(el=>
-				el.href.baseVal && getBase64FromImageUrl(el.href.baseVal)
-				.then(uri=>{
-					el.removeAttribute("href")
-					el.removeAttribute(":xlinkhref")
-					el.setAttribute("xlink:href", uri)
-				})
+		cardInstance = cardInstance || context.cardInstance
+		let replaceJob = Array.from(cardInstance.querySelectorAll("image"))
+			.map(el=>(el.href.baseVal && !isBase64(el.href.baseVal)) 
+				? imageToBase64(el.href.baseVal)
+					.then(uri=>{
+						console.log(el.href.baseVal)
+						el.removeAttribute("href")
+						el.removeAttribute(":xlinkhref")
+						el.setAttribute("xlink:href", uri)
+					})
+				: Promise.resolve()
 			)
 
 		context.exporting = true
 		replaceJob.push(proxymity.on.renderend)
 
-		await Promise.all(replaceJob)
+		console.log("awaiting replace job", replaceJob.length)
+		try{
+			await Promise.all(replaceJob)
+		}
+		catch(uwu){
+			console.warn(uwu)
+		}
+		console.log("replace job complete")
 
-		context.cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
+		cardInstance.querySelectorAll("foreignObject *").forEach(el=>el.removeAttribute("xmlns"))
 
+		console.log("awaiting PNG generation", cardInstance)
 		let cardUri = await svgAsPngUri(
-			context.cardInstance,
+			cardInstance,
 			// `${context.card.name || "lor-card"}.png`,
 			{
-				width: 680,
-				height: 1024,
+				width: cardInstance.viewBox.baseVal.width,
+				height: cardInstance.viewBox.baseVal.height,
 				scale: 1/(window.devicePixelRatio || 1)
 			},
 		)
+		console.log("PNG generation complete")
 
 		context.exporting = false
 
@@ -129,6 +141,15 @@
 		const blobUrl = URL.createObjectURL(blob);
 
 		window.open(blobUrl, '_blank');
+	}
+
+	function isBase64(str) {
+		if (str ==='' || str.trim() ===''){ return false; }
+		try {
+			return btoa(atob(str)) == str;
+		} catch (err) {
+			return false;
+		}
 	}
 
 	let focusFactory = controller.focusFactory = function(view, focusName, pageTitle){
