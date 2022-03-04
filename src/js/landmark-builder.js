@@ -39,4 +39,6 @@
 	let view = proxymity(controller.template, controller)
 
 	controller.focus = controller.focusFactory(view, "landmarkBuilder", "Landmark Builder")
+
+	App.landmarkBuilder = controller
 })()
