@@ -4,6 +4,11 @@ const App = (function(){
 	}
 	let view = proxymity(document.body, controller)
 
+	proxymity.watch(controller, "currentView", function(attachedView, detachedView){
+		attachedView && (attachedView.app.attached = true)
+		detachedView &&( detachedView.app.attached = false)
+	})
+
 	window.addEventListener("popstate", function(ev){
 		let state = ev.state
 

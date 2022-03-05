@@ -1,5 +1,6 @@
 (function(template){
 	let controller = Object.create(App.baseBuilderController)
+	controller.attached = false
 
 	controller.cardId = ""
 
@@ -24,10 +25,12 @@
 		card.effectFontSize = 34 // min should be 24
 
 		controller.exporting = false
+		controller.cardId = ""
 	}
 	clearCard()
 
 	let createPreview = controller.createPreview = function(cardData){
+
 		let controller = this
 		let card = cardData || controller.card
 		card.effectFontSize = 34
@@ -67,21 +70,30 @@
 		>
 			<clipPath id="art-mask">
 				<ellipse rx="240" ry="240" cx="340" cy="294"/>
+				<path d="
+					M 340, 294
+					m 0, 240
+					s 240, 0, 240, -240
+					s -240, -240, -240, -240
+					s -240, 0, -240, 240
+					s 240, 240, 240, 240
+					z
+				" stroke="#000"/>
 			</clipPath>
 
 			${card.art
 				? `
-				<image
-					id="card-art"
-					clip-path="url(#art-mask)"
-					xlink:href="${card.art}"
-					x="{:this.app.card.transform.x:}|{card.transform.x}|"
-					y="{:this.app.card.transform.y:}|{card.transform.y}|"
-					preserveAspectRatio="xMidYMid meet"
-					width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
-					height="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
-				/>`
-				: ""
+					<image
+						id="card-art"
+						clip-path="url(#art-mask)"
+						xlink:href="${card.art}"
+						x="{:this.app.card.transform.x:}|{card.transform.x}|"
+						y="{:this.app.card.transform.y:}|{card.transform.y}|"
+						preserveAspectRatio="xMidYMid meet"
+						width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
+						height="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
+					/>`
+					: ""
 			}
 
 			<image id="card-background" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
@@ -163,7 +175,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.blueWords.*},{card.orangeWords.*}|
+			{:this.app.attached && this.app.createPreview(undefined, this):}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>

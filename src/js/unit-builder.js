@@ -1,5 +1,6 @@
 (function(template){
 	let controller = App.unitController = Object.create(App.baseBuilderController)
+	controller.attached = false
 
 	controller.clearCard = function(){
 		let controller = this
@@ -30,6 +31,7 @@
 		card.levelFontSize = 34 // min should be 24
 
 		controller.exporting = false
+		controller.cardId = ""
 	}
 
 	controller.createPreview = function(cardData){
@@ -218,6 +220,10 @@
 				}
 				return null
 			})
+
+		watchersToSubscribe.push("attached")
+
+		watchersToSubscribe
 			.filter(i=>!!i)
 			.join(",")
 
@@ -226,7 +232,7 @@
 			<main class="flex hcenter">
 				<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 
-				{:this.app.createPreview():}|${watchersToSubscribe}|
+				{:this.app.attached && this.app.createPreview(undefined, this):}|${watchersToSubscribe}|
 
 					<div class="flex hcenter gutter-tb">
 						<button onclick="this.app.exportCard()">Export</button>

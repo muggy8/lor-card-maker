@@ -77,7 +77,6 @@
 			.map(el=>(el.href.baseVal && !isBase64(el.href.baseVal))
 				? imageToBase64(el.href.baseVal)
 					.then(uri=>{
-						console.log(el.href.baseVal)
 						el.removeAttribute("href")
 						el.removeAttribute(":xlinkhref")
 						el.setAttribute("xlink:href", uri)
@@ -149,16 +148,16 @@
 	}
 
 	let focusFactory = controller.focusFactory = function(view, focusName, pageTitle){
-		let context = this
+		let controller = this
 
 		return function(){
 			return iconCache.promise.then(()=>{
-				context.cardOptionsController.app.mbShowConfigs = false // where is this coming from O_O;
+				controller.cardOptionsController.app.mbShowConfigs = false // where is this coming from O_O;
 				if (App.currentView === view){
 					return
 				}
 				App.currentView = view
-				context.clearCard()
+				controller.clearCard()
 				window.scroll(0,0)
 				history.pushState({
 					focus: focusName
@@ -166,5 +165,4 @@
 			})
 		}
 	}
-
 })()

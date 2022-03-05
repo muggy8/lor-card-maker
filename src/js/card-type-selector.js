@@ -1,5 +1,6 @@
 (async function(template){
 	let controller = {}
+	controller.attached = false
 
 	let focus = controller.focus = function(){
 		if (App.currentView === view){
@@ -83,11 +84,11 @@
 		<strong>Edit {: this.app.savedChampions1[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedChampions1[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedChampions1[this.index].cardData,
 					App.championLv1Builder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedChampions1 -->
@@ -97,11 +98,11 @@
 		<strong>Edit {: this.app.savedChampions2[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedChampions2[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedChampions2[this.index].cardData,
 					App.championLv2Builder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedChampions2 -->
@@ -111,11 +112,11 @@
 		<strong>Edit {: this.app.savedChampions3[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedChampions3[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedChampions3[this.index].cardData,
 					App.championLv3Builder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedChampions3 -->
@@ -125,11 +126,11 @@
 		<strong>Edit {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedLandmarks[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedLandmarks[this.index].cardData,
 					App.landmarkBuilder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedLandmarks -->
@@ -139,11 +140,11 @@
 		<strong>Edit {: this.app.savedSpells[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedSpells[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedSpells[this.index].cardData,
 					App.spellBuilder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedSpells -->
@@ -153,11 +154,11 @@
 		<strong>Edit {: this.app.savedFollowers[this.index].cardData.name :}</strong>
 		<div>
 			{:
-				App.batchExporter.createPreview(
-					this.app.savedFollowers[this.index].cardData, 
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedFollowers[this.index].cardData,
 					App.followerBuilder
 				)
-			:}
+			:}|{attached}|
 		</div>
 	</div>
 	<!-- in: savedFollowers -->

@@ -1,5 +1,6 @@
 (function(){
 	let controller = Object.create(App.unitController)
+	controller.attached = false
 
 	controller.clearCard = function(){
 		App.unitController.clearCard.call(this)

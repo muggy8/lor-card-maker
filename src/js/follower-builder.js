@@ -1,5 +1,6 @@
 (function(){
 	let controller = Object.create(App.unitController)
+	controller.attached = false
 
 	let saveCard = controller.saveCard = async function(){
 		let context = this
