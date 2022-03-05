@@ -221,7 +221,7 @@
 				return null
 			})
 
-		watchersToSubscribe.push("attached")
+		watchersToSubscribe.push("{attached}")
 
 		watchersToSubscribe
 			.filter(i=>!!i)
