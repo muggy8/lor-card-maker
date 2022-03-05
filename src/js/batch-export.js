@@ -54,7 +54,7 @@
 			cardWithMeta.included = false
 		}
 
-		
+
 	}
 
 	controller.createPreview = function(cardData, cardTypeController){

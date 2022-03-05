@@ -28,6 +28,7 @@
 	clearCard()
 
 	let createPreview = controller.createPreview = function(cardData){
+		let controller = this
 		let card = cardData || controller.card
 		card.effectFontSize = 34
 		let keywordSvgs = card.keywords.length > 1
