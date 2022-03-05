@@ -75,7 +75,7 @@
 		App.cardTypePicker.transferData(customeController.card, cardData)
 		customeController.exporting = true
 
-		return customeController.createPreview(undefined)
+		return customeController.createPreview()
 	}
 
 })(`

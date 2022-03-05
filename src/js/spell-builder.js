@@ -7,6 +7,12 @@
 	let card = controller.card = {}
 
 	let clearCard = controller.clearCard = function(){
+		let controller = this
+		let card = controller.card = controller.card || {}
+		controller.cardId = ""
+		controller.exporting = false
+
+
 		card.name = ""
 		card.effect = ""
 		card.keywords = []
@@ -24,10 +30,8 @@
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
 
-		controller.exporting = false
-		controller.cardId = ""
 	}
-	clearCard()
+	controller.clearCard()
 
 	let createPreview = controller.createPreview = function(cardData){
 
@@ -175,7 +179,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.attached && this.app.createPreview(undefined, this):}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.blueWords.*},{card.orangeWords.*},{attached}|
+			{:this.app.attached && this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>
