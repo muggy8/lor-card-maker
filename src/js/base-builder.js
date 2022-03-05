@@ -62,8 +62,6 @@
 	}
 
 	let effectResize = controller.effectResize = async function(effectDiv, fontSizeProp = "effectFontSize"){
-		console.log("effect resize")
-
 		let context = this
 		let useableHeight = effectDiv.offsetHeight
 		while (effectDiv.scrollHeight > useableHeight && context.card[fontSizeProp] > cardEffectMinSize){
