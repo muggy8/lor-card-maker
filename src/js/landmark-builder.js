@@ -3,10 +3,12 @@
 	controller.attached = false
 
 	controller.clearCard = function(){
-		App.unitController.clearCard.call(this)
+		let controller = this
+		App.unitController.clearCard.call(controller)
 		let card = controller.card
 		delete card.power
 		delete card.health
+		card.keywords.push("landmark")
 	}
 
 	let saveCard = controller.saveCard = async function(){
