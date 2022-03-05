@@ -129,7 +129,7 @@
 
 				<g id="all-text-group" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="510" height="130" x="85" y="720">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight):}">${controller.decorateText(card.lvup)}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight || this.app.card.lvupHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					${
@@ -140,7 +140,7 @@
 
 					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
 						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="510" height="162" x="85" y="520">
-							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight):}">${controller.decorateText(card.effect)}</div>
+							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight || this.app.card.effectHeight ):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
 						<!-- <rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
@@ -209,7 +209,7 @@
 		controller.clearCard()
 
 		let card = controller.card
-		
+
 		// generates the watcher subscriptions based on which props of hte watcherList exists on card
 		let watchersToSubscribe = Object.keys(controller.generateView.watcherList)
 			.map(potentiallyWatcheableProp=>{
@@ -221,13 +221,13 @@
 			.filter(i=>!!i)
 			.join(",")
 
-		
+
 		let template = `
 			<main class="flex hcenter">
 				<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-		
+
 				{:this.app.createPreview():}|${watchersToSubscribe}|
-		
+
 					<div class="flex hcenter gutter-tb">
 						<button onclick="this.app.exportCard()">Export</button>
 						<div class="gutter-rl"></div>
@@ -235,15 +235,15 @@
 						<div class="gutter-rl"></div>
 						<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
 					</div>
-		
+
 					<div class="gutter-b-3"></div>
 				</div>
 				<div class="card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 					{:this.app.cardOptionsController = App.cardOptions(this.app.card, ${JSON.stringify(controller.gemOptions)}):}
 				</div>
 			</main>
-		` 
-		
+		`
+
 		return proxymity(template, controller)
 	}
 	controller.generateView.watcherList = {

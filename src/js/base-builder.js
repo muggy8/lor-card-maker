@@ -62,6 +62,8 @@
 	}
 
 	let effectResize = controller.effectResize = async function(effectDiv, fontSizeProp = "effectFontSize"){
+		console.log("effect resize")
+
 		let context = this
 		let useableHeight = effectDiv.offsetHeight
 		while (effectDiv.scrollHeight > useableHeight && context.card[fontSizeProp] > cardEffectMinSize){
@@ -74,7 +76,7 @@
 		let context = this
 		cardInstance = cardInstance || context.cardInstance
 		let replaceJob = Array.from(cardInstance.querySelectorAll("image"))
-			.map(el=>(el.href.baseVal && !isBase64(el.href.baseVal)) 
+			.map(el=>(el.href.baseVal && !isBase64(el.href.baseVal))
 				? imageToBase64(el.href.baseVal)
 					.then(uri=>{
 						console.log(el.href.baseVal)
