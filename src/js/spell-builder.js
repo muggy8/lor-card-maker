@@ -29,6 +29,7 @@
 		card.blueWords = []
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
+		card.artist = ""
 
 	}
 	controller.clearCard()
@@ -125,6 +126,9 @@
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
+			<rect id="artist" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
+			${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
+
 			<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
 				<path d="
 					M 340, 10
@@ -179,7 +183,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
-			{:this.app.attached && this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.blueWords.*},{card.orangeWords.*},{attached}|
+			{:this.app.attached && this.app.createPreview():}|{card.name},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.artist},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.exportCard()">Export</button>

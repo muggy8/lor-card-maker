@@ -54,7 +54,7 @@ const cardOptionsData = {
 		"spellshield": "spellshield.png",
 		"fury": "fury.png",
 		"focus": "focus.png",
-		"formidable","formidable.png",
+		"formidable":"formidable.png",
 		"lurk": "lurk.png",
 		"impact": "impact.png",
 		"fated": "fated.png"

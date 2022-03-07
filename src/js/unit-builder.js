@@ -29,6 +29,7 @@
 		card.orangeWords = []
 		card.effectFontSize = 34 // min should be 24
 		card.levelFontSize = 34 // min should be 24
+		card.artist=""
 
 		controller.exporting = false
 		controller.cardId = ""
@@ -153,6 +154,9 @@
 					</g>
 				</g>
 
+				<rect id="artist" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
+				${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
+
 				<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
 					<path d="
 						M 340, 10
@@ -266,5 +270,6 @@
 		orangeWords: "card.orangeWords.*",
 		power: "card.power",
 		health: "card.health",
+		artist: "card.artist",
 	}
 })()

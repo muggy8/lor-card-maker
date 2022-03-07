@@ -132,6 +132,7 @@ App.cardOptions = (function(template, subTemplates){
 		{:Object.prototype.hasOwnProperty.call(this.app.card, "health") ? proxymity(this.app.subTemplates.healthUI, this.app) : undefined:}
 	</div>
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "art") ? proxymity(this.app.subTemplates.artUploadUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "artist") ? proxymity(this.app.subTemplates.cardArtistUI, this.app) : undefined:}
 
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "keywords") ? proxymity(this.app.subTemplates.keywordChoiceUI, this.app) : undefined:}
@@ -242,6 +243,23 @@ App.cardOptions = (function(template, subTemplates){
 					data-value="{:this.app.card.name:}|{card.name}|"
 					onchange="this.app.card.name = this.value || ''"
 					onkeyup="this.app.card.name = this.value || ''"
+				>
+			</div>
+		</label>
+	`,
+	cardArtistUI: `
+		<label>
+			<div>
+				<strong>Artist</strong>
+			</div>
+			<div class="flex gutter-b">
+				<input
+					class="box-12"
+					name="card-artist"
+					type="text"
+					data-value="{:this.app.card.artist:}|{card.artist}|"
+					onchange="this.app.card.artist = this.value || ''"
+					onkeyup="this.app.card.artist = this.value || ''"
 				>
 			</div>
 		</label>
