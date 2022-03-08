@@ -199,7 +199,7 @@ App.cardOptions = (function(template, subTemplates){
 	powerUI: `
 		<label class="grow">
 			<div>
-				<strong>Card Power</strong>
+				<strong>Power</strong>
 			</div>
 			<div class="flex gutter-b">
 				<input
@@ -216,7 +216,7 @@ App.cardOptions = (function(template, subTemplates){
 	healthUI: `
 		<label class="grow">
 			<div>
-				<strong>Card Health</strong>
+				<strong>Health</strong>
 			</div>
 			<div class="flex gutter-b">
 				<input
@@ -233,7 +233,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardNameUI: `
 		<label>
 			<div>
-				<strong>Card Name</strong>
+				<strong>Name</strong>
 			</div>
 			<div class="flex gutter-b">
 				<input
@@ -267,7 +267,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardClanUI: `
 		<label>
 			<div>
-				<strong>Card Clan (eg: Elite)</strong>
+				<strong>Clan (eg: Celestial)</strong>
 			</div>
 			<div class="flex gutter-b">
 				<input
@@ -284,7 +284,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardEffectUI: `
 		<label>
 			<div>
-				<strong>Card Effect</strong>
+				<strong>Effect</strong>
 			</div>
 			<div class="flex gutter-b">
 				<textarea

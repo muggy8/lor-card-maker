@@ -5,18 +5,23 @@
 		saveChampion2: cardSaverFactory("champion2"),
 		saveChampion3: cardSaverFactory("champion3"),
 		saveLandmark: cardSaverFactory("landmark"),
+		saveKeyword: cardSaverFactory("keyword"),
 		saveSpell: cardSaverFactory("spell"),
+
 		getSavedFollower: cardGetterFactory("follower"),
 		getSavedChampion1: cardGetterFactory("champion1"),
 		getSavedChampion2: cardGetterFactory("champion2"),
 		getSavedChampion3: cardGetterFactory("champion3"),
 		getSavedLandmark: cardGetterFactory("landmark"),
+		getSavedKeyworkd: cardGetterFactory("keyword"),
 		getSavedSpell: cardGetterFactory("spell"),
+		
 		delSavedFollower: cardDeleterFactory("follower"),
 		delSavedChampion1: cardDeleterFactory("champion1"),
 		delSavedChampion2: cardDeleterFactory("champion2"),
 		delSavedChampion3: cardDeleterFactory("champion3"),
 		delSavedLandmark: cardDeleterFactory("landmark"),
+		delSavedKeyword: cardDeleterFactory("keyword"),
 		delSavedSpell: cardDeleterFactory("spell"),
 	}
 

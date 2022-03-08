@@ -34,6 +34,7 @@ const App = (function(){
 		App.storage.getSavedFollower().then(data=>controller.savedFollowers = data)
 		App.storage.getSavedLandmark().then(data=>controller.savedLandmarks = data)
 		App.storage.getSavedSpell().then(data=>controller.savedSpells = data)
+		App.storage.getSavedKeyworkd().then(data=>controller.savedKeywords = data)
 	}
 
 	return controller

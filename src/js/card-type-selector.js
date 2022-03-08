@@ -19,6 +19,7 @@
 	controller.savedFollowers = []
 	controller.savedLandmarks = []
 	controller.savedSpells = []
+	controller.savedKeywords = []
 
 	controller.transferData = function(target, source){
 		Object.keys(source).forEach(function(key){
@@ -68,6 +69,12 @@
 		<strong>Follower</strong>
 		<div class="clickable" onclick="App.followerBuilder.focus()">
 			<img src="./assets/follower/framegemless.png" />
+		</div>
+	</div>
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
+		<strong>Keyword (beta)</strong>
+		<div class="clickable" onclick="App.keywordBuilder.focus()">
+			<img src="./assets/keyword/frame5.png" />
 		</div>
 	</div>
 
@@ -162,5 +169,19 @@
 		</div>
 	</div>
 	<!-- in: savedFollowers -->
+
+	<!-- forEach: "index" -->
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.followerBuilder.focus().then(_=>{this.app.transferData(App.followerBuilder.card, this.app.savedKeywords[this.index].cardData); App.followerBuilder.cardId = this.app.savedKeywords[this.index].id})">
+		<strong>Edit {: this.app.savedKeywords[this.index].cardData.name :}</strong>
+		<div>
+			{:
+				this.app.attached && App.batchExporter.createPreview(
+					this.app.savedKeywords[this.index].cardData,
+					App.keywordBuilder
+				)
+			:}|{attached}|
+		</div>
+	</div>
+	<!-- in: savedKeywords -->
 </main>
 `)

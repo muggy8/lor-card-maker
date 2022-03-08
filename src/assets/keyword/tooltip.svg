@@ -1,0 +1,13 @@
+<svg
+	width="524" height="373"
+	xmlns="http://www.w3.org/2000/svg"
+	viewbox="0 0 524 373"
+>
+    <image id="frame-bg" width="524" height="373" x="0" y="0" href="./frame5.png"/>
+
+    <rect id="name-text-area" width="450" height="60" x="37" y="38"  fill="#CFF" opacity="0.75"/>
+
+    <rect id="effect-text-area" width="450" height="210" x="37" y="110"  fill="#CFF" opacity="0.75"/>
+
+    <rect id="artist-area" width="220" height="30" fill="#CFF" x="20" y="350" opacity="0.75"/>
+</svg>
