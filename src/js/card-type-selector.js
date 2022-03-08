@@ -171,7 +171,7 @@
 	<!-- in: savedFollowers -->
 
 	<!-- forEach: "index" -->
-	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.followerBuilder.focus().then(_=>{this.app.transferData(App.followerBuilder.card, this.app.savedKeywords[this.index].cardData); App.followerBuilder.cardId = this.app.savedKeywords[this.index].id})">
+	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.keywordBuilder.focus().then(_=>{this.app.transferData(App.keywordBuilder.card, this.app.savedKeywords[this.index].cardData); App.keywordBuilder.cardId = this.app.savedKeywords[this.index].id})">
 		<strong>Edit {: this.app.savedKeywords[this.index].cardData.name :}</strong>
 		<div>
 			{:
