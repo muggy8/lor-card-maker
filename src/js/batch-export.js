@@ -171,6 +171,15 @@
 				</div>
 				<!-- in: savedFollowers -->
 
+				<!-- forEach: "index" -->
+				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedKeywords[this.index].included === 'object' || this.app.savedKeywords[this.index].included ? 'ghost' : '' :}|{savedKeywords[this.index].included}|" onclick="this.app.toggleExport(App.keywordBuilder, this.app.savedKeywords[this.index])">
+					<strong>Include {: this.app.savedKeywords[this.index].cardData.name :}</strong>
+					<div>
+						{:this.app.attached && this.app.createPreview(this.app.savedKeywords[this.index].cardData, App.keywordBuilder) :}|{savedKeywords[this.index].id},{attached}|
+					</div>
+				</div>
+				<!-- in: savedKeywords -->
+
 			</div>
 		</div>
 	</main>
