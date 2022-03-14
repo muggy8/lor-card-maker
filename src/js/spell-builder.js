@@ -161,7 +161,11 @@
 
 		</svg>`
 
-		return proxymity(svg, controller)
+		let previewSVG = proxymity(svg, controller)
+		previewSVG.when.detach(function(){
+			previewSVG.unlink()
+		})
+		return previewSVG
 	}
 
 	let saveCard = controller.saveCard = async function(){

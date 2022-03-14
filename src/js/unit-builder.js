@@ -187,7 +187,11 @@
 					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
 				</g>
 			</svg>`
-		return proxymity(svg, controller)
+		let previewSVG = proxymity(svg, controller)
+		previewSVG.when.detach(function(){
+			previewSVG.unlink()
+		})
+		return previewSVG
 	}
 
 	controller.gemOptions = undefined
