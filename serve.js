@@ -2,8 +2,54 @@ const express = require('express')
 const app = express()
 const port = 1337
 
+const yargs = require('yargs/yargs')
+const { hideBin } = require('yargs/helpers')
+const argv = yargs(hideBin(process.argv)).argv
+
+const open = require('open')
+
+const fs = require('fs').promises
+
+if (argv.proxymity){
+	const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
+	app.get("/", async function(req, res, next){
+		let indexPage = await fs.readFile("src/index.html", "utf-8")
+		indexPage = indexPage.replace(proxymityScriptRegex, `
+			<script src="src/proxymity-util.js"></script>
+			<script src="src/on-next-event-cycle.js"></script>
+			<script src="src/proxymity-watch-2.js"></script>
+			<script src="src/proxymity-ui.js"></script>
+			<script src="src/proxymity.dev.js"></script>
+			<script>
+			// gonna stub this in here
+			var safeEval = function(s, sv = {}, t = false){
+				try {
+					with(sv){
+						return eval(s)
+					}
+				}
+				catch(o3o){
+					if (!t){
+						console.error("failed to evaluate expression [" + s + "]", this, o3o)
+						return ""
+					}
+					else {
+						throw o3o
+					}
+				}
+			}
+			</script>
+		`)
+
+		res.send(indexPage)
+	})
+
+	app.use(express.static(argv.proxymity))
+}
 app.use(express.static('src'))
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}/`)
+
+  open(`http://localhost:${port}/`)
 })

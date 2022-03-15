@@ -5,7 +5,8 @@
   "main": "src/index.html",
   "scripts": {
     "test": "node serve-test",
-    "start": "node serve"
+    "start": "node serve",
+    "debug": "node serve --proxymity ../proxymity"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,9 @@
     "gulp-replace": "^1.0.0",
     "gulp-terser": "^1.4.0",
     "gulp-uglify": "^3.0.2"
+  },
+  "dependencies": {
+    "open": "^8.4.0",
+    "yargs": "^17.3.1"
   }
 }
