@@ -258,7 +258,10 @@
 			</main>
 		`
 
-		return proxymity(template, controller)
+		let previewSVG = proxymity(template, controller)
+		previewSVG.when.detach(()=>preview.unlink())
+
+		return previewSVG
 	}
 	controller.generateView.watcherList = {
 		name: "card.name",
