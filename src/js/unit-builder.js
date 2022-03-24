@@ -1,6 +1,5 @@
 (function(template){
 	let controller = App.unitController = Object.create(App.baseBuilderController)
-	controller.attached = false
 
 	controller.clearCard = function(){
 		let controller = this
@@ -187,11 +186,17 @@
 					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
 				</g>
 			</svg>`
-		let previewSVG = proxymity(svg, controller)
-		previewSVG.when.detach(function(){
-			previewSVG.unlink()
-		})
-		return previewSVG
+
+		try{
+			let previewSVG = proxymity(svg, controller)
+			previewSVG.when.detach(async function(){
+				previewSVG.unlink()
+			})
+			return previewSVG
+		}
+		catch(uwu){
+			console.error(uwu)
+		}
 	}
 
 	controller.gemOptions = undefined
@@ -240,7 +245,7 @@
 			<main class="flex hcenter">
 				<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 
-				{:this.app.attached && this.app.createPreview(undefined, this):}|${watchersToSubscribe}|
+					{:this.app.attached && this.app.createPreview(undefined, this):}|${watchersToSubscribe}|
 
 					<div class="flex hcenter gutter-tb">
 						<button onclick="this.app.exportCard()">Export</button>
@@ -258,10 +263,7 @@
 			</main>
 		`
 
-		let previewSVG = proxymity(template, controller)
-		previewSVG.when.detach(()=>preview.unlink())
-
-		return previewSVG
+		return proxymity(template, controller)
 	}
 	controller.generateView.watcherList = {
 		name: "card.name",

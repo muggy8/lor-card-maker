@@ -27,9 +27,7 @@
     "gulp-jsonminify": "^1.1.0",
     "gulp-replace": "^1.0.0",
     "gulp-terser": "^1.4.0",
-    "gulp-uglify": "^3.0.2"
-  },
-  "dependencies": {
+    "gulp-uglify": "^3.0.2",
     "open": "^8.4.0",
     "yargs": "^17.3.1"
   }
