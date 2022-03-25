@@ -22,20 +22,27 @@
 		window.location.reload()
 	}
 
-	controller.artMask = `
-		<clipPath id="art-mask-${controller.cardId}">
-			<path
-				d="
-					M 50, 60
-					h 580
-					v 830
-					l -290, 65
-					l -290, -65
-					Z
-				"
-			/>
-		</clipPath>
-	`
+	Object.defineProperty(controller, "artMask", {
+		configurable: true,
+		enumerable: true,
+		get: function(){
+			let controller = this
+			return `
+				<clipPath id="art-mask-${controller.cardId}">
+					<path
+						d="
+							M 50, 60
+							h 580
+							v 830
+							l -290, 65
+							l -290, -65
+							Z
+						"
+					/>
+				</clipPath>
+			`
+		}
+	})
 
 	controller.gemOptions = [
 		"gemless",

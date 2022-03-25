@@ -203,20 +203,29 @@
 
 	controller.template = template
 
-	controller.artMask = `
-		<clipPath id="art-mask-${controller.cardId}">
-			<path
-				d="
-					M 25, 50
-					h 630
-					v 900
-					l -315, 15
-					l -315, -15
-					Z
-				"
-			/>
-		</clipPath>
-	`
+	Object.defineProperty(controller, "artMask", {
+		configurable: true,
+		enumerable: true,
+		get: function(){
+			let controller = this
+			return `
+				<clipPath id="art-mask-${controller.cardId}">
+					<path
+						d="
+							M 25, 50
+							h 630
+							v 900
+							l -315, 15
+							l -315, -15
+							Z
+						"
+					/>
+				</clipPath>
+			`
+		}
+	})
+
+
 
 	controller.generateView = function(){
 		let controller = this
