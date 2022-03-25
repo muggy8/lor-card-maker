@@ -93,7 +93,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedChampions1[this.index].cardData,
-					App.championLv1Builder
+					App.championLv1Builder,
+					this.app.savedChampions1[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -107,7 +108,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedChampions2[this.index].cardData,
-					App.championLv2Builder
+					App.championLv2Builder,
+					this.app.savedChampions2[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -121,7 +123,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedChampions3[this.index].cardData,
-					App.championLv3Builder
+					App.championLv3Builder,
+					this.app.savedChampions3[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -135,7 +138,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedLandmarks[this.index].cardData,
-					App.landmarkBuilder
+					App.landmarkBuilder,
+					this.app.savedLandmarks[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -149,7 +153,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedSpells[this.index].cardData,
-					App.spellBuilder
+					App.spellBuilder,
+					this.app.savedSpells[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -163,7 +168,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedFollowers[this.index].cardData,
-					App.followerBuilder
+					App.followerBuilder,
+					this.app.savedFollowers[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
@@ -177,7 +183,8 @@
 			{:
 				this.app.attached && App.batchExporter.createPreview(
 					this.app.savedKeywords[this.index].cardData,
-					App.keywordBuilder
+					App.keywordBuilder,
+					this.app.savedKeywords[this.index].cardData.id,
 				)
 			:}|{attached}|
 		</div>
