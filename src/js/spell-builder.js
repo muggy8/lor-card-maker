@@ -135,7 +135,7 @@
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
-			<rect id="artist-${controller.cardId" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
+			<rect id="artist-${controller.cardId}" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
 			${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
 
 			<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
