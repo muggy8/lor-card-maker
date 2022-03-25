@@ -74,7 +74,7 @@
 			viewbox="0 0 680 1024"
 			class="{:this.app.cardInstance = this:}"
 		>
-			<clipPath id="art-mask">
+			<clipPath id="art-mask-${controller.cardId}">
 				<ellipse rx="240" ry="240" cx="340" cy="294"/>
 				<path d="
 					M 340, 294
@@ -91,7 +91,7 @@
 				? `
 					<image
 						id="card-art"
-						clip-path="url(#art-mask)"
+						clip-path="url(#art-mask-${controller.cardId})"
 						xlink:href="${card.art}"
 						x="{:this.app.card.transform.x:}|{card.transform.x}|"
 						y="{:this.app.card.transform.y:}|{card.transform.y}|"

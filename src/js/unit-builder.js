@@ -80,7 +80,7 @@
 				? `
 					<image
 						id="card-art"
-						clip-path="url(#art-mask)"
+						clip-path="url(#art-mask-${controller.cardId})"
 						xlink:href="${card.art}"
 						x="{:this.app.card.transform.x:}|{card.transform.x}|"
 						y="{:this.app.card.transform.y:}|{card.transform.y}|"
@@ -204,7 +204,7 @@
 	controller.template = template
 
 	controller.artMask = `
-		<clipPath id="art-mask">
+		<clipPath id="art-mask-${controller.cardId}">
 			<path
 				d="
 					M 25, 50

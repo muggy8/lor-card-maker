@@ -67,13 +67,17 @@
 		})
 	}
 
-	controller.createPreview = function(cardData, cardTypeController){
+	controller.createPreview = function(cardData, cardTypeController, id){
+		//~ console.log(cardData)
+
+		let random = id || proxymity.random.string(8)
 
 		let customeController = Object.create(Object.getPrototypeOf(cardTypeController))
 		cardTypeController.clearCard.call(customeController)
 		mergeIfNotExist(customeController, cardTypeController)
 		App.cardTypePicker.transferData(customeController.card, cardData)
 		customeController.exporting = true
+		customeController.cardId = random
 
 		return customeController.createPreview()
 	}

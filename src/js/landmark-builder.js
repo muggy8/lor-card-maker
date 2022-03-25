@@ -23,7 +23,7 @@
 	}
 
 	controller.artMask = `
-		<clipPath id="art-mask">
+		<clipPath id="art-mask-${controller.cardId}">
 			<path
 				d="
 					M 50, 60
