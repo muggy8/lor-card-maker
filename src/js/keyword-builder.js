@@ -67,15 +67,15 @@
             xmlns="http://www.w3.org/2000/svg"
             viewbox="0 0 524 373"
         >
-            <image id="frame-bg" width="524" height="373" x="0" y="0" href="/assets/keyword/frame{:this.app.card.frameType:}|{card.frameType}|.png"/>
-            <rect id="name-text-area" width="450" height="56" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].nameY:}|{card.frameType}|" fill="#FFF" opacity="0"/>
+            <image id="frame-bg-${controller.cardId}" width="524" height="373" x="0" y="0" href="/assets/keyword/frame{:this.app.card.frameType:}|{card.frameType}|.png"/>
+            <rect id="name-text-area-${controller.cardId}" width="450" height="56" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].nameY:}|{card.frameType}|" fill="#FFF" opacity="0"/>
             ${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
-            <foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="450" height="210" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].effectY:}|{card.frameType}|">
+            <foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="450" height="210" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].effectY:}|{card.frameType}|">
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)).then(()=>this.app.reselectFrame(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
-            <rect id="artist-area" width="220" height="30" fill="#FFF" x="20" y="350" opacity="0"/>
+            <rect id="artist-area-${controller.cardId}" width="220" height="30" fill="#FFF" x="20" y="350" opacity="0"/>
             ${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
         </svg>
         `
@@ -89,10 +89,10 @@
 
     controller.reselectFrame = function(effectContainer){
         let controller = this
-        
+
         setTimeout(() => {
             controller.card.frameType = Math.floor(effectContainer.scrollHeight/controller.card.effectFontSize)
-        
+
             if (controller.card.frameType > 5){
                 controller.card.frameType = 5
             }

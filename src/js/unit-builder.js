@@ -79,7 +79,7 @@
 				${card.art
 				? `
 					<image
-						id="card-art"
+						id="card-art-${controller.cardId}"
 						clip-path="url(#art-mask-${controller.cardId})"
 						xlink:href="${card.art}"
 						x="{:this.app.card.transform.x:}|{card.transform.x}|"
@@ -91,69 +91,69 @@
 					: ""
 				}
 
-				<image id="art-shade" clip-path="url(#art-mask)" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
-				<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="${controller.rendererOptions.framePath}${card.rarity}.png"/>
+				<image id="art-shade-${controller.cardId}" clip-path="url(#art-mask)" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
+				<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="${controller.rendererOptions.framePath}${card.rarity}.png"/>
 
 				${card.faction.length
 					? `
-						<image id="card-region-box" width="120" height="360" x="${550 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${37 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="${controller.rendererOptions.region.bgPath}${card.faction.length < 3 ? card.faction.length : 3}.png"/>
-						<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${66 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[0]}.png"/>`
+						<image id="card-region-box-${controller.cardId}" width="120" height="360" x="${550 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${37 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="${controller.rendererOptions.region.bgPath}${card.faction.length < 3 ? card.faction.length : 3}.png"/>
+						<image id="card-region-1-${controller.cardId}" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${66 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[0]}.png"/>`
 					: ""
 				}
 
-				${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${156 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
+				${card.faction.length > 1 ? `<image id="card-region-1-${controller.cardId}" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${156 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
 
-				${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${246 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
+				${card.faction.length > 2 ? `<image id="card-region-1-${controller.cardId}" width="90" height="90" x="${567 + (controller.rendererOptions.region.offsetLeft || 0) - (controller.rendererOptions.region.offsetRight || 0)}" y="${246 + (controller.rendererOptions.region.offsetTop || 0) - (controller.rendererOptions.region.offsetBottom || 0)}" href="/assets/regions/${card.faction[2]}.png"/>` : ""}
 
 				${card.clan
 					? `
-						<image id="card-clan" width="360" height="84" x="160" y="14" xlink:href="${controller.rendererOptions.clan.bgPath}"/>
-						<rect id="clan-text-area" width="200" height="46" x="240" y="32" opacity="0"/>
+						<image id="card-clan-${controller.cardId}" width="360" height="84" x="160" y="14" xlink:href="${controller.rendererOptions.clan.bgPath}"/>
+						<rect id="clan-text-area-${controller.cardId}" width="200" height="46" x="240" y="32" opacity="0"/>
 						<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>`
 					: ""
 				}
 
-				<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
+				<rect id="mana-cost-${controller.cardId}" width="120" height="120" x="31" y="44" opacity="0"/>
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
 
 				${Object.prototype.hasOwnProperty.call(card, "power")
-					? `<rect id="power" width="86" height="82" x="44" y="873" opacity="0"/>
+					? `<rect id="power-${controller.cardId}" width="86" height="82" x="44" y="873" opacity="0"/>
 					<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>`
 					: ""
 				}
 
 				${Object.prototype.hasOwnProperty.call(card, "health")
-					? `<rect id="health" width="86" height="82" x="552" y="873" opacity="0"/>
+					? `<rect id="health-${controller.cardId}" width="86" height="82" x="552" y="873" opacity="0"/>
 					<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>`
 					: ""
 				}
 
-				<g id="all-text-group" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
-					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition" width="510" height="130" x="85" y="720">
+				<g id="all-text-group-${controller.cardId}" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
+					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition-${controller.cardId" width="510" height="130" x="85" y="720">
 						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight || this.app.card.lvupHeight):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					${
 						card.lvup
-						? '<image id="card-level-bar" width="680" height="44" x="0" y="680" xlink:href="/assets/champion/levelupbar.png"/>'
+						? '<image id="card-level-bar-${controller.cardId}" width="680" height="44" x="0" y="680" xlink:href="/assets/champion/levelupbar.png"/>'
 						: ""
 					}
 
-					<g id="effect-group" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
-						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="510" height="162" x="85" y="520">
+					<g id="effect-group-${controller.cardId}" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
+						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="510" height="162" x="85" y="520">
 							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight || this.app.card.effectHeight ):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
-						<!-- <rect id="keywords" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
+						<!-- <rect id="keywords-${controller.cardId}" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
 						${keywordSvgs}
 
-						<rect id="name" width="510" height="70" x="85" y="${card.keywords.length ? 380 : 380 + 70 }" opacity="0"/>
+						<rect id="name-${controller.cardId}" width="510" height="70" x="85" y="${card.keywords.length ? 380 : 380 + 70 }" opacity="0"/>
 						${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 					</g>
 				</g>
 
-				<rect id="artist" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
+				<rect id="artist-${controller.cardId}" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
 				${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
 
 				<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
@@ -162,25 +162,25 @@
 						l 35, 60
 						h -70
 						Z
-					" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+					" fill="#fff" opacity="0.8" id="arrow-up-${controller.cardId}" onclick="this.app.card.transform.y -= 10" class="clickable" />
 					<path d="
 						M 340, 980
 						l 35, -60
 						h -70
 						Z
-					" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+					" fill="#fff" opacity="0.8" id="arrow-down-${controller.cardId}" onclick="this.app.card.transform.y += 10" class="clickable" />
 					<path d="
 						M 0, 550
 						l 60, -35
 						v 70
 						Z
-					" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+					" fill="#fff" opacity="0.8" id="arrow-left-${controller.cardId}" onclick="this.app.card.transform.x -= 10" class="clickable" />
 					<path d="
 						M 680, 550
 						l -60, -35
 						v 70
 						Z
-					" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+					" fill="#fff" opacity="0.8" id="arrow-right-${controller.cardId}" onclick="this.app.card.transform.x += 10" class="clickable" />
 
 					<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
 					<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>

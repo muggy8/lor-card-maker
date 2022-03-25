@@ -102,40 +102,40 @@
 					: ""
 			}
 
-			<image id="card-background" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
-			<image id="card-frame" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.clan ? 'token': card.rarity}.png"/>
+			<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
+			<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.clan ? 'token': card.rarity}.png"/>
 			${card.faction.length
 				? `
-				<image id="card-region-box" width="220" height="280" x="405" y="56" href="/assets/regions/spell/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
-				<image id="card-region-1" width="90" height="90" x="445" y="84" href="/assets/regions/${card.faction[0]}.png"/>`
+				<image id="card-region-box-${controller.cardId}" width="220" height="280" x="405" y="56" href="/assets/regions/spell/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
+				<image id="card-region-1-${controller.cardId}" width="90" height="90" x="445" y="84" href="/assets/regions/${card.faction[0]}.png"/>`
 				: ""
 			}
 
-			${card.faction.length > 1 ? `<image id="card-region-1" width="90" height="90" x="494" y="140" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
-			${card.faction.length > 2 ? `<image id="card-region-1" width="90" height="90" x="521" y="214" href="/assets/regions/${card.faction[2]}.png"/>` : "" }
+			${card.faction.length > 1 ? `<image id="card-region-1-${controller.cardId}" width="90" height="90" x="494" y="140" href="/assets/regions/${card.faction[1]}.png"/>` : "" }
+			${card.faction.length > 2 ? `<image id="card-region-1-${controller.cardId}" width="90" height="90" x="521" y="214" href="/assets/regions/${card.faction[2]}.png"/>` : "" }
 
-			<rect id="mana-cost" width="120" height="120" x="31" y="44" opacity="0"/>
+			<rect id="mana-cost-${controller.cardId}" width="120" height="120" x="31" y="44" opacity="0"/>
 			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
 
-			<rect id="name" width="550" height="70" x="60" y="585" opacity="0"/>
+			<rect id="name-${controller.cardId}" width="550" height="70" x="60" y="585" opacity="0"/>
 			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
 			${card.clan
 				? `
-				<rect id="clan-text-area" width="210" height="46" x="230" y="922"  fill="#CFF" opacity="0"/>
+				<rect id="clan-text-area-${controller.cardId}" width="210" height="46" x="230" y="922"  fill="#CFF" opacity="0"/>
 				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>
 				`
 				: ''
 			}
 
-			<!-- <rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
+			<!-- <rect id="keywords-${controller.cardId}" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
 			${keywordSvgs}
 
-			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect" width="550" height="145" x="60" y="740">
+			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="550" height="145" x="60" y="740">
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
-			<rect id="artist" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
+			<rect id="artist-${controller.cardId" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
 			${card.artist ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {align:'left'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">✍: ${card.artist ? card.artist : ""}</text>` : ''}
 
 			<g class="{:!${!!card.art} || this.app.exporting ? 'hide' : '' :}|{exporting}|">
@@ -144,25 +144,25 @@
 					l 35, 60
 					h -70
 					Z
-				" fill="#fff" opacity="0.8" id="arrow-up" onclick="this.app.card.transform.y -= 10" class="clickable" />
+				" fill="#fff" opacity="0.8" id="arrow-up-${controller.cardId}" onclick="this.app.card.transform.y -= 10" class="clickable" />
 				<path d="
 					M 340, 575
 					l 35, -60
 					h -70
 					Z
-				" fill="#fff" opacity="0.8" id="arrow-down" onclick="this.app.card.transform.y += 10" class="clickable" />
+				" fill="#fff" opacity="0.8" id="arrow-down-${controller.cardId}" onclick="this.app.card.transform.y += 10" class="clickable" />
 				<path d="
 					M 55, 300
 					l 60, -35
 					v 70
 					Z
-				" fill="#fff" opacity="0.8" id="arrow-left" onclick="this.app.card.transform.x -= 10" class="clickable" />
+				" fill="#fff" opacity="0.8" id="arrow-left-${controller.cardId}" onclick="this.app.card.transform.x -= 10" class="clickable" />
 				<path d="
 					M 625, 300
 					l -60, -35
 					v 70
 					Z
-				" fill="#fff" opacity="0.8" id="arrow-right" onclick="this.app.card.transform.x += 10" class="clickable" />
+				" fill="#fff" opacity="0.8" id="arrow-right-${controller.cardId}" onclick="this.app.card.transform.x += 10" class="clickable" />
 
 				<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale += 0.05">+</text>
 				<text font-size="156" x="440" y="345" fill="#fff" stroke="#fff" opacity="0.8" class="clickable" onclick="this.app.card.transform.scale -= 0.05">-</text>
