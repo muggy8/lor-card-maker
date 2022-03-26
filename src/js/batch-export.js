@@ -126,7 +126,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions1[this.index].included === 'object' || this.app.savedChampions1[this.index].included ? 'ghost' : '' :}|{savedChampions1[this.index].included}|" onclick="this.app.toggleExport(App.championLv1Builder, this.app.savedChampions1[this.index])">
 					<strong>Include {: this.app.savedChampions1[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions1[this.index].cardData, App.championLv1Builder, this.app.savedChampions1[this.index].id) :}|{savedChampions1[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions1[this.index].cardData, App.championLv1Builder, this.app.savedChampions1[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions1 -->
@@ -136,7 +136,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions2[this.index].included === 'object' || this.app.savedChampions2[this.index].included ? 'ghost' : '' :}|{savedChampions2[this.index].included}|" onclick="this.app.toggleExport(App.championLv2Builder, this.app.savedChampions2[this.index])">
 					<strong>Include {: this.app.savedChampions2[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions2[this.index].cardData, App.championLv2Builder, this.app.savedChampions2[this.index].id) :}|{savedChampions2[this.index].id}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions2[this.index].cardData, App.championLv2Builder, this.app.savedChampions2[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions2 -->
@@ -146,7 +146,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions3[this.index].included === 'object' || this.app.savedChampions3[this.index].included ? 'ghost' : '' :}|{savedChampions3[this.index].included}|" onclick="this.app.toggleExport(App.championLv3Builder, this.app.savedChampions3[this.index])">
 					<strong>Include {: this.app.savedChampions3[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions3[this.index].cardData, App.championLv3Builder, this.app.savedChampions3[this.index].id) :}|{savedChampions3[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions3[this.index].cardData, App.championLv3Builder, this.app.savedChampions3[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions3 -->
@@ -156,7 +156,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedLandmarks[this.index].included === 'object' || this.app.savedLandmarks[this.index].included ? 'ghost' : '' :}|{savedLandmarks[this.index].included}|" onclick="this.app.toggleExport(App.landmarkBuilder, this.app.savedLandmarks[this.index])">
 					<strong>Include {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedLandmarks[this.index].cardData, App.landmarkBuilder, this.app.savedLandmarks[this.index].id) :}|{savedLandmarks[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedLandmarks[this.index].cardData, App.landmarkBuilder, this.app.savedLandmarks[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedLandmarks -->
@@ -166,7 +166,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedSpells[this.index].included === 'object' || this.app.savedSpells[this.index].included ? 'ghost' : '' :}|{savedSpells[this.index].included}|" onclick="this.app.toggleExport(App.spellBuilder, this.app.savedSpells[this.index])">
 					<strong>Include {: this.app.savedSpells[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedSpells[this.index].cardData, App.spellBuilder, this.app.savedSpells[this.index].id) :}|{savedSpells[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedSpells[this.index].cardData, App.spellBuilder, this.app.savedSpells[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedSpells -->
@@ -176,7 +176,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedFollowers[this.index].included === 'object' || this.app.savedFollowers[this.index].included ? 'ghost' : '' :}|{savedFollowers[this.index].included}|" onclick="this.app.toggleExport(App.followerBuilder, this.app.savedFollowers[this.index])">
 					<strong>Include {: this.app.savedFollowers[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedFollowers[this.index].cardData, App.followerBuilder, this.app.savedFollowers[this.index].id) :}|{savedFollowers[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedFollowers[this.index].cardData, App.followerBuilder, this.app.savedFollowers[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedFollowers -->
@@ -186,7 +186,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedKeywords[this.index].included === 'object' || this.app.savedKeywords[this.index].included ? 'ghost' : '' :}|{savedKeywords[this.index].included}|" onclick="this.app.toggleExport(App.keywordBuilder, this.app.savedKeywords[this.index])">
 					<strong>Include {: this.app.savedKeywords[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedKeywords[this.index].cardData, App.keywordBuilder, this.app.savedKeywords[this.index].id) :}|{savedKeywords[this.index].id},{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedKeywords[this.index].cardData, App.keywordBuilder, this.app.savedKeywords[this.index].id) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedKeywords -->
