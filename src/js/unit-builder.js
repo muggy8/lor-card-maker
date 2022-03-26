@@ -131,7 +131,7 @@
 
 				<g id="all-text-group-${controller.cardId}" transform="translate(0, {: ${!!card.lvup} ? ( 130 - this.app.card.lvupHeight > 0 ? 130 - this.app.card.lvupHeight : 0 ) : 174 :}|{card.lvupHeight}|)">
 					<foreignObject style="background-color: rgba(0,0,0,0);" id="level-up-condition-${controller.cardId}" width="510" height="130" x="85" y="720">
-						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'levelFontSize')).then(()=>this.app.card.lvupHeight = this.scrollHeight || this.app.card.lvupHeight):}">${controller.decorateText(card.lvup)}</div>
+						<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.levelFontSize:}|{card.levelFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #d6946b" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this, 'levelFontSize')).then(()=>this.app && (this.app.card.lvupHeight = this.scrollHeight || this.app.card.lvupHeight)):}">${controller.decorateText(card.lvup)}</div>
 					</foreignObject>
 
 					${
@@ -142,7 +142,7 @@
 
 					<g id="effect-group-${controller.cardId}" transform="translate(0, {: 162 - this.app.card.effectHeight > 0 ? 162 - this.app.card.effectHeight : 0:}|{card.effectHeight}|)">
 						<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="510" height="162" x="85" y="520">
-							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this, 'effectFontSize')).then(()=>this.app.card.effectHeight = this.scrollHeight || this.app.card.effectHeight ):}">${controller.decorateText(card.effect)}</div>
+							<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this, 'effectFontSize')).then(()=>this.app && (this.app.card.effectHeight = this.scrollHeight || this.app.card.effectHeight) ):}">${controller.decorateText(card.effect)}</div>
 						</foreignObject>
 
 						<!-- <rect id="keywords-${controller.cardId}" width="560" height="70" fill="#CFF" x="60" y="450" opacity="0.75"/> -->
@@ -195,7 +195,8 @@
 			return previewSVG
 		}
 		catch(uwu){
-			console.error(uwu)
+			// whatever. we'll re-render real-fast again anyways so who cares
+			console.warn(uwu)
 		}
 	}
 

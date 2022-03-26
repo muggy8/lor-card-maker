@@ -72,7 +72,7 @@
             ${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
             <foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="450" height="210" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].effectY:}|{card.frameType}|">
-				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)).then(()=>this.app.reselectFrame(this)):}">${controller.decorateText(card.effect)}</div>
+				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this)).then(()=>this.app && this.app.reselectFrame(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
             <rect id="artist-area-${controller.cardId}" width="220" height="30" fill="#FFF" x="20" y="350" opacity="0"/>

@@ -132,7 +132,7 @@
 			${keywordSvgs}
 
 			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="550" height="145" x="60" y="740">
-				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
+				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 
 			<rect id="artist-${controller.cardId}" width="280" height="30" fill="#FFF" x="12" y="990" opacity="0"/>
