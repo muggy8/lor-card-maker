@@ -25,6 +25,8 @@ button {
 	border:none;
 }
 
+.color-mixer { mix-blend-mode: multiply; }
+
 .key-text {
 	font-family: BeaufortforLOLBold, serif;
 }

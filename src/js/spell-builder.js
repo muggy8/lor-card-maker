@@ -19,6 +19,7 @@
 		card.keywords = []
 		card.mana = 0
 		card.art = ""
+		card.textBgTint = [0,0,0,0]
 		card.transform = {
 			x: 0,
 			y: 0,
@@ -72,19 +73,14 @@
 			width="680" height="1024"
 			xmlns="http://www.w3.org/2000/svg"
 			viewbox="0 0 680 1024"
-			class="{:this.app.cardInstance = this:}"
+			class="{:(this.app.cardInstance = this), 'update app state to point to the correct svg instance':} {:this.app.calcBgTint(), 'calculate text area background tint continiousely':}|{card.art},{card.transform.x},{card.transform.y},{card.transform.scale}|"
 		>
+		<foreignObject style="background-color: rgba(0,0,0,0);" id="cropper-${controller.cardId}" width="680" height="1024" x="0" y="0">
+			<canvas id="cropper-canvas-${controller.cardId}" width="680" height="1024"></canvas>
+		</foreignObject>
+
 			<clipPath id="art-mask-${controller.cardId}">
 				<ellipse rx="240" ry="240" cx="340" cy="294"/>
-				<path d="
-					M 340, 294
-					m 0, 240
-					s 240, 0, 240, -240
-					s -240, -240, -240, -240
-					s -240, 0, -240, 240
-					s 240, 240, 240, 240
-					z
-				" stroke="#000"/>
 			</clipPath>
 
 			${card.art
@@ -102,7 +98,21 @@
 					: ""
 			}
 
-			<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>
+			<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background.png"/>
+			${card.art
+				? `<path class="color-mixer" id="card-text-color-mix" d="
+					M 20,500   
+					l 110,-50
+					a 240 200 0 0 0 420, 0
+					l 110,50
+					v 410
+					l -320,30
+					l -320,-30
+					Z
+				" fill="rgba({:this.app.card.textBgTint.join(','):}|{card.textBgTint}|)"/>`
+				: ""
+			}
+
 			<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.clan ? 'token': card.rarity}.png"/>
 			${card.faction.length
 				? `
@@ -188,6 +198,51 @@
 		window.location.reload()
 	}
 
+	let calcBgTint = controller.calcBgTint = async function(){
+		let controller = this
+		if (!controller.card.art){
+			return
+		}
+
+		let canvasId = `cropper-canvas-${controller.cardId}`
+		let canvas = controller.cardInstance.getElementById(canvasId)
+		let ctx = canvas.getContext('2d')
+		let image = new Image();
+		let fac = new FastAverageColor()
+
+		image.src = controller.card.art
+		image.onload = function(){
+			console.log(image.width, image.height)
+
+			let 
+				// the stats of the image and where on the image to render
+				ix = -card.transform.x, 
+                iy = -card.transform.y, 
+                // iWidth = image.width, 
+                // iHeight = image.height,
+
+                scale = card.transform.scale,
+
+				// control location of the draw frame on the image: this ammounts to a square of 100 units on each side at the center of the spell's circle
+                dx = 290, 
+                dy = 244, 
+                dWidth = 100, 
+                dHeight = 100,
+                
+				// control scale of the drawing
+                sx = (ix / scale) + (dx / scale), 
+                sy = (iy / scale) + (dy / scale),  
+                sWidth = 100 / scale,
+                sHeight = 100 / scale
+
+			ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+			let imageData = ctx.getImageData(dx, dy, dWidth, dHeight);
+
+			controller.card.textBgTint = fac.getColorFromArray4(imageData.data)
+
+		}
+	}
 
 	App.spellBuilder = controller
 	let view = proxymity(template, controller)
@@ -196,6 +251,7 @@
 })(`
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
+
 			{:this.app.attached && this.app.createPreview():}|{card.name},{card.clan},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.artist},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
