@@ -1,0 +1,38 @@
+<html><head><script src="https://unpkg.com/fast-average-color/dist/index.min.js"></script></head><body><svg width="680" height="1024" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 680 1024" style="position:absolute"><ellipse rx="240" ry="240" cx="340" cy="294" fill="rbga(200,200,255,0.5)"/><image id="card-art" clip-path="url(#art-mask)" width="1434" height="1076" x="-430" y="-122" href="./test.webp" opacity="0.3"/></svg><canvas id="cropper" width="680" height="1024" style="position:absolute"></canvas><script>const canvas = document.getElementById('cropper');
+            const ctx = canvas.getContext('2d');
+
+            let image = new Image();
+            image.src = "./test.webp"
+            // original image: 717 x 538 | scale factor 2
+
+            let ix = 430, 
+                iy = 122, 
+                iWidth = 1434, 
+                iHeight = 1076,
+
+                scale = 2
+
+                dx = 290, 
+                dy = 244, 
+                dWidth = 100, 
+                dHeight = 100,
+                
+                sx = (ix / scale) + (dx / scale), 
+                sy = (iy / scale) + (dy / scale),  
+                sWidth = 100 / scale,
+                sHeight = 100 / scale
+
+            const fac = new FastAverageColor();
+            image.onload = function(){
+                ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+                let imageData = ctx.getImageData(dx, dy, dWidth, dHeight);
+
+                console.log(imageData)
+
+                const color = fac.getColorFromArray4(imageData.data)
+
+                console.log(color)
+
+                // ctx.drawImage(image, 150, 200, 500, 300, 60,60, 500, 300);
+            }</script></body></html>

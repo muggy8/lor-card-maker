@@ -16,10 +16,25 @@
 		" stroke="#000"/>
 	</clipPath>
 
+	<style>
+		.color-mixer { mix-blend-mode: multiply; }
+	</style>
+
 	<image id="card-art" clip-path="url(#art-mask)" width="1360" height="1076" x="-430" y="-122" href="./test.webp" />
 
 	<image id="card-background" width="634" height="470" x="23" y="463" href="./background.png"/>
-	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./frameslowcommon.png"/>
+	<path class="color-mixer" id="card-text-color-mix" d="
+		M 20,500   
+		l 110,-50
+		a 240 200 0 0 0 420, 0
+		l 110,50
+		v 410
+		l -320,30
+		l -320,-30
+		Z
+	" fill="yellow"/>
+
+	<image id="card-frame" width="680" height="1024" x="0" y="0" href="./frameslowtoken.png"/>
 
 	<image id="card-region-box" width="220" height="280" x="405" y="56" href="./regionbox1.png"/>
 	<image id="card-region" width="100" height="100" x="440" y="84" href="./piltoverzaun.png"/>
@@ -27,6 +42,8 @@
 	<rect id="mana-cost" width="120" height="120" x="31" y="44" fill="#CFF" opacity="0.75"/>
 
 	<rect id="name" width="550" height="70" fill="#CFF" x="60" y="585" opacity="0.75"/>
+
+	<rect id="clan-text-area" width="210" height="46" x="230" y="922"  fill="#CFF" opacity="0.75"/>
 
 	<rect id="keywords" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/>
 
@@ -61,4 +78,6 @@
 		<text font-size="156" x="180" y="345" fill="#fff" stroke="#fff" opacity="0.8">+</text>
 		<text font-size="156" x="390" y="345" fill="#fff" stroke="#fff" opacity="0.8">-</text>
 	</g>
+
+
 </svg>
