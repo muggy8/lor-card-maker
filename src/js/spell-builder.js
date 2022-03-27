@@ -94,23 +94,20 @@
 						preserveAspectRatio="xMidYMid meet"
 						width="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
 						height="{:680 * this.app.card.transform.scale:}|{card.transform.scale}|"
-					/>`
-					: ""
-			}
-
-			<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background.png"/>
-			${card.art
-				? `<path class="color-mixer" id="card-text-color-mix" d="
-					M 20,500   
-					l 110,-50
-					a 240 200 0 0 0 420, 0
-					l 110,50
-					v 410
-					l -320,30
-					l -320,-30
-					Z
-				" fill="rgba({:this.app.card.textBgTint.join(','):}|{card.textBgTint}|)"/>`
-				: ""
+					/>
+					<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background.png"/>
+					<path class="color-mixer" id="card-text-color-mix" d="
+						M 20,500   
+						l 110,-50
+						a 240 200 0 0 0 420, 0
+						l 110,50
+						v 410
+						l -320,30
+						l -320,-30
+						Z
+					" fill="rgba({:this.app.card.textBgTint.join(','):}|{card.textBgTint}|)"/>
+					`
+					: `<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>`
 			}
 
 			<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.clan ? 'token': card.rarity}.png"/>
@@ -212,7 +209,6 @@
 
 		image.src = controller.card.art
 		image.onload = function(){
-			console.log(image.width, image.height)
 
 			let 
 				// the stats of the image and where on the image to render
