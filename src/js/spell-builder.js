@@ -238,6 +238,7 @@
                 sWidth = 100 / scale,
                 sHeight = 100 / scale
 
+			ctx.drawImage(image, sx, sy, sWidth, sHeight) // fallback if the next call fails for some reason
 			ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
 			let imageData = ctx.getImageData(dx, dy, dWidth, dHeight);
@@ -247,7 +248,7 @@
 			fac.destroy()
 
 			console.log({
-				canvas,
+				canvas, ctx,
 				image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight,
 			})
 		}
