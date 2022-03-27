@@ -123,7 +123,7 @@
 			${card.clan
 				? `
 				<rect id="clan-text-area-${controller.cardId}" width="210" height="46" x="230" y="922"  fill="#CFF" opacity="0"/>
-				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>
+				<text class="bold caps {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>
 				`
 				: ''
 			}

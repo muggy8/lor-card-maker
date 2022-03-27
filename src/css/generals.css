@@ -29,6 +29,14 @@ button {
 	font-family: BeaufortforLOLBold, serif;
 }
 
+.bold {
+	font-weight: bold;
+}
+
+.caps {
+	text-transform: uppercase;
+}
+
 .fixed {
 	position: fixed;
 }
