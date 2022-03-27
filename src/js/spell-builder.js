@@ -207,7 +207,14 @@
 		let image = new Image();
 		let fac = new FastAverageColor()
 
-		image.src = controller.card.art
+		// image.src = controller.card.art
+		let cardArtBase64 = controller.card.art
+		if (!cardArtBase64.trim().startsWith("data:")){ // if it's not a base 64 string, then it's a URL so we gotta convert it cuz shit's werid
+			cardArtBase64 = await imageToBase64(cardArtBase64)
+		}
+
+		image.src = cardArtBase64
+
 		image.onload = function(){
 
 			let 
@@ -237,6 +244,12 @@
 
 			controller.card.textBgTint = fac.getColorFromArray4(imageData.data)
 
+			fac.destroy()
+
+			console.log({
+				canvas,
+				image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight,
+			})
 		}
 	}
 
