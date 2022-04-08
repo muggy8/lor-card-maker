@@ -19,6 +19,14 @@
   },
   "homepage": "https://github.com/muggy8/lor-card-maker#readme",
   "devDependencies": {
+	"mobile-inspector":"1.1.0",
+	"proxymity":"2.0.4",
+	"save-svg-as-png":"1.4.17",
+	"d3":"3.5.15",
+	"d3plus":"1.9.8",
+	"fast-average-color":"7.1.0",
+
+
     "express": "^4.17.1",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",

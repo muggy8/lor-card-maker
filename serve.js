@@ -12,6 +12,7 @@ const fs = require('fs').promises
 
 if (argv.proxymity){
 	const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
+	const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
 	app.get("/", async function(req, res, next){
 		let indexPage = await fs.readFile("src/index.html", "utf-8")
 		indexPage = indexPage.replace(proxymityScriptRegex, `
@@ -41,11 +42,15 @@ if (argv.proxymity){
 			</script>
 		`)
 
+		indexPage = indexPage.replace(cdnJsRegex, function(match, packageName){
+			return `/node_modules/${packageName}`
+		})
 		res.send(indexPage)
 	})
 
 	app.use(express.static(argv.proxymity))
 }
+app.use("/node_modules", express.static("node_modules"))
 app.use(express.static('src'))
 
 app.listen(port, () => {
