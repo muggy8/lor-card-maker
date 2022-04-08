@@ -26,6 +26,9 @@
 	"d3plus":"1.9.8",
 	"fast-average-color":"7.1.0",
 
+	"flex-box":"https://github.com/muggy8/flex-box.git#f1c7d23fad7ece8fc7538b152ac393a29b65669b",
+	"mmc-3":"https://github.com/muggy8/mmc-3.git#c6bc8bd21a181c671fee4460ceb6cdc54625772d",
+
 
     "express": "^4.17.1",
     "gulp": "^4.0.2",

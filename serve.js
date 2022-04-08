@@ -10,9 +10,11 @@ const open = require('open')
 
 const fs = require('fs').promises
 
+const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
+const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
+const cdnGitRegex = /https\:\/\/cdn\.jsdelivr\.net\/gh\/[^\/]+\/([^\@]+)\@[^\/]+/gm
+
 if (argv.proxymity){
-	const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
-	const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
 	app.get("/", async function(req, res, next){
 		let indexPage = await fs.readFile("src/index.html", "utf-8")
 		indexPage = indexPage.replace(proxymityScriptRegex, `
@@ -45,10 +47,27 @@ if (argv.proxymity){
 		indexPage = indexPage.replace(cdnJsRegex, function(match, packageName){
 			return `/node_modules/${packageName}`
 		})
+		indexPage = indexPage.replace(cdnGitRegex, function(match, packageName){
+			return `/node_modules/${packageName}`
+		})
 		res.send(indexPage)
 	})
 
 	app.use(express.static(argv.proxymity))
+}
+else{
+	app.get("/", async function(req, res, next){
+		let indexPage = await fs.readFile("src/index.html", "utf-8")
+
+		indexPage = indexPage.replace(cdnJsRegex, function(match, packageName){
+			return `/node_modules/${packageName}`
+		})
+
+		indexPage = indexPage.replace(cdnGitRegex, function(match, packageName){
+			return `/node_modules/${packageName}`
+		})
+		res.send(indexPage)
+	})
 }
 app.use("/node_modules", express.static("node_modules"))
 app.use(express.static('src'))
