@@ -91,7 +91,7 @@
 					: ""
 				}
 
-				<image id="art-shade-${controller.cardId}" clip-path="url(#art-mask)" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
+				<image id="art-shade-${controller.cardId}" clip-path="url(#art-mask-${controller.cardId})" width="680" height="1024" x="0" y="0" xlink:href="/assets/common/theencrouchingdarkness.png"/>
 				<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="${controller.rendererOptions.framePath}${card.rarity}.png"/>
 
 				${card.faction.length
