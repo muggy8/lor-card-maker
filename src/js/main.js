@@ -83,22 +83,60 @@ const App = (function(){
 			//~ card.art = reader.result
 			try {
 				let json = JSON.parse(reader.result)
-				let champions1Task = json.savedChampions1.map(card=>App.storage.saveChampion1(card.cardData, card.id))
-				let champions2Task = json.savedChampions2.map(card=>App.storage.saveChampion2(card.cardData, card.id))
-				let champions3Task = json.savedChampions3.map(card=>App.storage.saveChampion3(card.cardData, card.id))
-				let followerTask = json.savedFollowers.map(card=>App.storage.saveFollower(card.cardData, card.id))
-				let landmarkTask = json.savedLandmarks.map(card=>App.storage.saveLandmark(card.cardData, card.id))
-				let spellTask = json.savedSpells.map(card=>App.storage.saveSpell(card.cardData, card.id))
-				let keywordTask = json.savedKeywords.map(card=>App.storage.saveKeyword(card.cardData, card.id))
+				let startingPromise = Promise.resolve()
+				let champions1Task = json.savedChampions1.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveChampion1(card.cardData, card.id)
+					),
+					startingPromise
+				)
+				let champions2Task = json.savedChampions2.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveChampion2(card.cardData, card.id)
+					),
+					champions1Task
+				)
+				let champions3Task = json.savedChampions3.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveChampion3(card.cardData, card.id)
+					),
+					champions2Task
+				)
+				let followerTask = json.savedFollowers.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveFollower(card.cardData, card.id)
+					),
+					champions3Task
+				)
+				let landmarkTask = json.savedLandmarks.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveLandmark(card.cardData, card.id)
+					),
+					followerTask
+				)
+				let spellTask = json.savedSpells.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveSpell(card.cardData, card.id)
+					),
+					landmarkTask
+				)
+				let keywordTask = json.savedKeywords.reduce(
+					(lastTask, card)=>lastTask.then(
+						_=>App.storage.saveKeyword(card.cardData, card.id)
+					),
+					spellTask
+				)
 
 				let process = [champions1Task, champions2Task, champions3Task, followerTask, landmarkTask, spellTask, keywordTask].flat()
 				Promise.all(process).then(()=>{
 					document.location.reload()
-				}).catch(()=>{
+				}).catch((uwu)=>{
+					console.warn(uwu)
 					alert("corrupted file. please try a different file")
 				})
 			}
 			catch(uwu){
+				console.warn(uwu)
 				alert("corrupted file. please try a different file")
 			}
 		})
