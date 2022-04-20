@@ -62,6 +62,8 @@ svg span + span {
 	padding-top: calc(2rem + var(--header-height));
 	transform: translate(-100%, 0);
 	border-right: solid 1px #555;
+	max-width: 100%;
+	z-index: 1;
 }
 
 #side-bar.shown {
