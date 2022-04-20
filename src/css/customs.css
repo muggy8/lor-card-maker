@@ -50,3 +50,34 @@ svg span + span {
 		overflow-y: scroll;
 	}
 }
+
+#side-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	transition: transform 0.5s;
+	padding: 2rem;
+	background-color: #000;
+	padding-top: calc(2rem + var(--header-height));
+	transform: translate(-100%, 0);
+	border-right: solid 1px #555;
+}
+
+#side-bar.shown {
+	transform: translate(0,0);
+}
+
+#side-bar-button {
+	position: absolute;
+	padding: 1rem;
+	left: 100%;
+	top: 0;
+	font-size: 3rem;
+	transition: transform 0.5s;
+	transform: translate(0,0);
+}
+
+#side-bar.shown #side-bar-button {
+	transform: translate(-100%,0);
+}

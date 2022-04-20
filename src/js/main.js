@@ -1,6 +1,7 @@
 const App = (function(){
 	let controller = {
 		currentView: undefined,
+		showSidebar: false,
 	}
 	let view = proxymity(document.body, controller)
 
