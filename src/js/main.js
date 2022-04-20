@@ -99,40 +99,40 @@ const App = (function(){
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveChampion2(card.cardData, card.id)
 					),
-					champions1Task
+					startingPromise
 				)
 				let champions3Task = json.savedChampions3.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveChampion3(card.cardData, card.id)
 					),
-					champions2Task
+					startingPromise
 				)
 				let followerTask = json.savedFollowers.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveFollower(card.cardData, card.id)
 					),
-					champions3Task
+					startingPromise
 				)
 				let landmarkTask = json.savedLandmarks.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveLandmark(card.cardData, card.id)
 					),
-					followerTask
+					startingPromise
 				)
 				let spellTask = json.savedSpells.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveSpell(card.cardData, card.id)
 					),
-					landmarkTask
+					startingPromise
 				)
 				let keywordTask = json.savedKeywords.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveKeyword(card.cardData, card.id)
 					),
-					spellTask
+					startingPromise
 				)
 
-				let process = [champions1Task, champions2Task, champions3Task, followerTask, landmarkTask, spellTask, keywordTask].flat()
+				let process = [champions1Task, champions2Task, champions3Task, followerTask, landmarkTask, spellTask, keywordTask]
 				Promise.all(process).then(()=>{
 					controller.loading.stop()
 					document.location.reload()
