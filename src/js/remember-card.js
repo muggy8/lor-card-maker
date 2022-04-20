@@ -15,7 +15,7 @@
 		getSavedLandmark: cardGetterFactory("landmark"),
 		getSavedKeyworkd: cardGetterFactory("keyword"),
 		getSavedSpell: cardGetterFactory("spell"),
-		
+
 		delSavedFollower: cardDeleterFactory("follower"),
 		delSavedChampion1: cardDeleterFactory("champion1"),
 		delSavedChampion2: cardDeleterFactory("champion2"),
@@ -55,6 +55,9 @@
 
 			if (!cardId){
 				cardId = newCardId
+				storedCards.push(cardId)
+			}
+			else if (storedCards.indexOf(cardId) === -1){
 				storedCards.push(cardId)
 			}
 
