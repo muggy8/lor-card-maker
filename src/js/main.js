@@ -39,6 +39,8 @@ const App = (function(){
 	}
 
 	controller.exportSavedData = function(){
+
+		controller.loading.start()
 		Promise.all([
 			App.storage.getSavedChampion1(),
 			App.storage.getSavedChampion2(),
@@ -62,6 +64,7 @@ const App = (function(){
 
 			downloadFile(jsonText, "card-data.json", "application/json")
 
+			controller.loading.stop()
 		})
 
 		controller.showSidebar = false
@@ -82,6 +85,8 @@ const App = (function(){
 		reader.addEventListener("load", function(){
 			//~ card.art = reader.result
 			try {
+
+				controller.loading.start()
 				let json = JSON.parse(reader.result)
 				let startingPromise = Promise.resolve()
 				let champions1Task = json.savedChampions1.reduce(
@@ -129,14 +134,17 @@ const App = (function(){
 
 				let process = [champions1Task, champions2Task, champions3Task, followerTask, landmarkTask, spellTask, keywordTask].flat()
 				Promise.all(process).then(()=>{
+					controller.loading.stop()
 					document.location.reload()
 				}).catch((uwu)=>{
 					console.warn(uwu)
+					controller.loading.stop()
 					alert("corrupted file. please try a different file")
 				})
 			}
 			catch(uwu){
 				console.warn(uwu)
+				controller.loading.stop()
 				alert("corrupted file. please try a different file")
 			}
 		})
@@ -145,6 +153,31 @@ const App = (function(){
 			reader.readAsText(file)
 			controller.showSidebar = false
 		}
+	}
+
+	controller.loading = {
+		startingView:undefined,
+		start: function(){
+			if (controller.currentView === controller.loading.view){
+				return
+			}
+			controller.loading.startingView = controller.currentView
+			controller.currentView = controller.loading.view
+		},
+		stop: function(){
+			if (!controller.loading.startingView){
+				return
+			}
+			controller.currentView = controller.loading.startingView
+			controller.loading.startingView = undefined
+		},
+		view: proxymity(`
+			<main id="main-loading" class="flex vhcenter">
+				<div class="icon">
+					<div class="loading"></div>
+				</div>
+			</main>
+		`, controller)
 	}
 
 	return controller
