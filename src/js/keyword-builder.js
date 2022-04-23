@@ -56,6 +56,16 @@
         },
     }
 
+    controller.resetText = function(textSource){
+		let contentReplacement = new Text(textSource.textContent)
+		textSource.replaceChildren(contentReplacement)
+		textSource.removeAttribute("x")
+		textSource.removeAttribute("y")
+		textSource.removeAttribute("transform")
+		textSource.removeAttribute("style")
+		textSource.removeAttribute("text-anchor")
+	}
+
     controller.createPreview = function(cardData){
         let controller = this
 		let card = cardData || controller.card
@@ -69,7 +79,7 @@
         >
             <image id="frame-bg-${controller.cardId}" width="524" height="373" x="0" y="0" href="/assets/keyword/frame{:this.app.card.frameType:}|{card.frameType}|.png"/>
             <rect id="name-text-area-${controller.cardId}" width="450" height="56" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].nameY:}|{card.frameType}|" fill="#FFF" opacity="0"/>
-            ${card.name ? `<text class="{:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fad65a" stroke="#fad65a" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
+            ${card.name ? `<text class="{:this.app.resetText(this); proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}|{card.frameType}|" font-size="36" fill="#fad65a" stroke="#fad65a" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
             <foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="450" height="210" x="37" y="{:this.app.contentValues['frame' + this.app.card.frameType].effectY:}|{card.frameType}|">
 				<div xmlns="http://www.w3.org/1999/xhtml"  class="key-text" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; max-height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this)).then(()=>this.app && this.app.reselectFrame(this)):}">${controller.decorateText(card.effect)}</div>
