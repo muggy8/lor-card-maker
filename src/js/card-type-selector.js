@@ -78,10 +78,6 @@
 		</div>
 	</div>
 
-	<div class="gutter-rl-2 gutter-tb-4 box-12 flex vhcenter">
-		<button class="box-12" onclick="App.batchExporter.focus()">Batch Export (Beta)</button>
-	</div>
-
 	<div class="flex hcenter box-12">
 		<h2>I want to edit...</h2>
 	</div>
