@@ -68,7 +68,6 @@ svg span + span {
 	transform: translate(-100%, 0);
 	border-right: solid 1px #555;
 	max-width: 100%;
-	z-index: 1;
 }
 
 #side-bar.shown {
@@ -80,7 +79,8 @@ svg span + span {
 	padding: 1rem;
 	left: 100%;
 	top: 0;
-	font-size: 3rem;
+	min-height: var(--header-height);
+	font-size: 2rem;
 	transition: transform 0.5s;
 	transform: translate(0,0);
 }

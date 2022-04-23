@@ -16,6 +16,12 @@ const App = (function(){
 		state.focus && App[state.focus].focus()
 	})
 
+	window.addEventListener("resize", function(ev){
+		controller.windowResize = !controller.windowResize
+	})
+	controller.windowResize = !controller.windowResize
+
+
 	if ('serviceWorker' in navigator) {
 	  controller.swReady = navigator.serviceWorker.register('./service-worker.js', {
 		  scope: document.location.pathname,
