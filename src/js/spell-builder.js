@@ -97,7 +97,7 @@
 					/>
 					<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background.png"/>
 					<path class="color-mixer" id="card-text-color-mix" d="
-						M 20,500   
+						M 20,500
 						l 110,-50
 						a 240 200 0 0 0 420, 0
 						l 110,50
@@ -217,24 +217,24 @@
 
 		image.onload = function(){
 
-			let 
+			let
 				// the stats of the image and where on the image to render
-				ix = -card.transform.x, 
-                iy = -card.transform.y, 
-                // iWidth = image.width, 
+				ix = -card.transform.x,
+                iy = -card.transform.y,
+                // iWidth = image.width,
                 // iHeight = image.height,
 
                 scale = card.transform.scale,
 
 				// control location of the draw frame on the image: this ammounts to a square of 100 units on each side at the center of the spell's circle
-                dx = 290, 
-                dy = 244, 
-                dWidth = 100, 
+                dx = 290,
+                dy = 244,
+                dWidth = 100,
                 dHeight = 100,
-                
+
 				// control scale of the drawing
-                sx = (ix / scale) + (dx / scale), 
-                sy = (iy / scale) + (dy / scale),  
+                sx = (ix / scale) + (dx / scale),
+                sy = (iy / scale) + (dy / scale),
                 sWidth = 100 / scale,
                 sHeight = 100 / scale
 
@@ -246,11 +246,6 @@
 			controller.card.textBgTint = fac.getColorFromArray4(imageData.data)
 
 			fac.destroy()
-
-			console.log({
-				canvas, ctx,
-				image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight,
-			})
 		}
 	}
 

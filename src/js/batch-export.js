@@ -63,7 +63,8 @@
 			if (Object.prototype.hasOwnProperty.call(target, prop)){
 				return
 			}
-			target[prop] = source[prop]
+			let sourceDescriptor = Object.getOwnPropertyDescriptor(source, prop)
+			Object.defineProperty(target, prop, sourceDescriptor)
 		})
 	}
 
