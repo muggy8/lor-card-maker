@@ -94,19 +94,28 @@
 		previewSVG.when.detach(function(){
 			previewSVG.unlink()
 		})
+
 		return previewSVG
     }
 
     controller.reselectFrame = function(effectContainer){
         let controller = this
 
-        setTimeout(() => {
-            controller.card.frameType = Math.floor(effectContainer.scrollHeight/controller.card.effectFontSize)
+        if (!effectContainer.isConnected){
+			return
+		}
 
-            if (controller.card.frameType > 5){
-                controller.card.frameType = 5
-            }
-        }, 0)
+		return new Promise(accept=>setTimeout(function(){
+
+			controller.card.frameType = Math.floor(effectContainer.scrollHeight/controller.card.effectFontSize)
+
+			if (controller.card.frameType > 5){
+				controller.card.frameType = 5
+			}
+
+			accept()
+		}, 1))
+
     }
 
     let saveCard = controller.saveCard = async function(){
