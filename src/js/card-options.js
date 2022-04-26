@@ -354,7 +354,7 @@ App.cardOptions = (function(template, subTemplates){
 	speedSelectorUI: `
 		<label>
 			<div>
-				<strong>Speed</strong>
+				<strong>Card Frame Type</strong>
 			</div>
 			<div class="flex gutter-b">
 				<select name="rarity" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
