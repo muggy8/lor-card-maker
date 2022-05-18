@@ -17,7 +17,7 @@
 		card.clan = ""
 		card.effect = ""
 		card.keywords = []
-		card.mana = 0
+		card.mana = NaN
 		card.art = ""
 		card.textBgTint = [0,0,0,0]
 		card.transform = {
@@ -122,7 +122,10 @@
 			${card.faction.length > 2 ? `<image id="card-region-1-${controller.cardId}" width="90" height="90" x="521" y="214" href="/assets/regions/${card.faction[2]}.png"/>` : "" }
 
 			<rect id="mana-cost-${controller.cardId}" width="120" height="120" x="31" y="44" opacity="0"/>
-			<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
+			${typeof card.mana === 'number' && !isNaN(card.mana)
+				? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>`
+				: ""
+			}
 
 			<rect id="name-${controller.cardId}" width="550" height="70" x="60" y="585" opacity="0"/>
 			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
@@ -138,7 +141,7 @@
 			<!-- <rect id="keywords-${controller.cardId}" width="550" height="70" fill="#CFF" x="60" y="655" opacity="0.75"/> -->
 			${keywordSvgs}
 
-			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="550" height="145" x="60" y="740">
+			<foreignObject style="background-color: rgba(0,0,0,0);" id="effect-${controller.cardId}" width="550" height="${145 + (keywordSvgs ? 0 : 70)}" x="60" y="${keywordSvgs ? 740 : 655}">
 				<div xmlns="http://www.w3.org/1999/xhtml" style="font-size:{:this.app.card.effectFontSize:}|{card.effectFontSize}|px; text-align: center; overflow: hidden; height: 100%; color: #fff" data-init="{:proxymity.on.renderend.then(()=>this.app && this.app.effectResize(this)):}">${controller.decorateText(card.effect)}</div>
 			</foreignObject>
 

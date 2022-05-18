@@ -190,8 +190,8 @@ App.cardOptions = (function(template, subTemplates){
 					name="mana-cost"
 					type="number"
 					data-value="{:this.app.card.mana:}|{card.mana}|"
-					onchange="this.app.card.mana = this.valueAsNumber || 0"
-					onkeyup="this.app.card.mana = this.valueAsNumber || 0"
+					onchange="this.app.card.mana = this.valueAsNumber"
+					onkeyup="this.app.card.mana = this.valueAsNumber"
 				>
 			</div>
 		</label>
