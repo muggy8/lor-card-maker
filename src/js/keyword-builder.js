@@ -140,11 +140,11 @@
 			{:this.app.attached && this.app.createPreview():}|{card.name},{card.effect},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
-				<button onclick="this.app.exportCard()">Export</button>
+				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Keyword</button>
 				<div class="gutter-rl"></div>
 				<button onclick="this.app.saveCard()">Save Keyword</button>
 				<div class="gutter-rl"></div>
-				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
+				<button onclick="this.app.exportCard()">Export</button>
 			</div>
 
 			<div class="gutter-b-3"></div>

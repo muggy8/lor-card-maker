@@ -182,7 +182,7 @@
 
 		let templateEl = document.createElement("template")
 		templateEl.innerHTML = svg.trim()
-		let svgEl = templateEl.content.querySelector("svg") 
+		let svgEl = templateEl.content.querySelector("svg")
 
 		let previewSVG = proxymity(svgEl, controller)
 		previewSVG.when.detach(function(){
@@ -271,11 +271,11 @@
 			{:this.app.attached && this.app.createPreview():}|{card.name},{card.clan},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.artist},{card.blueWords.*},{card.orangeWords.*},{attached}|
 
 			<div class="flex hcenter gutter-tb">
-				<button onclick="this.app.exportCard()">Export</button>
+				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
 				<div class="gutter-rl"></div>
 				<button onclick="this.app.saveCard()">Save Card</button>
 				<div class="gutter-rl"></div>
-				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">Delete Card</button>
+				<button onclick="this.app.exportCard()">Export</button>
 			</div>
 
 			<div class="gutter-b-3"></div>
