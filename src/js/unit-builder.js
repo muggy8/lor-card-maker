@@ -114,7 +114,10 @@
 				}
 
 				<rect id="mana-cost-${controller.cardId}" width="120" height="120" x="31" y="44" opacity="0"/>
-				<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>
+				${typeof card.mana === 'number' && !isNaN(card.mana)
+					? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.mana}</text>`
+					: ""
+				}
 
 
 				${Object.prototype.hasOwnProperty.call(card, "power")
