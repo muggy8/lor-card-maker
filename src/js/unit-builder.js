@@ -71,7 +71,6 @@
 				width="680" height="1024"
 				xmlns="http://www.w3.org/2000/svg"
 				viewbox="0 0 680 1024"
-				class="{:this.app.cardInstance = this:}"
 			>
 
 				${controller.artMask}
@@ -191,9 +190,17 @@
 			</svg>`
 
 		try{
-			let previewSVG = proxymity(svg, controller)
+			let templateEl = document.createElement("template")
+			templateEl.innerHTML = svg.trim()
+			let svgEl = templateEl.content.querySelector("svg") 
+			
+			let previewSVG = proxymity(svgEl, controller)
 			previewSVG.when.detach(async function(){
 				previewSVG.unlink()
+			})
+			previewSVG.when.append(function(){
+				console.log(svgEl)
+				controller.cardInstance = svgEl
 			})
 			return previewSVG
 		}
