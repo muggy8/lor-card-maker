@@ -73,7 +73,7 @@
 			width="680" height="1024"
 			xmlns="http://www.w3.org/2000/svg"
 			viewbox="0 0 680 1024"
-			class="{:(this.app.cardInstance = this), 'update app state to point to the correct svg instance':} {:this.app.calcBgTint(), 'calculate text area background tint continiousely':}|{card.art},{card.transform.x},{card.transform.y},{card.transform.scale}|"
+			class="{:this.app.calcBgTint(), 'calculate text area background tint continiousely':}|{card.art},{card.transform.x},{card.transform.y},{card.transform.scale}|"
 		>
 		<foreignObject style="background-color: rgba(0,0,0,0);" id="cropper-${controller.cardId}" width="680" height="1024" x="0" y="0">
 			<canvas id="cropper-canvas-${controller.cardId}" width="680" height="1024"></canvas>
@@ -180,9 +180,17 @@
 
 		</svg>`
 
-		let previewSVG = proxymity(svg, controller)
+		let templateEl = document.createElement("template")
+		templateEl.innerHTML = svg.trim()
+		let svgEl = templateEl.content.querySelector("svg") 
+
+		let previewSVG = proxymity(svgEl, controller)
 		previewSVG.when.detach(function(){
 			previewSVG.unlink()
+		})
+		previewSVG.when.append(function(){
+			console.log(svgEl)
+			controller.cardInstance = svgEl
 		})
 		return previewSVG
 	}
