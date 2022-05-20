@@ -62,7 +62,7 @@
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
 		<strong>Spell</strong>
 		<div class="clickable"  onclick="App.spellBuilder.focus()">
-			<img src="./assets/spell/frameslownone.png" />
+			<img src="./assets/spell/framenone.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">

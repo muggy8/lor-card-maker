@@ -1,5 +1,6 @@
 const cardOptionsData = {
 	spellSpeedOptions: [
+		"none",
 		"slow",
 		"fast",
 		"burst",

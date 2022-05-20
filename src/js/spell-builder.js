@@ -26,7 +26,7 @@
 			scale: 1,
 		}
 		card.rarity = "none"
-		card.speed = "slow"
+		card.speed = "none"
 		card.faction = []
 		card.blueWords = []
 		card.orangeWords = []
@@ -110,7 +110,11 @@
 					: `<image id="card-background-${controller.cardId}" width="634" height="470" x="23" y="463" xlink:href="/assets/spell/background-inverted.png"/>`
 			}
 
-			<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${card.clan ? 'token': card.rarity}.png"/>
+			<image id="card-frame-${controller.cardId}" width="680" height="1024" x="0" y="0" xlink:href="/assets/spell/frame${card.speed}${
+				card.speed === "none"
+					? ("")
+					: (card.clan ? 'token': card.rarity)
+			}.png"/>
 			${card.faction.length
 				? `
 				<image id="card-region-box-${controller.cardId}" width="220" height="280" x="405" y="56" href="/assets/regions/spell/regionbox${card.faction.length < 3 ? card.faction.length : 3}.png"/>
