@@ -32,60 +32,60 @@
 	focus()
 })(`
 <div class="flex hcenter">
-	<h2>I want to create a...</h2>
+	<h2>{:App.lang[App.langChoice].i_want_to_make:}</h2>
 </div>
 <main class="gutter-trbl-.5 flex">
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Champion Lv 1</strong>
+		<strong>{:App.lang[App.langChoice].champ1:}</strong>
 		<div class="clickable" onclick="App.championLv1Builder.focus()">
 			<img src="./assets/champion/frame1gemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Champion Lv 2</strong>
+		<strong>{:App.lang[App.langChoice].champ2:}</strong>
 		<div class="clickable"  onclick="App.championLv2Builder.focus()">
 			<img src="./assets/champion/frame2gemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Champion Lv 3</strong>
+		<strong>{:App.lang[App.langChoice].champ3:}</strong>
 		<div class="clickable"  onclick="App.championLv3Builder.focus()">
 			<img src="./assets/champion/frame3gemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Landmark</strong>
+		<strong>{:App.lang[App.langChoice].landmark:}</strong>
 		<div class="clickable"  onclick="App.landmarkBuilder.focus()">
 			<img src="./assets/landmark/framegemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Spell</strong>
+		<strong>{:App.lang[App.langChoice].spell:}</strong>
 		<div class="clickable"  onclick="App.spellBuilder.focus()">
 			<img src="./assets/spell/framenone.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Follower</strong>
+		<strong>{:App.lang[App.langChoice].follower:}</strong>
 		<div class="clickable" onclick="App.followerBuilder.focus()">
 			<img src="./assets/follower/framegemless.png" />
 		</div>
 	</div>
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter">
-		<strong>Keyword (beta)</strong>
+		<strong>{:App.lang[App.langChoice].keyword:} {:App.lang[App.langChoice].beta:}</strong>
 		<div class="clickable" onclick="App.keywordBuilder.focus()">
 			<img src="./assets/keyword/frame5.png" />
 		</div>
 	</div>
 
 	<div class="flex hcenter box-12">
-		<h2>I want to edit...</h2>
+		<h2>{:App.lang[App.langChoice].i_want_to_edit:}</h2>
 	</div>
 
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv1Builder.focus().then(_=>{this.app.transferData(App.championLv1Builder.card, this.app.savedChampions1[this.index].cardData); App.championLv1Builder.cardId = this.app.savedChampions1[this.index].id})">
-		<strong>Edit {: this.app.savedChampions1[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedChampions1[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -101,7 +101,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv2Builder.focus().then(_=>{this.app.transferData(App.championLv2Builder.card, this.app.savedChampions2[this.index].cardData); App.championLv2Builder.cardId = this.app.savedChampions2[this.index].id})">
-		<strong>Edit {: this.app.savedChampions2[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedChampions2[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -117,7 +117,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.championLv3Builder.focus().then(_=>{this.app.transferData(App.championLv3Builder.card, this.app.savedChampions3[this.index].cardData); App.championLv3Builder.cardId = this.app.savedChampions3[this.index].id})">
-		<strong>Edit {: this.app.savedChampions3[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedChampions3[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -133,7 +133,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.landmarkBuilder.focus().then(_=>{this.app.transferData(App.landmarkBuilder.card, this.app.savedLandmarks[this.index].cardData); App.landmarkBuilder.cardId = this.app.savedLandmarks[this.index].id})">
-		<strong>Edit {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -149,7 +149,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.spellBuilder.focus().then(_=>{this.app.transferData(App.spellBuilder.card, this.app.savedSpells[this.index].cardData); App.spellBuilder.cardId = this.app.savedSpells[this.index].id})">
-		<strong>Edit {: this.app.savedSpells[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedSpells[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -165,7 +165,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.followerBuilder.focus().then(_=>{this.app.transferData(App.followerBuilder.card, this.app.savedFollowers[this.index].cardData); App.followerBuilder.cardId = this.app.savedFollowers[this.index].id})">
-		<strong>Edit {: this.app.savedFollowers[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedFollowers[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
@@ -181,7 +181,7 @@
 	<!-- forEach: "index" -->
 	<!-- key: function(item, index, whole){ return item.id } -->
 	<div class="gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter clickable" onclick="App.keywordBuilder.focus().then(_=>{this.app.transferData(App.keywordBuilder.card, this.app.savedKeywords[this.index].cardData); App.keywordBuilder.cardId = this.app.savedKeywords[this.index].id})">
-		<strong>Edit {: this.app.savedKeywords[this.index].cardData.name :}</strong>
+		<strong>{:App.lang[App.langChoice].edit:} {: this.app.savedKeywords[this.index].cardData.name :}</strong>
 		<div>
 			{:
 				this.app.attached && App.batchExporter.createPreview(
