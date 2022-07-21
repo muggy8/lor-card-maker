@@ -2,7 +2,7 @@ window.App = window.App || {};
 (function(controller){
 	controller.currentView = undefined
 	controller.showSidebar = false
-	controller.langChoice = localStorage.getItem("lang")
+	controller.langChoice = localStorage.getItem("lang") || "en"
 	
 	let view = proxymity(document.body, controller)
 
