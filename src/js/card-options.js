@@ -117,7 +117,7 @@ App.cardOptions = (function(template, subTemplates){
 	}
 })(`
 <div class="mobile-config-footer gutter-trbl flex hcenter clickable" onclick="this.app.toggleMBShow()" data-init="{: document.body.style.setProperty('--footer-height', this.offsetHeight + 'px') :}|{ mbShowConfigs }|">
-	<strong>Card Configs</strong>
+	<strong>{:App.lang[App.langChoice].card_configs:}</strong>
 </div>
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
@@ -155,7 +155,7 @@ App.cardOptions = (function(template, subTemplates){
 	regionSelectorUI: `
 		<label>
 			<div>
-				<strong>faction</strong>
+				<strong>{:App.lang[App.langChoice].faction:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<!-- forEach: "index" -->
@@ -168,12 +168,12 @@ App.cardOptions = (function(template, subTemplates){
 	raritySelectorUI: `
 		<label>
 			<div>
-				<strong>Rarity</strong>
+				<strong>{:App.lang[App.langChoice].rarity:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<select name="rarity" class="box-12" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
 					<!-- forEach: "rarityIndex" -->
-						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:this.app.rarityOptions[this.rarityIndex]:}</option>
+						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:App.lang[App.langChoice][this.app.rarityOptions[this.rarityIndex]]:}</option>
 					<!-- in: rarityOptions -->
 				</select>
 			</div>
@@ -182,7 +182,7 @@ App.cardOptions = (function(template, subTemplates){
 	manaCostUI: `
 		<label>
 			<div>
-				<strong>Mana Cost</strong>
+				<strong>{:App.lang[App.langChoice].mana_cost:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -199,7 +199,7 @@ App.cardOptions = (function(template, subTemplates){
 	powerUI: `
 		<label class="grow">
 			<div>
-				<strong>Power</strong>
+				<strong>{:App.lang[App.langChoice].power:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -216,7 +216,7 @@ App.cardOptions = (function(template, subTemplates){
 	healthUI: `
 		<label class="grow">
 			<div>
-				<strong>Health</strong>
+				<strong>{:App.lang[App.langChoice].health:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -233,7 +233,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardNameUI: `
 		<label>
 			<div>
-				<strong>Name</strong>
+				<strong>{:App.lang[App.langChoice].name:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -250,7 +250,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardArtistUI: `
 		<label>
 			<div>
-				<strong>Artist</strong>
+				<strong>{:App.lang[App.langChoice].artist:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -267,7 +267,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardClanUI: `
 		<label>
 			<div>
-				<strong>Clan (eg: Celestial)</strong>
+				<strong>{:App.lang[App.langChoice].clan:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<input
@@ -284,7 +284,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardEffectUI: `
 		<label>
 			<div>
-				<strong>Effect</strong>
+				<strong>{:App.lang[App.langChoice].effect:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<div class="grow-wrap box-12">
@@ -302,7 +302,7 @@ App.cardOptions = (function(template, subTemplates){
 		</label>
 		<div>
 			<div>
-				<strong>Key Symobols to insert into effect text</strong>
+				<strong>{:App.lang[App.langChoice].key_symbol_effect:}</strong>
 			</div>
 			<div class="flex">
 				<!-- forEach: "index" -->
@@ -314,7 +314,7 @@ App.cardOptions = (function(template, subTemplates){
 	cardLevelUI: `
 		<label>
 			<div>
-				<strong>Level Up Condition</strong>
+				<strong>{:App.lang[App.langChoice].lv_up:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
 				<div class="grow-wrap box-12">
@@ -332,7 +332,7 @@ App.cardOptions = (function(template, subTemplates){
 		</label>
 		<div>
 			<div>
-				<strong>Key Symobols to insert into level up text</strong>
+				<strong>{:App.lang[App.langChoice].key_symbol_lv_up:}</strong>
 			</div>
 			<div class="flex">
 				<!-- forEach: "index" -->
@@ -344,7 +344,7 @@ App.cardOptions = (function(template, subTemplates){
 	keywordChoiceUI: `
 		<div>
 			<div>
-				<strong>Select Keywords</strong>
+				<strong>{:App.lang[App.langChoice].select_keyword:}</strong>
 			</div>
 			<div class="flex">
 				<!-- forEach: "index" -->
@@ -358,12 +358,12 @@ App.cardOptions = (function(template, subTemplates){
 	speedSelectorUI: `
 		<label>
 			<div>
-				<strong>Card Frame Type</strong>
+				<strong>{:App.lang[App.langChoice].frame_type:}</strong>
 			</div>
 			<div class="flex gutter-b-2">
-				<select name="rarity" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
+				<select name="speed" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
 					<!-- forEach: "index" -->
-						<option value="{:this.app.spellSpeedOptions[this.index]:}">{:this.app.spellSpeedOptions[this.index]:}</option>
+						<option value="{:this.app.spellSpeedOptions[this.index]:}">{:App.lang[App.langChoice][this.app.spellSpeedOptions[this.index]]:}</option>
 					<!-- in: spellSpeedOptions -->
 				</select>
 			</div>
@@ -373,9 +373,9 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.blueWords.length ? 'gutter-b-2-.5' : '' :}|{card.blueWords.length}|">
 			<div class="flex gutter-b-2-.5">
 				<div class="grow">
-					<strong>Other Cards Mentioned in Effect</strong>
+					<strong>{:App.lang[App.langChoice].other_card_mentioned:}</strong>
 				</div>
-				<button onclick="this.app.card.blueWords.push('')">Add Mention</button>
+				<button onclick="this.app.card.blueWords.push('')">{:App.lang[App.langChoice].add_mention:}</button>
 			</div>
 			<!-- forEach: "index" -->
 				<label class="flex gutter-tb-.5">
@@ -397,9 +397,9 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-2-.5' : '' :}|{card.orangeWords.length}|">
 			<div class="flex gutter-b-2-.5">
 				<div class="grow">
-					<strong>Key Text mentioned in Effect</strong>
+					<strong>{:App.lang[App.langChoice].key_text_mentioned:}</strong>
 				</div>
-				<button onclick="this.app.card.orangeWords.push('')">Add Mention</button>
+				<button onclick="this.app.card.orangeWords.push('')">{:App.lang[App.langChoice].add_mention:}</button>
 			</div>
 			<!-- forEach: "index" -->
 				<label class="flex gutter-tb-.5">
@@ -418,18 +418,18 @@ App.cardOptions = (function(template, subTemplates){
 		</div>
 	`,
 	artUploadUI: `
-		<strong>Card Art</strong>
+		<strong>{:App.lang[App.langChoice].card_art:}</strong>
 		<label class="flex hcenter">
 			<button class="gutter-trbl grow" onclick="document.getElementById('uplaod-art').click()">
-				<strong>Upload Image</strong>
+				<strong>{:App.lang[App.langChoice].upload_image:}</strong>
 			</button>
 			<input class="hide" type="file" id="uplaod-art" name="art" accept="image/*" onchange="this.app.processArtUpload(this)"/>
 		</label>
 
-		<div class="flex hcenter">or enter image URL</div>
+		<div class="flex hcenter">{:App.lang[App.langChoice].or_enter_image_url:}</div>
 
 		<label class="flex hcenter gutter-b-2">
-			<input class="box-12" type="url" placeholder="image URL" onchange="this.app.card.art = this.value">
+			<input class="box-12" type="url" placeholder="{:App.lang[App.langChoice].image_url:}" onchange="this.app.card.art = this.value">
 		</label>
 	`,
 })

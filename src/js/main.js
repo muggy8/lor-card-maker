@@ -1,8 +1,9 @@
-const App = (function(){
-	let controller = {
-		currentView: undefined,
-		showSidebar: false,
-	}
+window.App = window.App || {}; 
+(function(controller){
+	controller.currentView = undefined
+	controller.showSidebar = false
+	controller.langChoice = localStorage.getItem("lang")
+	
 	let view = proxymity(document.body, controller)
 
 	proxymity.watch(controller, "currentView", function(attachedView, detachedView){
@@ -187,4 +188,4 @@ const App = (function(){
 	}
 
 	return controller
-})()
+})(App)
