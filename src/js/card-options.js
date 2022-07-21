@@ -157,9 +157,9 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>faction</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<!-- forEach: "index" -->
-					<div class="box-2 gutter-trbl-.25 clickable flex column vhcenter {:this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
+					<div class="box-3 gutter-trbl-.25 clickable flex column vhcenter {:this.app.card.faction.some(word=>word===this.app.factionOptions[this.index]) ? '' : 'ghost' :}|{card.faction.length}|" onclick="this.app.toggleFaction(this.app.factionOptions[this.index])">
 						<img src="/assets/regions/{:this.app.factionOptions[this.index]:}.png" />
 					</div>
 				<!-- in: factionOptions -->
@@ -170,7 +170,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Rarity</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<select name="rarity" class="box-12" onchange="this.app.card.rarity = this.value" data-value="{:this.app.card.rarity:}|{card.rarity}|">
 					<!-- forEach: "rarityIndex" -->
 						<option value="{:this.app.rarityOptions[this.rarityIndex]:}">{:this.app.rarityOptions[this.rarityIndex]:}</option>
@@ -184,7 +184,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Mana Cost</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="mana-cost"
@@ -201,7 +201,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Power</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="power"
@@ -218,7 +218,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Health</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="power"
@@ -235,7 +235,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Name</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="card-name"
@@ -252,7 +252,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Artist</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="card-artist"
@@ -269,7 +269,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Clan (eg: Celestial)</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<input
 					class="box-12"
 					name="card-name"
@@ -286,16 +286,18 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Effect</strong>
 			</div>
-			<div class="flex gutter-b">
-				<textarea
-					data-init="{:this.app.effectInputArea = this:}"
-					class="box-12"
-					name="card-name"
-					data-value="{:this.app.card.effect:}|{card.effect}|"
-					onchange="this.app.card.effect = this.value || ''"
-					onkeyup="this.app.rememberCursorPosition()"
-					onclick="this.app.rememberCursorPosition()"
-				></textarea>
+			<div class="flex gutter-b-2">
+				<div class="grow-wrap box-12">
+					<textarea
+						data-init="{:this.app.effectInputArea = this:}"
+						name="card-effect"
+						data-value="{:this.app.card.effect:}|{card.effect}|"
+						onInput="this.parentNode.dataset.replicatedValue = this.value"
+						onchange="this.app.card.effect = this.value || ''"
+						onkeyup="this.app.rememberCursorPosition()"
+						onclick="this.app.rememberCursorPosition()"
+					></textarea>
+				</div>
 			</div>
 		</label>
 		<div>
@@ -314,21 +316,23 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Level Up Condition</strong>
 			</div>
-			<div class="flex gutter-b">
-				<textarea
-					data-init="{:this.app.levelInputArea = this:}"
-					class="box-12"
-					name="level-cond"
-					data-value="{:this.app.card.lvup:}|{card.lvup}|"
-					onchange="this.app.card.lvup = this.value || ''"
-					onkeyup="this.app.rememberLevelCursorPosition()"
-					onclick="this.app.rememberLevelCursorPosition()"
-				></textarea>
+			<div class="flex gutter-b-2">
+				<div class="grow-wrap box-12">
+					<textarea
+						data-init="{:this.app.levelInputArea = this:}"
+						name="level-cond"
+						data-value="{:this.app.card.lvup:}|{card.lvup}|"
+						onInput="this.parentNode.dataset.replicatedValue = this.value"
+						onchange="this.app.card.lvup = this.value || ''"
+						onkeyup="this.app.rememberLevelCursorPosition()"
+						onclick="this.app.rememberLevelCursorPosition()"
+					></textarea>
+				</div>
 			</div>
 		</label>
 		<div>
 			<div>
-				<strong>Key Symobols to insert into effect text</strong>
+				<strong>Key Symobols to insert into level up text</strong>
 			</div>
 			<div class="flex">
 				<!-- forEach: "index" -->
@@ -344,7 +348,7 @@ App.cardOptions = (function(template, subTemplates){
 			</div>
 			<div class="flex">
 				<!-- forEach: "index" -->
-					<label class="box-2 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
+					<label class="box-3 flex column vhcenter gutter-trbl-.25 clickable {:this.app.card.keywords.some(word=>word===this.app.keywords[this.index]) ? '' : 'ghost' :}|{card.keywords.length}|" onclick="this.app.toggleKeyword(this.app.keywords[this.index])">
 						<div data-init="{:this.innerHTML = createMiniKeyword('/assets/symbol/' + cardOptionsData.icons[this.app.keywords[this.index]]).svg:}"></div>
 					</label>
 				<!-- in: keywords -->
@@ -356,7 +360,7 @@ App.cardOptions = (function(template, subTemplates){
 			<div>
 				<strong>Card Frame Type</strong>
 			</div>
-			<div class="flex gutter-b">
+			<div class="flex gutter-b-2">
 				<select name="rarity" class="box-12" onchange="this.app.card.speed = this.value" data-value="{:this.app.card.speed:}|{card.speed}|">
 					<!-- forEach: "index" -->
 						<option value="{:this.app.spellSpeedOptions[this.index]:}">{:this.app.spellSpeedOptions[this.index]:}</option>
@@ -366,8 +370,8 @@ App.cardOptions = (function(template, subTemplates){
 		</label>
 	`,
 	blueWordsUI: `
-		<div class="gutter-t-.5 {:this.app.card.blueWords.length ? 'gutter-b-.5' : '' :}|{card.blueWords.length}|">
-			<div class="flex gutter-b-.5">
+		<div class="gutter-t-.5 {:this.app.card.blueWords.length ? 'gutter-b-2-.5' : '' :}|{card.blueWords.length}|">
+			<div class="flex gutter-b-2-.5">
 				<div class="grow">
 					<strong>Other Cards Mentioned in Effect</strong>
 				</div>
@@ -390,8 +394,8 @@ App.cardOptions = (function(template, subTemplates){
 		</div>
 	`,
 	orangeWordsUI: `
-		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-.5' : '' :}|{card.orangeWords.length}|">
-			<div class="flex gutter-b-.5">
+		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-2-.5' : '' :}|{card.orangeWords.length}|">
+			<div class="flex gutter-b-2-.5">
 				<div class="grow">
 					<strong>Key Text mentioned in Effect</strong>
 				</div>
@@ -414,6 +418,7 @@ App.cardOptions = (function(template, subTemplates){
 		</div>
 	`,
 	artUploadUI: `
+		<strong>Card Art</strong>
 		<label class="flex hcenter">
 			<button class="gutter-trbl grow" onclick="document.getElementById('uplaod-art').click()">
 				<strong>Upload Image</strong>
@@ -423,7 +428,7 @@ App.cardOptions = (function(template, subTemplates){
 
 		<div class="flex hcenter">or enter image URL</div>
 
-		<label class="flex hcenter gutter-b">
+		<label class="flex hcenter gutter-b-2">
 			<input class="box-12" type="url" placeholder="image URL" onchange="this.app.card.art = this.value">
 		</label>
 	`,
