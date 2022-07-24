@@ -58,6 +58,8 @@ const cardOptionsData = {
 		"formidable":"formidable.png",
 		"lurk": "lurk.png",
 		"impact": "impact.png",
-		"fated": "fated.png"
+		"fated": "fated.png",
+		"evolve": "evolve.png",
+		"hallowed": "hallowed.png",
 	}
 }
