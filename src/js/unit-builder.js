@@ -108,7 +108,7 @@
 					? `
 						<image id="card-clan-${controller.cardId}" width="360" height="84" x="160" y="14" xlink:href="${controller.rendererOptions.clan.bgPath}"/>
 						<rect id="clan-text-area-${controller.cardId}" width="200" height="46" x="240" y="32" opacity="0"/>
-						<text class="bold caps {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff">${card.clan}</text>`
+						<text class="clan-text caps {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="36" fill="#bbb" stroke="#bbb">${card.clan}</text>`
 					: ""
 				}
 
