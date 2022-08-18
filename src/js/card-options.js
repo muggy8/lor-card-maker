@@ -120,11 +120,15 @@ App.cardOptions = (function(template, subTemplates){
 	<strong>{:App.lang[App.langChoice].card_configs:}</strong>
 </div>
 <div class="slide-up gutter-tb {:this.app.mbShowConfigs ? 'active' : '':}|{mbShowConfigs}|">
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
-	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "name") ? proxymity(this.app.subTemplates.cardNameUI, this.app) : undefined:}
 	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "clan") ? proxymity(this.app.subTemplates.cardClanUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "mana") ? proxymity(this.app.subTemplates.manaCostUI, this.app) : undefined:}
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") && this.app.rarityOptions ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
+	<!-- text break -->
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
 	<!-- text break -->
 	<div class="flex power-health">
 		{:Object.prototype.hasOwnProperty.call(this.app.card, "power") ? proxymity(this.app.subTemplates.powerUI, this.app) : undefined:}
@@ -145,11 +149,7 @@ App.cardOptions = (function(template, subTemplates){
 	<!-- text break -->
 	{:Object.prototype.hasOwnProperty.call(this.app.card, "orangeWords") ? proxymity(this.app.subTemplates.orangeWordsUI, this.app) : undefined:}
 	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "rarity") && this.app.rarityOptions ? proxymity(this.app.subTemplates.raritySelectorUI, this.app) : undefined:}
-	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "speed") ? proxymity(this.app.subTemplates.speedSelectorUI, this.app) : undefined:}
-	<!-- text break -->
-	{:Object.prototype.hasOwnProperty.call(this.app.card, "faction") ? proxymity(this.app.subTemplates.regionSelectorUI, this.app) : undefined:}
+	{:Object.prototype.hasOwnProperty.call(this.app.card, "clan") ? proxymity(this.app.subTemplates.cardClanUI, this.app) : undefined:}
 </div>
 `, {
 	regionSelectorUI: `
