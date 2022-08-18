@@ -4,7 +4,8 @@ const cardOptionsData = {
 		"slow",
 		"fast",
 		"burst",
-		"focus"
+		"focus",
+		"equipment",
 	],
 	factionOptions: [
 		"piltoverzaun",
@@ -61,5 +62,6 @@ const cardOptionsData = {
 		"fated": "fated.png",
 		"evolve": "evolve.png",
 		"hallowed": "hallowed.png",
+		"equipment": "equipment.png",
 	}
 }

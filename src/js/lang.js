@@ -58,5 +58,6 @@ App.lang = {
         "fast": "Fast",
         "burst": "Burst",
         "focus": "Focus",
+        "equipment": "Equipment",
     }
 }

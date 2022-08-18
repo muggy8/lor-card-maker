@@ -26,6 +26,8 @@
 			scale: 1,
 		}
 		card.rarity = "none"
+		card.power = NaN
+		card.health = NaN
 		card.speed = "none"
 		card.faction = []
 		card.blueWords = []
@@ -133,6 +135,12 @@
 
 			<rect id="name-${controller.cardId}" width="550" height="70" x="60" y="585" opacity="0"/>
 			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
+
+			<rect id="power" width="106" height="92" x="47" y="430" fill="#CFF" opacity="0"/>
+			${ isNaN(card.power) ? undefined : `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>` }
+
+			<rect id="health" width="106" height="92" x="522" y="430" fill="#CFF" opacity="0"/>
+			${ isNaN(card.health) ? undefined : `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>` }
 
 			${card.clan
 				? `
@@ -263,6 +271,63 @@
 		}
 	}
 
+	function removeItemFromArray(array, item) {
+		let i = array.length;
+	
+		while (i--) {
+			if (array[i] === item) {
+				array.splice(i, 1);
+			}
+		}
+	}
+
+	function clearSpellSpeedKeywords(card){
+		cardOptionsData.spellSpeedOptions.forEach(keyword=>removeItemFromArray(card.keywords, keyword))
+	}
+	let automateFrametype = controller.automateFrametype = function(card, prop){
+		
+		switch(prop){
+			case "speed": 
+				clearSpellSpeedKeywords(card)
+				if (card.speed !== 'none'){
+					card.keywords.push(card.speed)
+				}
+				if (card.speed !== 'equipment'){
+					card.power = NaN
+					card.health = NaN
+				}
+				return;
+			case "health":
+				if (!isNaN(card.health)){
+					card.speed = 'equipment'
+				} 
+				return;
+			case "power": 
+				if (!isNaN(card.power)){
+					card.speed = 'equipment'
+				} 
+				return;
+			case "keywords": 
+				let firstSpeedKeywordIndex = cardOptionsData.spellSpeedOptions
+					.map(keyword=>card.keywords.indexOf(keyword)) // find first instance of each speed as a keyword
+					.filter(index=>index > -1)	// cut out all the unfound ones
+					.sort((a,b)=>a-b) // sort the list from earliest to latest
+					[0] // get the first index of it.
+
+				if (firstSpeedKeywordIndex !== undefined){
+					card.speed = card.keywords[firstSpeedKeywordIndex]
+					if (card.speed === 'equipment'){
+						card.power = card.power || 0,
+						card.health = card.health || 0
+					}
+				}
+				else{
+					card.speed = 'none'
+				}
+				return 
+		}
+	}
+
 	App.spellBuilder = controller
 	let view = proxymity(template, controller)
 
@@ -271,7 +336,12 @@
 	<main class="flex hcenter gutter-rl-.5">
 		<div class="card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3">
 
-			{:this.app.attached && this.app.createPreview():}|{card.name},{card.clan},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.artist},{card.blueWords.*},{card.orangeWords.*},{attached}|
+			<!-- {:this.app.automateFrametype(this.app.card, "speed"):}|{card.speed}| -->
+			<!-- {:this.app.automateFrametype(this.app.card, "health"):}|{card.health}| -->
+			<!-- {:this.app.automateFrametype(this.app.card, "power"):}|{card.power}| -->
+			<!-- {:this.app.automateFrametype(this.app.card, "keywords"):}|{card.keywords.length}| -->
+
+			{:this.app.attached && this.app.createPreview():}|{card.name},{card.clan},{card.effect},{card.keywords.length},{card.mana},{card.art},{card.rarity},{card.faction.length},{card.speed},{card.artist},{card.blueWords.*},{card.orangeWords.*},{attached},{card.health},{card.power}|
 
 			<div class="flex hcenter gutter-tb">
 				<button onclick="this.app.deleteCard()" class="{:this.app.cardId ? '' : 'hide':}|{cardId}|">{:App.lang[App.langChoice].delete_card:}</button>
