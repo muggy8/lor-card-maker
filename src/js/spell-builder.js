@@ -137,10 +137,10 @@
 			${card.name ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true)).catch(()=>{}):}" font-size="36" fill="#fff" stroke="#fff" font-style="900">${card.name ? card.name.toUpperCase() : ""}</text>` : ''}
 
 			<rect id="power" width="106" height="92" x="47" y="430" fill="#CFF" opacity="0"/>
-			${ isNaN(card.power) ? undefined : `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>` }
+			${ typeof card.power === 'number' &&  !isNaN(card.power) ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.power}</text>` : undefined }
 
 			<rect id="health" width="106" height="92" x="522" y="430" fill="#CFF" opacity="0"/>
-			${ isNaN(card.health) ? undefined : `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>` }
+			${ typeof card.health === 'number' &&  !isNaN(card.health) ? `<text class="key-text {:proxymity.on.renderend.then(()=>this.app.wrapText(this, true, {valign: 'middle'})).catch(()=>{}):}" font-size="50" fill="#fff" stroke="#fff">${card.health}</text>` : undefined}
 
 			${card.clan
 				? `
@@ -298,12 +298,12 @@
 				}
 				return;
 			case "health":
-				if (!isNaN(card.health)){
+				if (!isNaN(card.health) && typeof card.health === "number"){
 					card.speed = 'equipment'
 				} 
 				return;
 			case "power": 
-				if (!isNaN(card.power)){
+				if (!isNaN(card.power) && typeof card.power === "number"){
 					card.speed = 'equipment'
 				} 
 				return;
