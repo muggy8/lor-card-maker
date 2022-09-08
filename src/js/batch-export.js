@@ -76,6 +76,9 @@
 		let customeController = Object.create(Object.getPrototypeOf(cardTypeController))
 		cardTypeController.clearCard.call(customeController)
 		mergeIfNotExist(customeController, cardTypeController)
+		customeController.effectResize = function(){ // override the effectResize function because that's time consuming but when were just rendering an output. it's not really useful
+			return Promise.resolve()
+		}
 		App.cardTypePicker.transferData(customeController.card, cardData)
 		customeController.exporting = true
 		customeController.cardId = random
