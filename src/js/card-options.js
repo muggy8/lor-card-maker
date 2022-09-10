@@ -373,7 +373,12 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.blueWords.length ? 'gutter-b-2-.5' : '' :}|{card.blueWords.length}|">
 			<div class="flex gutter-b-2-.5">
 				<div class="grow">
-					<strong>{:App.lang[App.langChoice].other_card_mentioned:}</strong>
+					<div>
+						<strong>{:App.lang[App.langChoice].other_card_mentioned:}</strong>
+					</div>
+					<div>
+						{:App.lang[App.langChoice].other_card_example:}
+					</div>
 				</div>
 				<button onclick="this.app.card.blueWords.push('')">{:App.lang[App.langChoice].add_mention:}</button>
 			</div>
@@ -397,7 +402,12 @@ App.cardOptions = (function(template, subTemplates){
 		<div class="gutter-t-.5 {:this.app.card.orangeWords.length ? 'gutter-b-2-.5' : '' :}|{card.orangeWords.length}|">
 			<div class="flex gutter-b-2-.5">
 				<div class="grow">
-					<strong>{:App.lang[App.langChoice].key_text_mentioned:}</strong>
+					<div>
+						<strong>{:App.lang[App.langChoice].key_text_mentioned:}</strong>
+					</div>
+					<div>
+						{:App.lang[App.langChoice].key_text_example:}
+					</div>
 				</div>
 				<button onclick="this.app.card.orangeWords.push('')">{:App.lang[App.langChoice].add_mention:}</button>
 			</div>
