@@ -211,10 +211,10 @@
 		context.cardId = await App.storage.saveSpell(context.card, context.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = async function(){
+	let deleteCard = controller.deleteCard = async function(id){
 		let context = this
-		await App.storage.delSavedSpell(context.cardId)
-		window.location.reload()
+		await App.storage.delSavedSpell(id || context.cardId)
+		!id && window.location.reload()
 	}
 
 	let calcBgTint = controller.calcBgTint = async function(){

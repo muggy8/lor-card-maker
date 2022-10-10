@@ -123,10 +123,10 @@
 		context.cardId = await App.storage.saveKeyword(context.card, context.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = async function(){
+	let deleteCard = controller.deleteCard = async function(id){
 		let context = this
-		await App.storage.delSavedKeyword(context.cardId)
-		window.location.reload()
+		await App.storage.delSavedKeyword(id || context.cardId)
+		!id && window.location.reload()
 	}
 
 	App.keywordBuilder = controller

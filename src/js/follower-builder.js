@@ -7,10 +7,10 @@
 		context.cardId = await App.storage.saveFollower(context.card, context.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = async function(){
+	let deleteCard = controller.deleteCard = async function(id){
 		let context = this
-		await App.storage.delSavedFollower(context.cardId)
-		window.location.reload()
+		await App.storage.delSavedFollower(id || context.cardId)
+		!id && window.location.reload()
 	}
 
 	controller.gemOptions = [

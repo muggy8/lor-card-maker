@@ -96,6 +96,10 @@
 			<h2>
 				<a href="https://github.com/muggy8/lor-card-maker/issues" target="_blank">{:App.lang[App.langChoice].report_bug:}</a>
 			</h2>
+			
+			<h2 class="clickable" onclick="this.app.batchDelete.focus(), (this.app.showSidebar = !this.app.showSidebar)">
+				<div>{:App.lang[App.langChoice].batch_delete:}</div>
+			</h2>
 
 		</div>
 
@@ -116,6 +120,7 @@
 		<script src="js/spell-builder.js"></script>
 		<script src="js/keyword-builder.js"></script>
 		<script src="js/batch-export.js"></script>
+		<script src="js/batch-delete.js"></script>
 		<script src="js/card-type-selector.js"></script>
 		<style>
 			@font-face{

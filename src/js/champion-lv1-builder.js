@@ -7,10 +7,10 @@
 		context.cardId = await App.storage.saveChampion1(context.card, context.cardId)
 	}
 
-	let deleteCard = controller.deleteCard = async function(){
+	let deleteCard = controller.deleteCard = async function(id){
 		let context = this
-		await App.storage.delSavedChampion1(context.cardId)
-		window.location.reload()
+		await App.storage.delSavedChampion1(id || context.cardId)
+		!id && window.location.reload()
 	}
 
 	App.championLv1Builder = controller
