@@ -68,7 +68,7 @@
 		})
 	}
 
-	controller.createPreview = function(cardData, cardTypeController, id){
+	controller.createPreview = function(cardData, cardTypeController, id, resize = false){
 		//~ console.log(cardData)
 
 		let random = id || proxymity.random.string(8)
@@ -76,9 +76,9 @@
 		let customeController = Object.create(Object.getPrototypeOf(cardTypeController))
 		cardTypeController.clearCard.call(customeController)
 		mergeIfNotExist(customeController, cardTypeController)
-		customeController.effectResize = function(){ // override the effectResize function because that's time consuming but when were just rendering an output. it's not really useful
+		!resize && (customeController.effectResize = function(){ // override the effectResize function because that's time consuming but when were just rendering an output. it's not really useful
 			return Promise.resolve()
-		}
+		})
 		App.cardTypePicker.transferData(customeController.card, cardData)
 		customeController.exporting = true
 		customeController.cardId = random
@@ -107,7 +107,7 @@
 			>
 				<!-- forEach: "index" -->
 					<g transform="translate({: this.app.cardWidth * (this.index % 2) :}, {: this.app.cardHeight * (Math.floor(this.index / 2)) :})">
-						{:this.app && this.app.attached &&  this.app.includedCards[this.index] && this.app.createPreview(this.app.includedCards[this.index].cardData, this.app.includedCards[this.index].hostController) :}|{includedCards[this.index].id},{attached}|
+						{:this.app && this.app.attached &&  this.app.includedCards[this.index] && this.app.createPreview(this.app.includedCards[this.index].cardData, this.app.includedCards[this.index].hostController, true) :}|{includedCards[this.index].id},{attached}|
 					</g>
 				<!-- in: includedCards -->
 			</svg>
@@ -130,7 +130,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions1[this.index].included === 'object' || this.app.savedChampions1[this.index].included ? 'ghost' : '' :}|{savedChampions1[this.index].included}|" onclick="this.app.toggleExport(App.championLv1Builder, this.app.savedChampions1[this.index])">
 					<strong>Include {: this.app.savedChampions1[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions1[this.index].cardData, App.championLv1Builder, this.app.savedChampions1[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions1[this.index].cardData, App.championLv1Builder, this.app.savedChampions1[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions1 -->
@@ -140,7 +140,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions2[this.index].included === 'object' || this.app.savedChampions2[this.index].included ? 'ghost' : '' :}|{savedChampions2[this.index].included}|" onclick="this.app.toggleExport(App.championLv2Builder, this.app.savedChampions2[this.index])">
 					<strong>Include {: this.app.savedChampions2[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions2[this.index].cardData, App.championLv2Builder, this.app.savedChampions2[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions2[this.index].cardData, App.championLv2Builder, this.app.savedChampions2[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions2 -->
@@ -150,7 +150,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedChampions3[this.index].included === 'object' || this.app.savedChampions3[this.index].included ? 'ghost' : '' :}|{savedChampions3[this.index].included}|" onclick="this.app.toggleExport(App.championLv3Builder, this.app.savedChampions3[this.index])">
 					<strong>Include {: this.app.savedChampions3[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedChampions3[this.index].cardData, App.championLv3Builder, this.app.savedChampions3[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedChampions3[this.index].cardData, App.championLv3Builder, this.app.savedChampions3[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedChampions3 -->
@@ -160,7 +160,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedLandmarks[this.index].included === 'object' || this.app.savedLandmarks[this.index].included ? 'ghost' : '' :}|{savedLandmarks[this.index].included}|" onclick="this.app.toggleExport(App.landmarkBuilder, this.app.savedLandmarks[this.index])">
 					<strong>Include {: this.app.savedLandmarks[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedLandmarks[this.index].cardData, App.landmarkBuilder, this.app.savedLandmarks[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedLandmarks[this.index].cardData, App.landmarkBuilder, this.app.savedLandmarks[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedLandmarks -->
@@ -170,7 +170,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedSpells[this.index].included === 'object' || this.app.savedSpells[this.index].included ? 'ghost' : '' :}|{savedSpells[this.index].included}|" onclick="this.app.toggleExport(App.spellBuilder, this.app.savedSpells[this.index])">
 					<strong>Include {: this.app.savedSpells[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedSpells[this.index].cardData, App.spellBuilder, this.app.savedSpells[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedSpells[this.index].cardData, App.spellBuilder, this.app.savedSpells[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedSpells -->
@@ -180,7 +180,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedFollowers[this.index].included === 'object' || this.app.savedFollowers[this.index].included ? 'ghost' : '' :}|{savedFollowers[this.index].included}|" onclick="this.app.toggleExport(App.followerBuilder, this.app.savedFollowers[this.index])">
 					<strong>Include {: this.app.savedFollowers[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedFollowers[this.index].cardData, App.followerBuilder, this.app.savedFollowers[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedFollowers[this.index].cardData, App.followerBuilder, this.app.savedFollowers[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedFollowers -->
@@ -190,7 +190,7 @@
 				<div class="gutter-trbl-.5 box-xs-4 box-sm-6 box-xl-4 flex column vhcenter clickable {: typeof this.app.savedKeywords[this.index].included === 'object' || this.app.savedKeywords[this.index].included ? 'ghost' : '' :}|{savedKeywords[this.index].included}|" onclick="this.app.toggleExport(App.keywordBuilder, this.app.savedKeywords[this.index])">
 					<strong>Include {: this.app.savedKeywords[this.index].cardData.name :}</strong>
 					<div>
-						{:this.app.attached && this.app.createPreview(this.app.savedKeywords[this.index].cardData, App.keywordBuilder, this.app.savedKeywords[this.index].id) :}|{attached}|
+						{:this.app.attached && this.app.createPreview(this.app.savedKeywords[this.index].cardData, App.keywordBuilder, this.app.savedKeywords[this.index].id, true) :}|{attached}|
 					</div>
 				</div>
 				<!-- in: savedKeywords -->
