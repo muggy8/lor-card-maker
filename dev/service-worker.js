@@ -1,4 +1,9 @@
-const installRoot = location.pathname.replace(/[\/]*\.js$/, "")
+const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
+const indexUrl = location.origin + swFolder
+
+const importMap = {
+    react: "https://esm.sh/react@18.2.0?bundle"
+}
 
 self.addEventListener("install", function(ev){
 	console.log("begin install", ev, location)
@@ -15,5 +20,14 @@ self.addEventListener("activate", function(ev){
 })
 
 self.addEventListener("fetch", function(ev){
-    console.log("sw fetch event")
+    const filePathRelativeToPageRoot = ev.request.url.replace(indexUrl, "")
+    const mappedUrl = importMap[filePathRelativeToPageRoot]
+    console.log("sw fetch event", mappedUrl)
+
+    if (mappedUrl){
+        ev.respondWith(fetch(mappedUrl))
+    }
+    else{
+        ev.respondWith(fetch(ev.request))
+    }
 })

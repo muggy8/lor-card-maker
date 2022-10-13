@@ -1,1 +1,1 @@
-console.log("uwu")
+import React from "/react"
