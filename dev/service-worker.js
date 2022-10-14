@@ -6,6 +6,16 @@ const importMap = {
     react: "https://esm.sh/react@18.2.0?bundle"
 }
 
+const pathMap = {
+	cdn: {
+		react: {
+			url: "https://esm.sh/react@18.2.0",
+			query: {bundle: true},
+		}
+	},
+	App: indexUrl + "app"
+}
+
 self.addEventListener("install", function(ev){
 	console.log("begin install", ev, location)
     ev.waitUntil(
@@ -25,16 +35,64 @@ self.addEventListener("activate", function(ev){
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToPageRoot = ev.request.url.replace(indexUrl, "")
-    const mappedUrl = importMap[filePathRelativeToPageRoot]
-    console.log("sw fetch event", mappedUrl)
+    // const mappedUrl = importMap[filePathRelativeToPageRoot]
+    // console.log("sw fetch event", mappedUrl)
 
-    if (mappedUrl){
-        ev.respondWith(intelegentFetch(mappedUrl))
+	const fetchUrl = remapUrl(filePathRelativeToPageRoot)
+	
+    if (fetchUrl){
+        ev.respondWith(intelegentFetch(fetchUrl))
     }
     else{
         ev.respondWith(intelegentFetch(ev.request))
     }
 })
+
+function remapUrl(relativePath){
+	const pathArray = relativePath.split("/")
+	const mappedUrl = walkPathMap(pathArray, pathMap)
+
+	if (mappedUrl){
+		return mappedUrl
+	}
+	return relativePath
+}
+
+function walkPathMap(pathArray, currentPathMap){
+	if (!pathArray || !pathArray.length || !currentPathMap){
+		return
+	}
+	const currentPathSegment = pathArray[0]
+	const remainingPatSegment = pathArray.slice(1)
+	const currentPathReference = currentPathMap[currentPathSegment]
+
+	if (
+		typeof currentPathReference === "string" || 
+		(
+			typeof currentPathReference === "object" &&
+			typeof currentPathReference.url === "string"
+		)
+	){
+		const rootPath = typeof currentPathReference === "string"
+			? currentPathReference
+			: currentPathReference.url
+		
+		const truePathArray = [rootPath, ...remainingPatSegment]
+
+		let url = truePathArray.join("/")
+
+		if (currentPathReference.query){
+			const queryString = Object.keys(currentPathReference.query).map(key=>{
+				return `${key}=${currentPathReference.query[key]}`
+			}).join("&")
+			url = url + "?" + queryString
+		}
+
+		return url
+	}
+
+	return walkPathMap(remainingPatSegment, currentPathReference)
+}
 
 async function intelegentFetch(req){
 	let storage = await caches.open(CACHE_NAME)
