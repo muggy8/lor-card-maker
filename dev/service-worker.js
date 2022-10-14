@@ -29,10 +29,10 @@ self.addEventListener("fetch", function(ev){
     console.log("sw fetch event", mappedUrl)
 
     if (mappedUrl){
-        ev.respondWith(fetch(mappedUrl))
+        ev.respondWith(intelegentFetch(mappedUrl))
     }
     else{
-        ev.respondWith(fetch(ev.request))
+        ev.respondWith(intelegentFetch(ev.request))
     }
 })
 
