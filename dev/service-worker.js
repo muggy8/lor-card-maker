@@ -1,5 +1,6 @@
 const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
 const indexUrl = location.origin + swFolder
+const CACHE_NAME = "react-cache"
 
 const importMap = {
     react: "https://esm.sh/react@18.2.0?bundle"
@@ -8,7 +9,10 @@ const importMap = {
 self.addEventListener("install", function(ev){
 	console.log("begin install", ev, location)
     ev.waitUntil(
-        self.skipWaiting()
+		Promise.all([
+			self.skipWaiting(),
+			intelegentFetch(indexUrl)
+		])
     )
 })
 
@@ -31,3 +35,33 @@ self.addEventListener("fetch", function(ev){
         ev.respondWith(fetch(ev.request))
     }
 })
+
+async function intelegentFetch(req){
+	let storage = await caches.open(CACHE_NAME)
+
+	let cachedAsset
+
+	if (cachedAsset = await storage.match(req)){
+		let cachedEtag = cachedAsset.headers.get("etag")
+
+		let remoteHeaders = await fetch(req, {
+			method: "HEAD",
+		}).catch(uwu=>console.warn(uwu))
+
+		if (!remoteHeaders || !remoteHeaders.headers || !remoteHeaders.headers.get("etag") || remoteHeaders.headers.get("etag") === cachedEtag){
+			return cachedAsset
+		}
+		else{
+			console.log("asset needs refreshing", req)
+		}
+	}
+
+	let res = await fetch(req.url || req)
+
+	if (!res.ok){
+		return Promise.reject(res)
+	}
+
+	await storage.put(req, res.clone())
+	return res
+}
