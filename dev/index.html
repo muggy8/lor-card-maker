@@ -1,5 +1,71 @@
 <html>
 	<head>
+		<style>
+			/* inlined css to show loading state */
+			html {
+				--color-white: #fff;
+				--color-black: #000;
+				--color-primary: #4cf#2A;
+				--color-dark: #444;
+				--color-light: #bbb;
+				--color-clear: rgba(0,0,0,0);
+
+				--color-bg: var(--color-white);
+				--color-text: var(--color-black);
+				--color-link: var(--color-primary);
+			}
+
+			body, html{
+				font-family: sans-serif;
+				padding: 0;
+				margin: 0;
+				background-color: var(--color-bg);
+				color: var(--color-text);
+				min-height: 100vh;
+				width: 100vw;
+				position: relative;
+			}
+
+			a {
+				color: var(--color-link);
+			}
+
+			body.loading::before, body.loading::after {
+				display: block;
+				content: " ";
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			body.loading::before {
+				width: 10vw;
+				height: 10vw;
+				top: calc(50% - max(5vw, 5vh));
+				left: calc(50% - max(5vw, 5vh));
+				transform: initial;
+				border-radius: max(5vw, 5vh);
+				border-width: max(1vw, 1vh);
+				border-color: var(--color-clear);
+				border-top-color: var(--color-primary);
+				border-style: solid;
+				animation-name: spin;
+				animation-duration: 1.5s;
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+			}
+
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+
+		</style>
 		<script defer type="module">
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker.register('./service-worker.js', {
@@ -10,7 +76,7 @@
 
 						// check for worker update because we dont want to load anything until the worker is known to be the latest worker.
 						const updatedRegistration = await registration.update()
-						
+
 						// if the updatedRegistration has something in the installing prop, we know that we found an update so we will want to wait for it to finish it's install and activate process before we continue.
 						if (updatedRegistration.installing){
 							return await new Promise((accept)=>{
@@ -25,7 +91,7 @@
 						return updatedRegistration
 					})
 					.then(function(){
-						// at this point, we know that the service worker has been registered and is active. that means we can use ESM to import our main app and we'll let the service worker figure out how to fulfill the import requests 
+						// at this point, we know that the service worker has been registered and is active. that means we can use ESM to import our main app and we'll let the service worker figure out how to fulfill the import requests
 						import("/app/index.js")
 					})
 					.catch(function(error) {
@@ -34,7 +100,7 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body class="loading">
 		<section id="app"></section>
 	</body>
 </html>
