@@ -8,7 +8,7 @@ export const Globals = createContext({
     card: null,
 })
 
-const GlobalsContext = factory(Globals.Provider )
+const GlobalsContext = factory(Globals.Provider)
 
 function App () {
 
