@@ -30,7 +30,7 @@ const pathMap = {
 
 let storage 
 self.addEventListener("install", function(ev){
-	console.log("begin install", ev, location)
+	// console.log("begin install", ev, location)
     ev.waitUntil(
 		caches.open(CACHE_NAME)
 			.then((cache)=>{
@@ -44,7 +44,7 @@ self.addEventListener("install", function(ev){
 })
 
 self.addEventListener("activate", function(ev){
-    console.log("activate", ev)
+    // console.log("activate", ev)
     ev.waitUntil(
         clients.claim()
     )
@@ -58,7 +58,7 @@ self.addEventListener("fetch", function(ev){
 	const fetchUrl = remapUrl(filePathRelativeToPageRoot)
 	
     if (fetchUrl){
-        ev.respondWith(intelegentFetch(fetchUrl))
+        ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToPageRoot.startsWith("cdn")))
     }
     else{
         ev.respondWith(intelegentFetch(ev.request))
@@ -111,7 +111,7 @@ function walkPathMap(pathArray, currentPathMap){
 	return walkPathMap(remainingPatSegment, currentPathReference)
 }
 
-async function intelegentFetch(req){
+async function intelegentFetch(req, justUseTheCache = false){
 	let requestedPath = req.url || req 
 	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
 		return fetch(req)
@@ -119,8 +119,16 @@ async function intelegentFetch(req){
 
 	let cachedAsset
 
+	if (justUseTheCache){
+		cachedAsset = await storage.match(req)
+		if (cachedAsset){
+			return cachedAsset
+		}
+	}
+
 	if (cachedAsset = await storage.match(req)){
 		let cachedEtag = cachedAsset.headers.get("etag")
+		let cachedLastMod = cachedAsset.headers.get("last-modified")
 
 		let remoteHeaders
 		try{
@@ -132,12 +140,16 @@ async function intelegentFetch(req){
 			console.warn(uwu)
 		}
 
-		if (!remoteHeaders || !remoteHeaders.headers || !remoteHeaders.headers.get("etag") || remoteHeaders.headers.get("etag") === cachedEtag){
-			return cachedAsset
+		if (remoteHeaders && remoteHeaders.headers){
+			if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+				return cachedAsset
+			}
+			if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
+				return cachedAsset
+			}
 		}
-		else{
-			console.log("asset needs refreshing", req)
-		}
+		console.log("asset needs refreshing", req)
+
 	}
 
 	let res = await fetch(req)

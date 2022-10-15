@@ -72,7 +72,7 @@
 					scope: document.location.pathname,
 				})
 					.then(async function(registration) {
-						console.log('Registration successful:', registration)
+						// console.log('Registration successful:', registration)
 
 						// check for worker update because we dont want to load anything until the worker is known to be the latest worker.
 						const updatedRegistration = await registration.update()
@@ -81,7 +81,7 @@
 						if (updatedRegistration.installing){
 							return await new Promise((accept)=>{
 								updatedRegistration.installing.addEventListener("statechange", ev=>{
-									console.log(ev)
+									// console.log(ev)
 									if (ev.target.state === "activated"){
 										accept(updatedRegistration)
 									}
