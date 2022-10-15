@@ -1,4 +1,5 @@
 import factory from "/Utils/element-factory.js"
+export default factory
 
 export const div = factory("div")
 export const a = factory("a")

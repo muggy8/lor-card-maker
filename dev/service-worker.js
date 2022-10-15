@@ -3,7 +3,6 @@ const indexUrl = location.origin + swFolder
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	bundle: true, 
 	target: "es2018",
 	"no-dts": true,
 }
@@ -20,7 +19,10 @@ const pathMap = {
 		},
 		"react-dom": {
 			url: "https://esm.sh/react-dom@18.2.0",
-			query: esmshQueryConfigs,
+			query: {
+				...esmshQueryConfigs,
+				deps: "react@18.2.0"
+			},
 		},
 	},
 	App: indexUrl + "app",

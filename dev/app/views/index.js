@@ -1,13 +1,9 @@
-import factory from "/Utils/element-factory.js"
-import { useEffect, useCallback, useState } from "/cdn/react" 
-import { div, main } from "/Utils/elements.js"
+import { useState } from "/cdn/react" 
+import factory, { main, div } from "/Utils/elements.js"
 
-function ListView(props){
-    return main(
-        div("test"),
-        div("some"),
-        div("stuff"),
-    )
+function App (props) {
+
+    return div("uwu")
 }
 
-export default factory(ListView)
+export default factory(App)

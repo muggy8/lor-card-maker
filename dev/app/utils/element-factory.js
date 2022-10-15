@@ -1,10 +1,16 @@
 import React from "/cdn/react"
 
-function factory(reactComponent){
-    return function(l){
+function factory(reactComponent, name){
+    if (name){
+        Object.defineProperty(reactComponent, "name", {
+            value: name,
+            enumerable: true,
+        })
+    }
+    return function(){
         let params = arguments 
         let propsOrChildren = params[0]
-        let props = null
+        let props = {}
         let children = Array.prototype.slice.call(params, 1)
 
         if (
@@ -17,6 +23,8 @@ function factory(reactComponent){
         else{
             props = propsOrChildren
         }
+
+        // console.log([reactComponent, props, ...children])
 
         return React.createElement.apply(React, [reactComponent, props, ...children])
     }
