@@ -2,18 +2,26 @@ const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
 const indexUrl = location.origin + swFolder
 const CACHE_NAME = "react-cache"
 
-const importMap = {
-    react: "https://esm.sh/react@18.2.0?bundle"
+const esmshQueryConfigs = {
+	bundle: true, 
+	dev: true, 
+	target: "es2018",
+	"no-dts": true,
 }
-
 const pathMap = {
 	cdn: {
 		react: {
 			url: "https://esm.sh/react@18.2.0",
-			query: {bundle: true},
-		}
+			query: esmshQueryConfigs,
+		},
+		"react-dom": {
+			url: "https://esm.sh/react-dom@18.2.0",
+			query: esmshQueryConfigs,
+		},
 	},
-	App: indexUrl + "app"
+	App: indexUrl + "app",
+	Views: indexUrl + "app/views", 
+	Utils: indexUrl + "app/utils", 
 }
 
 self.addEventListener("install", function(ev){
