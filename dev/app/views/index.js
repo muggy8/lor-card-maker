@@ -4,9 +4,9 @@ import { div, main } from "/Utils/elements.js"
 
 function ListView(props){
     return main(
-        div({key: 1}, "test"),
-        div({key: 2}, "some"),
-        div({key: 3}, "stuff"),
+        div("test"),
+        div("some"),
+        div("stuff"),
     )
 }
 

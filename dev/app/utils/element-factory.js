@@ -7,28 +7,18 @@ function factory(reactComponent){
         let props = null
         let children = Array.prototype.slice.call(params, 1)
 
-        if (React.isValidElement(propsOrChildren) || typeof propsOrChildren !== "object"){
-            children =  Array.prototype.slice.call(params, 0)
-        }
-        else if (Array.isArray(propsOrChildren)){
-            if (params.length === 1){
-                children = propsOrChildren 
-            }
-            else{
-                children = [...propsOrChildren, ...children]
-            }
+        if (
+            React.isValidElement(propsOrChildren) || 
+            typeof propsOrChildren !== "object" || 
+            Array.isArray(propsOrChildren)
+        ){
+            children = Array.prototype.slice.call(params, 0)
         }
         else{
             props = propsOrChildren
         }
 
-        if (children.length === 1){
-            children = children[0]
-        }
-        else if (children.length === 0){
-            children = null
-        }
-        return React.createElement(reactComponent, props, children)
+        return React.createElement.apply(React, [reactComponent, props, ...children])
     }
 }
 
