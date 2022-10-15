@@ -28,6 +28,7 @@ const pathMap = {
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views", 
 	Utils: indexUrl + "app/utils", 
+	Components: indexUrl + "app/components", 
 }
 
 let storage 
