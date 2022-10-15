@@ -4,10 +4,14 @@ const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
 	bundle: true, 
-	dev: true, 
 	target: "es2018",
 	"no-dts": true,
 }
+
+if (indexUrl.includes("localhost")){
+	esmshQueryConfigs.dev = true
+}
+
 const pathMap = {
 	cdn: {
 		react: {
@@ -24,13 +28,18 @@ const pathMap = {
 	Utils: indexUrl + "app/utils", 
 }
 
+let storage 
 self.addEventListener("install", function(ev){
 	console.log("begin install", ev, location)
     ev.waitUntil(
-		Promise.all([
-			self.skipWaiting(),
-			intelegentFetch(indexUrl)
-		])
+		caches.open(CACHE_NAME)
+			.then((cache)=>{
+				storage = cache
+				return Promise.all([
+					self.skipWaiting(),
+					intelegentFetch(indexUrl)
+				])
+			})
     )
 })
 
@@ -103,16 +112,25 @@ function walkPathMap(pathArray, currentPathMap){
 }
 
 async function intelegentFetch(req){
-	let storage = await caches.open(CACHE_NAME)
+	let requestedPath = req.url || req 
+	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
+		return fetch(req)
+	}
 
 	let cachedAsset
 
 	if (cachedAsset = await storage.match(req)){
 		let cachedEtag = cachedAsset.headers.get("etag")
 
-		let remoteHeaders = await fetch(req, {
-			method: "HEAD",
-		}).catch(uwu=>console.warn(uwu))
+		let remoteHeaders
+		try{
+			remoteHeaders = await fetch(req, {
+				method: "HEAD",
+			})
+		}
+		catch(uwu){
+			console.warn(uwu)
+		}
 
 		if (!remoteHeaders || !remoteHeaders.headers || !remoteHeaders.headers.get("etag") || remoteHeaders.headers.get("etag") === cachedEtag){
 			return cachedAsset
@@ -122,7 +140,7 @@ async function intelegentFetch(req){
 		}
 	}
 
-	let res = await fetch(req.url || req)
+	let res = await fetch(req)
 
 	if (!res.ok){
 		return Promise.reject(res)
