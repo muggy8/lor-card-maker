@@ -1,4 +1,4 @@
-import { useState, useCallback, createContext } from "/cdn/react" 
+import { useState, useCallback, createContext, createElement } from "/cdn/react" 
 import factory, { main } from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
@@ -7,8 +7,6 @@ export const Globals = createContext({
     lang: "en",
     card: null,
 })
-
-const GlobalsContext = factory(Globals.Provider)
 
 function App () {
 
@@ -40,7 +38,8 @@ function App () {
     }, [patchGlboalState])
 
     return main(
-        GlobalsContext(
+        createElement(
+            Globals.Provider,
             {
                 value: {
                     state: globalState,
