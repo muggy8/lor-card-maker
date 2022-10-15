@@ -20,3 +20,7 @@ export const select = factory("select")
 export const option = factory("option")
 export const textarea = factory("textarea")
 export const section = factory("section")
+export const svg = factory("svg")
+export const path = factory("path")
+
+export const style = factory("style")
