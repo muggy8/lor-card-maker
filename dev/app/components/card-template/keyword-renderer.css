@@ -15,10 +15,12 @@
 
 .keyword-wrapper .left-bumper {
     background-image: url(/Assets/keyword/keywordleft.png);
+    background-size: 100% 100%;
 }
 
 .keyword-wrapper .right-bumper {
     background-image: url(/Assets/keyword/keywordright.png);
+    background-size: 100% 100%;
 }
 
 .keyword-wrapper .contents {
@@ -28,6 +30,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
+    background-size: 100% 100%;
 }
 .keyword-wrapper .contents.small {
     min-width: 64px;
