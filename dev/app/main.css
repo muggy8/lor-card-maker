@@ -1,3 +1,27 @@
+@font-face{
+	font-family: BeaufortforLOLBold;
+	src:
+		url("/Assets/BeaufortforLOLBold.ttf")
+		format("truetype");
+}
+@font-face{
+	font-family: BeaufortforLOLRegular;
+	src:
+		url("/Assets/beaufortforlol-regular.otf")
+		format("opentype");
+}
+@font-face{
+	font-family: universe55roman;
+	src:
+		url("/Assets/univers-55-roman.otf")
+		format("opentype");
+}
+
+img, svg {
+	max-width: 100%;
+	height: auto;
+	font-family: universe55roman;
+}
 
 .bold {
 	font-weight: bold;

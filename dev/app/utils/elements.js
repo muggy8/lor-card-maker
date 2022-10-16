@@ -22,5 +22,6 @@ export const textarea = factory("textarea")
 export const section = factory("section")
 export const svg = factory("svg")
 export const path = factory("path")
+export const foreignObject = factory("foreignObject")
 
 export const style = factory("style")

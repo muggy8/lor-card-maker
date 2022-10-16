@@ -30,6 +30,7 @@ const pathMap = {
 	Views: indexUrl + "app/views", 
 	Utils: indexUrl + "app/utils", 
 	Components: indexUrl + "app/components", 
+	Assets: indexUrl + "app/assets", 
 }
 
 let storage 

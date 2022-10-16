@@ -1,7 +1,11 @@
 import factory, { div } from "/Utils/elements.js"
-import { useState, useCallback, useContext } from "/cdn/react" 
+import { useContext } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
+
+// dev imports
+import SvgWrap from "/Components/card-template/svg-wrap.js"
+import UnitRenderer from "/Components/card-template/unit.js"
 
 loadCss("/Views/list.css")
 
@@ -15,7 +19,9 @@ function ListComponent(props){
             },
             className: "gutter-trbl-.5 flex",
         },
-        "placeholder"
+        SvgWrap(
+            UnitRenderer()
+        )
     )
 }
 
