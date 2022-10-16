@@ -24,6 +24,7 @@ const pathMap = {
 				deps: "react@18.2.0"
 			},
 		},
+		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b"
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views", 
