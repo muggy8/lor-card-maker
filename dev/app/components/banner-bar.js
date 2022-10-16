@@ -1,6 +1,9 @@
 import factory, { div, h1, a, svg, path, style } from "/Utils/elements.js"
+import { useEffect, useContext, useRef, useCallback } from "/cdn/react" 
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
+import { Globals } from "/Views/index.js"
+
 
 loadCss("/Components/banner-bar.css")
 
@@ -8,8 +11,34 @@ function BannarBarComponent(props){
 
     const translate = useLang()
 
+    const globalState = useContext(Globals)
+
+    const bannerElement = useRef()
+    const setBannerElement = useCallback((el)=>{
+        el && (bannerElement.current = el)
+    }, [])
+
+    useEffect(()=>{
+        function reportBannerWidth(){
+            if (!bannerElement.current){
+                return
+            }
+
+            globalState.patchState({
+                bannerHeight: bannerElement.current.clientHeight
+            })
+        }
+
+        window.addEventListener('resize', reportBannerWidth)
+        reportBannerWidth()
+
+        return function(){
+            window.removeEventListener('resize', reportBannerWidth)
+        }
+    }, [])
+
     return div(
-        {className: "banner fixed flex hcenter gutter-rl-4"},
+        {className: "banner fixed flex hcenter gutter-rl-4", ref: setBannerElement},
         h1(
             {className: "key-text gutter-rl"},
             translate("lor_card_maker"),
