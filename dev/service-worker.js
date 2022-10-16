@@ -1,5 +1,6 @@
 const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
 const indexUrl = location.origin + swFolder
+const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
@@ -56,14 +57,14 @@ self.addEventListener("activate", function(ev){
 })
 
 self.addEventListener("fetch", function(ev){
-    const filePathRelativeToPageRoot = ev.request.url.replace(indexUrl, "")
+    const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
     // const mappedUrl = importMap[filePathRelativeToPageRoot]
-    // console.log("sw fetch event", mappedUrl)
+    // console.log("sw fetch event", filePathRelativeToURLRoot)
 
-	const fetchUrl = remapUrl(filePathRelativeToPageRoot)
+	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
 	
     if (fetchUrl){
-        ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToPageRoot.startsWith("cdn")))
+        ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
     }
     else{
         ev.respondWith(intelegentFetch(ev.request))
