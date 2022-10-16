@@ -20,13 +20,15 @@ function BannarBarComponent(props){
 
     useEffect(()=>{
         function reportBannerWidth(){
-            if (!bannerElement.current){
-                return
-            }
-
-            globalState.patchState({
-                bannerHeight: bannerElement.current.clientHeight
-            })
+            setTimeout(() => {
+                if (!bannerElement.current){
+                    return
+                }
+    
+                globalState.patchState({
+                    bannerHeight: bannerElement.current.clientHeight
+                })
+            }, 10);            
         }
 
         window.addEventListener('resize', reportBannerWidth)

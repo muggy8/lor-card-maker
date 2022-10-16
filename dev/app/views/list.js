@@ -19,8 +19,23 @@ function ListComponent(props){
             },
             className: "gutter-trbl-.5 flex",
         },
-        SvgWrap(
-            UnitRenderer()
+        div(
+            { className: "card-render-test" }, 
+            SvgWrap(
+                UnitRenderer({
+                    mana: 5,
+                    faction: ["noxus", "ionia", "runeterra"],
+                    clan: "spider",
+                    power: 5,
+                    health: 5,
+                    name: "test card",
+                    keywords: [
+                        "immobile",
+                        "trap",
+                        "lifesteal"
+                    ]
+                })
+            )
         )
     )
 }
