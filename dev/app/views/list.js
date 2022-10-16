@@ -4,8 +4,7 @@ import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 
 // dev imports
-import SvgWrap from "/Components/card-template/svg-wrap.js"
-import UnitRenderer from "/Components/card-template/unit.js"
+import UnitRenderer from "/Components/card-template/landmark.js"
 
 loadCss("/Views/list.css")
 
@@ -21,21 +20,24 @@ function ListComponent(props){
         },
         div(
             { className: "card-render-test" }, 
-            SvgWrap(
-                UnitRenderer({
-                    mana: 5,
-                    faction: ["noxus", "ionia", "runeterra"],
-                    clan: "spider",
-                    power: 5,
-                    health: 5,
-                    name: "test card",
-                    keywords: [
-                        "immobile",
-                        "trap",
-                        "lifesteal"
-                    ]
-                })
-            )
+            UnitRenderer({
+                mana: 5,
+                faction: ["noxus", "ionia", "runeterra"],
+                clan: "spider",
+                // power: 5,
+                // health: 5,
+                name: "test card",
+                keywords: [
+                    "immobile",
+                    "trap",
+                    "lifesteal"
+                ],
+                effect: "<skill/>Play: create a Testing Text",
+                lvup: "I've seen you play Testing Text",
+                orangeWords: ["Play"],
+                blueWords: ["Testing Text"]
+            })
+
         )
     )
 }

@@ -1,0 +1,22 @@
+.effect-text {
+    font-size: 36;
+    text-align: center;
+    color: #FFF
+}
+
+.effect-text .inline-icon {
+    height: 1.2em; 
+    width: 1.2em; 
+    display:inline-block; 
+    background-repeat: no-repeat; 
+    background-size: contain;
+    background-position: center;
+    vertical-align: middle;
+}
+
+.effect-text .blue-word {
+    color: #49a0f8;
+}
+.effect-text .orange-word {
+    color: #fad65a;
+}

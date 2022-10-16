@@ -1,7 +1,9 @@
-import factory, { div } from "/Utils/elements.js"
+import factory, { div, img } from "/Utils/elements.js"
 import { Component } from "/cdn/react"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
+import EffectText from "/Components/card-template/effect-text.js"
 import loadCss from "/Utils/load-css.js"
+import SvgWrap from "/Components/card-template/svg-wrap.js"
 
 loadCss("/Components/card-template/unit.css")
 
@@ -28,118 +30,152 @@ export class UnitRendererComponent extends Component {
     }
 
     render(){
-        return div(
-            { className: "unit", id: this.props.id },
-
+        return SvgWrap(
             div(
-                { 
-                    className: "art",
-                    style: {
-                        backgroundImage: `url(/Assets/champion/backdrop.png)`,
-                        clipPath: `polygon(${
-                            this.clipPathPolygon.map((coordPair)=>{
-                                return coordPair.map(coord=>coord+"px")
-                                    .join(" ")
-                            }).join(",")
-                        })`
-                    }
-                },
-            ),
+                { className: "unit", id: this.props.id },
 
-            div(
-                { 
-                    className: "frame",
-                    style: {
-                        backgroundImage: `url(${this.cardFrame})`
-                    }
-                },
-            ),
-
-            div(
-                { className: "cost" },
-                this.props.mana,
-            ),
-
-            this.props.faction && this.props.faction.length 
-                ? div(
+                div(
                     { 
-                        className: "region-frame" ,
+                        className: "art",
                         style: {
-                            backgroundImage: `url(${this.getRegionFrameUrl()})`
+                            backgroundImage: `url(/Assets/champion/backdrop.png)`,
+                            clipPath: `polygon(${
+                                this.clipPathPolygon.map((coordPair)=>{
+                                    return coordPair.map(coord=>coord+"px")
+                                        .join(" ")
+                                }).join(",")
+                            })`
                         }
                     },
-                    this.props.faction.map(regionName=>div(
+                ),
+
+                div(
+                    { 
+                        className: "frame",
+                        style: {
+                            backgroundImage: `url(${this.cardFrame})`
+                        }
+                    },
+                ),
+
+                div(
+                    { className: "cost" },
+                    this.props.mana,
+                ),
+
+                this.props.faction && this.props.faction.length 
+                    ? div(
                         { 
-                            key: regionName,
-                            className: "region-icon",
+                            className: "region-frame" ,
                             style: {
-                                backgroundImage: `url(/Assets/region/${regionName}.png)`
+                                backgroundImage: `url(${this.getRegionFrameUrl()})`
                             }
                         },
-                    ))
-                )
-                : undefined
-            ,
+                        this.props.faction.map(regionName=>div(
+                            { 
+                                key: regionName,
+                                className: "region-icon",
+                                style: {
+                                    backgroundImage: `url(/Assets/region/${regionName}.png)`
+                                }
+                            },
+                        ))
+                    )
+                    : undefined
+                ,
 
-            this.props.clan 
-                ? div(
-                    {
-                        className: "clan",
-                        style: {
-                            backgroundImage: `url(${this.clanFrame})`
-                        }
-                    },
-                    div(
+                this.props.clan 
+                    ? div(
                         {
-                            className: "text-area"
+                            className: "clan",
+                            style: {
+                                backgroundImage: `url(${this.clanFrame})`
+                            }
                         },
-                        this.props.clan
-                    ),
-                )
-                : undefiend
-            ,
+                        div(
+                            {
+                                className: "text-area"
+                            },
+                            this.props.clan
+                        ),
+                    )
+                    : undefiend
+                ,
 
-            typeof this.props.power !== "undefined"
-                ? div(
-                    { className: "power" },
-                    this.props.power
-                )
-                : undefined
-            ,
-
-            typeof this.props.health !== "undefined"
-                ? div(
-                    { className: "health" },
-                    this.props.health
-                )
-                : undefined
-            ,
-
-            div(
-                { className: "card-text-wrapper" },
-                // stuff to do with the card content goes here
-
-                this.props.name
+                typeof this.props.power !== "undefined"
                     ? div(
-                        { className: "name" },
-                        this.props.name
+                        { className: "power" },
+                        this.props.power
                     )
                     : undefined
                 ,
 
-                this.props.keywords
+                typeof this.props.health !== "undefined"
                     ? div(
-                        { className: "keyword-container" },
-                        this.props.keywords.map(keywordName=>KeywordRenderer({
-                            key: keywordName,
-                            name: keywordName,
-                            size: this.props.keywords.length > 1 ? "small" : "large"
-                        }))
+                        { className: "health" },
+                        this.props.health
                     )
                     : undefined
                 ,
-            )
-        ) 
+
+                div(
+                    { className: "card-text-wrapper" },
+                    // stuff to do with the card content goes here
+
+                    this.props.name
+                        ? div(
+                            { className: "name" },
+                            this.props.name
+                        )
+                        : undefined
+                    ,
+
+                    this.props.keywords
+                        ? div(
+                            { className: "keyword-container" },
+                            this.props.keywords.map(keywordName=>KeywordRenderer({
+                                key: keywordName,
+                                name: keywordName,
+                                size: this.props.keywords.length > 1 ? "small" : "large"
+                            }))
+                        )
+                        : undefined
+                    ,
+
+                    this.props.effect
+                        ? EffectText(
+                            { 
+                                blueWords: this.props.blueWords,
+                                orangeWords: this.props.orangeWords, 
+                                className: "effect-container",
+                            }, 
+                            this.props.effect
+                        )
+                        : undefined
+                    ,
+
+                    this.props.lvup
+                        ? img({
+                            src: "/Assets/champion/levelupbar.png",
+                            className: "level-bar"
+                        })
+                        : undefined
+                    ,
+
+                    this.props.lvup
+                        ? EffectText(
+                            { 
+                                blueWords: this.props.blueWords,
+                                orangeWords: this.props.orangeWords, 
+                                className: "level-up-container",
+                            }, 
+                            this.props.lvup
+                        )
+                        : undefined
+                    ,
+                )
+            ) 
+        )
     }
 }
 

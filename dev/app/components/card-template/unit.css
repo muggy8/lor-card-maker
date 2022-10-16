@@ -91,11 +91,13 @@
 
 .unit .card-text-wrapper {
     bottom: 176px;
-    width: 560px;
-    left: 60px;
+    width: 680px;
 }
 
 .unit .card-text-wrapper .name {
+    width: 560px;
+    margin-left: auto;
+    margin-right: auto;
     height: 70px;
     font-size: 58px;
     color: #FFF;
@@ -104,4 +106,22 @@
 }
 .unit .card-text-wrapper .keyword-container {
     text-align: center;
+    width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.unit .card-text-wrapper .effect-container, .unit .card-text-wrapper .level-up-container{
+    width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 104px;
+}
+.unit .card-text-wrapper .level-bar {
+    width: 680px;
+    height: 44px;
+}
+
+.unit .card-text-wrapper .level-up-container {
+    color: #fad65a;
 }
