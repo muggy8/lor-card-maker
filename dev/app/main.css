@@ -1,0 +1,35 @@
+
+.bold {
+	font-weight: bold;
+}
+
+.caps {
+	text-transform: uppercase;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.hide {
+	display: none;
+}
+
+.ghost {
+	opacity: 0.5;
+}
+
+.invisable {
+	opacity: 0;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+.relative { position: relative }
+.absolute { position: absolute }
