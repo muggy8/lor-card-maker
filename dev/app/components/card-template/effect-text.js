@@ -1,13 +1,65 @@
 import factory, { div, span, br } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 import { useRef, useLayoutEffect } from "/cdn/react"
-import fitty from "/cdn/fitty"
+import "/cdn/setimmediate"
 import loadCss from "/Utils/load-css.js"
 
 loadCss("/Components/card-template/effect-text.css")
 
 const keywordWithIcons = Object.keys(keywords).filter(word=>keywords[word].length)
 // const keywordTags = keywordWithIcons.map(word=>`<${word}/>`)
+
+export const effectTextSize = 24
+
+const isOverflown = ({ clientWidth, clientHeight, scrollWidth, scrollHeight }) => (scrollWidth > clientWidth) || (scrollHeight > clientHeight)
+
+function avg(a, b){
+    return (a + b) / 2
+}
+
+function nextTick(){
+    return new Promise(accept=>setImmediate(accept))
+}
+
+export async function scaleFontSize(element, max = 36, min = effectTextSize){
+    if (!element){
+        return
+    }
+
+    let currentFontSize = window.getComputedStyle(element).getPropertyValue('font-size')
+    currentFontSize = parseFloat(currentFontSize)
+
+    if (currentFontSize == max && !isOverflown(element)){
+        return
+    }
+
+    // perform binary search for the perfect font size
+    let upperbound = max, lowerBound = min, checkSize = currentFontSize
+  
+    while(upperbound - lowerBound > 0.5){
+        
+        element.style.fontSize = `${checkSize + 0.5}px`
+        await nextTick()
+        const overflowAtNextIncriment = isOverflown(element)
+
+        element.style.fontSize = `${checkSize}px`
+        await nextTick()
+        const overflowAtCurrentFontsize = isOverflown(element)
+
+        if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
+            return
+        }
+
+        if (overflowAtCurrentFontsize){
+            upperbound = checkSize
+            checkSize = avg(upperbound, lowerBound)
+        }
+        else{
+            lowerBound = checkSize 
+            checkSize = avg(upperbound, lowerBound)
+        }
+    }
+}
 
 function EffectTextComponent(props){
     let text = props.children
@@ -109,15 +161,9 @@ function EffectTextComponent(props){
     }).flat()
 
     const elementRef = useRef()
-    const fittyRef = useRef()
 
     useLayoutEffect(()=>{
-        if (!fittyRef.current){
-            fittyRef.current = fitty(elementRef.current, { multiLine: true, maxSize: 36, minSize: 20 })
-            return
-        }
-
-        fittyRef.current.fit()
+        scaleFontSize(elementRef.current)
     }, [props.children])
 
     return div.apply(factory, [{className: `effect-text fitty-wrap ${props.className || ""}`, ref: elementRef}, ...contentArray])

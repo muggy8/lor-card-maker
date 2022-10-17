@@ -1,7 +1,7 @@
 import factory, { div, img } from "/Utils/elements.js"
 import { Component, createRef } from "/cdn/react"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
-import EffectText from "/Components/card-template/effect-text.js"
+import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import fitty from "/cdn/fitty"
@@ -52,11 +52,14 @@ export class UnitRendererComponent extends Component {
             nameRef,
         } = this
 
-        this.clanFitty = fitty(clanRef.current, { multiLine: false, maxSize: 40 })
+        // this.clanFitty = fitty(clanRef.current, { multiLine: false, maxSize: 40 })
+        scaleFontSize(clanRef.current, 40, 16)
         this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 100 })
         this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
         this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
-        this.nameFitty = fitty(nameRef.current, { multiLine: true, maxSize: 70 })
+        // this.nameFitty = fitty(nameRef.current, { multiLine: true, maxSize: 70 })
+        scaleFontSize(nameRef.current, 70, 16)
+
     }
 
     componentDidUpdate(previousProps){
@@ -68,11 +71,11 @@ export class UnitRendererComponent extends Component {
             name,
         } = this.props
 
-        previousProps.clan !== clan && this.clanFitty.fit()
+        previousProps.clan !== clan && scaleFontSize(this.clanRef.current, 40, 16)
         previousProps.cost !== cost && this.costFitty.fit()
         previousProps.power !== power && this.powerFitty.fit()
         previousProps.health !== health && this.healthRefFitty.fit()
-        previousProps.name !== name && this.nameFitty.fit()
+        previousProps.name !== name && scaleFontSize(this.nameRef.current, 70, 16)
     }
 
     render(){

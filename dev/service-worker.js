@@ -26,10 +26,14 @@ const pathMap = {
 			},
 		},
 		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b",
-		"fitty": {
+		fitty: {
 			url: "https://esm.sh/fitty@2.3.6",
 			query: esmshQueryConfigs,
-		}
+		},
+		setimmediate: {
+			url: "https://esm.sh/setimmediate@1.0.5",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views", 
