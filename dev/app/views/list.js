@@ -26,7 +26,7 @@ function ListComponent(props){
                 clan: "Asian dad",
                 power: 5,
                 health: 5,
-                name: "Simon He's Father",
+                name: "Steven He's Father",
                 keywords: [
                     "immobile",
                     "trap",
