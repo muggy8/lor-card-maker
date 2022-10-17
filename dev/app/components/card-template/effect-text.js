@@ -1,5 +1,7 @@
 import factory, { div, span, br } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
+import { useRef, useLayoutEffect } from "/cdn/react"
+import fitty from "/cdn/fitty"
 import loadCss from "/Utils/load-css.js"
 
 loadCss("/Components/card-template/effect-text.css")
@@ -106,7 +108,19 @@ function EffectTextComponent(props){
         return splitUpText
     }).flat()
 
-    return div.apply(factory, [{className: `effect-text ${props.className || ""}`}, ...contentArray])
+    const elementRef = useRef()
+    const fittyRef = useRef()
+
+    useLayoutEffect(()=>{
+        if (!fittyRef.current){
+            fittyRef.current = fitty(elementRef.current, { multiLine: true, maxSize: 36 })
+            return
+        }
+
+        fittyRef.current.fit()
+    }, [props.children])
+
+    return div.apply(factory, [{className: `effect-text fitty-wrap ${props.className || ""}`, ref: elementRef}, ...contentArray])
 }
 
 export default factory(EffectTextComponent)

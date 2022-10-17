@@ -1,9 +1,10 @@
 import factory, { div, img } from "/Utils/elements.js"
-import { Component } from "/cdn/react"
+import { Component, createRef } from "/cdn/react"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import EffectText from "/Components/card-template/effect-text.js"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
+import fitty from "/cdn/fitty"
 
 loadCss("/Components/card-template/unit.css")
 
@@ -21,12 +22,55 @@ export class UnitRendererComponent extends Component {
 
     clanFrame = "/Assets/champion/typing.png"
 
+    constructor(props) {
+        super(props)
+        this.clanRef = createRef()
+        this.costRef = createRef()
+        this.powerRef = createRef()
+        this.healthRef = createRef()
+        this.nameRef = createRef()
+
+        console.log(this)
+      }
+
     getRegionFrameUrl(){
         let regionCount = this.props.faction.length
         if (regionCount > 3){
             regionCount = 3 
         }
         return `/Assets/champion/lvl1regionbox${regionCount}.png`
+    }
+
+    componentDidMount(){
+        const {
+            clanRef,
+            costRef,
+            powerRef,
+            healthRef,
+            nameRef,
+        } = this
+
+        this.clanFitty = fitty(clanRef.current, { multiLine: false, maxSize: 40 })
+        this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 100 })
+        this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
+        this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
+        this.nameFitty = fitty(nameRef.current, { multiLine: true, maxSize: 70 })
+    }
+
+    componentDidUpdate(previousProps){
+        const {
+            clan, 
+            cost, 
+            power,
+            health, 
+            name,
+        } = this.props
+
+        previousProps.clan !== clan && this.clanFitty.fit()
+        previousProps.cost !== cost && this.costFitty.fit()
+        previousProps.power !== power && this.powerFitty.fit()
+        previousProps.health !== health && this.healthRefFitty.fit()
+        previousProps.name !== name && this.nameFitty.fit()
     }
 
     render(){
@@ -59,7 +103,7 @@ export class UnitRendererComponent extends Component {
                 ),
 
                 div(
-                    { className: "cost" },
+                    { className: "cost fitty-nowrap", ref: this.costRef },
                     this.props.mana,
                 ),
 
@@ -94,7 +138,8 @@ export class UnitRendererComponent extends Component {
                         },
                         div(
                             {
-                                className: "text-area"
+                                ref: this.clanRef,
+                                className: "text-area fitty-nowrap"
                             },
                             this.props.clan
                         ),
@@ -104,7 +149,7 @@ export class UnitRendererComponent extends Component {
 
                 typeof this.props.power !== "undefined"
                     ? div(
-                        { className: "power" },
+                        { className: "power fitty-nowrap", ref: this.powerRef },
                         this.props.power
                     )
                     : undefined
@@ -112,7 +157,7 @@ export class UnitRendererComponent extends Component {
 
                 typeof this.props.health !== "undefined"
                     ? div(
-                        { className: "health" },
+                        { className: "health fitty-nowrap", ref: this.healthRef },
                         this.props.health
                     )
                     : undefined
@@ -124,7 +169,7 @@ export class UnitRendererComponent extends Component {
 
                     this.props.name
                         ? div(
-                            { className: "name" },
+                            { className: "name fitty-wrap", ref: this.nameRef },
                             this.props.name
                         )
                         : undefined

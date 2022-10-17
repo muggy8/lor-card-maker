@@ -4,7 +4,7 @@ import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 
 // dev imports
-import UnitRenderer from "/Components/card-template/landmark.js"
+import UnitRenderer from "/Components/card-template/champion1.js"
 
 loadCss("/Views/list.css")
 
@@ -24,9 +24,9 @@ function ListComponent(props){
                 mana: 5,
                 faction: ["noxus", "ionia", "runeterra"],
                 clan: "spider",
-                // power: 5,
-                // health: 5,
-                name: "test card",
+                power: 5,
+                health: 5,
+                name: "The pulsing neutron star underneath the golden spacecraft",
                 keywords: [
                     "immobile",
                     "trap",

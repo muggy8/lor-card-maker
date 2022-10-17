@@ -1,6 +1,6 @@
 import factory, { svg, foreignObject } from "/Utils/elements.js"
 
-function UnitTemplateComponent(props){
+function SvgWrapComponent(props){
     return svg(
         {
             width: "680",
@@ -21,4 +21,4 @@ function UnitTemplateComponent(props){
     )
 }
 
-export default factory(UnitTemplateComponent)
+export default factory(SvgWrapComponent)

@@ -92,6 +92,10 @@
 .unit .card-text-wrapper {
     bottom: 176px;
     width: 680px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .unit .card-text-wrapper .name {
@@ -123,5 +127,5 @@
 }
 
 .unit .card-text-wrapper .level-up-container {
-    color: #fad65a;
+    color: #d6946b;
 }

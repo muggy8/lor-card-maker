@@ -62,9 +62,18 @@ img, svg {
 .relative { position: relative }
 .absolute { position: absolute }
 
-
 .card-render-test {
 	width: 50%;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.fitty-wrap {
+	display: inline-block !important;
+    white-space: normal !important;
+}
+
+.fitty-nowrap {
+	display: inline-block !important;
+    white-space: nowrap !important;
 }
