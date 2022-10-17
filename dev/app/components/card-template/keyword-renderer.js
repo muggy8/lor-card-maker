@@ -7,7 +7,6 @@ export const keywords = {
     "attune": [ "attune.png" ],
     "attach": [ "attach.png" ],
     "augment": [ "augment.png" ],
-    "checkbox": [ "checkbox.png" ],
     "fleeting": [ "fleeting.png" ],
     "scout": [ "scout.png" ],
     "barrier": [ "barrier.png" ],

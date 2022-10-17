@@ -5,6 +5,8 @@ import factory from "/Utils/elements.js"
 class Champion2Component extends UnitRendererComponent {
     cardFrame = "/Assets/follower/framegemless.png"
 
+    clanFrame = "/Assets/follower/typing.png"
+
     regionPosition = "follower"
 
     getRegionFrameUrl(){

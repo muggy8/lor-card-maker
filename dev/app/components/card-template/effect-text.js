@@ -113,7 +113,7 @@ function EffectTextComponent(props){
 
     useLayoutEffect(()=>{
         if (!fittyRef.current){
-            fittyRef.current = fitty(elementRef.current, { multiLine: true, maxSize: 36 })
+            fittyRef.current = fitty(elementRef.current, { multiLine: true, maxSize: 36, minSize: 20 })
             return
         }
 

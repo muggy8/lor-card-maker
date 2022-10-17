@@ -32,9 +32,10 @@ function ListComponent(props){
                     "trap",
                     "lifesteal"
                 ],
-                effect: "<skill/>Play: create a Testing Text",
-                lvup: "I've seen you play Testing Text",
-                orangeWords: ["Play"],
+                effect: "<skill/>Play: Create a Testing Text if you don't already have one and give it +1|0 for each card you played this round unit the end of your opponent's next round.",
+                //\n<last breath/>Last Breath: Grant Testing Text Everywhere +1 damange.\nRound Start: Flow: Reduce the cost of Testing Text Everywhere by 1 this round.
+                lvup: "You play Testing Text 3+ times",
+                orangeWords: ["Play", "Last Breath", "Everywhere", "Round Start", "Flow"],
                 blueWords: ["Testing Text"]
             })
 
