@@ -4,7 +4,7 @@ import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 
 // dev imports
-import UnitRenderer from "/Components/card-template/champion1.js"
+import UnitRenderer from "/Components/card-template/follower.js"
 
 loadCss("/Views/list.css")
 

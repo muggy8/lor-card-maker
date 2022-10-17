@@ -22,6 +22,8 @@ export class UnitRendererComponent extends Component {
 
     clanFrame = "/Assets/champion/typing.png"
 
+    regionPosition = "champion"
+
     constructor(props) {
         super(props)
         this.clanRef = createRef()
@@ -76,7 +78,7 @@ export class UnitRendererComponent extends Component {
     render(){
         return SvgWrap(
             div(
-                { className: "unit", id: this.props.id },
+                { className: `unit ${this.regionPosition}`, id: this.props.id },
 
                 div(
                     { 
@@ -107,7 +109,7 @@ export class UnitRendererComponent extends Component {
                     this.props.mana,
                 ),
 
-                this.props.faction && this.props.faction.length 
+                this.props.faction && this.props.faction.length
                     ? div(
                         { 
                             className: "region-frame" ,

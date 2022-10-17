@@ -44,6 +44,11 @@
     padding-top: 26px;
 }
 
+.unit.follower .region-frame {
+    left: 557px;
+    top: 37px;
+}
+
 .unit .region-icon {
     margin-bottom: 10px;
     width: 80px;
