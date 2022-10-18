@@ -3,7 +3,8 @@ import factory from "/Utils/elements.js"
 
 
 class Champion2Component extends UnitRendererComponent {
-    cardFrame = "/Assets/follower/framegemless.png"
+    
+    cardFrame = "/Assets/follower/frame.png"
 
     clanFrame = "/Assets/follower/typing.png"
 

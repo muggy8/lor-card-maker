@@ -4,7 +4,8 @@ import factory from "/Utils/elements.js"
 
 class LandmarkComponent extends UnitRendererComponent {
 
-    cardFrame = "/Assets/landmark/framegemless.png"
+    cardFrame = "/Assets/landmark/frame.png"
+    
     clanFrame = "/Assets/landmark/typing.png"
 
     clipPathPolygon = [
