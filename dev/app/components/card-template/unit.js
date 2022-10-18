@@ -31,8 +31,6 @@ export class UnitRendererComponent extends Component {
         this.powerRef = createRef()
         this.healthRef = createRef()
         this.nameRef = createRef()
-
-        console.log(this)
       }
 
     getRegionFrameUrl(){
