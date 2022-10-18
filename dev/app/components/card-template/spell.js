@@ -1,12 +1,65 @@
 import factory, { div, img } from "/Utils/elements.js"
+import { useRef, useLayoutEffect } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
+import fitty from "/cdn/fitty"
 
 loadCss("/Components/card-template/spell.css")
 
 function SpellComponent(props){
+
+    const nameRef = useRef()
+    const clanRef = useRef()
+    const costRef = useRef()
+    const powerRef = useRef()
+    const healthRef = useRef()
+
+    const costFitty = useRef()
+    const powerFitty = useRef()
+    const healthFitty = useRef()
+
+    useLayoutEffect(()=>{
+        scaleFontSize(nameRef.current, 70, 16)
+    }, [props.name])
+
+    useLayoutEffect(()=>{
+        scaleFontSize(clanRef.current, 40, 16)
+    }, [props.clan])
+
+    useLayoutEffect(()=>{
+        const fittyInstance = costFitty.current
+
+        if (!fittyInstance){
+            costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 100 })
+            return 
+        }
+
+        fittyInstance.fit()
+    }, [props.clan])
+
+    useLayoutEffect(()=>{
+        const fittyInstance = powerFitty.current
+
+        if (!fittyInstance){
+            powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
+            return 
+        }
+
+        fittyInstance.fit()
+    }, [props.clan])
+
+    useLayoutEffect(()=>{
+        const fittyInstance = healthFitty.current
+
+        if (!fittyInstance){
+            healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
+            return 
+        }
+
+        fittyInstance.fit()
+    }, [props.clan])
 
     return SvgWrap(
         div(
@@ -34,7 +87,7 @@ function SpellComponent(props){
                 },
             ),
             div(
-                { className: "cost fitty-nowrap", },
+                { className: "cost fitty-nowrap", ref: costRef},
                 props.mana,
             ),
             props.faction && props.faction.length
@@ -61,6 +114,7 @@ function SpellComponent(props){
                 ? div(
                     {
                         className: "clan",
+                        ref: clanRef,
                         style: {
                             backgroundImage: `url(/Assets/landmark/typing.png)`
                         }
@@ -85,14 +139,14 @@ function SpellComponent(props){
             ,
             typeof props.power !== "undefined"
                 ? div(
-                    { className: "power fitty-nowrap" },
+                    { className: "power fitty-nowrap", ref: powerRef },
                     props.power
                 )
                 : undefined
             ,
             typeof props.health !== "undefined"
                 ? div(
-                    { className: "health fitty-nowrap" },
+                    { className: "health fitty-nowrap", ref: healthRef },
                     props.health
                 )
                 : undefined
@@ -103,7 +157,7 @@ function SpellComponent(props){
 
                 props.name
                     ? div(
-                        { className: "name fitty-wrap" },
+                        { className: "name fitty-wrap", ref: nameRef },
                         props.name
                     )
                     : undefined
