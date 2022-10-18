@@ -24,17 +24,17 @@ function ListComponent(props){
                 mana: 5,
                 faction: ["noxus", "ionia", "runeterra"],
                 clan: "Asian",
-                power: 3,
-                health: 3,
+                power: 5,
+                health: 5,
                 name: "Emotional Damage",
                 speed: "equipment",
                 keywords: [
                     "immobile",
                     "trap",
-                    "lifesteal"
+                    "equipment"
                 ],
-                effect: "<skill/>Attack: deal 1 damage to my blocker.",
-                orangeWords: ["Attack", ],
+                effect: "<skill/>Play: deal 1 damage to your nexus.\nWhen opponent attacks, I automatically block the strongest enemy.",
+                orangeWords: ["Play"],
                 blueWords: [],
                 rarity: "common",
             })

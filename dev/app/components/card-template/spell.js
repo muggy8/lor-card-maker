@@ -157,7 +157,7 @@ function SpellComponent(props){
             props.rarity 
                 ? img(
                     { 
-                        className: `rarity ${props.clan ? "with-clan" : ""}`,
+                        className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
                         src: `/Assets/shared/gem${props.rarity}.png`,
                     },
                 )
