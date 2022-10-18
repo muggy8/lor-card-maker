@@ -20,6 +20,9 @@
     top: 463px;
     left: 23px;
 }
+.spell .text-background img {
+    mix-blend-mode: multiply;
+}
 
 .spell .art {
     left: 100px;

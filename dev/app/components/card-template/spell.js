@@ -1,5 +1,6 @@
 import factory, { div, img } from "/Utils/elements.js"
-import { useRef, useLayoutEffect } from "/cdn/react"
+import { useRef, useLayoutEffect, useState } from "/cdn/react"
+import { FastAverageColor } from "/cdn/fast-average-color"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
@@ -19,6 +20,24 @@ function SpellComponent(props){
     const costFitty = useRef()
     const powerFitty = useRef()
     const healthFitty = useRef()
+    const facref = useRef()
+    
+    const [imageAvgColor, updateImageAvgColor] = useState("#000000")
+    useLayoutEffect(()=>{
+        let fac = facref.current 
+        if (!fac){
+            fac = facref.current = new FastAverageColor();
+        }
+
+        const imageUrl = props.art || "/Assets/spell/backdrop.png"
+
+        fac.getColorAsync(imageUrl)
+            .then(color=>{
+                // console.log(color)
+                updateImageAvgColor(color.hex)
+            })
+            .catch(console.warn)
+    }, [props.art])
 
     useLayoutEffect(()=>{
         scaleFontSize(nameRef.current, 70, 16)
@@ -64,18 +83,25 @@ function SpellComponent(props){
     return SvgWrap(
         div(
             { className: `${props.speed} spell`, id: props.id },
-            img(
+            div(
                 { 
                     className: "text-background",
-                    src: "/Assets/spell/background.png",
+                    style: {
+                        backgroundColor: imageAvgColor,
+                    }
                 },
+                img(
+                    { 
+                        src: "/Assets/spell/background.png"
+                    },
+                ),
             ),
             div(
                 { 
                     className: "art",
                     style: {
                         backgroundImage: `url(/Assets/spell/backdrop.png)`,
-                    }
+                    },
                 },
             ),
             div(

@@ -28,11 +28,15 @@ const pathMap = {
 		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b",
 		fitty: {
 			url: "https://esm.sh/fitty@2.3.6",
-			query: esmshQueryConfigs,
+			query: {...esmshQueryConfigs, bundle: true},
 		},
 		setimmediate: {
 			url: "https://esm.sh/setimmediate@1.0.5",
-			query: esmshQueryConfigs,
+			query: {...esmshQueryConfigs, bundle: true},
+		},
+		"fast-average-color": {
+			url: "https://esm.sh/fast-average-color@9.1.1",
+			query: {...esmshQueryConfigs, bundle: true},
 		},
 	},
 	App: indexUrl + "app",
