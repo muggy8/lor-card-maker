@@ -51,6 +51,9 @@ function SpellComponent(props){
         const fittyInstance = costFitty.current
 
         if (!fittyInstance){
+            if (!costRef.current){
+                return
+            }
             costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 100 })
             return 
         }
@@ -62,6 +65,9 @@ function SpellComponent(props){
         const fittyInstance = powerFitty.current
 
         if (!fittyInstance){
+            if (!powerRef.current){
+                return
+            }
             powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
             return 
         }
@@ -73,6 +79,9 @@ function SpellComponent(props){
         const fittyInstance = healthFitty.current
 
         if (!fittyInstance){
+            if (!healthRef.current){
+                return
+            }
             healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
             return 
         }

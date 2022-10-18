@@ -1,45 +1,56 @@
-import factory, { div } from "/Utils/elements.js"
+import factory, { div, h2, strong } from "/Utils/elements.js"
 import { useContext } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 
-// dev imports
-import SpellComponent from "/Components/card-template/spell.js"
+import Spell from "/Components/card-template/spell.js"
+import Champion1 from "/Components/card-template/champion1.js"
+import Champion2 from "/Components/card-template/champion2.js"
+import Champion3 from "/Components/card-template/champion3.js"
+import Follower from "/Components/card-template/follower.js"
+import Landmark from "/Components/card-template/landmark.js"
+import useLang from "/Utils/use-lang.js"
+
+const types = [
+    {component: Champion1, labelKey: "champ1"},
+    {component: Champion2, labelKey: "champ2"},
+    {component: Champion3, labelKey: "champ3"},
+    {component: Landmark, labelKey: "landmark"},
+    {component: Spell, labelKey: "spell"},
+    {component: Follower, labelKey: "follower"},
+]
 
 loadCss("/Views/list.css")
 
 function ListComponent(props){
     const globalState = useContext(Globals)
 
+    const translate = useLang()
+
     return div(
         {
+            id: "card-type-list",
             style: {
                 marginTop: globalState.state.bannerHeight || 0,
             },
-            className: "gutter-trbl-.5 flex",
         },
         div(
-            { className: "card-render-test" }, 
-            SpellComponent({
-                mana: 5,
-                faction: ["noxus", "ionia", "runeterra"],
-                clan: "Asian",
-                power: 5,
-                health: 5,
-                name: "Emotional Damage",
-                speed: "equipment",
-                keywords: [
-                    "immobile",
-                    "trap",
-                    "equipment"
-                ],
-                effect: "<skill/>Play: deal 1 damage to your nexus.\nWhen opponent attacks, I automatically block the strongest enemy.",
-                orangeWords: ["Play"],
-                blueWords: [],
-                rarity: "common",
+            { className: "flex hcenter"},
+            h2(
+                translate("i_want_to_make")
+            ),
+        ),
+        div(
+            { className: "gutter-trbl-.5 flex",},
+            types.map((type)=>{
+                return div(
+                    { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", key: type.labelKey },
+                    type.component({
+                        name: translate(type.labelKey)
+                    })
+                )
             })
-
-        )
+        ),
     )
 }
 

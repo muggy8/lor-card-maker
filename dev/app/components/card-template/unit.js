@@ -50,13 +50,11 @@ export class UnitRendererComponent extends Component {
             nameRef,
         } = this
 
-        // this.clanFitty = fitty(clanRef.current, { multiLine: false, maxSize: 40 })
-        scaleFontSize(clanRef.current, 40, 16)
-        this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 100 })
-        this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
-        this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
-        // this.nameFitty = fitty(nameRef.current, { multiLine: true, maxSize: 70 })
-        scaleFontSize(nameRef.current, 70, 16)
+        clanRef.current && scaleFontSize(clanRef.current, 40, 16)
+        costRef.current && (this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 100 }))
+        powerRef.current && (this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 60 }))
+        healthRef.current && (this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 60 }))
+        nameRef.current && scaleFontSize(nameRef.current, 70, 16)
 
     }
 
@@ -147,7 +145,7 @@ export class UnitRendererComponent extends Component {
                             this.props.clan
                         ),
                     )
-                    : undefiend
+                    : undefined
                 ,
 
                 typeof this.props.power !== "undefined"
