@@ -1,7 +1,8 @@
 .effect-text {
     font-size: 36px;
     text-align: center;
-    color: #FFF
+    color: #FFF;
+    will-change: font-size;
 }
 
 .effect-text .inline-icon {

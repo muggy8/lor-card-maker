@@ -1,7 +1,7 @@
 import factory, { div, span, br } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 import { useRef, useLayoutEffect } from "/cdn/react"
-import "/cdn/setimmediate"
+import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 
 loadCss("/Components/card-template/effect-text.css")
@@ -36,8 +36,7 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
     // perform binary search for the perfect font size
     let upperbound = max, lowerBound = min, checkSize = currentFontSize
   
-    while(upperbound - lowerBound > 0.5){
-        
+    while(upperbound - lowerBound > 0.5){        
         element.style.fontSize = `${checkSize + 0.5}px`
         await nextTick()
         const overflowAtNextIncriment = isOverflown(element)

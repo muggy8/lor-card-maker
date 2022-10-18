@@ -32,6 +32,7 @@
     left: 31px;
     top: 44px;
     font-size: 100px;
+    will-change: font-size;
     text-align: center;
     vertical-align: middle;
 }
@@ -73,6 +74,7 @@
     text-transform: uppercase;
     color: #bbb;
     font-size: 40px;
+    will-change: font-size;
     width: 214px;
     text-align: center;
 }
@@ -82,6 +84,7 @@
     height: 76px;
     top: 878px;
     font-size: 60px;
+    will-change: font-size;
     color: #FFF;
     text-align: center;
 }
@@ -109,6 +112,7 @@
     margin-right: auto;
     height: 70px;
     font-size: 58px;
+    will-change: font-size;
     color: #FFF;
     text-align: center;
     text-transform: uppercase;
