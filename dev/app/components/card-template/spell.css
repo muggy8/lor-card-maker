@@ -142,8 +142,8 @@
     width: 560px;
     margin-left: auto;
     margin-right: auto;
-    height: 70px;
-    font-size: 58px;
+    height: 58;
+    font-size: 48;
     will-change: font-size;
     color: #FFF;
     text-align: center;
