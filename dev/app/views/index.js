@@ -28,6 +28,16 @@ function App () {
             }
         })
 
+        const hasAnythingChanged = Object.keys(mergedState)
+            .map(key=>mergedState[key] !== globalState[key])
+            .reduce((sum, hasChanged)=>sum || hasChanged, false)
+        
+        if (!hasAnythingChanged){
+            return
+        }
+
+        console.log("uwu")
+
         updateGlobalState(mergedState)
     }, [globalState, updateGlobalState])
 

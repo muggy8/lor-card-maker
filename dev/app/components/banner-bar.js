@@ -37,7 +37,7 @@ function BannarBarComponent(props){
         return function(){
             window.removeEventListener('resize', reportBannerWidth)
         }
-    }, [])
+    }, [globalState.patchState])
 
     return div(
         {className: "banner fixed flex hcenter gutter-rl-4", ref: setBannerElement},
