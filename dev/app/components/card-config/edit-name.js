@@ -15,9 +15,9 @@ function EditNameComponent(props){
             {className: "flex gutter-b-2"},
             input(
                 {
-                    value: props.name,
+                    value: props.value,
                     className: "box-12",
-                    onChange: props.updateName,
+                    onChange: props.updateValue,
                     type: "text",
                 }
             )

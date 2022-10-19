@@ -5,6 +5,7 @@ import { useState, useCallback } from "/cdn/react"
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
+import EditRegion from "/Components/card-config/edit-region.js"
 
 loadCss("/Views/card-editor.css")
 
@@ -59,11 +60,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 )
             ),
             div(
-                { className: "card-configs gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
+                { className: "card-configs gutter-t-2 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
                 canShow("name", defaultCardData) 
                     ? div(
-                        {className: "flex hcenter gutter-tb"},
-                        EditName({name: card.name, updateName: cardDataUpdaters.name})
+                        {className: "flex hcenter"},
+                        EditName({value: card.name, updateValue: cardDataUpdaters.name})
                     ) 
                     : undefined
                 ,
@@ -89,6 +90,13 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             updateValue: cardDataUpdaters.health,
                         }),
                     )
+                    : undefined
+                ,
+                canShow("faction", defaultCardData)
+                    ? EditRegion({
+                        value: card.faction,
+                        updateValue: cardDataUpdaters.faction,
+                    })
                     : undefined
                 ,
             ),

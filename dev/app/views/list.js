@@ -12,6 +12,19 @@ import Follower from "/Components/card-template/follower.js"
 import Landmark from "/Components/card-template/landmark.js"
 import CardEditorFactory from "/Views/card-editor.js"
 
+const sharedDefaultCardData = {
+    name: "",
+    mana: 0,
+    clan: "",
+    art: "",
+    id: "",
+    faction: [],
+    keywords: [],
+    effect: "",
+    orangeWords: [],
+    blueWords: [],
+}
+
 const types = [
     {
         component: Champion1, 
@@ -20,16 +33,9 @@ const types = [
             CardEditorFactory(
                 Champion1,
                 {
-                    name: "",
-                    mana: 0,
+                    ...sharedDefaultCardData,
                     power: 0,
                     health: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
                     lvup: "",
                     rarity: "gem",
                 }
@@ -43,16 +49,9 @@ const types = [
             CardEditorFactory(
                 Champion2,
                 {
-                    name: "",
-                    mana: 0,
+                    ...sharedDefaultCardData,
                     power: 0,
                     health: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
                     lvup: "",
                     rarity: "",
                 }
@@ -66,16 +65,9 @@ const types = [
             CardEditorFactory(
                 Champion3,
                 {
-                    name: "",
-                    mana: 0,
+                    ...sharedDefaultCardData,
                     power: 0,
                     health: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
                     lvup: "",
                     rarity: "",
                 }
@@ -89,14 +81,7 @@ const types = [
             CardEditorFactory(
                 Landmark,
                 {
-                    name: "",
-                    mana: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
+                    ...sharedDefaultCardData,
                     lvup: "",
                     rarity: "",
                 }
@@ -110,14 +95,9 @@ const types = [
             CardEditorFactory(
                 Spell,
                 {
-                    name: "",
-                    mana: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
+                    ...sharedDefaultCardData,
+                    power: null,
+                    health: null,
                     speed: "trap",
                     rarity: "",
                 }
@@ -131,16 +111,9 @@ const types = [
             CardEditorFactory(
                 Follower,
                 {
-                    name: "",
-                    mana: 0,
+                    ...sharedDefaultCardData,
                     power: 0,
                     health: 0,
-                    clan: "",
-                    art: "",
-                    id: "",
-                    faction: [],
-                    keywords: [],
-                    effect: "",
                     lvup: "",
                     rarity: "",
                 }
