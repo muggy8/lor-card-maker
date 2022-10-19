@@ -1,28 +1,28 @@
 import factory, { div, label, strong, input } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 
-function EditNameComponent(props){
+function EditNumberComponent(props){
     const translate = useLang()
 
     return label(
         { className: "box" },
         div(
             strong(
-                translate('name')
+                props.label
             )
         ),
         div(
             {className: "flex gutter-b-2"},
             input(
                 {
-                    value: props.name,
+                    value: props.value,
                     className: "box-12",
-                    onChange: props.updateName,
-                    type: "text",
+                    onChange: props.updateValue,
+                    type: "number",
                 }
             )
         )
     )
 }
 
-export default factory(EditNameComponent)
+export default factory(EditNumberComponent)

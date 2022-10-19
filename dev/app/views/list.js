@@ -21,7 +21,7 @@ const types = [
                 Champion1,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     power: 0,
                     health: 0,
                     clan: "",
@@ -44,7 +44,7 @@ const types = [
                 Champion2,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     power: 0,
                     health: 0,
                     clan: "",
@@ -67,7 +67,7 @@ const types = [
                 Champion3,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     power: 0,
                     health: 0,
                     clan: "",
@@ -90,7 +90,7 @@ const types = [
                 Landmark,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     clan: "",
                     art: "",
                     id: "",
@@ -111,7 +111,7 @@ const types = [
                 Spell,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     clan: "",
                     art: "",
                     id: "",
@@ -132,7 +132,7 @@ const types = [
                 Follower,
                 {
                     name: "",
-                    cost: 0,
+                    mana: 0,
                     power: 0,
                     health: 0,
                     clan: "",

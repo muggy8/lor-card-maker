@@ -4,6 +4,7 @@ import useLang from "/Utils/use-lang.js"
 import { useState, useCallback } from "/cdn/react" 
 
 import EditName from "/Components/card-config/edit-name.js"
+import EditNumber from "/Components/card-config/edit-number.js"
 
 loadCss("/Views/card-editor.css")
 
@@ -66,7 +67,32 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ) 
                     : undefined
                 ,
+                canShow("mana", defaultCardData)
+                    ? EditNumber({
+                        label: translate("mana"),
+                        value: card.mana,
+                        updateValue: cardDataUpdaters.mana,
+                    })
+                    : undefined
+                ,
+                canShow("power", defaultCardData) && canShow("health", defaultCardData)
+                    ? div(
+                        {className: "flex no-wrap"},
+                        EditNumber({
+                            label: translate("power"),
+                            value: card.power,
+                            updateValue: cardDataUpdaters.power,
+                        }),
+                        EditNumber({
+                            label: translate("health"),
+                            value: card.health,
+                            updateValue: cardDataUpdaters.health,
+                        }),
+                    )
+                    : undefined
+                ,
             ),
+            
         )
     }
 }
