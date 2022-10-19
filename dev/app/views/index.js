@@ -36,8 +36,6 @@ function App () {
             return
         }
 
-        console.log("uwu")
-
         updateGlobalState(mergedState)
     }, [globalState, updateGlobalState])
 
@@ -48,6 +46,9 @@ function App () {
     }, [patchGlboalState])
 
     return main(
+        {style: {
+            paddingTop: globalState.bannerHeight || 0
+        }},
         createElement(
             Globals.Provider,
             {

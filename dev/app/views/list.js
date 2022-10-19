@@ -159,9 +159,9 @@ function ListComponent(props){
     return div(
         {
             id: "card-type-list",
-            style: {
-                marginTop: globalState.state.bannerHeight || 0,
-            },
+            // style: {
+            //     marginTop: globalState.state.bannerHeight || 0,
+            // },
         },
         div(
             { className: "flex hcenter"},
