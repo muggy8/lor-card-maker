@@ -69,7 +69,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ,
                 canShow("mana", defaultCardData)
                     ? EditNumber({
-                        label: translate("mana"),
+                        label: translate("mana_cost"),
                         value: card.mana,
                         updateValue: cardDataUpdaters.mana,
                     })
