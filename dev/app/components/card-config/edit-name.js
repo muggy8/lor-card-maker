@@ -7,9 +7,7 @@ function EditNameComponent(props){
     return label(
         { className: "box" },
         div(
-            strong(
-                translate('name')
-            )
+            props.label
         ),
         div(
             {className: "flex gutter-b-2"},

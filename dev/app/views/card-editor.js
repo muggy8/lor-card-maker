@@ -65,7 +65,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 canShow("name", defaultCardData) 
                     ? div(
                         {className: "flex hcenter"},
-                        EditName({value: card.name, updateValue: cardDataUpdaters.name})
+                        EditName({
+                            label: translate("name"),
+                            value: card.name, 
+                            updateValue: cardDataUpdaters.name
+                        })
                     ) 
                     : undefined
                 ,
@@ -77,7 +81,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     })
                     : undefined
                 ,
-                canShow("power", defaultCardData) && canShow("health", defaultCardData)
+                canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
                         {className: "flex no-wrap"},
                         EditNumber({
@@ -105,6 +109,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         value: card.rarity,
                         updateValue: cardDataUpdaters.rarity
                     })
+                    : undefined
+                ,
+                canShow("clan", defaultCardData) 
+                    ? div(
+                        {className: "flex hcenter"},
+                        EditName({
+                            label: translate("clan"),
+                            value: card.name, 
+                            updateValue: cardDataUpdaters.name
+                        })
+                    ) 
                     : undefined
                 ,
             ),
