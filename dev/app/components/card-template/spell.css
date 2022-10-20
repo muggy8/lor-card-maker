@@ -108,10 +108,18 @@
     left: 215px; 
     bottom: 5px;
 }
+.spell .rarity.champion { 
+    bottom: 13px;
+}
 
 .spell .rarity.with-clan {
     left: 215px; 
     bottom: -14px;
+}
+
+.spell .champion.rarity.with-clan {
+    left: 215px; 
+    bottom: -8px;
 }
 
 .spell .power, .spell .health {

@@ -149,13 +149,13 @@ function SpellComponent(props){
                 ? div(
                     {
                         className: "clan",
-                        ref: clanRef,
                         style: {
                             backgroundImage: `url(/Assets/landmark/typing.png)`
                         }
                     },
                     div(
                         {
+                            ref: clanRef,
                             className: "text-area fitty-nowrap"
                         },
                         props.clan

@@ -159,23 +159,24 @@ function ListComponent(props){
                 )
             }),
             div(
-                { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter" },
+                // { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter" },
                 Spell({
                     name: "Stat Stick",
                     mana: 3,
-                    clan: "",
+                    clan: "Emotional Damage",
                     art: "",
                     id: "",
                     faction: [ 'demacia',],
                     keywords: ["equipment","silence",],
+                    rarity: "champion",
+                    speed: "equipment",
+                    power: 4,
+                    health: 4,
+
+                    // lvup: "All Tests Everywhere have concluded successfully",
                     // effect: "<skill/>Play: Test all systems Everywhere.",
                     // orangeWords: ["Play", "Test", "Everywhere"],
                     // blueWords: ["Tests"],
-                    power: 4,
-                    health: 4,
-                    // lvup: "All Tests Everywhere have concluded successfully",
-                    rarity: "common",
-                    speed: "equipment",
                 })
             )
         ),

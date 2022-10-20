@@ -150,7 +150,7 @@
     top: 942px;
 }
 
-.unit .rarity.gem {
+.unit .rarity.champion {
     top: 934px;
 }
 
@@ -158,7 +158,7 @@
     top: 899px;
 }
 
-.unit.landmark .rarity.gem {
+.unit.landmark .rarity.champion {
     top: 891px;
 }
 
@@ -166,6 +166,6 @@
     top: 942px;
 }
 
-.unit.champion .rarity.gem {
+.unit.champion .rarity.champion {
     top: 934px;
 }
