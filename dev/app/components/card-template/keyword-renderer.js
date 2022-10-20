@@ -75,7 +75,11 @@ function KeywordRendererComponent(props){
         { className: "keyword-wrapper", ref: wrapperRef},
         div({ className: "left-bumper" }),
         div(
-            { className: `contents ${size}` },
+            { className: `contents ${
+                icons.length 
+                    ? size
+                    : "small"
+            }` },
             icons.map(pngName=>div(
                 { 
                     key: pngName,
