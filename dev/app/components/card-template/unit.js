@@ -219,7 +219,20 @@ export class UnitRendererComponent extends Component {
                         )
                         : undefined
                     ,
-                )
+                ),
+
+                this.props.rarity
+                    ? div(
+                        {
+                            className: "rarity " + this.props.rarity,
+                            style: {
+                                backgroundImage: `url(/Assets/shared/gem${this.props.rarity}.png)`
+                            }
+                        },
+                        
+                    )
+                    : undefined
+                ,
             ) 
         )
     }

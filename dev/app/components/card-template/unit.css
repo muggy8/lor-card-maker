@@ -70,6 +70,10 @@
     align-items: center;
 }
 
+.unit.landmark .clan {
+    top: 22px;
+}
+
 .unit .clan .text-area {
     text-transform: uppercase;
     color: #bbb;
@@ -137,4 +141,31 @@
 
 .unit .card-text-wrapper .level-up-container {
     color: #d6946b;
+}
+
+.unit .rarity {
+    width: 250px;
+    height: 90px;
+    left: 215px;
+    top: 942px;
+}
+
+.unit .rarity.gem {
+    top: 934px;
+}
+
+.unit.landmark .rarity {
+    top: 899px;
+}
+
+.unit.landmark .rarity.gem {
+    top: 891px;
+}
+
+.unit.champion .rarity {
+    top: 942px;
+}
+
+.unit.champion .rarity.gem {
+    top: 934px;
 }

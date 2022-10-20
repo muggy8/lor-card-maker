@@ -8,6 +8,8 @@ class LandmarkComponent extends UnitRendererComponent {
     
     clanFrame = "/Assets/landmark/typing.png"
 
+    regionPosition = "landmark"
+
     clipPathPolygon = [
         [50, 60],
         [630, 60],

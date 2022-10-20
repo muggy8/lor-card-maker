@@ -157,7 +157,27 @@ function ListComponent(props){
                         name: translate(type.labelKey)
                     })
                 )
-            })
+            }),
+            div(
+                { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter" },
+                Spell({
+                    name: "Stat Stick",
+                    mana: 3,
+                    clan: "",
+                    art: "",
+                    id: "",
+                    faction: [ 'demacia',],
+                    keywords: ["equipment","silence",],
+                    // effect: "<skill/>Play: Test all systems Everywhere.",
+                    // orangeWords: ["Play", "Test", "Everywhere"],
+                    // blueWords: ["Tests"],
+                    power: 4,
+                    health: 4,
+                    // lvup: "All Tests Everywhere have concluded successfully",
+                    rarity: "common",
+                    speed: "equipment",
+                })
+            )
         ),
     )
 }
