@@ -1,5 +1,6 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
+import useLang from "/Utils/use-lang.js"
 
 loadCss("/Components/card-template/keyword-renderer.css")
 
@@ -45,12 +46,18 @@ export const keywords = {
     "equipment": [ "equipment.png" ],
     "immobile": [ "cantattack.png", "cantblock.png" ],
     "trap": [],
-    "boon": []
+    "boon": [],
+    "silence": ["silence.png"],
+    "trigger": ["trigger.png"],
+    "impact": ["impactn.png"],
+    "imbue": ["imbue.png"],
 }
 
 function KeywordRendererComponent(props){
     const { name, size } = props
     const icons = keywords[name] || []
+    
+    const translate = useLang()
 
     return div(
         { className: "keyword-wrapper" },
@@ -69,7 +76,7 @@ function KeywordRendererComponent(props){
             size !== "small" || !icons.length
                 ? div(
                     { className: "keyword-text" },
-                    name,
+                    translate(name),
                 )
                 : undefined
             ,

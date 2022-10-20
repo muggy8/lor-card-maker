@@ -81,5 +81,8 @@ const lang = {
         "burst": "Burst",
         "focus": "Focus",
         "equipment": "Equipment",
+        "silence": "Silence",
+        "trigger": "Trigger",
+        "imbue": "Imbue",
     }
 }
