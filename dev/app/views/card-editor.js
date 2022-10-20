@@ -6,6 +6,7 @@ import { useState, useCallback } from "/cdn/react"
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
 import EditRegion from "/Components/card-config/edit-region.js"
+import EditRarity from "/Components/card-config/edit-rarity.js"
 
 loadCss("/Views/card-editor.css")
 
@@ -96,6 +97,13 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? EditRegion({
                         value: card.faction,
                         updateValue: cardDataUpdaters.faction,
+                    })
+                    : undefined
+                ,
+                canShow("rarity", defaultCardData)
+                    ? EditRarity({
+                        value: card.rarity,
+                        updateValue: cardDataUpdaters.rarity
                     })
                     : undefined
                 ,

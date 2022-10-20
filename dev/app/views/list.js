@@ -37,7 +37,7 @@ const types = [
                     power: 0,
                     health: 0,
                     lvup: "",
-                    rarity: "gem",
+                    rarity: "champion",
                 }
             ),
         )
@@ -158,8 +158,11 @@ function ListComponent(props){
                     })
                 )
             }),
+
+            // stuff for testing
+            /* 
             div(
-                // { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter" },
+                { className: "gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter" },
                 Spell({
                     name: "Stat Stick",
                     mana: 3,
@@ -179,6 +182,7 @@ function ListComponent(props){
                     // blueWords: ["Tests"],
                 })
             )
+            */
         ),
     )
 }
