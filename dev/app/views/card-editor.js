@@ -7,6 +7,7 @@ import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
 import EditRegion from "/Components/card-config/edit-region.js"
 import EditRarity from "/Components/card-config/edit-rarity.js"
+import EditKeywords from "/Components/card-config/edit-keywords.js"
 
 loadCss("/Views/card-editor.css")
 
@@ -118,6 +119,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             label: translate("clan"),
                             value: card.name, 
                             updateValue: cardDataUpdaters.name
+                        })
+                    ) 
+                    : undefined
+                ,
+                canShow("keywords", defaultCardData) 
+                    ? div(
+                        {className: "flex hcenter"},
+                        EditKeywords({
+                            value: card.keywords, 
+                            updateValue: cardDataUpdaters.keywords
                         })
                     ) 
                     : undefined

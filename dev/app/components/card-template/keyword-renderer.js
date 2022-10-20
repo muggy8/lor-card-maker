@@ -1,6 +1,8 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
+import { useRef, useLayoutEffect } from "/cdn/react" 
+import setImmediate from "/Utils/set-immediate-batch.js"
 
 loadCss("/Components/card-template/keyword-renderer.css")
 
@@ -59,8 +61,18 @@ function KeywordRendererComponent(props){
     
     const translate = useLang()
 
+    const wrapperRef = useRef()
+
+    useLayoutEffect(()=>{
+        // wrapperRef.current && console.log(wrapperRef.current.clientWidth, wrapperRef.current.clientHeight, )
+        props.onDimension  && props.onDimension({
+            width: wrapperRef.current.clientWidth,
+            height: wrapperRef.current.clientHeight,
+        })
+    }, [])
+
     return div(
-        { className: "keyword-wrapper" },
+        { className: "keyword-wrapper", ref: wrapperRef},
         div({ className: "left-bumper" }),
         div(
             { className: `contents ${size}` },
