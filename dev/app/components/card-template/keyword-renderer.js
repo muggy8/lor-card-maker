@@ -69,7 +69,7 @@ function KeywordRendererComponent(props){
             width: wrapperRef.current.clientWidth,
             height: wrapperRef.current.clientHeight,
         })
-    }, [])
+    }, [props.onDimension])
 
     return div(
         { className: "keyword-wrapper", ref: wrapperRef},
