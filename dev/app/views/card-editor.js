@@ -1,13 +1,15 @@
 import { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import { useState, useCallback } from "/cdn/react" 
+import { useState, useCallback } from "/cdn/react"
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
 import EditRegion from "/Components/card-config/edit-region.js"
 import EditRarity from "/Components/card-config/edit-rarity.js"
 import EditKeywords from "/Components/card-config/edit-keywords.js"
+import EditEffect from "/Components/card-config/edit-effect.js"
+
 
 loadCss("/Views/card-editor.css")
 
@@ -20,11 +22,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const translate = useLang()
 
         const [card, updateCard] = useState(defaultCardData)
-        
+
         const knownCardDataKeys = Object.keys(defaultCardData)
         const cardDataUpdaters = knownCardDataKeys.reduce((updaterCollection, key)=>{
             updaterCollection[key] = useCallback((updatedValue)=>{
-                
+
                 if (updatedValue.preventDefault){
                     updatedValue = updatedValue.target.value
                 }
@@ -63,15 +65,15 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             ),
             div(
                 { className: "card-configs gutter-t-2 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
-                canShow("name", defaultCardData) 
+                canShow("name", defaultCardData)
                     ? div(
                         {className: "flex hcenter"},
                         EditName({
                             label: translate("name"),
-                            value: card.name, 
+                            value: card.name,
                             updateValue: cardDataUpdaters.name
                         })
-                    ) 
+                    )
                     : undefined
                 ,
                 canShow("mana", defaultCardData)
@@ -112,29 +114,40 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     })
                     : undefined
                 ,
-                canShow("clan", defaultCardData) 
+                canShow("clan", defaultCardData)
                     ? div(
                         {className: "flex hcenter"},
                         EditName({
                             label: translate("clan"),
-                            value: card.name, 
+                            value: card.name,
                             updateValue: cardDataUpdaters.name
                         })
-                    ) 
+                    )
                     : undefined
                 ,
-                canShow("keywords", defaultCardData) 
+                canShow("keywords", defaultCardData)
                     ? div(
                         {className: "flex hcenter"},
                         EditKeywords({
-                            value: card.keywords, 
+                            value: card.keywords,
                             updateValue: cardDataUpdaters.keywords
                         })
-                    ) 
+                    )
+                    : undefined
+                ,
+                canShow("effect", defaultCardData)
+                    ? div(
+                        {className: "flex hcenter"},
+                        EditEffect({
+                            value: card.effect,
+                            updateValue: cardDataUpdaters.effect,
+                            label: translate("effect")
+                        })
+                    )
                     : undefined
                 ,
             ),
-            
+
         )
     }
 }
