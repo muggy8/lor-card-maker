@@ -40,13 +40,13 @@ const pathMap = {
 		},
 	},
 	App: indexUrl + "app",
-	Views: indexUrl + "app/views", 
-	Utils: indexUrl + "app/utils", 
-	Components: indexUrl + "app/components", 
-	Assets: indexUrl + "app/assets", 
+	Views: indexUrl + "app/views",
+	Utils: indexUrl + "app/utils",
+	Components: indexUrl + "app/components",
+	Assets: indexUrl + "app/assets",
 }
 
-let storage 
+let storage
 self.addEventListener("install", function(ev){
 	// console.log("begin install", ev, location)
     ev.waitUntil(
@@ -74,7 +74,7 @@ self.addEventListener("fetch", function(ev){
     // console.log("sw fetch event", filePathRelativeToURLRoot)
 
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
-	
+
     if (fetchUrl){
         ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
     }
@@ -102,7 +102,7 @@ function walkPathMap(pathArray, currentPathMap){
 	const currentPathReference = currentPathMap[currentPathSegment]
 
 	if (
-		typeof currentPathReference === "string" || 
+		typeof currentPathReference === "string" ||
 		(
 			typeof currentPathReference === "object" &&
 			typeof currentPathReference.url === "string"
@@ -111,7 +111,7 @@ function walkPathMap(pathArray, currentPathMap){
 		const rootPath = typeof currentPathReference === "string"
 			? currentPathReference
 			: currentPathReference.url
-		
+
 		const truePathArray = [rootPath, ...remainingPatSegment]
 
 		let url = truePathArray.join("/")
@@ -130,7 +130,7 @@ function walkPathMap(pathArray, currentPathMap){
 }
 
 async function intelegentFetch(req, justUseTheCache = false){
-	let requestedPath = req.url || req 
+	let requestedPath = req.url || req
 	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
 		return fetch(req)
 	}
@@ -173,7 +173,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 	let res = await fetch(req)
 
 	if (!res.ok){
-		return Promise.reject(res)
+		return cachedAsset
 	}
 
 	await storage.put(req, res.clone())

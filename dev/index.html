@@ -79,7 +79,7 @@
 						const updatedRegistration = await registration.update()
 
 						// if the updatedRegistration has something in the installing prop, we know that we found an update so we will want to wait for it to finish it's install and activate process before we continue.
-						if (updatedRegistration.installing){
+						if (updatedRegistration.installing || updatedRegistration.active.state !== "activated"){
 							return await new Promise((accept)=>{
 								updatedRegistration.installing.addEventListener("statechange", ev=>{
 									// console.log(ev)
@@ -89,11 +89,30 @@
 								})
 							})
 						}
+
 						return updatedRegistration
 					})
-					.then(function(){
+					.then(async function(){
 						// at this point, we know that the service worker has been registered and is active. that means we can use ESM to import our main app and we'll let the service worker figure out how to fulfill the import requests
-						import("/app/index.js")
+						const indexUrl = "/App/index.js"
+						for (let i = 0; i < 3; i++){
+							try {
+								const res = await fetch(indexUrl)
+								if (res.status < 300){
+									return indexUrl
+								}
+							} catch (err) {
+								console.error(err)
+							}
+
+							await new Promise(accept=>{
+								setTimeout(accept, Math.floor(Math.random() * 100) + (500 * i))
+							})
+						}
+						window.document.location.reload()
+					})
+					.then((url)=>{
+						return import(url)
 					})
 					.catch(function(error) {
 						console.log('Service worker registration failed, error:', error);

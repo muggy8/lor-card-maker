@@ -9,6 +9,7 @@ import EditRegion from "/Components/card-config/edit-region.js"
 import EditRarity from "/Components/card-config/edit-rarity.js"
 import EditKeywords from "/Components/card-config/edit-keywords.js"
 import EditEffect from "/Components/card-config/edit-effect.js"
+import EditSpeed from "/Components/card-config/edit-speed.js"
 
 
 loadCss("/Views/card-editor.css")
@@ -114,47 +115,42 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     })
                     : undefined
                 ,
-                canShow("clan", defaultCardData)
-                    ? div(
-                        {className: "flex hcenter"},
-                        EditName({
-                            label: translate("clan"),
-                            value: card.name,
-                            updateValue: cardDataUpdaters.name
-                        })
-                    )
+                canShow("keywords", defaultCardData)
+                    ? EditKeywords({
+						value: card.keywords,
+						updateValue: cardDataUpdaters.keywords
+					})
                     : undefined
                 ,
-                canShow("keywords", defaultCardData)
-                    ? div(
-                        {className: "flex hcenter"},
-                        EditKeywords({
-                            value: card.keywords,
-                            updateValue: cardDataUpdaters.keywords
-                        })
-                    )
+                canShow("speed", defaultCardData)
+                    ? EditSpeed({
+						value: card.speed,
+						updateValue: cardDataUpdaters.speed
+					})
                     : undefined
                 ,
                 canShow("effect", defaultCardData)
-                    ? div(
-                        {className: "flex hcenter"},
-                        EditEffect({
-                            value: card.effect,
-                            updateValue: cardDataUpdaters.effect,
-                            label: translate("effect")
-                        })
-                    )
+                    ? EditEffect({
+						value: card.effect,
+						updateValue: cardDataUpdaters.effect,
+						label: translate("effect")
+					})
                     : undefined
                 ,
                 canShow("lvup", defaultCardData)
-                    ? div(
-                        {className: "flex hcenter"},
-                        EditEffect({
-                            value: card.lvup,
-                            updateValue: cardDataUpdaters.lvup,
-                            label: translate("lv_up")
-                        })
-                    )
+                    ? EditEffect({
+						value: card.lvup,
+						updateValue: cardDataUpdaters.lvup,
+						label: translate("lv_up")
+					})
+                    : undefined
+                ,
+                canShow("clan", defaultCardData)
+                    ? EditName({
+						label: translate("clan"),
+						value: card.name,
+						updateValue: cardDataUpdaters.name
+					})
                     : undefined
                 ,
             ),

@@ -20,8 +20,6 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-
-
     return label(
         div(
             strong(translate("keyword"))
