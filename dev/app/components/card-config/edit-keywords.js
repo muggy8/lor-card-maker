@@ -1,6 +1,6 @@
 import factory, { label, div, strong } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState } from "/cdn/react" 
+import { useCallback, useState } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
 
@@ -20,7 +20,7 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    
+
 
     return label(
         div(
@@ -32,15 +32,17 @@ function EditKeywordComponent(props){
                 const isChecked = props.value.some(checkedValue=>{
                     return checkedValue === keywordName
                 })
-        
-                return KeywordImageCheck({
-                    isChecked,
-                    onClick: ()=>{
-                        toggleFaction(keywordName)
-                    },
-                    key: keywordName,
-                    keywordName,
-                })
+
+                return div(
+					{ className: "box-3 flex vhcenter", key: keywordName },
+	                KeywordImageCheck({
+	                    isChecked,
+	                    onClick: ()=>{
+	                        toggleFaction(keywordName)
+	                    },
+	                    keywordName,
+	                })
+                )
             }),
         )
     )
@@ -55,8 +57,8 @@ function KeywordImageCheckComponent(props){
     })
 
     return div(
-        { 
-            className: `box-3 gutter-trbl-.25 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
+        {
+            className: `gutter-trbl-.25 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
             onClick: props.onClick
         },
         SvgWrap(
@@ -70,6 +72,6 @@ function KeywordImageCheckComponent(props){
     )
 }
 
-const KeywordImageCheck = factory(KeywordImageCheckComponent)
+export const KeywordImageCheck = factory(KeywordImageCheckComponent)
 
 export default factory(EditKeywordComponent);

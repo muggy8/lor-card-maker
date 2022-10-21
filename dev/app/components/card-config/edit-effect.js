@@ -1,6 +1,8 @@
 import factory, { div, label, strong, textarea } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState } from "/cdn/react"
+import { keywords } from "/Components/card-template/keyword-renderer.js"
+import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 
 function EditEffectComponent(props){
     const translate = useLang()
@@ -18,6 +20,13 @@ function EditEffectComponent(props){
 		props.updateValue(ev.target.value)
 	}, [props.updateValue])
 
+	const insertKeyword = useCallback((keywordName)=>{
+		if (cursorPos.start === cursorPos.end){
+			const newEffect = stringSplice(props.value, cursorPos.start, 0, `<${keywordName}/>`)
+			props.updateValue(newEffect)
+		}
+	}, [props.updateValue, cursorPos])
+
     return label(
         { className: "box" },
         div(
@@ -33,6 +42,19 @@ function EditEffectComponent(props){
 					value: props.value,
 					onInput,
 					onClick: saveCursorPos
+				})
+            ),
+            div(
+				{ className: "box-12 flex" },
+				Object.keys(keywords).map(keywordName=>{
+					return div(
+						{ className: "box-2 flex vhcenter", key: keywordName },
+						KeywordImageCheck({
+							isChecked: true,
+							onClick: ()=>insertKeyword(keywordName),
+							keywordName,
+						})
+					)
 				})
             )
         )
@@ -70,6 +92,8 @@ export function getCursorPos(input) {
 	return -1;
 }
 
-
+export function stringSplice(string, start, delCount, newSubStr) {
+	return string.slice(0, start) + newSubStr + string.slice(start + Math.abs(delCount));
+};
 
 export default factory(EditEffectComponent)
