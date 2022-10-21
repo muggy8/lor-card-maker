@@ -146,6 +146,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
+                canShow("lvup", defaultCardData)
+                    ? div(
+                        {className: "flex hcenter"},
+                        EditEffect({
+                            value: card.lvup,
+                            updateValue: cardDataUpdaters.lvup,
+                            label: translate("lv_up")
+                        })
+                    )
+                    : undefined
+                ,
             ),
 
         )
