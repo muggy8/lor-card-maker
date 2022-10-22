@@ -1,20 +1,40 @@
 @font-face{
 	font-family: BeaufortforLOLBold;
 	src:
-		url("/Assets/BeaufortforLOLBold.ttf")
+		url("/Assets/BeaufortforLOL-Bold.otf")
 		format("truetype");
 }
 @font-face{
 	font-family: BeaufortforLOLRegular;
 	src:
-		url("/Assets/beaufortforlol-regular.otf")
+		url("/Assets/BeaufortforLOLJa-Regular.ttf")
 		format("opentype");
 }
 @font-face{
-	font-family: universe55roman;
+	font-family: UniversforRiotGamesRegular;
 	src:
-		url("/Assets/univers-55-roman.otf")
+		url("/Assets/UniversforRiotGames-Regular.otf")
 		format("opentype");
+}
+@font-face{
+	font-family: UniversforRiotGamesUltraCondensed;
+	src:
+		url("/Assets/UniversforRiotGames-UltCond.otf")
+		format("opentype");
+}
+
+.card-text-universe {
+	font-family: UniversforRiotGamesRegular;
+}
+.card-text-universe-condensed {
+	font-family: UniversforRiotGamesUltraCondensed;
+	letter-spacing: 0.09em;
+}
+.card-text-bold {
+	font-family: BeaufortforLOLBold;
+}
+.card-text {
+	font-family: BeaufortforLOLRegular;
 }
 
 * {
@@ -24,7 +44,7 @@
 img, svg {
 	max-width: 100%;
 	height: auto;
-	font-family: universe55roman;
+	font-family: UniversforRiotGamesRegular;
 }
 
 .bold {

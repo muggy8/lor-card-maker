@@ -140,7 +140,7 @@ export class UnitRendererComponent extends Component {
                         div(
                             {
                                 ref: this.clanRef,
-                                className: "text-area fitty-nowrap"
+                                className: "card-text-universe-condensed text-area fitty-nowrap"
                             },
                             this.props.clan
                         ),
@@ -165,12 +165,12 @@ export class UnitRendererComponent extends Component {
                 ,
 
                 div(
-                    { className: "card-text-wrapper" },
+                    { className: "card-text-wrapper card-text" },
                     // stuff to do with the card content goes here
 
                     this.props.name
                         ? div(
-                            { className: "name fitty-wrap", ref: this.nameRef },
+                            { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
                             this.props.name
                         )
                         : undefined
@@ -178,7 +178,7 @@ export class UnitRendererComponent extends Component {
 
                     this.props.keywords
                         ? div(
-                            { className: "keyword-container" },
+                            { className: "keyword-container card-text-bold" },
                             this.props.keywords.map(keywordName=>KeywordRenderer({
                                 key: keywordName,
                                 name: keywordName,
@@ -193,7 +193,7 @@ export class UnitRendererComponent extends Component {
                             { 
                                 blueWords: this.props.blueWords,
                                 orangeWords: this.props.orangeWords, 
-                                className: "effect-container",
+                                className: "effect-container card-text-universe",
                             }, 
                             this.props.effect
                         )
@@ -213,7 +213,7 @@ export class UnitRendererComponent extends Component {
                             { 
                                 blueWords: this.props.blueWords,
                                 orangeWords: this.props.orangeWords, 
-                                className: "level-up-container",
+                                className: "level-up-container card-text-universe",
                             }, 
                             this.props.lvup
                         )
