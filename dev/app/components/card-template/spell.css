@@ -16,9 +16,17 @@
 
 .spell .text-background {
     width: 634px;
-    height: auto;
+    height: 470px;
     top: 463px;
     left: 23px;
+    clip-path: polygon(
+        0 30px,
+        60px 0,
+        calc(100% - 60px) 0,
+        100% 30px,
+        100% 470px,
+        0 470px
+    );
 }
 .spell .text-background img {
     mix-blend-mode: multiply;
