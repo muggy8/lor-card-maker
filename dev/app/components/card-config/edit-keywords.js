@@ -14,9 +14,9 @@ function EditKeywordComponent(props){
             return props.updateValue(toggledOffState)
         }
         const toggledOnState = [...props.value, keywordName]
-        if (toggledOnState.length > 5){
-            return props.updateValue(toggledOnState.slice(-5))
-        }
+        // if (toggledOnState.length > 5){
+        //     return props.updateValue(toggledOnState.slice(-5))
+        // }
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
