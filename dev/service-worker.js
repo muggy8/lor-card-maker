@@ -170,12 +170,17 @@ async function intelegentFetch(req, justUseTheCache = false){
 
 	}
 
-	let res = await fetch(req)
+	try{
+		let res = await fetch(req)
 
-	if (!res.ok){
+		if (!res.ok){
+			return cachedAsset
+		}
+	
+		await storage.put(req, res.clone())
+		return res
+	}
+	catch(err){
 		return cachedAsset
 	}
-
-	await storage.put(req, res.clone())
-	return res
 }

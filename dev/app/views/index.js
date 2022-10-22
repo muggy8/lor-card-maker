@@ -1,4 +1,4 @@
-import { useState, useCallback, createContext, createElement } from "/cdn/react" 
+import { useState, useCallback, useEffect, useRef, createContext, createElement } from "/cdn/react" 
 import factory, { main } from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
@@ -8,6 +8,8 @@ export const Globals = createContext({
     card: null,
 })
 
+export let navigationHistory = []
+
 function App () {
 
     const [globalState, updateGlobalState] = useState({
@@ -15,6 +17,10 @@ function App () {
         card: null,
         view: List,
     })
+
+    useEffect(()=>{
+        navigationHistory.push(globalState.view)
+    }, [globalState.view])
 
     const patchGlboalState = useCallback((newState)=>{
         let mergedState = {
@@ -39,10 +45,38 @@ function App () {
         updateGlobalState(mergedState)
     }, [globalState, updateGlobalState])
 
+    const statePatcherRef = useRef()
+
+    useEffect(()=>{
+        statePatcherRef.current = patchGlboalState
+    }, [patchGlboalState])
+
+    useEffect(()=>{
+        const popStateListener = function(){
+            // let state = ev.state
+    
+            navigationHistory.splice(-1, 1)
+            const restoredView = navigationHistory[navigationHistory.length -1]
+
+            if (!restoredView){
+                navigationHistory.push(globalState.view)
+                return statePatcherRef.current({view: List})
+            }
+            statePatcherRef.current({view: restoredView})
+        }
+        window.addEventListener("popstate", popStateListener)
+
+        return function(){
+            window.removeEventListener("popstate", popStateListener)
+        }
+    }, [])
+
     const setView = useCallback((newView)=>{
         patchGlboalState({
             view: newView,
         })
+
+        history.pushState({},  "")
     }, [patchGlboalState])
 
     return main(
