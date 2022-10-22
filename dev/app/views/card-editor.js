@@ -10,6 +10,7 @@ import EditRarity from "/Components/card-config/edit-rarity.js"
 import EditKeywords from "/Components/card-config/edit-keywords.js"
 import EditEffect from "/Components/card-config/edit-effect.js"
 import EditSpeed from "/Components/card-config/edit-speed.js"
+import EditColorText from "/Components/card-config/edit-colored-text.js"
 
 
 loadCss("/Views/card-editor.css")
@@ -68,7 +69,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 { className: "card-configs gutter-t-2 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
                 canShow("name", defaultCardData)
                     ? div(
-                        {className: "flex hcenter"},
+                        {className: "flex hcenter gutter-b-2"},
                         EditName({
                             label: translate("name"),
                             value: card.name,
@@ -145,12 +146,33 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 					})
                     : undefined
                 ,
-                canShow("clan", defaultCardData)
-                    ? EditName({
-						label: translate("clan"),
-						value: card.name,
-						updateValue: cardDataUpdaters.name
+                canShow("blueWords", defaultCardData)
+                    ? EditColorText({
+						label: translate("other_card_mentioned"),
+						subLabel: translate("other_card_example"),
+						value: card.blueWords,
+						updateValue: cardDataUpdaters.blueWords
 					})
+                    : undefined
+                ,
+                canShow("orangeWords", defaultCardData)
+                    ? EditColorText({
+						label: translate("key_text_mentioned"),
+						subLabel: translate("key_text_example"),
+						value: card.orangeWords,
+						updateValue: cardDataUpdaters.orangeWords
+					})
+                    : undefined
+                ,
+                canShow("clan", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditName({
+                            label: translate("clan"),
+                            value: card.name,
+                            updateValue: cardDataUpdaters.name
+                        })
+                    )
                     : undefined
                 ,
             ),
