@@ -46,16 +46,20 @@ function EditEffectComponent(props){
             ),
             div(
 				{ className: "box-12 flex" },
-				Object.keys(keywords).map(keywordName=>{
-					return div(
-						{ className: "box-2 flex vhcenter", key: keywordName },
-						KeywordImageCheck({
-							isChecked: true,
-							onClick: ()=>insertKeyword(keywordName),
-							keywordName,
-						})
-					)
-				})
+				Object.keys(keywords)
+					.filter((keywordName)=>{
+						return keywords[keywordName].length
+					})
+					.map(keywordName=>{
+						return div(
+							{ className: "box-2 flex vhcenter", key: keywordName },
+							KeywordImageCheck({
+								isChecked: true,
+								onClick: ()=>insertKeyword(keywordName),
+								keywordName,
+							})
+						)
+					})
             )
         )
     )
