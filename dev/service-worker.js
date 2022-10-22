@@ -38,6 +38,10 @@ const pathMap = {
 			url: "https://esm.sh/fast-average-color@9.1.1",
 			query: {...esmshQueryConfigs, bundle: true},
 		},
+		"save-svg-as-png": {
+			url: "https://esm.sh/save-svg-as-png@1.4.17",
+			query: {...esmshQueryConfigs, bundle: true},
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

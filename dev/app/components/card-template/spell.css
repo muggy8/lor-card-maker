@@ -28,8 +28,13 @@
         0 470px
     );
 }
-.spell .text-background img {
+.spell .text-background .text-background-image {
     mix-blend-mode: multiply;
+    width: 634px;
+    height: 470px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .spell .art {
@@ -112,9 +117,12 @@
 
 .spell .rarity {
     width: 250px; 
-    height: auto; 
+    height: 90; 
     left: 215px; 
     bottom: 11px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 .spell .rarity.champion { 
     bottom: 19px;

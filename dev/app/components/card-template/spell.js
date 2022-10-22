@@ -1,11 +1,12 @@
 import factory, { div, img } from "/Utils/elements.js"
-import { useRef, useLayoutEffect, useState } from "/cdn/react"
+import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 import { FastAverageColor } from "/cdn/fast-average-color"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import fitty from "/cdn/fitty"
+import datauri from "/Utils/datauri.js"
 
 loadCss("/Components/card-template/spell.css")
 
@@ -59,7 +60,7 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.clan])
+    }, [props.mana])
 
     useLayoutEffect(()=>{
         const fittyInstance = powerFitty.current
@@ -73,7 +74,7 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.clan])
+    }, [props.power])
 
     useLayoutEffect(()=>{
         const fittyInstance = healthFitty.current
@@ -87,7 +88,48 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.clan])
+    }, [props.health])
+
+    const [backgroundUri, updateBackgroundUri] = useState("") 
+    const [backdropUri, updateBackdropUri] = useState("") 
+    const [frameUri, updateFrameUri] = useState("") 
+    const [regionboxUri, updateRegionboxUri] = useState("") 
+    const [typingUri, updateTypingUri] = useState("") 
+    const [regionNameUri, updateRegionNameUri] = useState([]) 
+    const [rarityGemUri, updateRarityGemUriUri] = useState("") 
+    useEffect(()=>{
+        datauri("/Assets/spell/background.png").then(updateBackgroundUri)
+        datauri("/Assets/spell/backdrop.png").then(updateBackdropUri)
+        datauri("/Assets/landmark/typing.png").then(updateTypingUri)
+    }, [])
+    useEffect(()=>{
+        const frameUrl = `/Assets/spell/frame${props.speed || "trap"}.png`
+        datauri(frameUrl).then(updateFrameUri)
+    }, [props.speed])
+    useEffect(()=>{
+        if (!props.faction){
+            return
+        }
+
+        const regionBoxUrl = `/Assets/spell/regionbox${props.faction.length > 3 ? 3 : props.faction.length}.png`
+        datauri(regionBoxUrl).then(updateRegionboxUri)
+
+        const fetchJob = props.faction.map(regionName=>{
+            const regionIconUrl = `/Assets/region/${regionName}.png`
+            return datauri(regionIconUrl)
+        })
+
+        Promise.all(fetchJob).then(updateRegionNameUri)
+    }, [props.faction && props.faction.length])
+    useEffect(()=>{
+        if (props.rarity){
+            const rarityUrl = `/Assets/shared/gem${props.rarity}.png`
+            datauri(rarityUrl).then(updateRarityGemUriUri)
+        }
+        else{
+            updateRarityGemUriUri("")
+        }
+    }, [props.rarity])
 
     return SvgWrap(
         div(
@@ -99,17 +141,18 @@ function SpellComponent(props){
                         backgroundColor: imageAvgColor,
                     }
                 },
-                img(
-                    { 
-                        src: "/Assets/spell/background.png"
-                    },
-                ),
+                div({ 
+                    className: "text-background-image",
+                    style: {
+                        backgroundImage: `url(${backgroundUri})`
+                    }
+                },),
             ),
             div(
                 { 
                     className: "art",
                     style: {
-                        backgroundImage: `url(/Assets/spell/backdrop.png)`,
+                        backgroundImage: `url(${backdropUri})`,
                     },
                 },
             ),
@@ -117,7 +160,7 @@ function SpellComponent(props){
                 { 
                     className: "frame",
                     style: {
-                        backgroundImage: `url(/Assets/spell/frame${props.speed || "trap"}.png)`
+                        backgroundImage: `url(${frameUri})`
                     }
                 },
             ),
@@ -130,15 +173,15 @@ function SpellComponent(props){
                     { 
                         className: "region-frame" ,
                         style: {
-                            backgroundImage: `url(/Assets/spell/regionbox${props.faction.length > 3 ? 3 : props.faction.length}.png)`
+                            backgroundImage: `url(${regionboxUri})`
                         }
                     },
-                    props.faction.map((regionName, index)=>div(
+                    regionNameUri.map((dataUri, index)=>div(
                         { 
-                            key: regionName,
+                            key: dataUri,
                             className: "region-icon region-icon-" + index,
                             style: {
-                                backgroundImage: `url(/Assets/region/${regionName}.png)`
+                                backgroundImage: `url(${dataUri})`
                             }
                         },
                     ))
@@ -150,7 +193,7 @@ function SpellComponent(props){
                     {
                         className: "clan",
                         style: {
-                            backgroundImage: `url(/Assets/landmark/typing.png)`
+                            backgroundImage: `url(${typingUri})`
                         }
                     },
                     div(
@@ -164,12 +207,12 @@ function SpellComponent(props){
                 : undefined
             ,
             props.rarity 
-                ? img(
-                    { 
-                        className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
-                        src: `/Assets/shared/gem${props.rarity}.png`,
+                ? div({ 
+                    className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
+                    style: {
+                        backgroundImage: `url(${rarityGemUri})`
                     },
-                )
+                })
                 : undefined
             ,
             typeof props.power !== "undefined"

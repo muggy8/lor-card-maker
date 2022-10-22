@@ -1,7 +1,8 @@
 import { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import { useState, useCallback } from "/cdn/react"
+import React, { useState, useCallback, createContext, useContext } from "/cdn/react"
+import saveSvgAsPng from "/cdn/save-svg-as-png"
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
@@ -18,6 +19,11 @@ loadCss("/Views/card-editor.css")
 function canShow(ifKeyExists, inThisObject){
     return Object.hasOwnProperty.call(inThisObject, ifKeyExists)
 }
+
+export const svgRefference = createContext({
+    current: null,
+    setRef: ()=>{},
+})
 
 export default function EditorViewFactory(cardRenderer, defaultCardData){
     return function EditorView(props){
@@ -46,11 +52,31 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             return updaterCollection
         }, {})
 
+        const [svgRef, updateSvgRef] = useState(null)
+
+        const exportCard = useCallback(()=>{
+            saveSvgAsPng.svgAsDataUri(svgRef, {
+                excludeUnusedCss: true,
+                width: 680,
+                height: 1024,
+            }).then(uri=>{
+                openUri(uri)
+            })
+            console.log(saveSvgAsPng)
+        }, [svgRef])
+
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
                 { className: "card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
-                cardRenderer(card),
+                React.createElement(
+                    svgRefference.Provider,
+                    { value: {
+                        current: svgRef,
+                        setRef: updateSvgRef,
+                    } },
+                    cardRenderer(card),
+                ),
                 div(
                     {className: "flex hcenter gutter-tb"},
                     button(
@@ -58,6 +84,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         translate("delete_card")
                     ),
                     button(
+                        { onClick: exportCard },
                         translate("save_card")
                     ),
                     button(
@@ -179,4 +206,31 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
         )
     }
+}
+
+function openUri(base64ImageData) {
+    const typeRegex = /data:([^;]+);base64,/
+    const matched = typeRegex.exec(base64ImageData)
+
+    const contentType = matched[1];
+
+    const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length));
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
+        const slice = byteCharacters.slice(offset, offset + 1024);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+    }
+    const blob = new Blob(byteArrays, {type: contentType});
+    const blobUrl = URL.createObjectURL(blob);
+
+    window.open(blobUrl, '_blank');
 }
