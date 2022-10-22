@@ -163,7 +163,7 @@ function ListComponent(props){
 
             div(
                 { className: "gutter-trbl-.5 box-xs-6 flex column vhcenter" },
-                Champion1({
+                Spell({
                     name: "Stat Stick",
                     mana: 3,
                     clan: "Emotional Damage",
@@ -171,7 +171,7 @@ function ListComponent(props){
                     id: "",
                     faction: [ 'demacia',],
                     keywords: ["silence",],
-                    rarity: "champion",
+                    rarity: "rare",
                     speed: "equipment",
                     power: 4,
                     health: 4,

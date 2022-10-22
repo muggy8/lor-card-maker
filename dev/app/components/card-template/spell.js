@@ -54,7 +54,7 @@ function SpellComponent(props){
             if (!costRef.current){
                 return
             }
-            costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 100 })
+            costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 90 })
             return 
         }
 
@@ -68,7 +68,7 @@ function SpellComponent(props){
             if (!powerRef.current){
                 return
             }
-            powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 60 })
+            powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 70 })
             return 
         }
 
@@ -82,7 +82,7 @@ function SpellComponent(props){
             if (!healthRef.current){
                 return
             }
-            healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 60 })
+            healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 70 })
             return 
         }
 
@@ -122,7 +122,7 @@ function SpellComponent(props){
                 },
             ),
             div(
-                { className: "cost fitty-nowrap", ref: costRef},
+                { className: "cost fitty-nowrap card-text-bold", ref: costRef},
                 props.mana,
             ),
             props.faction && props.faction.length
@@ -156,7 +156,7 @@ function SpellComponent(props){
                     div(
                         {
                             ref: clanRef,
-                            className: "text-area fitty-nowrap"
+                            className: "text-area fitty-nowrap text-area fitty-nowrap"
                         },
                         props.clan
                     ),
@@ -174,14 +174,14 @@ function SpellComponent(props){
             ,
             typeof props.power !== "undefined"
                 ? div(
-                    { className: "power fitty-nowrap", ref: powerRef },
+                    { className: "power fitty-nowrap card-text-bold", ref: powerRef },
                     props.power
                 )
                 : undefined
             ,
             typeof props.health !== "undefined"
                 ? div(
-                    { className: "health fitty-nowrap", ref: healthRef },
+                    { className: "health fitty-nowrap card-text-bold", ref: healthRef },
                     props.health
                 )
                 : undefined
@@ -192,7 +192,7 @@ function SpellComponent(props){
 
                 props.name
                     ? div(
-                        { className: "name fitty-wrap", ref: nameRef },
+                        { className: "name fitty-wrap card-text-bold", ref: nameRef },
                         props.name
                     )
                     : undefined
@@ -200,7 +200,7 @@ function SpellComponent(props){
 
                 props.keywords
                     ? div(
-                        { className: "keyword-container" },
+                        { className: "keyword-container card-text-bold" },
                         props.keywords.map(keywordName=>KeywordRenderer({
                             key: keywordName,
                             name: keywordName,
@@ -215,7 +215,7 @@ function SpellComponent(props){
                         { 
                             blueWords: props.blueWords,
                             orangeWords: props.orangeWords, 
-                            className: "effect-container",
+                            className: "effect-container card-text-universe",
                         }, 
                         props.effect
                     )

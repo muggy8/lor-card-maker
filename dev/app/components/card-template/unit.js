@@ -51,9 +51,9 @@ export class UnitRendererComponent extends Component {
         } = this
 
         clanRef.current && scaleFontSize(clanRef.current, 40, 16)
-        costRef.current && (this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 100 }))
-        powerRef.current && (this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 60 }))
-        healthRef.current && (this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 60 }))
+        costRef.current && (this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 90 }))
+        powerRef.current && (this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 70 }))
+        healthRef.current && (this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 70 }))
         nameRef.current && scaleFontSize(nameRef.current, 70, 16)
 
     }
@@ -104,7 +104,7 @@ export class UnitRendererComponent extends Component {
                 ),
 
                 div(
-                    { className: "cost fitty-nowrap", ref: this.costRef },
+                    { className: "cost fitty-nowrap card-text-bold", ref: this.costRef },
                     this.props.mana,
                 ),
 
@@ -150,7 +150,7 @@ export class UnitRendererComponent extends Component {
 
                 typeof this.props.power !== "undefined"
                     ? div(
-                        { className: "power fitty-nowrap", ref: this.powerRef },
+                        { className: "power fitty-nowrap card-text-bold", ref: this.powerRef },
                         this.props.power
                     )
                     : undefined
@@ -158,14 +158,14 @@ export class UnitRendererComponent extends Component {
 
                 typeof this.props.health !== "undefined"
                     ? div(
-                        { className: "health fitty-nowrap", ref: this.healthRef },
+                        { className: "health fitty-nowrap card-text-bold", ref: this.healthRef },
                         this.props.health
                     )
                     : undefined
                 ,
 
                 div(
-                    { className: "card-text-wrapper card-text" },
+                    { className: "card-text-wrapper" },
                     // stuff to do with the card content goes here
 
                     this.props.name

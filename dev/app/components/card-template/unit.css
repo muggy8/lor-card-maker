@@ -31,7 +31,7 @@
     height: 120px;
     left: 31px;
     top: 44px;
-    font-size: 100px;
+    font-size: 90px;
     will-change: font-size;
     text-align: center;
 }
@@ -85,8 +85,8 @@
 .unit .power, .unit .health {
     width: 86px;
     height: 76px;
-    top: 878px;
-    font-size: 60px;
+    top: 866px;
+    font-size: 70px;
     will-change: font-size;
     color: #FFF;
     text-align: center;
