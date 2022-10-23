@@ -78,9 +78,94 @@ self.addEventListener("fetch", function(ev){
         ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
     }
     else{
-        ev.respondWith(intelegentFetch(ev.request))
+		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){
+
+			if (ev.request.method === "POST" || ev.request.method === "PUT"){
+				if (filePathRelativeToURLRoot.includes(cardDataPath)){
+					ev.respondWith(saveCardData(req, filePathRelativeToURLRoot))
+				}
+			}
+			else if (ev.request.method === "GET"){
+				if (filePathRelativeToURLRoot.includes(cardListPath)){
+					ev.respondWith(getSavedCardList(req, filePathRelativeToURLRoot))
+				}
+				else if (filePathRelativeToURLRoot.includes(cardDataPath)){
+					ev.respondWith(getSavedCard(req, filePathRelativeToURLRoot))
+				}
+			}
+			else if (ev.request.method === "DEL"){
+				if (filePathRelativeToURLRoot.includes(cardDataPath)){
+					ev.respondWith(deleteSavedCard(req, filePathRelativeToURLRoot))
+				}
+			}
+			else{
+				ev.respondWith(new Response("not found", {
+					'Content-Type': 'text/plain',
+					"status" : 404
+				}))
+			}
+
+		}
+		else{
+			ev.respondWith(intelegentFetch(ev.request))
+		}
     }
 })
+
+const cacheLocation = "cards"
+const cardListPath = "pseudo-api/card-list/"
+const cardDataPath = "pseudo-api/card/"
+async function saveCardData(req, path){
+  let data = await req.text()
+  let cache = await caches.open(cacheLocation)
+  let dataResponse = new Response(data, {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
+  await cache.put(path, dataResponse.clone())
+  return dataResponse
+}
+
+async function getSavedCard(req, path){
+  let cache = await caches.open(cacheLocation)
+  let cachedData = await cache.match(path)
+  if (cachedData){
+    return cachedData
+  }
+  return new Response("{}", {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
+}
+
+const cardIdFinderRegex = /\/([^\/]+)\/?$/
+async function getSavedCardList(req, path){
+	let cache = await caches.open(cacheLocation)
+	let cachedRequests = await cache.keys()
+	let idList = cachedRequests.filter(req=>{
+		return req.url.includes(cardDataPath)
+	})
+	.map(req=>{
+		let [matched, id] = req.url.match(cardIdFinderRegex)
+
+		return id
+	})
+
+	return new Response(JSON.stringify(idList), {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
+}
+
+async function deleteSavedCard(req, path){
+  let cache = await caches.open(cacheLocation)
+  await cache.delete(path)
+  return new Response("{}", {
+    'Content-Type': 'application/json',
+    "status" : 200
+  })
+}
+
 
 function remapUrl(relativePath){
 	const pathArray = relativePath.split("/")
@@ -177,7 +262,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 		if (!res.ok){
 			return cachedAsset
 		}
-	
+
 		await storage.put(req, res.clone())
 		return res
 	}
