@@ -107,7 +107,7 @@ function SpellComponent(props){
         datauri(frameUrl).then(updateFrameUri)
     }, [props.speed])
     useEffect(()=>{
-        if (!props.faction){
+        if (!props.faction || !props.faction.length){
             return
         }
 

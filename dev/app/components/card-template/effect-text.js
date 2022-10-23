@@ -1,8 +1,9 @@
 import factory, { div, span, br } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import { useRef, useLayoutEffect } from "/cdn/react"
+import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
+import datauri from "/Utils/datauri.js"
 
 loadCss("/Components/card-template/effect-text.css")
 
@@ -86,15 +87,10 @@ function EffectTextComponent(props){
             }
 
             for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, keywordIcons.map(pngName=>span(
-                    {
-                        key: pngName,
-                        className: "inline-icon",
-                        style: {
-                            backgroundImage: `url(/Assets/keyword/${pngName})`
-                        }
-                    }
-                )))
+                splitUpText.splice(i, 0, keywordIcons.map(pngName=>InlineIcon({
+                    key: pngName,
+                    pngName
+                })))
             }
 
             return splitUpText
@@ -167,5 +163,25 @@ function EffectTextComponent(props){
 
     return div.apply(factory, [{className: `effect-text fitty-wrap ${props.className || ""}`, ref: elementRef}, ...contentArray])
 }
+
+function InlineIconComponent(props){
+
+    const [iconUri, updateIconUri] = useState('')
+
+    useEffect(()=>{
+        datauri(`/Assets/keyword/${props.pngName}`).then(updateIconUri)
+    }, [props.pngName])
+
+    return span(
+        {
+            className: "inline-icon",
+            style: {
+                backgroundImage: `url(${iconUri})`
+            }
+        }
+    )
+}
+
+export const InlineIcon = factory(InlineIconComponent)
 
 export default factory(EffectTextComponent)
