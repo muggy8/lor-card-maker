@@ -136,6 +136,9 @@
 .unit .card-text-wrapper .level-bar {
     width: 680px;
     height: 44px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 .unit .card-text-wrapper .level-up-container {

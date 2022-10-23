@@ -79,12 +79,11 @@ function KeywordRendererComponent(props){
     }, [icons])
 
     useLayoutEffect(()=>{
-        // wrapperRef.current && console.log(wrapperRef.current.clientWidth, wrapperRef.current.clientHeight, )
-        props.onDimension  && props.onDimension({
+        props.onDimension && props.onDimension({
             width: wrapperRef.current.clientWidth,
             height: wrapperRef.current.clientHeight,
         })
-    }, [props.onDimension])
+    }, [props.onDimension, iconsUri.length])
 
     return div(
         { className: "keyword-wrapper", ref: wrapperRef},

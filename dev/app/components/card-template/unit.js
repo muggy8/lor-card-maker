@@ -5,6 +5,8 @@ import EffectText, { scaleFontSize } from "/Components/card-template/effect-text
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import fitty from "/cdn/fitty"
+import datauri from "/Utils/datauri.js"
+
 
 loadCss("/Components/card-template/unit.css")
 
@@ -17,6 +19,8 @@ export class UnitRendererComponent extends Component {
         [340, 965],
         [25, 950],
     ]
+
+    state = {}
 
     cardFrame = "/Assets/champion/frame1.png"
 
@@ -56,6 +60,34 @@ export class UnitRendererComponent extends Component {
         healthRef.current && (this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 70 }))
         nameRef.current && scaleFontSize(nameRef.current, 70, 16)
 
+        this.fetchUrlAsUriAndStoreInState("/Assets/champion/backdrop.png", "backdropUri")
+        this.fetchUrlAsUriAndStoreInState(this.cardFrame, "frameUri")
+        this.fetchUrlAsUriAndStoreInState(this.clanFrame, "clanFrameUri")
+        this.fetchUrlAsUriAndStoreInState("/Assets/champion/levelupbar.png", "levelupBarUri")
+
+        if (this.props.rarity){
+            this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
+        }
+        if (this.props.faction && this.props.faction.length){
+            const fetchTask = this.props.faction.map(regionName=>datauri(`/Assets/region/${regionName}.png`))
+            Promise.all(fetchTask).then(uriArray=>{
+                this.setState((state)=>({
+                    ...state,
+                    factionUri: uriArray,
+                }))
+            })
+
+            this.fetchUrlAsUriAndStoreInState(this.getRegionFrameUrl(), "regionFrameUri")
+        }
+    }
+
+    fetchUrlAsUriAndStoreInState(url, stateName){
+        datauri(url).then(uri=>{
+            this.setState((state)=>({
+                ...state,
+                [stateName]: uri
+            }))
+        })
     }
 
     componentDidUpdate(previousProps){
@@ -72,6 +104,21 @@ export class UnitRendererComponent extends Component {
         previousProps.power !== power && this.powerFitty.fit()
         previousProps.health !== health && this.healthRefFitty.fit()
         previousProps.name !== name && scaleFontSize(this.nameRef.current, 70, 16)
+
+        if (previousProps.rarity !== this.props.rarity){
+            this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
+        }
+        if (this.props.faction && this.props.faction.length && previousProps.faction !== this.props.faction){
+            const fetchTask = this.props.faction.map(regionName=>datauri(`/Assets/region/${regionName}.png`))
+            Promise.all(fetchTask).then(uriArray=>{
+                this.setState((state)=>({
+                    ...state,
+                    factionUri: uriArray,
+                }))
+            })
+
+            this.fetchUrlAsUriAndStoreInState(this.getRegionFrameUrl(), "regionFrameUri")
+        }
     }
 
     render(){
@@ -83,7 +130,7 @@ export class UnitRendererComponent extends Component {
                     { 
                         className: "art",
                         style: {
-                            backgroundImage: `url(/Assets/champion/backdrop.png)`,
+                            backgroundImage: `url(${this.state.backdropUri || ""})`,
                             clipPath: `polygon(${
                                 this.clipPathPolygon.map((coordPair)=>{
                                     return coordPair.map(coord=>coord+"px")
@@ -98,7 +145,7 @@ export class UnitRendererComponent extends Component {
                     { 
                         className: "frame",
                         style: {
-                            backgroundImage: `url(${this.cardFrame})`
+                            backgroundImage: `url(${this.state.frameUri || ""})`
                         }
                     },
                 ),
@@ -108,20 +155,20 @@ export class UnitRendererComponent extends Component {
                     this.props.mana,
                 ),
 
-                this.props.faction && this.props.faction.length
+                this.state.factionUri && this.state.factionUri.length
                     ? div(
                         { 
                             className: "region-frame" ,
                             style: {
-                                backgroundImage: `url(${this.getRegionFrameUrl()})`
+                                backgroundImage: `url(${this.state.regionFrameUri || ""})`
                             }
                         },
-                        this.props.faction.map(regionName=>div(
+                        this.state.factionUri.map(uri=>div(
                             { 
-                                key: regionName,
+                                key: uri,
                                 className: "region-icon",
                                 style: {
-                                    backgroundImage: `url(/Assets/region/${regionName}.png)`
+                                    backgroundImage: `url(${uri})`
                                 }
                             },
                         ))
@@ -134,7 +181,7 @@ export class UnitRendererComponent extends Component {
                         {
                             className: "clan",
                             style: {
-                                backgroundImage: `url(${this.clanFrame})`
+                                backgroundImage: `url(${this.state.clanFrameUri || ""})`
                             }
                         },
                         div(
@@ -201,9 +248,11 @@ export class UnitRendererComponent extends Component {
                     ,
 
                     this.props.lvup
-                        ? img({
-                            src: "/Assets/champion/levelupbar.png",
-                            className: "level-bar"
+                        ? div({
+                            className: "level-bar",
+                            style: {
+                                backgroundImage: `url(${this.state.levelupBarUri || ""})`
+                            },
                         })
                         : undefined
                     ,
@@ -226,7 +275,7 @@ export class UnitRendererComponent extends Component {
                         {
                             className: "rarity " + this.props.rarity,
                             style: {
-                                backgroundImage: `url(/Assets/shared/gem${this.props.rarity}.png)`
+                                backgroundImage: `url(${this.state.rarityUri || ""})`
                             }
                         },
                         
