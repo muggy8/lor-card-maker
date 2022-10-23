@@ -98,6 +98,9 @@ function EffectTextComponent(props){
     })
 
     blueWords.forEach(word=>{
+        if (!word){
+            return
+        }
         contentArray = contentArray.map(textOrElement=>{
             if (typeof textOrElement !== "string"){
                 return textOrElement
@@ -118,6 +121,9 @@ function EffectTextComponent(props){
     })
 
     orangeWords.forEach(word=>{
+        if (!word){
+            return
+        }
         contentArray = contentArray.map(textOrElement=>{
             if (typeof textOrElement !== "string"){
                 return textOrElement
@@ -137,6 +143,7 @@ function EffectTextComponent(props){
         }).flat()
     })
 
+    // replace new lines with br tag
     contentArray = contentArray.map(textOrElement=>{
         if (typeof textOrElement !== "string"){
             return textOrElement
@@ -161,7 +168,9 @@ function EffectTextComponent(props){
         scaleFontSize(elementRef.current)
     }, [props.children])
 
-    return div.apply(factory, [{className: `effect-text fitty-wrap ${props.className || ""}`, ref: elementRef}, ...contentArray])
+    // return div()
+
+    return div.apply(factory, [{className: `effect-text ${props.className || ""}`, ref: elementRef}, ...contentArray])
 }
 
 function InlineIconComponent(props){
