@@ -50,18 +50,13 @@ const pathMap = {
 	Assets: indexUrl + "app/assets",
 }
 
-let storage
 self.addEventListener("install", function(ev){
 	// console.log("begin install", ev, location)
     ev.waitUntil(
-		caches.open(CACHE_NAME)
-			.then((cache)=>{
-				storage = cache
-				return Promise.all([
-					self.skipWaiting(),
-					intelegentFetch(indexUrl)
-				])
-			})
+		Promise.all([
+			self.skipWaiting(),
+			intelegentFetch(indexUrl)
+		])
     )
 })
 
@@ -140,6 +135,8 @@ async function intelegentFetch(req, justUseTheCache = false){
 	}
 
 	let cachedAsset
+
+	const storage = await caches.open(CACHE_NAME)
 
 	if (justUseTheCache){
 		cachedAsset = await storage.match(req)
