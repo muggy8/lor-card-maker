@@ -55,14 +55,13 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const [svgRef, updateSvgRef] = useState(null)
 
         const exportCard = useCallback(()=>{
-            saveSvgAsPng.svgAsDataUri(svgRef, {
+            saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
                 width: 680,
                 height: 1024,
             }).then(uri=>{
                 openUri(uri)
             })
-            console.log(saveSvgAsPng)
         }, [svgRef])
 
         return div(
@@ -84,10 +83,10 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         translate("delete_card")
                     ),
                     button(
-                        { onClick: exportCard },
                         translate("save_card")
                     ),
                     button(
+                        { onClick: exportCard },
                         translate("export")
                     ),
                 )
@@ -196,8 +195,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         {className: "gutter-b-2"},
                         EditName({
                             label: translate("clan"),
-                            value: card.name,
-                            updateValue: cardDataUpdaters.name
+                            value: card.clan,
+                            updateValue: cardDataUpdaters.clan
                         })
                     )
                     : undefined
