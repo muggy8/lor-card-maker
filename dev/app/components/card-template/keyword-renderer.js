@@ -1,8 +1,10 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import { useRef, useLayoutEffect } from "/cdn/react" 
-import setImmediate from "/Utils/set-immediate-batch.js"
+import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react" 
+// import setImmediate from "/Utils/set-immediate-batch.js"
+import datauri from "/Utils/datauri.js"
+
 
 loadCss("/Components/card-template/keyword-renderer.css")
 
@@ -60,8 +62,21 @@ function KeywordRendererComponent(props){
     const icons = keywords[name] || []
     
     const translate = useLang()
-
     const wrapperRef = useRef()
+
+    const [iconsUri, updateIconsUri] = useState([])
+    const [leftBumperUri, updateLeftBumperUri] = useState("")
+    const [rightBumperUri, updateRightBumperUri] = useState("")
+    const [centerBumperUri, centerRightBumperUri] = useState("")
+    useEffect(()=>{
+        datauri("/Assets/keyword/keywordleft.png").then(updateLeftBumperUri)
+        datauri("/Assets/keyword/keywordright.png").then(updateRightBumperUri)
+        datauri("/Assets/keyword/keywordmiddle.png").then(centerRightBumperUri)
+    }, [])
+    useEffect(()=>{
+        const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+        Promise.all(iconsFetch).then(updateIconsUri)
+    }, [icons])
 
     useLayoutEffect(()=>{
         // wrapperRef.current && console.log(wrapperRef.current.clientWidth, wrapperRef.current.clientHeight, )
@@ -73,19 +88,19 @@ function KeywordRendererComponent(props){
 
     return div(
         { className: "keyword-wrapper", ref: wrapperRef},
-        div({ className: "left-bumper" }),
+        div({ className: "left-bumper", style: { backgroundImage: `url(${leftBumperUri})` } }),
         div(
             { className: `contents ${
                 icons.length 
                     ? size
                     : "small"
-            }` },
-            icons.map(pngName=>div(
+            }`, style: { backgroundImage: `url(${centerBumperUri})` } },
+            iconsUri.map(pngUri=>div(
                 { 
-                    key: pngName,
+                    key: pngUri,
                     className: "keyword-icon",
                     style: {
-                        backgroundImage: `url(/Assets/keyword/${pngName})`
+                        backgroundImage: `url(${pngUri})`
                     },
                 }
             )),
@@ -97,7 +112,7 @@ function KeywordRendererComponent(props){
                 : undefined
             ,
         ),
-        div({ className: "right-bumper" }),
+        div({ className: "right-bumper", style: { backgroundImage: `url(${rightBumperUri})` }  }),
     )
 }
 
