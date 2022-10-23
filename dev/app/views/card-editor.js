@@ -26,7 +26,7 @@ export const svgRefference = createContext({
 })
 
 export default function EditorViewFactory(cardRenderer, defaultCardData){
-    return function EditorView(props){
+    return function EditorView(){
         const translate = useLang()
 
         const [card, updateCard] = useState(defaultCardData)
