@@ -1,7 +1,7 @@
 import { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import React, { useState, useCallback, createContext, useContext } from "/cdn/react"
+import React, { useState, useCallback, createContext, useEffect, useRef } from "/cdn/react"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 
 import EditName from "/Components/card-config/edit-name.js"
@@ -64,32 +64,58 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             })
         }, [svgRef])
 
+        const fixedDisplayRef = useRef()
+        const [useableWidth, updateUseableWidth] = useState(0)
+        useEffect(()=>{
+            function setFixedDisplayWidth(){
+                let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
+                const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
+
+                useableWidth = useableWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight)
+
+                updateUseableWidth(useableWidth)
+            }
+
+            setFixedDisplayWidth()
+
+            window.addEventListener("resize", setFixedDisplayWidth)
+
+            return function(){
+                window.removeEventListener("resize", setFixedDisplayWidth)
+            }
+        }, [])
+
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
                 { className: "card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
-                React.createElement(
-                    svgRefference.Provider,
-                    { value: {
-                        current: svgRef,
-                        setRef: updateSvgRef,
-                    } },
-                    cardRenderer(card),
-                ),
                 div(
-                    {className: "flex hcenter gutter-tb"},
-                    button(
-                        { className: card.id ? undefined : "hide" },
-                        translate("delete_card")
+                    {className: "preview-content", ref: fixedDisplayRef, style: {
+                        width: useableWidth + "px"
+                    }},
+                    React.createElement(
+                        svgRefference.Provider,
+                        { value: {
+                            current: svgRef,
+                            setRef: updateSvgRef,
+                        } },
+                        cardRenderer(card),
                     ),
-                    button(
-                        translate("save_card")
-                    ),
-                    button(
-                        { onClick: exportCard },
-                        translate("export")
-                    ),
-                )
+                    div(
+                        {className: "flex hcenter gutter-tb"},
+                        button(
+                            { className: card.id ? undefined : "hide" },
+                            translate("delete_card")
+                        ),
+                        button(
+                            translate("save_card")
+                        ),
+                        button(
+                            { onClick: exportCard },
+                            translate("export")
+                        ),
+                    )
+                ),
             ),
             div(
                 { className: "card-configs gutter-t-2 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
