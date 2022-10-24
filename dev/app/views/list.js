@@ -132,16 +132,17 @@ function ListComponent(props){
     return div(
         {
             id: "card-type-list",
+            className: "gutter-t-2",
             // style: {
             //     marginTop: globalState.state.bannerHeight || 0,
             // },
         },
-        div(
-            { className: "flex hcenter"},
-            h2(
-                translate("i_want_to_make")
-            ),
-        ),
+        // div(
+        //     { className: "flex hcenter"},
+        //     h2(
+        //         translate("i_want_to_make")
+        //     ),
+        // ),
         div(
             { className: "gutter-trbl-.5 flex",},
             types.map((type)=>{
@@ -154,7 +155,7 @@ function ListComponent(props){
                         }
                     },
                     type.component({
-                        name: translate(type.labelKey)
+                        name: `${translate("new")} ${translate(type.labelKey)}`
                     })
                 )
             }),

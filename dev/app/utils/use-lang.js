@@ -84,5 +84,7 @@ const lang = {
         "silence": "Silence",
         "trigger": "Trigger",
         "imbue": "Imbue",
+        "new": "New",
+        "zevis_workshop": "Zevi's Workshop",
     }
 }

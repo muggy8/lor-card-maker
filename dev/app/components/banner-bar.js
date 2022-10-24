@@ -43,7 +43,7 @@ function BannarBarComponent(props){
         {className: "banner fixed flex hcenter gutter-rl-4", ref: setBannerElement},
         h1(
             {className: "key-text gutter-rl"},
-            translate("lor_card_maker"),
+            translate("zevis_workshop"),
             a(
                 {
                     href:"https://github.com/muggy8/lor-card-maker",
