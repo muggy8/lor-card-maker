@@ -1,7 +1,7 @@
 import { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import React, { useState, useCallback, createContext, useEffect, useRef } from "/cdn/react"
+import React, { useState, useCallback, createContext, useEffect, useRef, useLayoutEffect } from "/cdn/react"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 
 import EditName from "/Components/card-config/edit-name.js"
@@ -66,7 +66,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
         const fixedDisplayRef = useRef()
         const [useableWidth, updateUseableWidth] = useState(0)
-        useEffect(()=>{
+        const [previewHeight, updatePreviewHeight] = useState(0)
+        useLayoutEffect(()=>{
             function setFixedDisplayWidth(){
                 let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
                 const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
@@ -74,9 +75,10 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 useableWidth = useableWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight)
 
                 updateUseableWidth(useableWidth)
+                updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
             }
 
-            setFixedDisplayWidth()
+			requestAnimationFrame(setFixedDisplayWidth)
 
             window.addEventListener("resize", setFixedDisplayWidth)
 
@@ -88,7 +90,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
-                { className: "card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
+                { className: "card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3", style: { paddingBottom: previewHeight + "px"}},
                 div(
                     {className: "preview-content", ref: fixedDisplayRef, style: {
                         width: useableWidth + "px"
