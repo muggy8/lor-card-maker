@@ -79,31 +79,28 @@ self.addEventListener("fetch", function(ev){
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
 
     if (fetchUrl){
-        ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
-    }
-    else{
 		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){
 
 			let responded = false
 			if (ev.request.method === "POST" || ev.request.method === "PUT"){
 				if (filePathRelativeToURLRoot.includes(cardDataPath)){
-					ev.respondWith(saveCardData(req, filePathRelativeToURLRoot))
+					ev.respondWith(saveCardData(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
 			else if (ev.request.method === "GET"){
 				if (filePathRelativeToURLRoot.includes(cardListPath)){
-					ev.respondWith(getSavedCardList(req, filePathRelativeToURLRoot))
+					ev.respondWith(getSavedCardList(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 				else if (filePathRelativeToURLRoot.includes(cardDataPath)){
-					ev.respondWith(getSavedCard(req, filePathRelativeToURLRoot))
+					ev.respondWith(getSavedCard(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
 			else if (ev.request.method === "DEL"){
 				if (filePathRelativeToURLRoot.includes(cardDataPath)){
-					ev.respondWith(deleteSavedCard(req, filePathRelativeToURLRoot))
+					ev.respondWith(deleteSavedCard(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -114,9 +111,12 @@ self.addEventListener("fetch", function(ev){
 			}))
 
 		}
-		else{
-			ev.respondWith(intelegentFetch(ev.request))
+		else {
+			ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
 		}
+    }
+    else{
+		ev.respondWith(intelegentFetch(ev.request))
     }
 })
 
