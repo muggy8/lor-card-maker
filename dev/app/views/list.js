@@ -75,20 +75,6 @@ const types = [
         )
     },
     {
-        component: Landmark, 
-        labelKey: "landmark",
-        editor: factory(
-            CardEditorFactory(
-                Landmark,
-                {
-                    ...sharedDefaultCardData,
-                    lvup: "",
-                    rarity: "",
-                }
-            ),
-        )
-    },
-    {
         component: Spell, 
         labelKey: "spell",
         editor: factory(
@@ -116,6 +102,21 @@ const types = [
                     health: 0,
                     lvup: "",
                     rarity: "",
+                }
+            ),
+        )
+    },
+    {
+        component: Landmark, 
+        labelKey: "landmark",
+        editor: factory(
+            CardEditorFactory(
+                Landmark,
+                {
+                    ...sharedDefaultCardData,
+                    lvup: "",
+                    rarity: "",
+                    keywords: ["landmark"]
                 }
             ),
         )
