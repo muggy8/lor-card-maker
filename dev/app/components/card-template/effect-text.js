@@ -73,104 +73,117 @@ function EffectTextComponent(props){
     blueWords.sort((a, b)=>b.length - a.length)
     orangeWords.sort((a, b)=>b.length - a.length)
 
-    let contentArray = [text]
-    keywordWithIcons.forEach(word=>{
-        const wordTag = `<${word}/>`
-        const keywordIcons = keywords[word]
-        contentArray = contentArray.map(textOrElement=>{
-            if (typeof textOrElement !== "string"){
-                return textOrElement
+    const [contentArray, updateContentArray] = useState([])
+    useEffect(()=>{
+        let timeoutId = setTimeout(()=>{
+            timeoutId = undefined
+
+            let contentArray = [text]
+            keywordWithIcons.forEach(word=>{
+                const wordTag = `<${word}/>`
+                const keywordIcons = keywords[word]
+                contentArray = contentArray.map(textOrElement=>{
+                    if (typeof textOrElement !== "string"){
+                        return textOrElement
+                    }
+        
+                    let splitUpText = textOrElement.split(wordTag)
+        
+                    if (splitUpText.length === 1){
+                        return splitUpText[0]
+                    }
+        
+                    for(let i = splitUpText.length - 1; i; i--){
+                        splitUpText.splice(i, 0, keywordIcons.map(pngName=>InlineIcon({
+                            key: pngName,
+                            pngName
+                        })))
+                    }
+        
+                    return splitUpText
+                }).flat()
+            })
+        
+            blueWords.forEach(word=>{
+                if (!word){
+                    return
+                }
+                contentArray = contentArray.map(textOrElement=>{
+                    if (typeof textOrElement !== "string"){
+                        return textOrElement
+                    }
+        
+                    let splitUpText = textOrElement.split(word)
+        
+                    if (splitUpText.length === 1){
+                        return splitUpText[0]
+                    }
+        
+                    for(let i = splitUpText.length - 1; i; i--){
+                        splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
+                    }
+        
+                    return splitUpText
+                }).flat()
+            })
+        
+            orangeWords.forEach(word=>{
+                if (!word){
+                    return
+                }
+                contentArray = contentArray.map(textOrElement=>{
+                    if (typeof textOrElement !== "string"){
+                        return textOrElement
+                    }
+        
+                    let splitUpText = textOrElement.split(word)
+        
+                    if (splitUpText.length === 1){
+                        return splitUpText[0]
+                    }
+        
+                    for(let i = splitUpText.length - 1; i; i--){
+                        splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
+                    }
+        
+                    return splitUpText
+                }).flat()
+            })
+        
+            // replace new lines with br tag
+            contentArray = contentArray.map(textOrElement=>{
+                if (typeof textOrElement !== "string"){
+                    return textOrElement
+                }
+        
+                let splitUpText = textOrElement.split(/\n+/g)
+        
+                if (splitUpText.length === 1){
+                    return splitUpText[0]
+                }
+        
+                for(let i = splitUpText.length - 1; i; i--){
+                    splitUpText.splice(i, 0, br())
+                }
+        
+                return splitUpText
+            }).flat()
+
+            updateContentArray(contentArray)
+        }, 200)
+
+        return function(){
+            if (timeoutId){
+                clearTimeout(timeoutId)
             }
-
-            let splitUpText = textOrElement.split(wordTag)
-
-            if (splitUpText.length === 1){
-                return splitUpText[0]
-            }
-
-            for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, keywordIcons.map(pngName=>InlineIcon({
-                    key: pngName,
-                    pngName
-                })))
-            }
-
-            return splitUpText
-        }).flat()
-    })
-
-    blueWords.forEach(word=>{
-        if (!word){
-            return
         }
-        contentArray = contentArray.map(textOrElement=>{
-            if (typeof textOrElement !== "string"){
-                return textOrElement
-            }
-
-            let splitUpText = textOrElement.split(word)
-
-            if (splitUpText.length === 1){
-                return splitUpText[0]
-            }
-
-            for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
-            }
-
-            return splitUpText
-        }).flat()
-    })
-
-    orangeWords.forEach(word=>{
-        if (!word){
-            return
-        }
-        contentArray = contentArray.map(textOrElement=>{
-            if (typeof textOrElement !== "string"){
-                return textOrElement
-            }
-
-            let splitUpText = textOrElement.split(word)
-
-            if (splitUpText.length === 1){
-                return splitUpText[0]
-            }
-
-            for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
-            }
-
-            return splitUpText
-        }).flat()
-    })
-
-    // replace new lines with br tag
-    contentArray = contentArray.map(textOrElement=>{
-        if (typeof textOrElement !== "string"){
-            return textOrElement
-        }
-
-        let splitUpText = textOrElement.split(/\n+/g)
-
-        if (splitUpText.length === 1){
-            return splitUpText[0]
-        }
-
-        for(let i = splitUpText.length - 1; i; i--){
-            splitUpText.splice(i, 0, br())
-        }
-
-        return splitUpText
-    }).flat()
+    }, [text, blueWords, orangeWords])
 
     const elementRef = useRef()
 
     useLayoutEffect(()=>{
         scaleFontSize(elementRef.current)
-    }, [props.children])
-
-    // return div()
+    }, [contentArray])
 
     return div.apply(factory, [{className: `effect-text ${props.className || ""}`, ref: elementRef}, ...contentArray])
 }
