@@ -35,7 +35,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const cardDataUpdaters = knownCardDataKeys.reduce((updaterCollection, key)=>{
             updaterCollection[key] = useCallback((updatedValue)=>{
 
-                if (updatedValue.preventDefault){
+                if (updatedValue && updatedValue.preventDefault){
                     updatedValue = updatedValue.target.value
                 }
 
