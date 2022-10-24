@@ -9,8 +9,8 @@
 }
 
 .keyword-wrapper .left-bumper, .keyword-wrapper .right-bumper {
-    width: 25px;
-    height: 94px;
+    width: 26.6px;
+    height: 98.8px;
 }
 
 .keyword-wrapper .left-bumper {
@@ -24,8 +24,8 @@
 }
 
 .keyword-wrapper .contents {
-    min-width: 183px;
-    height: 94px;
+    min-width: 192.85px;
+    height: 98.8px;
     /* background-image: url(/Assets/keyword/keywordmiddle.png); */
     display: inline-flex;
     justify-content: center;
@@ -37,14 +37,14 @@
 }
 
 .keyword-wrapper .contents .keyword-icon {
-    width: 55px;
-    height: 55px;
+    width: 57px;
+    height: 57px;
     background-position: center;
     background-size: contain;
 }
 
 .keyword-wrapper .contents .keyword-text {
     text-transform: uppercase;
-    font-size: 34px;
+    font-size: 36px;
     color: #EDCB75;
 }
