@@ -4,4 +4,5 @@
 	width: 100%;
 	background-color: var(--color-bg);
 	border-bottom: solid 0.125rem var(--color-border);
+	z-index: 2;
 }
