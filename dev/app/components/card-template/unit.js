@@ -223,7 +223,7 @@ export class UnitRendererComponent extends Component {
                         : undefined
                     ,
 
-                    this.props.keywords
+                    this.props.keywords && this.props.keywords.length
                         ? div(
                             { className: "keyword-container card-text-bold" },
                             this.props.keywords.map(keywordName=>KeywordRenderer({
