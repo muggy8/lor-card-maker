@@ -67,6 +67,10 @@ self.addEventListener("activate", function(ev){
     )
 })
 
+const cacheLocation = "cards"
+const cardListPath = "pseudo-api/card-list/"
+const cardDataPath = "pseudo-api/card/"
+
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
     // const mappedUrl = importMap[filePathRelativeToPageRoot]
@@ -80,30 +84,34 @@ self.addEventListener("fetch", function(ev){
     else{
 		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){
 
+			let responded = false
 			if (ev.request.method === "POST" || ev.request.method === "PUT"){
 				if (filePathRelativeToURLRoot.includes(cardDataPath)){
 					ev.respondWith(saveCardData(req, filePathRelativeToURLRoot))
+					responded = true
 				}
 			}
 			else if (ev.request.method === "GET"){
 				if (filePathRelativeToURLRoot.includes(cardListPath)){
 					ev.respondWith(getSavedCardList(req, filePathRelativeToURLRoot))
+					responded = true
 				}
 				else if (filePathRelativeToURLRoot.includes(cardDataPath)){
 					ev.respondWith(getSavedCard(req, filePathRelativeToURLRoot))
+					responded = true
 				}
 			}
 			else if (ev.request.method === "DEL"){
 				if (filePathRelativeToURLRoot.includes(cardDataPath)){
 					ev.respondWith(deleteSavedCard(req, filePathRelativeToURLRoot))
+					responded = true
 				}
 			}
-			else{
-				ev.respondWith(new Response("not found", {
-					'Content-Type': 'text/plain',
-					"status" : 404
-				}))
-			}
+
+			!responded && ev.respondWith(new Response("Not found", {
+				'Content-Type': 'text/plain',
+				"status" : 404
+			}))
 
 		}
 		else{
@@ -112,9 +120,6 @@ self.addEventListener("fetch", function(ev){
     }
 })
 
-const cacheLocation = "cards"
-const cardListPath = "pseudo-api/card-list/"
-const cardDataPath = "pseudo-api/card/"
 async function saveCardData(req, path){
   let data = await req.text()
   let cache = await caches.open(cacheLocation)

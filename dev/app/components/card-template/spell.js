@@ -22,10 +22,10 @@ function SpellComponent(props){
     const powerFitty = useRef()
     const healthFitty = useRef()
     const facref = useRef()
-    
+
     const [imageAvgColor, updateImageAvgColor] = useState("#000000")
     useLayoutEffect(()=>{
-        let fac = facref.current 
+        let fac = facref.current
         if (!fac){
             fac = facref.current = new FastAverageColor();
         }
@@ -56,7 +56,7 @@ function SpellComponent(props){
                 return
             }
             costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 90 })
-            return 
+            return
         }
 
         fittyInstance.fit()
@@ -70,7 +70,7 @@ function SpellComponent(props){
                 return
             }
             powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 70 })
-            return 
+            return
         }
 
         fittyInstance.fit()
@@ -84,19 +84,19 @@ function SpellComponent(props){
                 return
             }
             healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 70 })
-            return 
+            return
         }
 
         fittyInstance.fit()
     }, [props.health])
 
-    const [backgroundUri, updateBackgroundUri] = useState("") 
-    const [backdropUri, updateBackdropUri] = useState("") 
-    const [frameUri, updateFrameUri] = useState("") 
-    const [regionboxUri, updateRegionboxUri] = useState("") 
-    const [typingUri, updateTypingUri] = useState("") 
-    const [regionNameUri, updateRegionNameUri] = useState([]) 
-    const [rarityGemUri, updateRarityGemUriUri] = useState("") 
+    const [backgroundUri, updateBackgroundUri] = useState("")
+    const [backdropUri, updateBackdropUri] = useState("")
+    const [frameUri, updateFrameUri] = useState("")
+    const [regionboxUri, updateRegionboxUri] = useState("")
+    const [typingUri, updateTypingUri] = useState("")
+    const [regionNameUri, updateRegionNameUri] = useState([])
+    const [rarityGemUri, updateRarityGemUriUri] = useState("")
     useEffect(()=>{
         datauri("/Assets/spell/background.png").then(updateBackgroundUri)
         datauri("/Assets/spell/backdrop.png").then(updateBackdropUri)
@@ -135,13 +135,13 @@ function SpellComponent(props){
         div(
             { className: `${props.speed} spell`, id: props.id },
             div(
-                { 
+                {
                     className: "text-background",
                     style: {
                         backgroundColor: imageAvgColor,
                     }
                 },
-                div({ 
+                div({
                     className: "text-background-image",
                     style: {
                         backgroundImage: `url(${backgroundUri})`
@@ -149,7 +149,7 @@ function SpellComponent(props){
                 },),
             ),
             div(
-                { 
+                {
                     className: "art",
                     style: {
                         backgroundImage: `url(${backdropUri})`,
@@ -157,7 +157,7 @@ function SpellComponent(props){
                 },
             ),
             div(
-                { 
+                {
                     className: "frame",
                     style: {
                         backgroundImage: `url(${frameUri})`
@@ -170,14 +170,14 @@ function SpellComponent(props){
             ),
             props.faction && props.faction.length
                 ? div(
-                    { 
+                    {
                         className: "region-frame" ,
                         style: {
                             backgroundImage: `url(${regionboxUri})`
                         }
                     },
                     regionNameUri.map((dataUri, index)=>div(
-                        { 
+                        {
                             key: dataUri,
                             className: "region-icon region-icon-" + index,
                             style: {
@@ -188,7 +188,7 @@ function SpellComponent(props){
                 )
                 : undefined
             ,
-            props.clan 
+            props.clan
                 ? div(
                     {
                         className: "clan",
@@ -206,8 +206,8 @@ function SpellComponent(props){
                 )
                 : undefined
             ,
-            props.rarity 
-                ? div({ 
+            props.rarity
+                ? div({
                     className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
                     style: {
                         backgroundImage: `url(${rarityGemUri})`
@@ -241,7 +241,7 @@ function SpellComponent(props){
                     : undefined
                 ,
 
-                props.keywords
+                props.keywords && props.keywords.length
                     ? div(
                         { className: "keyword-container card-text-bold" },
                         props.keywords.map(keywordName=>KeywordRenderer({
@@ -255,11 +255,11 @@ function SpellComponent(props){
 
                 props.effect
                     ? EffectText(
-                        { 
+                        {
                             blueWords: props.blueWords,
-                            orangeWords: props.orangeWords, 
+                            orangeWords: props.orangeWords,
                             className: "effect-container card-text-universe",
-                        }, 
+                        },
                         props.effect
                     )
                     : undefined

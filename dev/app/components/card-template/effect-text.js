@@ -36,8 +36,8 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
 
     // perform binary search for the perfect font size
     let upperbound = max, lowerBound = min, checkSize = currentFontSize
-  
-    while(upperbound - lowerBound > 0.5){        
+
+    while(upperbound - lowerBound > 0.5){
         element.style.fontSize = `${checkSize + 0.5}px`
         await nextTick()
         const overflowAtNextIncriment = isOverflown(element)
@@ -55,7 +55,7 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
             checkSize = avg(upperbound, lowerBound)
         }
         else{
-            lowerBound = checkSize 
+            lowerBound = checkSize
             checkSize = avg(upperbound, lowerBound)
         }
     }
@@ -67,7 +67,9 @@ function EffectTextComponent(props){
         throw new Error("Only strings accepted")
     }
 
-    let { blueWords, orangeWords } = props
+    //~ let { blueWords, orangeWords } = props
+    let blueWords = [...props.blueWords]
+    let orangeWords = [...props.orangeWords]
     blueWords.sort((a, b)=>b.length - a.length)
     orangeWords.sort((a, b)=>b.length - a.length)
 

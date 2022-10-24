@@ -35,7 +35,6 @@ function EditColorTextComponent(props){
         div(
             {className: "gutter-b-2"},
             props.value.map((currentText, index)=>{
-                console.log(currentText)
                 return div(
                     { className: "flex gutter-t", key: index },
                     div(
