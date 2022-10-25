@@ -74,15 +74,25 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 useableWidth = useableWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight)
 
                 updateUseableWidth(useableWidth)
+            }
+
+            function setFixedDisplayHeight(){
                 updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
             }
 
 			requestAnimationFrame(setFixedDisplayWidth)
+			requestAnimationFrame(setFixedDisplayHeight)
+
+            const observer = new MutationObserver(setFixedDisplayHeight)
 
             window.addEventListener("resize", setFixedDisplayWidth)
+            observer.observe(fixedDisplayRef.current, {
+                attributes: true
+            })
 
             return function(){
                 window.removeEventListener("resize", setFixedDisplayWidth)
+                observer.disconnect()
             }
         }, [])
 
