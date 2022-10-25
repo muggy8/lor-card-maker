@@ -5,8 +5,7 @@ import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 // import setImmediate from "/Utils/set-immediate-batch.js"
 import datauri from "/Utils/datauri.js"
 
-
-loadCss("/Components/card-template/keyword-renderer.css")
+const cssLoaded = loadCss("/Components/card-template/keyword-renderer.css")
 
 export const keywords = {
     "attune": [ "attune.png" ],
@@ -115,4 +114,4 @@ function KeywordRendererComponent(props){
     )
 }
 
-export default factory(KeywordRendererComponent)
+export default factory(KeywordRendererComponent, cssLoaded)

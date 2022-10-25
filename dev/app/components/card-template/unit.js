@@ -8,7 +8,7 @@ import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 
 
-loadCss("/Components/card-template/unit.css")
+const cssLoaded = loadCss("/Components/card-template/unit.css")
 
 export class UnitRendererComponent extends Component {
 
@@ -287,4 +287,4 @@ export class UnitRendererComponent extends Component {
     }
 }
 
-export default factory(UnitRendererComponent)
+export default factory(UnitRendererComponent, cssLoaded)

@@ -5,7 +5,7 @@ import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 
-loadCss("/Components/card-template/effect-text.css")
+const cssLoaded = loadCss("/Components/card-template/effect-text.css")
 
 const keywordWithIcons = Object.keys(keywords).filter(word=>keywords[word].length)
 // const keywordTags = keywordWithIcons.map(word=>`<${word}/>`)
@@ -208,4 +208,4 @@ function InlineIconComponent(props){
 
 export const InlineIcon = factory(InlineIconComponent)
 
-export default factory(EffectTextComponent)
+export default factory(EffectTextComponent, cssLoaded)

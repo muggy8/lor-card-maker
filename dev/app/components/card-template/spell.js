@@ -8,7 +8,7 @@ import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 
-loadCss("/Components/card-template/spell.css")
+const cssLoaded = loadCss("/Components/card-template/spell.css")
 
 function SpellComponent(props){
 
@@ -269,4 +269,4 @@ function SpellComponent(props){
     )
 }
 
-export default factory(SpellComponent)
+export default factory(SpellComponent, cssLoaded)

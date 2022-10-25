@@ -1,5 +1,5 @@
-import factory, { div, h2 } from "/Utils/elements.js"
-import { useContext } from "/cdn/react" 
+import factory, { div } from "/Utils/elements.js"
+import { useContext, useEffect, useState } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -29,101 +29,89 @@ const types = [
     {
         component: Champion1, 
         labelKey: "champ1",
-        editor: factory(
-            CardEditorFactory(
-                Champion1,
-                {
-                    ...sharedDefaultCardData,
-                    power: 0,
-                    health: 0,
-                    lvup: "",
-                    rarity: "champion",
-                }
-            ),
-        )
+        editor: CardEditorFactory(
+            Champion1,
+            {
+                ...sharedDefaultCardData,
+                power: 0,
+                health: 0,
+                lvup: "",
+                rarity: "champion",
+            }
+        ),
     },
     {
         component: Champion2, 
         labelKey: "champ2",
-        editor: factory(
-            CardEditorFactory(
-                Champion2,
-                {
-                    ...sharedDefaultCardData,
-                    power: 0,
-                    health: 0,
-                    lvup: "",
-                    rarity: "",
-                }
-            )
+        editor: CardEditorFactory(
+            Champion2,
+            {
+                ...sharedDefaultCardData,
+                power: 0,
+                health: 0,
+                lvup: "",
+                rarity: "",
+            }
         )
     },
     {
         component: Champion3, 
         labelKey: "champ3",
-        editor: factory(
-            CardEditorFactory(
-                Champion3,
-                {
-                    ...sharedDefaultCardData,
-                    power: 0,
-                    health: 0,
-                    lvup: "",
-                    rarity: "",
-                }
-            ),
-        )
+        editor: CardEditorFactory(
+            Champion3,
+            {
+                ...sharedDefaultCardData,
+                power: 0,
+                health: 0,
+                lvup: "",
+                rarity: "",
+            }
+        ),
     },
     {
         component: Spell, 
         labelKey: "spell",
-        editor: factory(
-            CardEditorFactory(
-                Spell,
-                {
-                    ...sharedDefaultCardData,
-                    power: null,
-                    health: null,
-                    speed: "trap",
-                    rarity: "",
-                }
-            ),
-        )
+        editor: CardEditorFactory(
+            Spell,
+            {
+                ...sharedDefaultCardData,
+                power: null,
+                health: null,
+                speed: "trap",
+                rarity: "",
+            }
+        ),
     },
     {
         component: Follower, 
         labelKey: "follower",
-        editor: factory(
-            CardEditorFactory(
-                Follower,
-                {
-                    ...sharedDefaultCardData,
-                    power: 0,
-                    health: 0,
-                    lvup: "",
-                    rarity: "",
-                }
-            ),
-        )
+        editor: CardEditorFactory(
+            Follower,
+            {
+                ...sharedDefaultCardData,
+                power: 0,
+                health: 0,
+                lvup: "",
+                rarity: "",
+            }
+        ),
     },
     {
         component: Landmark, 
         labelKey: "landmark",
-        editor: factory(
-            CardEditorFactory(
-                Landmark,
-                {
-                    ...sharedDefaultCardData,
-                    lvup: "",
-                    rarity: "",
-                    keywords: ["landmark"]
-                }
-            ),
-        )
+        editor: CardEditorFactory(
+            Landmark,
+            {
+                ...sharedDefaultCardData,
+                lvup: "",
+                rarity: "",
+                keywords: ["landmark"]
+            }
+        ),
     },
 ]
 
-loadCss("/Views/list.css")
+const cssLoaded = loadCss("/Views/list.css")
 
 function ListComponent(props){
     const globalState = useContext(Globals)
@@ -189,5 +177,5 @@ function ListComponent(props){
     )
 }
 
-const List = factory(ListComponent)
+const List = factory(ListComponent, cssLoaded)
 export default List

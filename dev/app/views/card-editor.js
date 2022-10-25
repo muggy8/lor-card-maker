@@ -1,7 +1,7 @@
-import { div, button } from "/Utils/elements.js"
+import factory, { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import React, { useState, useCallback, createContext, useEffect, useRef, useLayoutEffect } from "/cdn/react"
+import React, { useState, useCallback, createContext, useRef, useLayoutEffect } from "/cdn/react"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 
 import EditName from "/Components/card-config/edit-name.js"
@@ -13,8 +13,7 @@ import EditEffect from "/Components/card-config/edit-effect.js"
 import EditSpeed from "/Components/card-config/edit-speed.js"
 import EditColorText from "/Components/card-config/edit-colored-text.js"
 
-
-loadCss("/Views/card-editor.css")
+const cssLoaded = loadCss("/Views/card-editor.css")
 
 function canShow(ifKeyExists, inThisObject){
     return Object.hasOwnProperty.call(inThisObject, ifKeyExists)
@@ -26,7 +25,7 @@ export const svgRefference = createContext({
 })
 
 export default function EditorViewFactory(cardRenderer, defaultCardData){
-    return function EditorView(){
+    const component =  function EditorView(){
         const translate = useLang()
 
         const [card, updateCard] = useState(defaultCardData)
@@ -233,6 +232,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
         )
     }
+
+    return factory(component, cssLoaded)
 }
 
 function openUri(base64ImageData) {

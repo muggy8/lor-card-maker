@@ -19,7 +19,7 @@ export default function useLang(){
 
 const lang = {
     "en": {
-        "lor_card_maker": "LoR Card Maker App",
+        "lor_card_foundry": "LoR Card Foundry",
         "i_want_to_make": "I want to create a...",
         "champ1": "Champion Lv 1",
         "champ2": "Champion Lv 2",
@@ -85,6 +85,5 @@ const lang = {
         "trigger": "Trigger",
         "imbue": "Imbue",
         "new": "New",
-        "zevis_workshop": "Zevi's Workshop",
     }
 }

@@ -1,16 +1,13 @@
 import factory, { div, h1, a, svg, path, style } from "/Utils/elements.js"
-import { useEffect, useContext, useRef, useCallback } from "/cdn/react" 
+import { useLayoutEffect, useContext, useRef, useCallback, useEffect, useState } from "/cdn/react" 
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import { Globals } from "/Views/index.js"
 
-
-loadCss("/Components/banner-bar.css")
+const cssLoaded = loadCss("/Components/banner-bar.css")
 
 function BannarBarComponent(props){
-
     const translate = useLang()
-
     const globalState = useContext(Globals)
 
     const bannerElement = useRef()
@@ -18,9 +15,9 @@ function BannarBarComponent(props){
         el && (bannerElement.current = el)
     }, [])
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
         function reportBannerWidth(){
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 if (!bannerElement.current){
                     return
                 }
@@ -28,7 +25,7 @@ function BannarBarComponent(props){
                 globalState.patchState({
                     bannerHeight: bannerElement.current.clientHeight
                 })
-            }, 10);            
+            });            
         }
 
         window.addEventListener('resize', reportBannerWidth)
@@ -43,7 +40,7 @@ function BannarBarComponent(props){
         {className: "banner fixed flex hcenter gutter-rl-4", ref: setBannerElement},
         h1(
             {className: "key-text gutter-rl"},
-            translate("zevis_workshop"),
+            translate("lor_card_foundry"),
             a(
                 {
                     href:"https://github.com/muggy8/lor-card-maker",
@@ -87,4 +84,4 @@ function BannarBarComponent(props){
 
 }
 
-export default factory(BannarBarComponent)
+export default factory(BannarBarComponent, cssLoaded)

@@ -1,12 +1,6 @@
-import React from "/cdn/react"
+import React, {useEffect, useState} from "/cdn/react"
 
-function factory(reactComponent, name){
-    if (name){
-        Object.defineProperty(reactComponent, "name", {
-            value: name,
-            enumerable: true,
-        })
-    }
+function factory(reactComponent, awaitThis){
     return function(){
         let params = arguments 
         let propsOrChildren = params[0]
@@ -23,11 +17,36 @@ function factory(reactComponent, name){
         else{
             props = propsOrChildren
         }
-
-        // console.log([reactComponent, props, ...children])
-
+        if (awaitThis){
+            return DeferRender({
+                component: reactComponent,
+                componentProps: props,
+                componentChildren: children,
+                waitFor: awaitThis,
+            })
+        }
         return React.createElement.apply(React, [reactComponent, props, ...children])
     }
 }
+
+function DeferRenderComponent(props){
+    const [waitDone, updateWaitDone] = useState(false)
+    useEffect(()=>{
+        props.waitFor.then(()=>updateWaitDone(true))
+    }, [])
+
+    if (!waitDone){
+        return null
+    }
+
+    const { component, componentProps, componentChildren } = props
+    return React.createElement(
+        React.Fragment, 
+        {}, 
+        React.createElement.apply(React, [component, componentProps, ...componentChildren])
+    )
+}
+
+export const DeferRender = factory(DeferRenderComponent)
 
 export default factory
