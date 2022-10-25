@@ -67,31 +67,26 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const [useableWidth, updateUseableWidth] = useState(0)
         const [previewHeight, updatePreviewHeight] = useState(0)
         useLayoutEffect(()=>{
-            function setFixedDisplayWidth(){
+            function setFixedDisplayDimentions(){
                 let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
                 const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
 
                 useableWidth = useableWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight)
 
                 updateUseableWidth(useableWidth)
-            }
-
-            function setFixedDisplayHeight(){
                 updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
             }
+			requestAnimationFrame(setFixedDisplayDimentions)
 
-			requestAnimationFrame(setFixedDisplayWidth)
-			requestAnimationFrame(setFixedDisplayHeight)
+            const observer = new MutationObserver(setFixedDisplayDimentions)
 
-            const observer = new MutationObserver(setFixedDisplayHeight)
-
-            window.addEventListener("resize", setFixedDisplayWidth)
+            window.addEventListener("resize", setFixedDisplayDimentions)
             observer.observe(fixedDisplayRef.current, {
                 attributes: true
             })
 
             return function(){
-                window.removeEventListener("resize", setFixedDisplayWidth)
+                window.removeEventListener("resize", setFixedDisplayDimentions)
                 observer.disconnect()
             }
         }, [])
@@ -99,7 +94,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
-                { className: "card-preview gutter-t-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3", style: { paddingBottom: previewHeight + "px"}},
+                { className: "card-preview gutter-trl-2 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3", style: { paddingBottom: previewHeight + "px"}},
                 div(
                     {className: "preview-content", ref: fixedDisplayRef, style: {
                         width: useableWidth + "px"
@@ -129,7 +124,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ),
             ),
             div(
-                { className: "card-configs gutter-t-2 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
+                { className: "card-configs gutter-tb-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
                 canShow("name", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},

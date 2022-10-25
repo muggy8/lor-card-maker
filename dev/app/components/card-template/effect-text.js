@@ -94,8 +94,8 @@ function EffectTextComponent(props){
                     }
         
                     for(let i = splitUpText.length - 1; i; i--){
-                        splitUpText.splice(i, 0, keywordIcons.map(pngName=>InlineIcon({
-                            key: pngName,
+                        splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
+                            key: pngName+i,
                             pngName
                         })))
                     }
@@ -169,6 +169,8 @@ function EffectTextComponent(props){
                 return splitUpText
             }).flat()
 
+            contentArray = contentArray.filter(el=>!!el)
+
             updateContentArray(contentArray)
         }, 200)
 
@@ -177,7 +179,7 @@ function EffectTextComponent(props){
                 clearTimeout(timeoutId)
             }
         }
-    }, [text, blueWords, orangeWords])
+    }, [text, props.blueWords, props.orangeWords])
 
     const elementRef = useRef()
 

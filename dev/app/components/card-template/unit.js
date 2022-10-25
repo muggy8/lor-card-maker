@@ -155,7 +155,7 @@ export class UnitRendererComponent extends Component {
                     this.props.mana,
                 ),
 
-                this.state.factionUri && this.state.factionUri.length
+                this.props.faction && this.props.faction.length
                     ? div(
                         { 
                             className: "region-frame" ,
@@ -163,15 +163,18 @@ export class UnitRendererComponent extends Component {
                                 backgroundImage: `url(${this.state.regionFrameUri || ""})`
                             }
                         },
-                        this.state.factionUri.map(uri=>div(
-                            { 
-                                key: uri,
-                                className: "region-icon",
-                                style: {
-                                    backgroundImage: `url(${uri})`
-                                }
-                            },
-                        ))
+                        this.state.factionUri 
+                            ? this.state.factionUri.map(uri=>div(
+                                { 
+                                    key: uri,
+                                    className: "region-icon",
+                                    style: {
+                                        backgroundImage: `url(${uri})`
+                                    }
+                                },
+                            ))
+                            : null
+                        ,
                     )
                     : undefined
                 ,
