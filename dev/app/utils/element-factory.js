@@ -40,11 +40,7 @@ function DeferRenderComponent(props){
     }
 
     const { component, componentProps, componentChildren } = props
-    return React.createElement(
-        React.Fragment, 
-        {}, 
-        React.createElement.apply(React, [component, componentProps, ...componentChildren])
-    )
+    return React.createElement.apply(React, [component, componentProps, ...componentChildren])
 }
 
 export const DeferRender = factory(DeferRenderComponent)
