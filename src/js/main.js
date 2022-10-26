@@ -96,48 +96,48 @@ window.App = window.App || {};
 				controller.loading.start()
 				let json = JSON.parse(reader.result)
 				let startingPromise = Promise.resolve()
-				let champions1Task = json.savedChampions1.reduce(
+				let champions1Task = json.savedChampions1 ? json.savedChampions1.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveChampion1(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let champions2Task = json.savedChampions2.reduce(
+				) : Promise.resolve()
+				let champions2Task = json.savedChampions2 ? json.savedChampions2.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveChampion2(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let champions3Task = json.savedChampions3.reduce(
+				) : Promise.resolve()
+				let champions3Task = json.savedChampions3 ? json.savedChampions3.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveChampion3(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let followerTask = json.savedFollowers.reduce(
+				) : Promise.resolve()
+				let followerTask = json.savedFollowers ? json.savedFollowers.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveFollower(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let landmarkTask = json.savedLandmarks.reduce(
+				) : Promise.resolve()
+				let landmarkTask = json.savedLandmarks ? json.savedLandmarks.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveLandmark(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let spellTask = json.savedSpells.reduce(
+				) : Promise.resolve()
+				let spellTask = json.savedSpells ? json.savedSpells.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveSpell(card.cardData, card.id)
 					),
 					startingPromise
-				)
-				let keywordTask = json.savedKeywords.reduce(
+				) : Promise.resolve()
+				let keywordTask = json.savedKeywords ? json.savedKeywords.reduce(
 					(lastTask, card)=>lastTask.then(
 						_=>App.storage.saveKeyword(card.cardData, card.id)
 					),
 					startingPromise
-				)
+				) : Promise.resolve()
 
 				let process = [champions1Task, champions2Task, champions3Task, followerTask, landmarkTask, spellTask, keywordTask]
 				Promise.all(process).then(()=>{
