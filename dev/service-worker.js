@@ -157,7 +157,11 @@ async function getSavedCardList(req, path){
 		return id
 	})
 
-	return new Response(JSON.stringify(idList), {
+	let idListToDataListTasks = idList.map(id=>getSavedCard(undefined, cardDataPath + id).then(res=>res.json()))
+
+	let dataList = await Promise.all(idListToDataListTasks)
+
+	return new Response(JSON.stringify(dataList), {
 		'Content-Type': 'application/json',
 		"status" : 200
 	})
@@ -296,14 +300,11 @@ async function migrateDataFromVersion1To2(){
 
 	await Promise.all(getListDataJobs)
 
-	console.log(listData)
-
 	const convertTasks = Object.keys(listData).map(async typeName=>{
 		const associatedCards = listData[typeName]
 		const migrateCardDataTasks = associatedCards.map(async cardId=>{
 			const path = cardDataPath + cardId
 			let cardData = await getSavedCard(undefined, path).then(res=>res.json())
-			console.log(typeName, cardId, cardData)
 
 			if (cardData.dataVersion && cardData.dataVersion > 1){
 				return
@@ -311,6 +312,10 @@ async function migrateDataFromVersion1To2(){
 
 			cardData.type = typeName
 			cardData.dataVersion = 2
+
+			if (cardData.rarity === "gemless"){
+				cardData.rarity = ""
+			}
 
 			const updatedSaveData = new Response(JSON.stringify(cardData), {
 				'Content-Type': 'application/json',
