@@ -176,7 +176,8 @@ function ListComponent(props){
                         className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
                         key: cardData.id,
                         onClick: ()=>{
-                            globalState.setView(renderingComponent)
+                            const editor = types.find(type=>type.component === renderingComponent)
+                            globalState.setView(editor.editor)
                             globalState.patchState({cardId: cardData.id})
                         }
                     },

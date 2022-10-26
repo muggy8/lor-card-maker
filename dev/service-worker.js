@@ -134,9 +134,19 @@ async function saveCardData(req, path){
 
 async function getSavedCard(req, path){
   let cache = await caches.open(cacheLocation)
-  let cachedData = await cache.match(path)
-  if (cachedData){
-    return cachedData
+  let cachedResponse = await cache.match(path)
+  if (cachedResponse){
+	if (path.url){
+		path = path.url
+	}
+	const [_, cardId] = path.match(cardIdFinderRegex)
+
+	let cachedData = await cachedResponse.json()
+	cachedData.id = cardId
+    return new Response(JSON.stringify(cachedData), {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
   }
   return new Response("{}", {
     'Content-Type': 'application/json',

@@ -1,8 +1,11 @@
 import factory, { div, button } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import React, { useState, useCallback, createContext, useRef, useLayoutEffect } from "/cdn/react"
+import React, { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
+import { Globals } from "/Views/index.js"
+import { getCard, saveCard, deleteCard } from "/Utils/service.js"
+
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
@@ -28,7 +31,14 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
     const component =  function EditorView(){
         const translate = useLang()
 
+        const globalState = useContext(Globals)
+
         const [card, updateCard] = useState(defaultCardData)
+
+        useEffect(()=>{
+            globalState.state.cardId && getCard(globalState.state.cardId).then(updateCard)
+            globalState.state.cardId && getCard(globalState.state.cardId).then(console.log)
+        }, [])
 
         const knownCardDataKeys = Object.keys(defaultCardData)
         const cardDataUpdaters = knownCardDataKeys.reduce((updaterCollection, key)=>{
@@ -110,10 +120,27 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     div(
                         {className: "flex hcenter gutter-tb"},
                         button(
-                            { className: card.id ? undefined : "hide" },
+                            { 
+                                className: card.id ? undefined : "hide" ,
+                                onClick: ()=>{
+                                    deleteCard(card.id).then(()=>{
+                                        document.location.reload()
+                                    })
+                                }
+                            },
                             translate("delete_card")
                         ),
                         button(
+                            { 
+                                onClick: ()=>{
+                                    if (card.id){
+                                        return saveCard(card.id, card) 
+                                    }
+                                    const newId = Date.now().toString()
+                                    saveCard(newId, card)
+                                    cardDataUpdaters.id(newId)
+                                }
+                            },
                             translate("save_card")
                         ),
                         button(
