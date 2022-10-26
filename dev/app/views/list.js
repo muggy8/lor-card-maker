@@ -177,8 +177,10 @@ function ListComponent(props){
                         key: cardData.id,
                         onClick: ()=>{
                             const editor = types.find(type=>type.component === renderingComponent)
-                            globalState.setView(editor.editor)
-                            globalState.patchState({cardId: cardData.id})
+                            globalState.patchState({
+                                cardId: cardData.id,
+                                view: editor.editor,
+                            })
                         }
                     },
                     renderingComponent(cardData)
