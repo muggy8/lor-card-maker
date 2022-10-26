@@ -23,6 +23,7 @@ const sharedDefaultCardData = {
     effect: "",
     orangeWords: [],
     blueWords: [],
+    dataVersion: 2,
 }
 
 const types = [
@@ -37,6 +38,7 @@ const types = [
                 health: 0,
                 lvup: "",
                 rarity: "champion",
+                type: "champion1",
             }
         ),
     },
@@ -51,6 +53,7 @@ const types = [
                 health: 0,
                 lvup: "",
                 rarity: "",
+                type: "champion2",
             }
         )
     },
@@ -65,6 +68,7 @@ const types = [
                 health: 0,
                 lvup: "",
                 rarity: "",
+                type: "champion3",
             }
         ),
     },
@@ -79,6 +83,7 @@ const types = [
                 health: null,
                 speed: "trap",
                 rarity: "",
+                type: "spell",
             }
         ),
     },
@@ -93,6 +98,7 @@ const types = [
                 health: 0,
                 lvup: "",
                 rarity: "",
+                type: "follower",
             }
         ),
     },
@@ -105,7 +111,8 @@ const types = [
                 ...sharedDefaultCardData,
                 lvup: "",
                 rarity: "",
-                keywords: ["landmark"]
+                keywords: ["landmark"],
+                type: "landmark",
             }
         ),
     },

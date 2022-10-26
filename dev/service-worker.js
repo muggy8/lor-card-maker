@@ -57,6 +57,7 @@ self.addEventListener("install", function(ev){
 			self.skipWaiting(),
 			intelegentFetch(indexUrl)
 		])
+		.then(migrateDataFromVersion1To2)
     )
 })
 
@@ -171,7 +172,6 @@ async function deleteSavedCard(req, path){
   })
 }
 
-
 function remapUrl(relativePath){
 	const pathArray = relativePath.split("/")
 	const mappedUrl = walkPathMap(pathArray, pathMap)
@@ -274,4 +274,27 @@ async function intelegentFetch(req, justUseTheCache = false){
 	catch(err){
 		return cachedAsset
 	}
+}
+
+async function migrateDataFromVersion1To2(){
+	let cache = await caches.open(cacheLocation)
+	let cachedRequests = await cache.keys()
+
+	let savedCardLists = cachedRequests.filter(req=>{
+		return req.url.includes(cardListPath)
+	})
+
+	if (!savedCardLists.length){
+		return
+	}
+
+	let listData = {}
+	const getListDataJobs = savedCardLists.map(async listRequest=>{
+		const [_, listType] = listRequest.url.match(cardIdFinderRegex)
+		listData[listType] = await cache.get(listRequest)
+	})
+
+	await Promise.all(getListDataJobs)
+
+	console.log(listData)
 }
