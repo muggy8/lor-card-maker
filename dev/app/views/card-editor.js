@@ -37,7 +37,6 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
         useEffect(()=>{
             globalState.state.cardId && getCard(globalState.state.cardId).then(updateCard)
-            globalState.state.cardId && getCard(globalState.state.cardId).then(console.log)
         }, [])
 
         const knownCardDataKeys = Object.keys(defaultCardData)

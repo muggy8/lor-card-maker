@@ -122,7 +122,7 @@ function SpellComponent(props){
         Promise.all(fetchJob).then(updateRegionNameUri)
     }, [props.faction && props.faction.length])
     useEffect(()=>{
-        if (props.rarity &&  this.props.rarity !== "gemless"){
+        if (props.rarity && props.rarity !== "gemless"){
             const rarityUrl = `/Assets/shared/gem${props.rarity}.png`
             datauri(rarityUrl).then(updateRarityGemUriUri)
         }
