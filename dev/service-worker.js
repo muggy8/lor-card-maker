@@ -291,10 +291,39 @@ async function migrateDataFromVersion1To2(){
 	let listData = {}
 	const getListDataJobs = savedCardLists.map(async listRequest=>{
 		const [_, listType] = listRequest.url.match(cardIdFinderRegex)
-		listData[listType] = await cache.get(listRequest)
+		listData[listType] = await cache.match(listRequest).then(res=>res.json())
 	})
 
 	await Promise.all(getListDataJobs)
 
 	console.log(listData)
+
+	const convertTasks = Object.keys(listData).map(async typeName=>{
+		const associatedCards = listData[typeName]
+		const migrateCardDataTasks = associatedCards.map(async cardId=>{
+			const path = cardDataPath + cardId
+			let cardData = await getSavedCard(undefined, path).then(res=>res.json())
+			console.log(typeName, cardId, cardData)
+
+			if (cardData.dataVersion && cardData.dataVersion > 1){
+				return
+			}
+
+			cardData.type = typeName
+			cardData.dataVersion = 2
+
+			const updatedSaveData = new Response(JSON.stringify(cardData), {
+				'Content-Type': 'application/json',
+				"status" : 200
+			})
+
+			return cache.put(path, updatedSaveData)
+		})
+
+		await Promise.all(migrateCardDataTasks)
+
+		return cache.delete(cardListPath + typeName)
+	})
+
+	await Promise.all(convertTasks)
 }
