@@ -157,7 +157,12 @@ async function getSavedCardList(req, path){
 		return id
 	})
 
-	let idListToDataListTasks = idList.map(id=>getSavedCard(undefined, cardDataPath + id).then(res=>res.json()))
+	let idListToDataListTasks = idList.map(async id=>{
+		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
+		cardData.id = id
+
+		return cardData
+	})
 
 	let dataList = await Promise.all(idListToDataListTasks)
 
@@ -313,7 +318,7 @@ async function migrateDataFromVersion1To2(){
 			cardData.type = typeName
 			cardData.dataVersion = 2
 
-			if (cardData.rarity === "gemless"){
+			if (cardData.rarity.includes("gemless")){
 				cardData.rarity = ""
 			}
 

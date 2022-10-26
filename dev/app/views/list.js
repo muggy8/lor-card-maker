@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
+import { getCardList } from "/Utils/service.js"
 
 import Spell from "/Components/card-template/spell.js"
 import Champion1 from "/Components/card-template/champion1.js"
@@ -118,6 +119,18 @@ const types = [
     },
 ]
 
+function typeToComponent(type){
+    switch(type){
+        case "champion1": return Champion1
+        case "champion2": return Champion2
+        case "champion3": return Champion3
+        case "landmark": return Landmark
+        case "follower": return Follower
+        case "spell": return Spell
+        default: return 
+    }
+}
+
 const cssLoaded = loadCss("/Views/list.css")
 
 function ListComponent(props){
@@ -125,20 +138,17 @@ function ListComponent(props){
 
     const translate = useLang()
 
+    const [savedCards, updateSavedCards] = useState([])
+
+    useEffect(()=>{
+        getCardList().then(updateSavedCards)
+    }, [])
+
     return div(
         {
             id: "card-type-list",
             className: "gutter-t-2",
-            // style: {
-            //     marginTop: globalState.state.bannerHeight || 0,
-            // },
         },
-        // div(
-        //     { className: "flex hcenter"},
-        //     h2(
-        //         translate("i_want_to_make")
-        //     ),
-        // ),
         div(
             { className: "gutter-trbl-.5 flex",},
             types.map((type)=>{
@@ -155,6 +165,24 @@ function ListComponent(props){
                     })
                 )
             }),
+
+            savedCards.map((cardData)=>{
+                const renderingComponent = typeToComponent(cardData.type)
+                if (!renderingComponent){
+                    return div({key: cardData.id})
+                }
+                return div(
+                    { 
+                        className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
+                        key: cardData.id,
+                        onClick: ()=>{
+                            globalState.setView(renderingComponent)
+                            globalState.patchState({cardId: cardData.id})
+                        }
+                    },
+                    renderingComponent(cardData)
+                )
+            })
 
             // stuff for testing
 
