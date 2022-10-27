@@ -27,6 +27,7 @@ function SvgWrapComponent(props){
         mc.add([pan, pinch])
         
         mc.on("pinch pan", ev=>{
+            ev.preventDefault()
             console.log(ev.type)
         })
 
