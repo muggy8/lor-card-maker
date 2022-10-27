@@ -22,6 +22,11 @@
     clip-path: polygon(
         0 30px,
         60px 0,
+        calc(25%) 0,
+        calc(25% + 60px) 40px,
+        50% 60px,
+        calc(75% - 60px) 40px,
+        calc(75%) 0,
         calc(100% - 60px) 0,
         100% 30px,
         100% 470px,
