@@ -41,7 +41,7 @@ export class UnitRendererComponent extends Component {
     getRegionFrameUrl(){
         let regionCount = this.props.faction.length
         if (regionCount > 3){
-            regionCount = 3 
+            regionCount = 3
         }
         return `/Assets/champion/lvl1regionbox${regionCount}.png`
     }
@@ -93,10 +93,10 @@ export class UnitRendererComponent extends Component {
 
     componentDidUpdate(previousProps){
         const {
-            clan, 
-            cost, 
+            clan,
+            cost,
             power,
-            health, 
+            health,
             name,
         } = this.props
 
@@ -126,12 +126,12 @@ export class UnitRendererComponent extends Component {
         return SvgWrap(
             { onTransform: this.props.updateTransform, ...(this.props.transform || {x: 0, y: 0, scale: 1}) },
             div(
-                { 
-                    className: `unit ${this.regionPosition}`, 
+                {
+                    className: `unit ${this.regionPosition}`,
                     id: this.props.id
                 },
                 div(
-                    { 
+                    {
                         className: "art",
                         style: {
                             backgroundImage: `url(${this.state.backdropUri || ""})`,
@@ -152,14 +152,14 @@ export class UnitRendererComponent extends Component {
                             url: this.props.art
                         })
                     ),
-                    div(
-                        {className: "debug"},
-                        (this.props.transform ? this.props.transform.scale : 1).toFixed(6),
-                    ),
+                    //~ div(
+                        //~ {className: "debug"},
+                        //~ (this.props.transform ? this.props.transform.scale : 1).toFixed(6),
+                    //~ ),
                 ),
 
                 div(
-                    { 
+                    {
                         className: "frame",
                         style: {
                             backgroundImage: `url(${this.state.frameUri || ""})`
@@ -174,15 +174,15 @@ export class UnitRendererComponent extends Component {
 
                 this.props.faction && this.props.faction.length
                     ? div(
-                        { 
+                        {
                             className: "region-frame" ,
                             style: {
                                 backgroundImage: `url(${this.state.regionFrameUri || ""})`
                             }
                         },
-                        this.state.factionUri 
+                        this.state.factionUri
                             ? this.state.factionUri.map(uri=>div(
-                                { 
+                                {
                                     key: uri,
                                     className: "region-icon",
                                     style: {
@@ -196,7 +196,7 @@ export class UnitRendererComponent extends Component {
                     : undefined
                 ,
 
-                this.props.clan 
+                this.props.clan
                     ? div(
                         {
                             className: "clan",
@@ -257,11 +257,11 @@ export class UnitRendererComponent extends Component {
 
                     this.props.effect
                         ? EffectText(
-                            { 
+                            {
                                 blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords, 
+                                orangeWords: this.props.orangeWords,
                                 className: "effect-container card-text-universe",
-                            }, 
+                            },
                             this.props.effect
                         )
                         : undefined
@@ -279,11 +279,11 @@ export class UnitRendererComponent extends Component {
 
                     this.props.lvup
                         ? EffectText(
-                            { 
+                            {
                                 blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords, 
+                                orangeWords: this.props.orangeWords,
                                 className: "level-up-container card-text-universe",
-                            }, 
+                            },
                             this.props.lvup
                         )
                         : undefined
@@ -298,11 +298,11 @@ export class UnitRendererComponent extends Component {
                                 backgroundImage: `url(${this.state.rarityUri || ""})`
                             }
                         },
-                        
+
                     )
                     : undefined
                 ,
-            ) 
+            )
         )
     }
 }

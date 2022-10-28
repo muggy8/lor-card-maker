@@ -27,18 +27,21 @@ function SvgWrapComponent(props){
 
         const gestureWatcher = new Gesto(element, {
             container: svgRef.current,
-            // preventClickEventOnDrag: true,
-            // preventClickEventOnDragStart: true,
+            preventClickEventOnDrag: true,
+            preventClickEventOnDragStart: true,
             pinchOutside: true,
-            // preventDefault: true,
+            preventDefault: true,
         })
         .on("drag", (ev)=>{
             lastStoppedPosition.current.x += ev.deltaX * (1 / lastStoppedPosition.current.scale)
             lastStoppedPosition.current.y += ev.deltaY * (1 / lastStoppedPosition.current.scale)
             transformCallback.current({...lastStoppedPosition.current})
         })
+        .on("pinchStart", ev=>{
+			ev.datas.startScale = lastStoppedPosition.current.scale
+		})
         .on("pinch", (ev)=>{
-            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * ev.scale 
+            lastStoppedPosition.current.scale = ev.datas.startScale * ev.scale
             transformCallback.current({...lastStoppedPosition.current})
         })
 
