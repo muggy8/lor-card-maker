@@ -3,6 +3,7 @@ import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 import { FastAverageColor } from "/cdn/fast-average-color"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
+import ArtRenderer from "/Components/card-template/image-render.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import fitty from "/cdn/fitty"
@@ -132,6 +133,7 @@ function SpellComponent(props){
     }, [props.rarity])
 
     return SvgWrap(
+        { onTransform: props.updateTransform, ...(props.transform || {x: 0, y: 0, scale: 1}) },
         div(
             { className: `${props.speed} spell`, id: props.id },
             div(
@@ -153,8 +155,17 @@ function SpellComponent(props){
                     className: "art",
                     style: {
                         backgroundImage: `url(${backdropUri})`,
+                        "--scale": props.transform ? props.transform.scale : 1,
+                        "--left": props.transform ? props.transform.x : 0,
+                        "--top": props.transform ? props.transform.y : 0,
                     },
                 },
+                div(
+                    {className: "scale-adjuster"},
+                    ArtRenderer({
+                        url: props.art
+                    })
+                )
             ),
             div(
                 {

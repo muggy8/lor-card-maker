@@ -48,6 +48,17 @@
     width: 480px;
     height: 480px;
     border-radius: 240px;
+    overflow: hidden;
+}
+
+.spell .art .scale-adjuster {
+    position: absolute;
+    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    transform: scale(var(--scale));
+    will-change: transform, top, bottom, left, right;
 }
 
 .spell .cost {
