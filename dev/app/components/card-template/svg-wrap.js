@@ -50,20 +50,16 @@ function SvgWrapComponent(props){
         })
         mc.on("pinch", ev=>{
             ev.preventDefault()
-            let dScale = ev.scale
 
-            console.log(ev)
-
-            if (previousEvent){
-                dScale -= previousEvent.scale
-            }
-            previousEvent = ev
-
-            lastStoppedPosition.current.scale = ev.scale
-            transformCallback.current({...lastStoppedPosition.current})
+            // lastStoppedPosition.current.scale = ev.scale
+            transformCallback.current({
+                ...lastStoppedPosition.current, 
+                scale: lastStoppedPosition.current.scale * ev.scale,
+            })
 
             if (ev.isFinal){
                 previousEvent = undefined
+                lastStoppedPosition.current.scale *= ev.scale
             }
         })
 
