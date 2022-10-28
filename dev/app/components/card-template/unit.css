@@ -27,12 +27,12 @@
 
 .unit .art .scale-adjuster {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
     transform: scale(var(--scale));
-    will-change: transform;
+    will-change: transform, top, bottom, left, right;
 }
 
 .unit .cost {
