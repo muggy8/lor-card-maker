@@ -48,18 +48,16 @@ function SvgWrapComponent(props){
                 previousEvent = undefined
             }
         })
-        let updatedScale = 1
         mc.on("pinch", ev=>{
             ev.preventDefault()
-            
-            if (ev.isFinal){
-                return lastStoppedPosition.current.scale = updatedScale
-            }
 
             let dScale = ev.scale
             updatedScale = lastStoppedPosition.current.scale * dScale
             transformCallback.current({...lastStoppedPosition.current, scale: updatedScale})
 
+            if (ev.isFinal){
+                lastStoppedPosition.current.scale = updatedScale
+            }
         })
 
         const element = gestureReceiver.current
