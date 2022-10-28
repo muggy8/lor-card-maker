@@ -52,14 +52,16 @@ function SvgWrapComponent(props){
             ev.preventDefault()
 
             // lastStoppedPosition.current.scale = ev.scale
-            transformCallback.current({
-                ...lastStoppedPosition.current, 
-                scale: lastStoppedPosition.current.scale * ev.scale,
-            })
 
             if (ev.isFinal){
-                previousEvent = undefined
-                lastStoppedPosition.current.scale *= ev.scale
+                lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * ev.scale
+                transformCallback.current({...lastStoppedPosition.current})
+            }
+            else{
+                transformCallback.current({
+                    ...lastStoppedPosition.current, 
+                    scale: lastStoppedPosition.current.scale * ev.scale,
+                })
             }
         })
 
