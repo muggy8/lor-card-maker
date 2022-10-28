@@ -1,6 +1,7 @@
 import factory, { div, img } from "/Utils/elements.js"
 import { Component, createRef } from "/cdn/react"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
+import ArtRenderer from "/Components/card-template/image-render.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
@@ -139,6 +140,12 @@ export class UnitRendererComponent extends Component {
                             })`
                         }
                     },
+                    div(
+                        {className: "scale-adjuster"},
+                        ArtRenderer({
+                            url: this.props.art
+                        })
+                    )
                 ),
 
                 div(

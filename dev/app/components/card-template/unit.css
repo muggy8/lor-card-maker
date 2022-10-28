@@ -25,6 +25,14 @@
     )
 }
 
+.unit .art .scale-adjuster {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 .unit .cost {
     color: #FFF;
     width: 120px;

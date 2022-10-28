@@ -1,0 +1,10 @@
+.processed-art {
+    background-repeat: repeat;
+    background-size: calc(var(--width) * 1px) calc(var(--height) * 1px);
+    background-position: left calc(var(--left) * 1px) top calc(var(--top) * 1px);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

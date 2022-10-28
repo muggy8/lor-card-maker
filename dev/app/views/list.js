@@ -185,7 +185,7 @@ function ListComponent(props){
                     },
                     renderingComponent(cardData)
                 )
-            })
+            }),
 
             // stuff for testing
 
