@@ -123,7 +123,7 @@ function SpellComponent(props){
         Promise.all(fetchJob).then(updateRegionNameUri)
     }, [props.faction && props.faction.length])
     useEffect(()=>{
-        if (props.rarity && props.rarity !== "gemless"){
+        if (props.rarity && props.rarity !== "gemless" && props.rarity !== "none"){
             const rarityUrl = `/Assets/shared/gem${props.rarity}.png`
             datauri(rarityUrl).then(updateRarityGemUriUri)
         }
@@ -217,7 +217,7 @@ function SpellComponent(props){
                 )
                 : undefined
             ,
-            props.rarity && props.rarity !== "gemless"
+            props.rarity && props.rarity !== "gemless" && props.rarity !== "none"
                 ? div({
                     className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
                     style: {

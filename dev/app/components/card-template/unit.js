@@ -106,7 +106,7 @@ export class UnitRendererComponent extends Component {
         previousProps.health !== health && this.healthRefFitty.fit()
         previousProps.name !== name && scaleFontSize(this.nameRef.current, 70, 16)
 
-        if (previousProps.rarity !== this.props.rarity &&  this.props.rarity !== "gemless"){
+        if (previousProps.rarity !== this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"){
             this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
         }
         if (this.props.faction && this.props.faction.length && previousProps.faction !== this.props.faction){
@@ -290,7 +290,7 @@ export class UnitRendererComponent extends Component {
                     ,
                 ),
 
-                this.props.rarity && this.props.rarity !== "gemless"
+                this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"
                     ? div(
                         {
                             className: "rarity " + this.props.rarity,
