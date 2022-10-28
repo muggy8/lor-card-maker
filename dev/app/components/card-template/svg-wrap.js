@@ -37,6 +37,8 @@ function SvgWrapComponent(props){
         })
         mc.on("pinch", ev=>{
             ev.preventDefault()
+            position.current.scale = position.current.scale * ev.scale
+            transformCallback.current({...position.current})
         })
 
         const element = gestureReceiver.current
@@ -52,8 +54,10 @@ function SvgWrapComponent(props){
         }
 
         function onWheel(ev){
-            console.log(ev)
             ev.preventDefault()
+
+            position.current.scale = position.current.scale * (1 + (ev.deltaY / 1000))
+            transformCallback.current({...position.current})
         }
     }, [!!props.onTransform])
 
