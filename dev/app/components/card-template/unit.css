@@ -35,6 +35,15 @@
     will-change: transform, top, bottom, left, right;
 }
 
+.debug {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: green;
+}
+
 .unit .cost {
     color: #FFF;
     width: 120px;

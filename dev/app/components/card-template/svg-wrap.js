@@ -51,12 +51,15 @@ function SvgWrapComponent(props){
         mc.on("pinch", ev=>{
             ev.preventDefault()
             let dScale = ev.scale
+
+            console.log(ev)
+
             if (previousEvent){
                 dScale -= previousEvent.scale
             }
             previousEvent = ev
-            
-            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * dScale
+
+            lastStoppedPosition.current.scale = ev.scale
             transformCallback.current({...lastStoppedPosition.current})
 
             if (ev.isFinal){
@@ -111,9 +114,6 @@ function SvgWrapComponent(props){
             height: props.height || "1024",
             opacity: 0,
             ref: gestureReceiver,
-            style: {
-                touchAction: "pan-x pan-y"
-            }
         })
     )
 }

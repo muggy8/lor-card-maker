@@ -151,7 +151,11 @@ export class UnitRendererComponent extends Component {
                         ArtRenderer({
                             url: this.props.art
                         })
-                    )
+                    ),
+                    div(
+                        {className: "debug"},
+                        (this.props.transform ? this.props.transform.scale : 1).toFixed(6),
+                    ),
                 ),
 
                 div(
