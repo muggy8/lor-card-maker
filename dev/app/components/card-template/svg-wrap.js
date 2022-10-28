@@ -1,7 +1,10 @@
 import { useContext, useRef, useEffect } from "/cdn/react"
 import factory, { svg, rect, foreignObject } from "/Utils/elements.js"
 import { svgRefference } from "/Views/card-editor.js"
-import Hammer from "/cdn/hammerjs"
+import Gesto from "/cdn/gesto"
+// import load from "/Utils/load-js.js"
+
+// const jsTask = load("https://unpkg.com/gesto@1.13.3/dist/gesto.min.js")
 
 function SvgWrapComponent(props){
     const svgRef = useContext(svgRefference)
@@ -18,58 +21,32 @@ function SvgWrapComponent(props){
             return
         }
 
-        const mc = new Hammer.Manager(gestureReceiver.current)
-
-        const pinch = new Hammer.Pinch()
-
-        const pan = new Hammer.Pan()
-        pan.set({ direction: Hammer.DIRECTION_ALL })
-
-        pan.recognizeWith(pinch);
-
-        mc.add([pan, pinch])
-
-        let previousEvent
-        
-        mc.on("pan", ev=>{
-            ev.preventDefault()
-            let dx = ev.deltaX
-            let dy = ev.deltaY
-            if (previousEvent){
-                dx -= previousEvent.deltaX
-                dy -= previousEvent.deltaY
-            }
-            previousEvent = ev
-            lastStoppedPosition.current.x += (dx * (1/lastStoppedPosition.current.scale))
-            lastStoppedPosition.current.y += (dy * (1/lastStoppedPosition.current.scale))
-            transformCallback.current({...lastStoppedPosition.current})
-
-            if (ev.isFinal){
-                previousEvent = undefined
-            }
-        })
-        mc.on("pinch", ev=>{
-            ev.preventDefault()
-
-            let dScale = ev.scale
-            updatedScale = lastStoppedPosition.current.scale * dScale
-            transformCallback.current({...lastStoppedPosition.current, scale: updatedScale})
-
-            if (ev.isFinal){
-                lastStoppedPosition.current.scale = updatedScale
-            }
-        })
-
         const element = gestureReceiver.current
 
         element.addEventListener("wheel", onWheel)
 
+        const gestureWatcher = new Gesto(element, {
+            container: svgRef.current,
+            // preventClickEventOnDrag: true,
+            // preventClickEventOnDragStart: true,
+            pinchOutside: true,
+            // preventDefault: true,
+        })
+        .on("drag", (ev)=>{
+            lastStoppedPosition.current.x += ev.deltaX * (1 / lastStoppedPosition.current.scale)
+            lastStoppedPosition.current.y += ev.deltaY * (1 / lastStoppedPosition.current.scale)
+            transformCallback.current({...lastStoppedPosition.current})
+        })
+        .on("pinch", (ev)=>{
+            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * ev.scale 
+            transformCallback.current({...lastStoppedPosition.current})
+        })
+
         transformCallback.current({...lastStoppedPosition.current})
 
         return function(){
-            mc.remove([pan, pinch, 'pinch pan'])
-            mc.destroy()
             element.removeEventListener("wheel", onWheel)
+            gestureWatcher.unset();
         }
 
         function onWheel(ev){

@@ -46,6 +46,10 @@ const pathMap = {
 			url: "https://esm.sh/save-svg-as-png@1.4.17",
 			query: {...esmshQueryConfigs, bundle: true},
 		},
+		"gesto": {
+			url: "https://esm.sh/gesto@1.13.3",
+			query: {...esmshQueryConfigs, bundle: true},
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",
