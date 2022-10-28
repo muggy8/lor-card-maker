@@ -50,18 +50,20 @@ function SvgWrapComponent(props){
         })
         mc.on("pinch", ev=>{
             ev.preventDefault()
+            let dScale = ev.scale
 
-            // lastStoppedPosition.current.scale = ev.scale
+            console.log(ev)
+
+            if (previousEvent){
+                dScale = dscale / previousEvent.scale
+            }
+            previousEvent = ev
+
+            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * (1 + dScale)
+            transformCallback.current({...lastStoppedPosition.current})
 
             if (ev.isFinal){
-                lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * ev.scale
-                transformCallback.current({...lastStoppedPosition.current})
-            }
-            else{
-                transformCallback.current({
-                    ...lastStoppedPosition.current, 
-                    scale: lastStoppedPosition.current.scale * ev.scale,
-                })
+                previousEvent = undefined
             }
         })
 
@@ -112,6 +114,9 @@ function SvgWrapComponent(props){
             height: props.height || "1024",
             opacity: 0,
             ref: gestureReceiver,
+            style: {
+                touchAction: "manipulation"
+            }
         })
     )
 }
