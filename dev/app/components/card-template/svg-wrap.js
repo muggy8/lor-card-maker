@@ -8,7 +8,7 @@ function SvgWrapComponent(props){
 
     const gestureReceiver = useRef()
 
-    const position = useRef({x: props.x || 0, y: props.y || 0, scale: props.scale || 0})
+    const lastStoppedPosition = useRef({x: props.x || 0, y: props.y || 0, scale: props.scale || 0})
 
     const transformCallback = useRef()
     transformCallback.current = props.onTransform
@@ -28,24 +28,37 @@ function SvgWrapComponent(props){
         pan.recognizeWith(pinch);
 
         mc.add([pan, pinch])
+
+        let previousEvent
         
         mc.on("pan", ev=>{
             ev.preventDefault()
-            position.current.x += ev.deltaX
-            position.current.y += ev.deltaY        
-            transformCallback.current({...position.current})
+            let dx = ev.deltaX
+            let dy = ev.deltaY
+            if (previousEvent){
+                dx -= previousEvent.deltaX
+                dy -= previousEvent.deltaY
+            }
+            previousEvent = ev
+            lastStoppedPosition.current.x += (dx * (1/lastStoppedPosition.current.scale))
+            lastStoppedPosition.current.y += (dy * (1/lastStoppedPosition.current.scale))
+            transformCallback.current({...lastStoppedPosition.current})
+
+            if (ev.isFinal){
+                previousEvent = undefined
+            }
         })
         mc.on("pinch", ev=>{
             ev.preventDefault()
-            position.current.scale = position.current.scale * ev.scale
-            transformCallback.current({...position.current})
+            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * ev.scale
+            transformCallback.current({...lastStoppedPosition.current})
         })
 
         const element = gestureReceiver.current
 
         element.addEventListener("wheel", onWheel)
 
-        transformCallback.current({...position.current})
+        transformCallback.current({...lastStoppedPosition.current})
 
         return function(){
             mc.remove([pan, pinch, 'pinch pan'])
@@ -56,8 +69,8 @@ function SvgWrapComponent(props){
         function onWheel(ev){
             ev.preventDefault()
 
-            position.current.scale = position.current.scale * (1 + (ev.deltaY / 1000))
-            transformCallback.current({...position.current})
+            lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * (1 + (ev.deltaY / 1000))
+            transformCallback.current({...lastStoppedPosition.current})
         }
     }, [!!props.onTransform])
 

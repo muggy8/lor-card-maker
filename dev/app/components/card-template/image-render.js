@@ -73,7 +73,8 @@ async function getReplicateImage(url){
     context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
 
     return {
-        width, height,
+        width: canvas.width, 
+        height: canvas.height,
         b64: canvas.toDataURL()
     }
 

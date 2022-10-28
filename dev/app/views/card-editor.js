@@ -119,7 +119,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         } },
                         cardRenderer({
                             ...card,
-                            updateTransform: cardDataUpdaters.transform
+                            updateTransform: card.art ? cardDataUpdaters.transform : undefined,
                         }),
                     ),
                     div(

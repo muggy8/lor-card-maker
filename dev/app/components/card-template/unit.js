@@ -140,7 +140,10 @@ export class UnitRendererComponent extends Component {
                                     return coordPair.map(coord=>coord+"px")
                                         .join(" ")
                                 }).join(",")
-                            })`
+                            })`,
+                            "--scale": this.props.transform ? this.props.transform.scale : 1,
+                            "--left": this.props.transform ? this.props.transform.x : 0,
+                            "--top": this.props.transform ? this.props.transform.y : 0,
                         }
                     },
                     div(
