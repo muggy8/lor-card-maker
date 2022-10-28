@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect } from "/cdn/react"
+import { useContext, useRef, useEffect, useState } from "/cdn/react"
 import factory, { svg, rect, foreignObject } from "/Utils/elements.js"
 import { svgRefference } from "/Views/card-editor.js"
 import Gesto from "/cdn/gesto"
@@ -16,6 +16,8 @@ function SvgWrapComponent(props){
     const transformCallback = useRef()
     transformCallback.current = props.onTransform
 
+    const [cursor, updateCursor] = useState("default")
+
     useEffect(()=>{
         if (!props.onTransform){
             return
@@ -24,6 +26,7 @@ function SvgWrapComponent(props){
         const element = gestureReceiver.current
 
         element.addEventListener("wheel", onWheel)
+        updateCursor("grab")
 
         const gestureWatcher = new Gesto(element, {
             container: svgRef.current,
@@ -32,17 +35,27 @@ function SvgWrapComponent(props){
             pinchOutside: true,
             preventDefault: true,
         })
+        .on("dragStart", ()=>{
+            updateCursor("grabbing")
+        })
         .on("drag", (ev)=>{
             lastStoppedPosition.current.x += ev.deltaX * (1 / lastStoppedPosition.current.scale)
             lastStoppedPosition.current.y += ev.deltaY * (1 / lastStoppedPosition.current.scale)
             transformCallback.current({...lastStoppedPosition.current})
         })
+        .on("dragEnd", ()=>{
+            updateCursor("grab")
+        })
         .on("pinchStart", ev=>{
 			ev.datas.startScale = lastStoppedPosition.current.scale
+            updateCursor("grabbing")
 		})
         .on("pinch", (ev)=>{
             lastStoppedPosition.current.scale = ev.datas.startScale * ev.scale
             transformCallback.current({...lastStoppedPosition.current})
+        })
+        .on("pinchEnd", ()=>{
+            updateCursor("grab")
         })
 
         transformCallback.current({...lastStoppedPosition.current})
@@ -50,6 +63,7 @@ function SvgWrapComponent(props){
         return function(){
             element.removeEventListener("wheel", onWheel)
             gestureWatcher.unset();
+            updateCursor("default")
         }
 
         function onWheel(ev){
@@ -88,7 +102,8 @@ function SvgWrapComponent(props){
             opacity: 0,
             ref: gestureReceiver,
             style: {
-                touchAction: "manipulation"
+                touchAction: "manipulation",
+                cursor
             }
         })
     )
