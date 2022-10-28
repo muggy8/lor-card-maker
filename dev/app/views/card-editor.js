@@ -15,6 +15,7 @@ import EditKeywords from "/Components/card-config/edit-keywords.js"
 import EditEffect from "/Components/card-config/edit-effect.js"
 import EditSpeed from "/Components/card-config/edit-speed.js"
 import EditColorText from "/Components/card-config/edit-colored-text.js"
+import EditArt from "/Components/card-config/edit-art.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -193,6 +194,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         value: card.faction,
                         updateValue: cardDataUpdaters.faction,
                     })
+                    : undefined
+                ,
+                canShow("art", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditArt({
+                            value: card.art,
+                            updateValue: cardDataUpdaters.art,
+                        })
+                    )
                     : undefined
                 ,
                 canShow("rarity", defaultCardData)
