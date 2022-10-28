@@ -117,7 +117,10 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             current: svgRef,
                             setRef: updateSvgRef,
                         } },
-                        cardRenderer(card),
+                        cardRenderer({
+                            ...card,
+                            updateTransform: cardDataUpdaters.transform
+                        }),
                     ),
                     div(
                         {className: "flex hcenter gutter-tb"},

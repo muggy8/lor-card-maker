@@ -10,6 +10,9 @@ function SvgWrapComponent(props){
 
     const position = useRef({x: props.x || 0, y: props.y || 0, scale: props.scale || 0})
 
+    const transformCallback = useRef()
+    transformCallback.current = props.onTransform
+
     useEffect(()=>{
         if (!props.onTransform){
             return
@@ -26,14 +29,21 @@ function SvgWrapComponent(props){
 
         mc.add([pan, pinch])
         
-        mc.on("pinch pan", ev=>{
+        mc.on("pan", ev=>{
             ev.preventDefault()
-            console.log(ev.type)
+            position.current.x += ev.deltaX
+            position.current.y += ev.deltaY        
+            transformCallback.current({...position.current})
+        })
+        mc.on("pinch", ev=>{
+            ev.preventDefault()
         })
 
         const element = gestureReceiver.current
 
         element.addEventListener("wheel", onWheel)
+
+        transformCallback.current({...position.current})
 
         return function(){
             mc.remove([pan, pinch, 'pinch pan'])
@@ -45,7 +55,7 @@ function SvgWrapComponent(props){
             console.log(ev)
             ev.preventDefault()
         }
-    }, [props.onTransform])
+    }, [!!props.onTransform])
 
     return svg(
         {

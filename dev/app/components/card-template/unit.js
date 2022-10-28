@@ -36,7 +36,7 @@ export class UnitRendererComponent extends Component {
         this.powerRef = createRef()
         this.healthRef = createRef()
         this.nameRef = createRef()
-      }
+    }
 
     getRegionFrameUrl(){
         let regionCount = this.props.faction.length
@@ -124,9 +124,12 @@ export class UnitRendererComponent extends Component {
 
     render(){
         return SvgWrap(
+            { onTransform: this.props.updateTransform, ...(this.props.transform || {x: 0, y: 0, scale: 1}) },
             div(
-                { className: `unit ${this.regionPosition}`, id: this.props.id },
-
+                { 
+                    className: `unit ${this.regionPosition}`, 
+                    id: this.props.id
+                },
                 div(
                     { 
                         className: "art",

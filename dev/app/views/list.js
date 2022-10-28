@@ -25,6 +25,7 @@ const sharedDefaultCardData = {
     orangeWords: [],
     blueWords: [],
     dataVersion: 2,
+    transform: {x: 0, y: 0, scale: 1}
 }
 
 const types = [
