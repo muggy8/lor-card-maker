@@ -50,6 +50,10 @@ const pathMap = {
 			url: "https://esm.sh/gesto@1.13.3",
 			query: {...esmshQueryConfigs, bundle: true},
 		},
+		"react-input-range": {
+			url: "https://esm.sh/react-input-range@1.3.0",
+			query: {...esmshQueryConfigs, bundle: true},
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

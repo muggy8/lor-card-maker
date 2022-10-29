@@ -85,5 +85,12 @@ const lang = {
         "trigger": "Trigger",
         "imbue": "Imbue",
         "new": "New",
+        "edit_shade": "Edit Shade",
+        "min": "Min",
+        "max": "Max",
+        "fade_start": "Fade Start",
+        "fade_end": "Fade End",
+        "shade_darkness": "Shade darkness",
+        "blur_strength": "Blur Stength",
     }
 }

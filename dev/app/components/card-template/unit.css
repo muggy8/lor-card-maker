@@ -20,9 +20,9 @@
 }
 
 .unit .art.blur {
-    filter: blur(20px);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 50%, black 70%);
-    mask-image: linear-gradient(to bottom, transparent 50%, black 70%);
+    filter: blur(var(--blur, 20px)) brightness( calc( 1.0 - var(--darkness, 0.25) ) );
+    -webkit-mask-image: linear-gradient(to bottom, transparent var(--transparent-percent, 50%), black var(--solid-percent, 75%));
+    mask-image: linear-gradient(to bottom, transparent var(--transparent-percent, 50%), black var(--solid-percent, 75%));
 }
 
 .unit .art .scale-adjuster {

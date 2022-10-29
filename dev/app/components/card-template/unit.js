@@ -7,7 +7,7 @@ import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
-
+import { defaultShade } from "/Views/list.js"
 
 const cssLoaded = loadCss("/Components/card-template/unit.css")
 
@@ -123,6 +123,8 @@ export class UnitRendererComponent extends Component {
     }
 
     render(){
+        const shade = this.props.shade || defaultShade
+        const [trasnparentPercent, solidPercent] = shade.gradientLocation
         return SvgWrap(
             { onTransform: this.props.updateTransform, ...(this.props.transform || {x: 0, y: 0, scale: 1}) },
             div(
@@ -132,6 +134,10 @@ export class UnitRendererComponent extends Component {
                         "--scale": this.props.transform ? this.props.transform.scale : 1,
                         "--left": this.props.transform ? this.props.transform.x : 0,
                         "--top": this.props.transform ? this.props.transform.y : 0,
+                        "--blur": `${shade.blur}px`,
+                        "--darkness": shade.darkness,
+                        "--transparent-percent": trasnparentPercent + "%",
+                        "--solid-percent": solidPercent + "%",  
                     },
                     className: `unit ${this.regionPosition}`,
                     id: this.props.id

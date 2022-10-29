@@ -28,6 +28,17 @@ const sharedDefaultCardData = {
     transform: {x: 0, y: 0, scale: 1}
 }
 
+const shade = {
+    blur: 20,
+    darkness: 0.25,
+    gradientLocation: [50, 75],
+}
+
+Object.freeze(shade)
+Object.freeze(shade.gradientLocation)
+
+export const defaultShade = shade
+
 const types = [
     {
         component: Champion1, 
@@ -41,6 +52,7 @@ const types = [
                 lvup: "",
                 rarity: "champion",
                 type: "champion1",
+                shade,
             }
         ),
     },
@@ -56,6 +68,7 @@ const types = [
                 lvup: "",
                 rarity: "",
                 type: "champion2",
+                shade,
             }
         )
     },
@@ -71,6 +84,7 @@ const types = [
                 lvup: "",
                 rarity: "",
                 type: "champion3",
+                shade,
             }
         ),
     },
@@ -101,6 +115,7 @@ const types = [
                 lvup: "",
                 rarity: "",
                 type: "follower",
+                shade,
             }
         ),
     },
@@ -115,6 +130,7 @@ const types = [
                 rarity: "",
                 keywords: ["landmark"],
                 type: "landmark",
+                shade,
             }
         ),
     },
