@@ -128,7 +128,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         {className: "flex hcenter gutter-tb"},
                         button(
                             { 
-                                className: card.id ? undefined : "hide" ,
+                                className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
                                 onClick: ()=>{
                                     deleteCard(card.id).then(()=>{
                                         document.location.reload()
@@ -138,7 +138,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             translate("delete_card")
                         ),
                         button(
-                            { 
+                            {
+                                className: "gutter-trbl-.5",
                                 onClick: ()=>{
                                     if (card.id){
                                         return saveCard(card.id, card) 
@@ -151,7 +152,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             translate("save_card")
                         ),
                         button(
-                            { onClick: exportCard },
+                            { className: "gutter-trbl-.5", onClick: exportCard },
                             translate("export")
                         ),
                     )
