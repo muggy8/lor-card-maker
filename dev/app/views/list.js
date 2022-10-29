@@ -100,6 +100,8 @@ const types = [
                 speed: "trap",
                 rarity: "",
                 type: "spell",
+                power: null,
+                health: null,
             }
         ),
     },

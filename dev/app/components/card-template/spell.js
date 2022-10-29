@@ -158,8 +158,8 @@ function SpellComponent(props){
             props.cardDataUpdaters.health(0)
         }
         else{
-            props.cardDataUpdaters.power(undefined)
-            props.cardDataUpdaters.health(undefined)
+            props.cardDataUpdaters.power(null)
+            props.cardDataUpdaters.health(null)
         }
 
         if (props.keywords.some(keyword=>keyword === speed)){
@@ -303,17 +303,17 @@ function SpellComponent(props){
                 })
                 : undefined
             ,
-            typeof props.power !== "undefined"
+            typeof props.power === "number"
                 ? div(
                     { className: "power fitty-nowrap card-text-bold", ref: powerRef },
-                    props.power
+                    props.power || 0
                 )
                 : undefined
             ,
-            typeof props.health !== "undefined"
+            typeof props.health === "number"
                 ? div(
                     { className: "health fitty-nowrap card-text-bold", ref: healthRef },
-                    props.health
+                    props.health || 0
                 )
                 : undefined
             ,
