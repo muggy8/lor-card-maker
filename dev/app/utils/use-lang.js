@@ -60,9 +60,9 @@ const lang = {
         "key_symbol_lv_up": "Key Symobols to insert into level up text",
         "select_keyword": "Select Keywords",
         "frame_type": "Card Frame Type",
-        "other_card_mentioned": "Other Cards Mentioned in Effect",
+        "other_card_mentioned": "Other Cards Named in Effect",
         "other_card_example": "(Gem, Pack Your Bags, etc)",
-        "key_text_mentioned": "Key Text Mentioned in Effect",
+        "key_text_mentioned": "Key Text Used in Effect",
         "key_text_example": "(Strike, Round Start, etc)",
         "add_mention": "+1 Mention",
         "card_art": "Card Art",
@@ -93,5 +93,6 @@ const lang = {
         "shade_darkness": "Shade darkness",
         "blur_strength": "Blur Stength",
         "region": "Region",
+        "speed": "Speed"
     }
 }
