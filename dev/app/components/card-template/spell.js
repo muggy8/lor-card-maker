@@ -12,6 +12,31 @@ import { speedOptions } from "/Components/card-config/edit-speed.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
+function getSpeedFrom(keywords){
+    if (!keywords){
+        return
+    }
+    const lastInstanceOfSpeedKeyword = keywords.findLast(keyword=>{
+        return speedOptions.some(speed=>speed === keyword)
+    })
+
+    return lastInstanceOfSpeedKeyword
+}
+
+function generateCleanedKeywordSet(keywords, speed){
+    if (!keywords){
+        return
+    }
+
+    const speedlessKeywords = keywords.filter(keyword=>{
+        return !speedOptions.some(speed=>keyword === speed)
+    })
+
+    speed && speedlessKeywords.push(speed)
+
+    return speedlessKeywords
+}
+
 function SpellComponent(props){
 
     // figure out the background and stuff so we can have a color for the card text back
@@ -149,8 +174,8 @@ function SpellComponent(props){
         const props = propsRef.current
         const speed = props.speed
 
-        if (!speed){
-            return 
+        if (!props.cardDataUpdaters){
+            return
         }
         
         if (speed === "equipment"){
@@ -162,49 +187,39 @@ function SpellComponent(props){
             props.cardDataUpdaters.health(null)
         }
 
-        if (props.keywords.some(keyword=>keyword === speed)){
-            return
+        const currentSpeedBasedOnKeywords = getSpeedFrom(props.keywords)
+        const cleanKeywords = generateCleanedKeywordSet(props.keywords, speed)
+
+        if (!speed || currentSpeedBasedOnKeywords === speed){
+            if (!props.keywords || !cleanKeywords){
+                return
+            }
+            if (props.keywords.length === cleanKeywords.length){
+                return
+            }
+            return props.cardDataUpdaters.keywords(cleanKeywords)
         }
 
-        const speedlessKeywords = props.keywords.filter(keyword=>{
-            return !speedOptions.some(speed=>keyword === speed)
-        })
-
-        props.cardDataUpdaters.keywords([...speedlessKeywords, speed])
-
+        props.cardDataUpdaters.keywords(cleanKeywords)
     }, [props.speed])
     useEffect(()=>{
         const props = propsRef.current
-
-        if (!props.keywords){
-            return 
+        
+        if (!props.cardDataUpdaters){
+            return
         }
 
-        let lastInstanceOfSpeedKeyword = props.keywords.findLast(keyword=>{
-            return speedOptions.some(speed=>speed === keyword)
-        })
+        const currentSpeedBasedOnKeywords = getSpeedFrom(props.keywords)
+        const cleanKeywords = generateCleanedKeywordSet(props.keywords, currentSpeedBasedOnKeywords)
 
-        if (lastInstanceOfSpeedKeyword){
-            if (lastInstanceOfSpeedKeyword !== props.speed){
-                props.cardDataUpdaters.speed(lastInstanceOfSpeedKeyword)
-            }
-        } 
-        else if (props.speed !== "trap") {
-            props.cardDataUpdaters.speed("trap")
-            lastInstanceOfSpeedKeyword = "trap"
+        if (props.speed !== currentSpeedBasedOnKeywords){
+            props.cardDataUpdaters.speed(currentSpeedBasedOnKeywords)
         }
-        else {
-            lastInstanceOfSpeedKeyword = "trap"
+        if (!cleanKeywords || !props.keywords){
+            return
         }
-
-        const speedlessKeywords = props.keywords.filter(keyword=>{
-            return !speedOptions.some(speed=>keyword === speed)
-        })
-
-        const cleanedKeywords = [...speedlessKeywords, lastInstanceOfSpeedKeyword]
-
-        if (cleanedKeywords.length !== props.keywords.length){
-            props.cardDataUpdaters.keywords(cleanedKeywords)
+        if (cleanKeywords.length !== props.keywords.length){
+            props.cardDataUpdaters.keywords(cleanKeywords)
         }
 
     }, [props.keywords])

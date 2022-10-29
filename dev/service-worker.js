@@ -6,6 +6,8 @@ const CACHE_NAME = "react-cache"
 const esmshQueryConfigs = {
 	target: "es2018",
 	"no-dts": true,
+	sourcemap: false,
+	pin: "v95",
 }
 
 if (indexUrl.includes("localhost")){

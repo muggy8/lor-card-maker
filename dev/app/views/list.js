@@ -97,7 +97,7 @@ const types = [
                 ...sharedDefaultCardData,
                 power: null,
                 health: null,
-                speed: "trap",
+                speed: undefined,
                 rarity: "",
                 type: "spell",
                 power: null,

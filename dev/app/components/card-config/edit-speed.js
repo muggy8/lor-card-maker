@@ -32,7 +32,7 @@ function EditSpeedComponent(props){
                         className: `box-3 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
                         key: speedName,
                         onClick: ()=>{
-                            props.updateValue(speedName)
+                            isChecked ? props.updateValue(undefined) : props.updateValue(speedName)
                         }
                     },
                     //~ img({
