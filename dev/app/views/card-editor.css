@@ -33,3 +33,12 @@
     opacity: 0.7;
     z-index: -1;
 }
+#card-editor input,
+#card-editor textarea,
+#card-editor button {
+    font-size: 1rem;
+}
+
+#card-editor label {
+    font-size: 1.25rem;
+}

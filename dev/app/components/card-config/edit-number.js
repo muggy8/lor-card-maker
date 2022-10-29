@@ -19,7 +19,7 @@ function EditNumberComponent(props){
             input(
                 {
                     value: props.value,
-                    className: "box-12",
+                    className: "box-12 gutter-trbl-.5",
                     onChange,
                     type: "number",
                 }

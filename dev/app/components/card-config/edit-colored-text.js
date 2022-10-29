@@ -1,4 +1,4 @@
-import factory, { div, strong, button } from "/Utils/elements.js"
+import factory, { div, strong, button, label } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import EditText from "/Components/card-config/edit-name.js"
 
@@ -10,7 +10,7 @@ function EditColorTextComponent(props){
     return div(
         div(
             { className: "flex" },
-            div(
+            label(
                 { className: "box" },
                 div(
                     strong(
@@ -27,7 +27,8 @@ function EditColorTextComponent(props){
                         let updatedList = [...props.value]
                         updatedList.push("")
                         props.updateValue(updatedList)
-                    }
+                    },
+                    className: "gutter-trbl-.5"
                 },
                 translate("add_mention")
             )
@@ -54,7 +55,8 @@ function EditColorTextComponent(props){
                                 let updatedList = [...props.value]
                                 updatedList.splice(index, 1)
                                 props.updateValue(updatedList)
-                            }
+                            },
+                            className: "gutter-rl"
                         },
                         "X"
                     )

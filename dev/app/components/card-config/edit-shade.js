@@ -4,7 +4,10 @@ import useLang from "/Utils/use-lang.js"
 import InputRangeComponent from '/cdn/react-input-range';
 import loadCss from "/Utils/load-css.js"
 
-const cssLoaded = loadCss("/cdn/react-input-range/lib/css/index.css")
+const cssLoaded = Promise.all([
+    loadCss("/cdn/react-input-range/lib/css/index.css"),
+    loadCss("/Components/card-config/edit-shade.css")
+])
 
 const InputRange = factory(InputRangeComponent)
 
@@ -34,7 +37,7 @@ function EditShadeComponent(props){
 
     return div(
         { className: "box gutter-b-2" },
-        div(
+        label(
             strong(
                 translate("edit_shade")
             )

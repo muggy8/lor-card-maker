@@ -41,7 +41,8 @@ function EditEffectComponent(props){
 				textarea({
 					value: props.value,
 					onInput,
-					onClick: saveCursorPos
+					onClick: saveCursorPos,
+					className: "gutter-trbl-.5"
 				})
             ),
             div(

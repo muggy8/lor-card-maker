@@ -5,4 +5,5 @@
 	background-color: var(--color-bg);
 	border-bottom: solid 0.125rem var(--color-border);
 	z-index: 2;
+	font-size: 1.25rem;
 }
