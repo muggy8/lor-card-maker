@@ -35,13 +35,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const translate = useLang()
 
         const globalState = useContext(Globals)
+        const globalStateRef = useRef()
+        globalStateRef.current = globalState
 
         const [card, updateCard] = useState(defaultCardData)
 
-        console.log(card)
-
         useEffect(()=>{
             globalState.state.cardId && getCard(globalState.state.cardId).then(updateCard)
+            return ()=>{
+                globalStateRef.current.patchState({cardId: ""})
+            }
         }, [])
 
         const knownCardDataKeys = Object.keys(defaultCardData)

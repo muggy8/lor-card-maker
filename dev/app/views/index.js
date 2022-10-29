@@ -14,17 +14,13 @@ function App () {
 
     const [globalState, updateGlobalState] = useState({
         lang: "en",
-        card: null,
         view: List,
     })
 
-    useEffect(()=>{
-        navigationHistory.push(globalState.view)
-    }, [globalState.view])
-
+    let accumulatedUpdateState = {...globalState}
     const patchGlboalState = useCallback((newState)=>{
         let mergedState = {
-            ...globalState,
+            ...accumulatedUpdateState,
             ...newState,
         }
 
@@ -33,6 +29,10 @@ function App () {
                 delete mergedState[key]
             }
         })
+
+        accumulatedUpdateState = mergedState
+
+        console.log(mergedState, navigationHistory)
 
         const hasAnythingChanged = Object.keys(mergedState)
             .map(key=>mergedState[key] !== globalState[key])
@@ -52,11 +52,16 @@ function App () {
     }, [patchGlboalState])
 
     useEffect(()=>{
+        navigationHistory.push(globalState.view)
         const popStateListener = function(){
             // let state = ev.state
+
+            console.log("pop", [...navigationHistory])
     
             navigationHistory.splice(-1, 1)
             const restoredView = navigationHistory[navigationHistory.length -1]
+
+            console.log("post slice", [...navigationHistory], restoredView)
 
             if (!restoredView){
                 navigationHistory.push(globalState.view)
@@ -72,12 +77,14 @@ function App () {
     }, [])
 
     const setView = useCallback((newView)=>{
-        patchGlboalState({
+        statePatcherRef.current({
             view: newView,
         })
-
         history.pushState({},  "")
-    }, [patchGlboalState])
+        navigationHistory.push(newView)
+
+        console.log("route")
+    }, [])
 
     return main(
         {style: {

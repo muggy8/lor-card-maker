@@ -194,39 +194,14 @@ function ListComponent(props){
                         key: cardData.id,
                         onClick: ()=>{
                             const editor = types.find(type=>type.component === renderingComponent)
-                            globalState.patchState({
-                                cardId: cardData.id,
-                                view: editor.editor,
-                            })
+                            
+                            globalState.setView(editor.editor)
+                            globalState.patchState({cardId: cardData.id})
                         }
                     },
                     renderingComponent(cardData)
                 )
             }),
-
-            // stuff for testing
-
-            // div(
-            //     { className: "gutter-trbl-.5 box-xs-6 flex column vhcenter" },
-            //     Spell({
-            //         name: "Stat Stick",
-            //         mana: 3,
-            //         clan: "Emotional Damage",
-            //         art: "",
-            //         id: "",
-            //         faction: [ 'demacia',],
-            //         keywords: ["silence",],
-            //         rarity: "rare",
-            //         speed: "equipment",
-            //         power: 4,
-            //         health: 4,
-
-            //         lvup: "All Tests Everywhere have concluded successfully",
-            //         effect: "<skill/>Play: Test all systems Everywhere.",
-            //         orangeWords: ["Play", "Test", "Everywhere"],
-            //         blueWords: ["Tests"],
-            //     })
-            // )
 
         ),
     )
