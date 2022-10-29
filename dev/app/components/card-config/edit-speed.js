@@ -1,15 +1,17 @@
 import factory, { label, div, strong, img } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback } from "/cdn/react"
+// import { useCallback } from "/cdn/react"
 import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 
 export const speedOptions = [
     "trap",
+    "boon",
     "slow",
     "fast",
     "burst",
     "focus",
     "equipment",
+    "skill",
 ]
 
 function EditSpeedComponent(props){
@@ -27,7 +29,7 @@ function EditSpeedComponent(props){
 
                 return div(
                     {
-                        className: `box-2 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
+                        className: `box-3 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
                         key: speedName,
                         onClick: ()=>{
                             props.updateValue(speedName)

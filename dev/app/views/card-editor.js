@@ -48,6 +48,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         }, [])
 
         const knownCardDataKeys = Object.keys(defaultCardData)
+        let accumulatedCardUpdates = {...card}
         const cardDataUpdaters = knownCardDataKeys.reduce((updaterCollection, key)=>{
             updaterCollection[key] = useCallback((updatedValue)=>{
 
@@ -60,9 +61,10 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 }
 
                 const newData = {
-                    ...card,
+                    ...accumulatedCardUpdates,
                 }
                 newData[key] = updatedValue
+                accumulatedCardUpdates = newData
                 updateCard(newData)
             }, knownCardDataKeys.map(key=>card[key]))
             return updaterCollection
@@ -126,6 +128,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         } },
                         cardRenderer({
                             ...card,
+                            cardDataUpdaters,
                             updateTransform: card.art ? cardDataUpdaters.transform : undefined,
                         }),
                     ),
@@ -248,17 +251,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     })
                     : undefined
                 ,
-                canShow("keywords", defaultCardData)
-                    ? EditKeywords({
-						value: card.keywords,
-						updateValue: cardDataUpdaters.keywords
-					})
-                    : undefined
-                ,
                 canShow("speed", defaultCardData)
                     ? EditSpeed({
 						value: card.speed,
 						updateValue: cardDataUpdaters.speed
+					})
+                    : undefined
+                ,
+                canShow("keywords", defaultCardData)
+                    ? EditKeywords({
+						value: card.keywords,
+						updateValue: cardDataUpdaters.keywords
 					})
                     : undefined
                 ,

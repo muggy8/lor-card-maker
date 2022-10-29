@@ -8,22 +8,14 @@ import EffectText, { scaleFontSize } from "/Components/card-template/effect-text
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
+import { speedOptions } from "/Components/card-config/edit-speed.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
 function SpellComponent(props){
 
-    const nameRef = useRef()
-    const clanRef = useRef()
-    const costRef = useRef()
-    const powerRef = useRef()
-    const healthRef = useRef()
-
-    const costFitty = useRef()
-    const powerFitty = useRef()
-    const healthFitty = useRef()
+    // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
-
     const [imageAvgColor, updateImageAvgColor] = useState("#000000")
     useLayoutEffect(()=>{
         let fac = facref.current
@@ -41,6 +33,16 @@ function SpellComponent(props){
             .catch(console.warn)
     }, [props.art])
 
+    // gotta manage all the stuff to do with card text size.
+    const nameRef = useRef()
+    const clanRef = useRef()
+    const costRef = useRef()
+    const powerRef = useRef()
+    const healthRef = useRef()
+
+    const costFitty = useRef()
+    const powerFitty = useRef()
+    const healthFitty = useRef()
     useLayoutEffect(()=>{
         scaleFontSize(nameRef.current, 70, 16)
     }, [props.name])
@@ -64,6 +66,10 @@ function SpellComponent(props){
     }, [props.mana])
 
     useLayoutEffect(()=>{
+        if (typeof props.power !== "number"){
+            return
+        }
+
         const fittyInstance = powerFitty.current
 
         if (!fittyInstance){
@@ -78,6 +84,9 @@ function SpellComponent(props){
     }, [props.power])
 
     useLayoutEffect(()=>{
+        if (typeof props.health !== "number"){
+            return
+        }
         const fittyInstance = healthFitty.current
 
         if (!fittyInstance){
@@ -91,6 +100,7 @@ function SpellComponent(props){
         fittyInstance.fit()
     }, [props.health])
 
+    // manage the assets and convert them from URL form to base 64 form to make exporting easier
     const [backgroundUri, updateBackgroundUri] = useState("")
     const [backdropUri, updateBackdropUri] = useState("")
     const [frameUri, updateFrameUri] = useState("")
@@ -131,6 +141,72 @@ function SpellComponent(props){
             updateRarityGemUriUri("")
         }
     }, [props.rarity])
+
+    // here we automate the stuff with the frame and card type and stuff and keep them all in sync
+    const propsRef = useRef()
+    propsRef.current = props
+    useEffect(()=>{
+        const props = propsRef.current
+        const speed = props.speed
+
+        if (!speed){
+            return 
+        }
+
+        if (props.keywords.some(keyword=>keyword === speed)){
+            return
+        }
+
+        const speedlessKeywords = props.keywords.filter(keyword=>{
+            return !speedOptions.some(speed=>keyword === speed)
+        })
+
+        props.cardDataUpdaters.keywords([...speedlessKeywords, speed])
+
+        if (speed === "equipment"){
+            props.cardDataUpdaters.power(0)
+            props.cardDataUpdaters.health(0)
+        }
+        else{
+            props.cardDataUpdaters.power(undefined)
+            props.cardDataUpdaters.health(undefined)
+        }
+    }, [props.speed])
+    useEffect(()=>{
+        const props = propsRef.current
+
+        if (!props.keywords){
+            return 
+        }
+
+        let lastInstanceOfSpeedKeyword = props.keywords.findLast(keyword=>{
+            return speedOptions.some(speed=>speed === keyword)
+        })
+
+        if (lastInstanceOfSpeedKeyword){
+            if (lastInstanceOfSpeedKeyword !== props.speed){
+                props.cardDataUpdaters.speed(lastInstanceOfSpeedKeyword)
+            }
+        } 
+        else if (props.speed !== "trap") {
+            props.cardDataUpdaters.speed("trap")
+            lastInstanceOfSpeedKeyword = "trap"
+        }
+        else {
+            lastInstanceOfSpeedKeyword = "trap"
+        }
+
+        const speedlessKeywords = props.keywords.filter(keyword=>{
+            return !speedOptions.some(speed=>keyword === speed)
+        })
+
+        const cleanedKeywords = [...speedlessKeywords, lastInstanceOfSpeedKeyword]
+
+        if (cleanedKeywords.length !== props.keywords.length){
+            props.cardDataUpdaters.keywords(cleanedKeywords)
+        }
+
+    }, [props.keywords])
 
     return SvgWrap(
         { onTransform: props.updateTransform, ...(props.transform || {x: 0, y: 0, scale: 1}) },
