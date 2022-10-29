@@ -29,7 +29,7 @@ const sharedDefaultCardData = {
 }
 
 const shade = {
-    blur: 20,
+    blur: 15,
     darkness: 0.25,
     gradientLocation: [50, 75],
 }

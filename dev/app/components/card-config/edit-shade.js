@@ -77,7 +77,7 @@ function EditShadeComponent(props){
                         formatLabel: value => `${decimalLimit(value)}px`,
                         value: blur,
                         minValue: 0,
-                        maxValue: 50,
+                        maxValue: 40,
                         step: 0.1,
                         onChange: updaters.blur,
                     }

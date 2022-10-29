@@ -90,7 +90,7 @@ const lang = {
         "fade_location": "Fade Location",
         "fade_start": "Fade Start",
         "fade_end": "Fade End",
-        "shade_darkness": "Shade darkness",
+        "shade_darkness": "Shade Darkness",
         "blur_strength": "Blur Stength",
         "region": "Region",
         "speed": "Speed"
