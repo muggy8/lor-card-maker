@@ -32,8 +32,6 @@ function App () {
 
         accumulatedUpdateState = mergedState
 
-        console.log(mergedState, navigationHistory)
-
         const hasAnythingChanged = Object.keys(mergedState)
             .map(key=>mergedState[key] !== globalState[key])
             .reduce((sum, hasChanged)=>sum || hasChanged, false)
@@ -54,14 +52,8 @@ function App () {
     useEffect(()=>{
         navigationHistory.push(globalState.view)
         const popStateListener = function(){
-            // let state = ev.state
-
-            console.log("pop", [...navigationHistory])
-    
             navigationHistory.splice(-1, 1)
             const restoredView = navigationHistory[navigationHistory.length -1]
-
-            console.log("post slice", [...navigationHistory], restoredView)
 
             if (!restoredView){
                 navigationHistory.push(globalState.view)
@@ -82,8 +74,6 @@ function App () {
         })
         history.pushState({},  "")
         navigationHistory.push(newView)
-
-        console.log("route")
     }, [])
 
     return main(
