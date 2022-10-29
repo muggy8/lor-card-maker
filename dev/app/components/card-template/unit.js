@@ -127,6 +127,12 @@ export class UnitRendererComponent extends Component {
             { onTransform: this.props.updateTransform, ...(this.props.transform || {x: 0, y: 0, scale: 1}) },
             div(
                 {
+                    style: {
+                        "--background-image": `url(${this.state.backdropUri || ""})`,
+                        "--scale": this.props.transform ? this.props.transform.scale : 1,
+                        "--left": this.props.transform ? this.props.transform.x : 0,
+                        "--top": this.props.transform ? this.props.transform.y : 0,
+                    },
                     className: `unit ${this.regionPosition}`,
                     id: this.props.id
                 },
@@ -135,16 +141,12 @@ export class UnitRendererComponent extends Component {
                     {
                         className: "art",
                         style: {
-                            backgroundImage: `url(${this.state.backdropUri || ""})`,
                             clipPath: `polygon(${
                                 this.clipPathPolygon.map((coordPair)=>{
                                     return coordPair.map(coord=>coord+"px")
                                         .join(" ")
                                 }).join(",")
                             })`,
-                            "--scale": this.props.transform ? this.props.transform.scale : 1,
-                            "--left": this.props.transform ? this.props.transform.x : 0,
-                            "--top": this.props.transform ? this.props.transform.y : 0,
                         }
                     },
                     div(
@@ -153,13 +155,27 @@ export class UnitRendererComponent extends Component {
                             url: this.props.art
                         })
                     ),
-                    //~ div(
-                        //~ {className: "debug"},
-                        //~ (this.props.transform ? this.props.transform.scale : 1).toFixed(6),
-                    //~ ),
                 ),
 
-                div({className: "gradiant-blur"}),
+                div(
+                    {
+                        className: "art blur",
+                        style: {
+                            clipPath: `polygon(${
+                                this.clipPathPolygon.map((coordPair)=>{
+                                    return coordPair.map(coord=>coord+"px")
+                                        .join(" ")
+                                }).join(",")
+                            })`,
+                        }
+                    },
+                    div(
+                        {className: "scale-adjuster"},
+                        ArtRenderer({
+                            url: this.props.art
+                        })
+                    ),
+                ),
 
                 div(
                     { className: "card-text-wrapper" },

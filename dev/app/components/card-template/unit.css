@@ -16,25 +16,11 @@
 }
 
 .unit .art {
-    clip-path: polygon(
-        25px 50px,
-        655px 50px,
-        655px 950px,
-        340px 965px,
-        25px 950px
-    );
+    background-image: var(--background-image);
 }
 
-.unit .gradiant-blur {
-    content: " ";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    opacity: 1;
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+.unit .art.blur {
+    filter: blur(20px);
     -webkit-mask-image: linear-gradient(to bottom, transparent 50%, black 70%);
     mask-image: linear-gradient(to bottom, transparent 50%, black 70%);
 }
