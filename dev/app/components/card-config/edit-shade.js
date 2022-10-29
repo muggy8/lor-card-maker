@@ -40,7 +40,7 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb flex" },
+            { className: "box gutter-tb gutter-rl-.5 flex" },
             div(
                 { className: "box-4" },
                 translate("shade_darkness"),
@@ -61,7 +61,7 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb flex" },
+            { className: "box gutter-tb gutter-rl-.5 flex" },
             div(
                 { className: "box-4" },
                 translate("blur_strength"),
@@ -82,7 +82,7 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb flex" },
+            { className: "box gutter-tb gutter-rl-.5 flex" },
             div(
                 { className: "box-4" },
                 translate("fade_location"),

@@ -32,7 +32,7 @@ function EditArtComponent(props){
             strong(translate("card_art"))
         ),
         div(
-            {className: "flex hcenter"},
+            {className: "flex hcenter gutter-trl-.5"},
             button(
                 { className: "gutter-trbl grow", onClick: clickInput },
                 translate("upload_image")

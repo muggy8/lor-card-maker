@@ -37,7 +37,7 @@ function EditEffectComponent(props){
         div(
             {className: "flex gutter-b-2"},
             div(
-				{ className: "grow-wrap box-12" },
+				{ className: "grow-wrap box-12 gutter-trl-.5" },
 				textarea({
 					value: props.value,
 					onInput,

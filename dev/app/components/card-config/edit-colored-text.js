@@ -36,9 +36,9 @@ function EditColorTextComponent(props){
             {className: "gutter-b-2"},
             props.value.map((currentText, index)=>{
                 return div(
-                    { className: "flex gutter-t", key: index },
+                    { className: "flex gutter-t gutter-r-.5", key: index },
                     div(
-                        { className: "gutter-r box" },
+                        { className: "gutter-r-.5 box" },
                         EditText({
                             value: currentText,
                             updateValue: (newText)=>{

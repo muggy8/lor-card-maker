@@ -27,13 +27,13 @@ function EditRegionComponent(props){
             strong(translate("rarity"))
         ),
         div(
-            { className: "flex gutter-b-2" },
+            { className: "flex gutter-b-2 gutter-t-.5" },
             rarityOptions.map(rarityName=>{
                 const isChecked = rarityName === props.value
 
                 return div(
                     { 
-                        className: `box-3 gutter-trbl-.25 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
+                        className: `box-3 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
                         key: rarityName,
                         onClick: ()=>{
                             toggleRarity(rarityName)

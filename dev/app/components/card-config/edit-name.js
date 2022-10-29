@@ -10,12 +10,13 @@ function EditNameComponent(props){
         { className: "box" },
         props.label 
             ? div(
+                { className: "gutter-b-.5" },
                 strong(props.label)
             )
             : undefined
         ,
         div(
-            {className: "flex"},
+            {className: "flex gutter-rl-.5"},
             input(
                 {
                     value: props.value,

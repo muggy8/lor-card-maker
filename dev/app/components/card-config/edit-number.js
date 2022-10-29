@@ -15,7 +15,7 @@ function EditNumberComponent(props){
             )
         ),
         div(
-            {className: "flex gutter-b-2"},
+            {className: "flex gutter-trl-.5"},
             input(
                 {
                     value: props.value,

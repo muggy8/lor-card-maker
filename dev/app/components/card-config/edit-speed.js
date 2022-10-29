@@ -20,14 +20,14 @@ function EditSpeedComponent(props){
             strong(translate("speed"))
         ),
         div(
-            { className: "flex gutter-b-2" },
+            { className: "flex gutter-b-2 gutter-t-.5" },
             speedOptions.map(speedName=>{
 
 				const isChecked = props.value === speedName
 
                 return div(
                     {
-                        className: `box-2 gutter-trbl-.25 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
+                        className: `box-2 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
                         key: speedName,
                         onClick: ()=>{
                             props.updateValue(speedName)

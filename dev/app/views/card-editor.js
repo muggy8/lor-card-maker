@@ -171,16 +171,19 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     : undefined
                 ,
                 canShow("mana", defaultCardData)
-                    ? EditNumber({
-                        label: translate("mana_cost"),
-                        value: card.mana,
-                        updateValue: cardDataUpdaters.mana,
-                    })
+                    ? div(
+                        { className: "gutter-b-2" },
+                        EditNumber({
+                            label: translate("mana_cost"),
+                            value: card.mana,
+                            updateValue: cardDataUpdaters.mana,
+                        })
+                    )
                     : undefined
                 ,
                 canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
-                        {className: "flex no-wrap"},
+                        {className: "flex no-wrap gutter-b-2"},
                         EditNumber({
                             label: translate("power"),
                             value: card.power,

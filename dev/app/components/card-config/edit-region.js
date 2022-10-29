@@ -37,10 +37,10 @@ function EditRegionComponent(props){
 
     return label(
         div(
-            strong(translate("faction"))
+            strong(translate("region"))
         ),
         div(
-            { className: "flex gutter-b-2" },
+            { className: "flex gutter-b-2 gutter-t-.5" },
             regionOptions.map(regionName=>{
                 const isChecked = props.value.some(checkedValue=>{
                     return checkedValue === regionName
@@ -48,7 +48,7 @@ function EditRegionComponent(props){
 
                 return div(
                     { 
-                        className: `box-3 gutter-trbl-.25 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
+                        className: `box-3 clickable flex column vhcenter ${isChecked ? "" : "ghost"}`,
                         key: regionName,
                         onClick: ()=>{
                             toggleFaction(regionName)
