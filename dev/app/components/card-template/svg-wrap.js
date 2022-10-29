@@ -11,6 +11,7 @@ function SvgWrapComponent(props){
 
     const gestureReceiver = useRef()
 
+    // we do this so we dont have to get rid of and then re-apply the gesture listeners multiple times as the props update
     const lastStoppedPosition = useRef({x: props.x || 0, y: props.y || 0, scale: props.scale || 0})
 
     const transformCallback = useRef()
@@ -22,6 +23,11 @@ function SvgWrapComponent(props){
         if (!props.onTransform){
             return
         }
+
+        // we wanna update these when we set up the listeners because it's highly likely that the listeners are set in the same update as the saved transforms are passed into here. if not then whatever
+        lastStoppedPosition.current.x = props.x || 0
+        lastStoppedPosition.current.y = props.y || 0
+        lastStoppedPosition.current.scale = props.scale || 1;
 
         const element = gestureReceiver.current
 
