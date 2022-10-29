@@ -237,9 +237,14 @@ function walkPathMap(pathArray, currentPathMap){
 		let url = truePathArray.join("/")
 
 		if (currentPathReference.query){
-			const queryString = Object.keys(currentPathReference.query).map(key=>{
+			let queryString = Object.keys(currentPathReference.query).map(key=>{
 				return `${key}=${currentPathReference.query[key]}`
 			}).join("&")
+
+			if (url.endsWith(".css")){
+				queryString += "&css=true"
+			}
+
 			url = url + "?" + queryString
 		}
 

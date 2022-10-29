@@ -16,6 +16,8 @@ import EditEffect from "/Components/card-config/edit-effect.js"
 import EditSpeed from "/Components/card-config/edit-speed.js"
 import EditColorText from "/Components/card-config/edit-colored-text.js"
 import EditArt from "/Components/card-config/edit-art.js"
+import EditShade from "/Components/card-config/edit-shade.js"
+import { defaultShade } from "/Views/list.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -106,7 +108,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
-                { className: "card-preview gutter-trl-2 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3", style: { paddingBottom: previewHeight + "px"}},
+                { className: "card-preview gutter-trl-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", style: { paddingBottom: previewHeight + "px"}},
                 div(
                     {className: "preview-content", ref: fixedDisplayRef, style: {
                         width: useableWidth + "px"
@@ -156,7 +158,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ),
             ),
             div(
-                { className: "card-configs gutter-tb-4 gutter-rl-.5 box-xs-12 box-s-8 box-m-6 box-l-4 box-xl-3" },
+                { className: "card-configs gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4" },
                 canShow("name", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},
@@ -205,6 +207,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         EditArt({
                             value: card.art,
                             updateValue: cardDataUpdaters.art,
+                        })
+                    )
+                    : undefined
+                ,
+                canShow("shade", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditShade({
+                            value: card.shade || defaultShade,
+                            updateValue: cardDataUpdaters.shade,
                         })
                     )
                     : undefined

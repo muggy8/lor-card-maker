@@ -1,33 +1,108 @@
 import factory, { div, label, strong, input } from "/Utils/elements.js"
 import { useCallback } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
+import InputRangeComponent from '/cdn/react-input-range';
+import loadCss from "/Utils/load-css.js"
 
-function EditNumberComponent(props){
-    const onChange = useCallback(ev=>{
-        props.updateValue(isNaN(ev.target.valueAsNumber) ? '' : ev.target.valueAsNumber )
-	}, [props.updateValue])
+const cssLoaded = loadCss("/cdn/react-input-range/lib/css/index.css")
+
+const InputRange = factory(InputRangeComponent)
+
+function EditShadeComponent(props){
+    // const onChange = useCallback(ev=>{
+    //     props.updateValue(isNaN(ev.target.valueAsNumber) ? '' : ev.target.valueAsNumber )
+	// }, [props.updateValue])
 
     const translate = useLang()
 
-    return label(
-        { className: "box" },
+    const { blur, darkness, gradientLocation } = props.value
+    const updaters = Object.keys(props.value).reduce((callbackCollector, valueToUpdate)=>{
+        callbackCollector[valueToUpdate] = useCallback((newValue)=>{
+            let updatedValue = { blur, darkness, gradientLocation }
+            updatedValue[valueToUpdate] = newValue
+            props.updateValue(updatedValue)
+        }, [blur, darkness, gradientLocation, props.updateValue])
+
+        return callbackCollector
+    }, {})
+
+    const updateGradientLocation = useCallback(({max, min})=>{
+        updaters.gradientLocation([min, max])
+    }, [updaters.gradientLocation])
+
+    const [min, max] = gradientLocation
+
+    return div(
+        { className: "box gutter-b-2" },
         div(
             strong(
                 translate("edit_shade")
             )
         ),
-        div(
-            {className: "flex gutter-b-2"},
-            input(
-                {
-                    value: props.value,
-                    className: "box-12",
-                    onChange,
-                    type: "number",
-                }
+        label(
+            { className: "box gutter-tb flex" },
+            div(
+                { className: "box-4" },
+                translate("shade_darkness"),
+                ":",
+            ),
+            div(
+                { className: "grow" },
+                InputRange(
+                    {
+                        formatLabel: value => `${value * 100}%`,
+                        value: darkness,
+                        minValue: 0,
+                        maxValue: 1,
+                        step: 0.01,
+                        onChange: updaters.darkness,
+                    }
+                )
             )
-        )
+        ),
+        label(
+            { className: "box gutter-tb flex" },
+            div(
+                { className: "box-4" },
+                translate("blur_strength"),
+                ":",
+            ),
+            div(
+                { className: "grow" },
+                InputRange(
+                    {
+                        formatLabel: value => `${value}px`,
+                        value: blur,
+                        minValue: 0,
+                        maxValue: 50,
+                        step: 0.1,
+                        onChange: updaters.blur,
+                    }
+                )
+            )
+        ),
+        label(
+            { className: "box gutter-tb flex" },
+            div(
+                { className: "box-4" },
+                translate("fade_location"),
+                ":",
+            ),
+            div(
+                { className: "grow" },
+                InputRange(
+                    {
+                        formatLabel: value => `${value}%`,
+                        value: {min, max},
+                        minValue: 0,
+                        maxValue: 100,
+                        step: 0.1,
+                        onChange: updateGradientLocation,
+                    }
+                )
+            )
+        ),
     )
 }
 
-export default factory(EditNumberComponent)
+export default factory(EditShadeComponent, cssLoaded)
