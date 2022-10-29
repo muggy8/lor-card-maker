@@ -177,15 +177,6 @@ function SpellComponent(props){
         if (!props.cardDataUpdaters){
             return
         }
-        
-        if (speed === "equipment"){
-            props.cardDataUpdaters.power(0)
-            props.cardDataUpdaters.health(0)
-        }
-        else{
-            props.cardDataUpdaters.power(null)
-            props.cardDataUpdaters.health(null)
-        }
 
         const currentSpeedBasedOnKeywords = getSpeedFrom(props.keywords)
         const cleanKeywords = generateCleanedKeywordSet(props.keywords, speed)
@@ -198,6 +189,15 @@ function SpellComponent(props){
                 return
             }
             return props.cardDataUpdaters.keywords(cleanKeywords)
+        }
+        
+        if (speed === "equipment"){
+            props.cardDataUpdaters.power(0)
+            props.cardDataUpdaters.health(0)
+        }
+        else{
+            props.cardDataUpdaters.power(null)
+            props.cardDataUpdaters.health(null)
         }
 
         props.cardDataUpdaters.keywords(cleanKeywords)
