@@ -152,6 +152,15 @@ function SpellComponent(props){
         if (!speed){
             return 
         }
+        
+        if (speed === "equipment"){
+            props.cardDataUpdaters.power(0)
+            props.cardDataUpdaters.health(0)
+        }
+        else{
+            props.cardDataUpdaters.power(undefined)
+            props.cardDataUpdaters.health(undefined)
+        }
 
         if (props.keywords.some(keyword=>keyword === speed)){
             return
@@ -163,14 +172,6 @@ function SpellComponent(props){
 
         props.cardDataUpdaters.keywords([...speedlessKeywords, speed])
 
-        if (speed === "equipment"){
-            props.cardDataUpdaters.power(0)
-            props.cardDataUpdaters.health(0)
-        }
-        else{
-            props.cardDataUpdaters.power(undefined)
-            props.cardDataUpdaters.health(undefined)
-        }
     }, [props.speed])
     useEffect(()=>{
         const props = propsRef.current
