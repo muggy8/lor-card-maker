@@ -53,7 +53,7 @@ function EditShadeComponent(props){
                 { className: "grow" },
                 InputRange(
                     {
-                        formatLabel: value => `${value * 100}%`,
+                        formatLabel: value => `${decimalLimit(value * 100)}%`,
                         value: darkness,
                         minValue: 0,
                         maxValue: 1,
@@ -74,7 +74,7 @@ function EditShadeComponent(props){
                 { className: "grow" },
                 InputRange(
                     {
-                        formatLabel: value => `${value}px`,
+                        formatLabel: value => `${decimalLimit(value)}px`,
                         value: blur,
                         minValue: 0,
                         maxValue: 50,
@@ -95,7 +95,7 @@ function EditShadeComponent(props){
                 { className: "grow" },
                 InputRange(
                     {
-                        formatLabel: value => `${value}%`,
+                        formatLabel: value => `${decimalLimit(value)}%`,
                         value: {min, max},
                         minValue: 0,
                         maxValue: 100,
@@ -106,6 +106,12 @@ function EditShadeComponent(props){
             )
         ),
     )
+}
+
+function decimalLimit(number, limit = 3){
+    const limitScale = Math.pow(10, limit)
+
+    return Math.round(number * limitScale) / limitScale
 }
 
 export default factory(EditShadeComponent, cssLoaded)
