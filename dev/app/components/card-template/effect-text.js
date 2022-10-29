@@ -150,7 +150,7 @@ function EffectTextComponent(props){
                 }).flat()
             })
         
-            // replace new lines with br tag
+            // replace new lines with br tag... but br tag breaks during svg output so we just use a div instead
             contentArray = contentArray.map(textOrElement=>{
                 if (typeof textOrElement !== "string"){
                     return textOrElement
@@ -163,7 +163,7 @@ function EffectTextComponent(props){
                 }
         
                 for(let i = splitUpText.length - 1; i; i--){
-                    splitUpText.splice(i, 0, br())
+                    splitUpText.splice(i, 0, div())
                 }
         
                 return splitUpText
