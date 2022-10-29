@@ -20,7 +20,12 @@ function getDimensions(url){
     })
 }
 
+let replicationCache = {}
 async function getReplicateImage(url){
+    if (replicationCache[url]){
+        return replicationCache[url]
+    }
+
     const { width, height, image } = await getDimensions(url)
     const canvas = document.createElement('canvas');
 
@@ -72,7 +77,7 @@ async function getReplicateImage(url){
     )
     context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
 
-    return {
+    return replicationCache[url] = {
         width: canvas.width, 
         height: canvas.height,
         b64: canvas.toDataURL()
