@@ -159,6 +159,65 @@ export class UnitRendererComponent extends Component {
                 ),
 
                 div(
+                    { className: "card-text-wrapper" },
+                    // stuff to do with the card content goes here
+
+                    this.props.name
+                        ? div(
+                            { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
+                            this.props.name
+                        )
+                        : undefined
+                    ,
+
+                    this.props.keywords && this.props.keywords.length
+                        ? div(
+                            { className: "keyword-container card-text-bold" },
+                            this.props.keywords.map(keywordName=>KeywordRenderer({
+                                key: keywordName,
+                                name: keywordName,
+                                size: this.props.keywords.length > 1 ? "small" : "large"
+                            }))
+                        )
+                        : undefined
+                    ,
+
+                    this.props.effect
+                        ? EffectText(
+                            {
+                                blueWords: this.props.blueWords,
+                                orangeWords: this.props.orangeWords,
+                                className: "effect-container card-text-universe",
+                            },
+                            this.props.effect
+                        )
+                        : undefined
+                    ,
+
+                    this.props.lvup
+                        ? div({
+                            className: "level-bar",
+                            style: {
+                                backgroundImage: `url(${this.state.levelupBarUri || ""})`
+                            },
+                        })
+                        : undefined
+                    ,
+
+                    this.props.lvup
+                        ? EffectText(
+                            {
+                                blueWords: this.props.blueWords,
+                                orangeWords: this.props.orangeWords,
+                                className: "level-up-container card-text-universe",
+                            },
+                            this.props.lvup
+                        )
+                        : undefined
+                    ,
+                ),
+
+                div(
                     {
                         className: "frame",
                         style: {
@@ -230,65 +289,6 @@ export class UnitRendererComponent extends Component {
                     )
                     : undefined
                 ,
-
-                div(
-                    { className: "card-text-wrapper" },
-                    // stuff to do with the card content goes here
-
-                    this.props.name
-                        ? div(
-                            { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
-                            this.props.name
-                        )
-                        : undefined
-                    ,
-
-                    this.props.keywords && this.props.keywords.length
-                        ? div(
-                            { className: "keyword-container card-text-bold" },
-                            this.props.keywords.map(keywordName=>KeywordRenderer({
-                                key: keywordName,
-                                name: keywordName,
-                                size: this.props.keywords.length > 1 ? "small" : "large"
-                            }))
-                        )
-                        : undefined
-                    ,
-
-                    this.props.effect
-                        ? EffectText(
-                            {
-                                blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords,
-                                className: "effect-container card-text-universe",
-                            },
-                            this.props.effect
-                        )
-                        : undefined
-                    ,
-
-                    this.props.lvup
-                        ? div({
-                            className: "level-bar",
-                            style: {
-                                backgroundImage: `url(${this.state.levelupBarUri || ""})`
-                            },
-                        })
-                        : undefined
-                    ,
-
-                    this.props.lvup
-                        ? EffectText(
-                            {
-                                blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords,
-                                className: "level-up-container card-text-universe",
-                            },
-                            this.props.lvup
-                        )
-                        : undefined
-                    ,
-                ),
 
                 this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"
                     ? div(

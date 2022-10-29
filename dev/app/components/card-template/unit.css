@@ -129,7 +129,7 @@
 }
 
 .unit .card-text-wrapper .name {
-    width: 560px;
+    width: 520px;
     margin-left: auto;
     margin-right: auto;
     height: 70px;
@@ -141,13 +141,13 @@
 }
 .unit .card-text-wrapper .keyword-container {
     text-align: center;
-    width: 560px;
+    width: 520px;
     margin-left: auto;
     margin-right: auto;
 }
 
 .unit .card-text-wrapper .effect-container, .unit .card-text-wrapper .level-up-container{
-    width: 560px;
+    width: 520px;
     margin-left: auto;
     margin-right: auto;
     max-height: 154px;
