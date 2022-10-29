@@ -126,34 +126,43 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ),
                     div(
                         {className: "flex hcenter gutter-tb"},
-                        button(
-                            { 
-                                className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
-                                onClick: ()=>{
-                                    deleteCard(card.id).then(()=>{
-                                        document.location.reload()
-                                    })
-                                }
-                            },
-                            translate("delete_card")
-                        ),
-                        button(
-                            {
-                                className: "gutter-trbl-.5",
-                                onClick: ()=>{
-                                    if (card.id){
-                                        return saveCard(card.id, card) 
+                        div(
+                            { className: "gutter-rl" },
+                            button(
+                                { 
+                                    className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
+                                    onClick: ()=>{
+                                        deleteCard(card.id).then(()=>{
+                                            document.location.reload()
+                                        })
                                     }
-                                    const newId = Date.now().toString()
-                                    saveCard(newId, card)
-                                    cardDataUpdaters.id(newId)
-                                }
-                            },
-                            translate("save_card")
+                                },
+                                translate("delete_card")
+                            )
                         ),
-                        button(
-                            { className: "gutter-trbl-.5", onClick: exportCard },
-                            translate("export")
+                        div(
+                            { className: "gutter-rl" },
+                            button(
+                                {
+                                    className: "gutter-trbl-.5",
+                                    onClick: ()=>{
+                                        if (card.id){
+                                            return saveCard(card.id, card) 
+                                        }
+                                        const newId = Date.now().toString()
+                                        saveCard(newId, card)
+                                        cardDataUpdaters.id(newId)
+                                    }
+                                },
+                                translate("save_card")
+                            )
+                        ),
+                        div(
+                            { className: "gutter-rl" },
+                            button(
+                                { className: "gutter-trbl-.5", onClick: exportCard },
+                                translate("export")
+                            )
                         ),
                     )
                 ),
@@ -184,13 +193,15 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ,
                 canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
-                        {className: "flex no-wrap gutter-b-2"},
+                        {className: "flex-s no-wrap"},
                         EditNumber({
+                            className: "block gutter-b-2",
                             label: translate("power"),
                             value: card.power,
                             updateValue: cardDataUpdaters.power,
                         }),
                         EditNumber({
+                            className: "block gutter-b-2",
                             label: translate("health"),
                             value: card.health,
                             updateValue: cardDataUpdaters.health,

@@ -9,9 +9,9 @@ function EditColorTextComponent(props){
 
     return div(
         div(
-            { className: "flex" },
+            { className: "flex-s" },
             label(
-                { className: "box" },
+                { className: "box gutter-b-.5" },
                 div(
                     strong(
                         props.label
@@ -21,16 +21,19 @@ function EditColorTextComponent(props){
                     props.subLabel
                 )
             ),
-            button(
-                {
-                    onClick: ()=>{
-                        let updatedList = [...props.value]
-                        updatedList.push("")
-                        props.updateValue(updatedList)
+            div(
+                {className: "flex gutter-rl-.5"},
+                button(
+                    {
+                        onClick: ()=>{
+                            let updatedList = [...props.value]
+                            updatedList.push("")
+                            props.updateValue(updatedList)
+                        },
+                        className: "gutter-trbl-.5 grow"
                     },
-                    className: "gutter-trbl-.5"
-                },
-                translate("add_mention")
+                    translate("add_mention")
+                )
             )
         ),
         div(

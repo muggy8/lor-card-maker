@@ -8,7 +8,7 @@ function EditNumberComponent(props){
 	}, [props.updateValue])
 
     return label(
-        { className: "box" },
+        { className: "box " + (props.className || "") },
         div(
             strong(
                 props.label

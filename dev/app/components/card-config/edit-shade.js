@@ -43,14 +43,14 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb gutter-rl-.5 flex" },
+            { className: "box gutter-trbl-.5 flex-s" },
             div(
                 { className: "box-4" },
                 translate("shade_darkness"),
                 ":",
             ),
             div(
-                { className: "grow" },
+                { className: "grow gutter-tb" },
                 InputRange(
                     {
                         formatLabel: value => `${decimalLimit(value * 100)}%`,
@@ -64,14 +64,14 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb gutter-rl-.5 flex" },
+            { className: "box gutter-trbl-.5 flex-s" },
             div(
                 { className: "box-4" },
                 translate("blur_strength"),
                 ":",
             ),
             div(
-                { className: "grow" },
+                { className: "grow gutter-tb" },
                 InputRange(
                     {
                         formatLabel: value => `${decimalLimit(value)}px`,
@@ -85,14 +85,14 @@ function EditShadeComponent(props){
             )
         ),
         label(
-            { className: "box gutter-tb gutter-rl-.5 flex" },
+            { className: "box gutter-trbl-.5 flex-s" },
             div(
                 { className: "box-4" },
                 translate("fade_location"),
                 ":",
             ),
             div(
-                { className: "grow" },
+                { className: "grow gutter-tb" },
                 InputRange(
                     {
                         formatLabel: value => `${decimalLimit(value)}%`,
