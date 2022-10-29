@@ -130,6 +130,7 @@ export class UnitRendererComponent extends Component {
                     className: `unit ${this.regionPosition}`,
                     id: this.props.id
                 },
+
                 div(
                     {
                         className: "art",
@@ -157,6 +158,8 @@ export class UnitRendererComponent extends Component {
                         //~ (this.props.transform ? this.props.transform.scale : 1).toFixed(6),
                     //~ ),
                 ),
+
+                div({className: "gradiant-blur"}),
 
                 div(
                     { className: "card-text-wrapper" },
