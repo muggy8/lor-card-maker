@@ -19,6 +19,9 @@
 #card-editor .card-configs {
     z-index: 1;
     position: relative;
+
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2em);
+    mask-image: linear-gradient(to bottom, transparent 0, black 2em);
 }
 
 #card-editor .card-configs::before {
