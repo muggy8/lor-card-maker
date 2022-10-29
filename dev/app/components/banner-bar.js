@@ -37,9 +37,9 @@ function BannarBarComponent(props){
     }, [globalState.patchState])
 
     return div(
-        {className: "banner fixed flex hcenter gutter-rl-4 card-text-bold", ref: setBannerElement},
+        {className: "banner fixed flex hcenter gutter-rl-3 card-text-bold", ref: setBannerElement},
         h1(
-            {className: "key-text gutter-rl"},
+            {className: "key-text"},
             translate("lor_card_foundry"),
             a(
                 {
