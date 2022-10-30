@@ -8,6 +8,7 @@
     backdrop-filter: blur(22px);
     border-right: solid 1px var(--color-border);
     max-width: 90%;
+    background-color: rgba(var(--rgb-light), 0.4);
     
     will-change: transform;
     transition: transform 1s;

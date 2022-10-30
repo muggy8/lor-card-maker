@@ -27,11 +27,17 @@
 		<style>
 			/* inlined css to show loading state */
 			html {
-				--color-white: #fff;
-				--color-black: #000;
-				--color-primary: #452abc;
-				--color-dark: #777;
-				--color-light: #ccc;
+				--rgb-white: 255, 255, 255;
+				--rgb-black: 0, 0, 0;
+				--rgb-primary: 69, 42, 188;
+				--rgb-dark: 119, 119, 119;
+				--rgb-light: 204, 204, 204;
+
+				--color-white: rgb(var(--rgb-white));
+				--color-black: rgb(var(--rgb-black));
+				--color-primary: rgb(var(--rgb-primary));
+				--color-dark: rgb(var(--rgb-dark));
+				--color-light: rgb(var(--rgb-light));
 				--color-clear: rgba(0,0,0,0);
 
 				--color-bg: var(--color-white);
