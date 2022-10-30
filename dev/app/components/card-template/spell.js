@@ -215,8 +215,20 @@ function SpellComponent(props){
         const cleanKeywords = generateCleanedKeywordSet(props.keywords, currentSpeedBasedOnKeywords)
 
         if (props.speed !== currentSpeedBasedOnKeywords){
+            // update the speed prop.
             props.cardDataUpdaters.speed(currentSpeedBasedOnKeywords)
+
+            if (currentSpeedBasedOnKeywords === "equipment"){
+                props.cardDataUpdaters.power(0)
+                props.cardDataUpdaters.health(0)
+            }
+            else{
+                props.cardDataUpdaters.power(null)
+                props.cardDataUpdaters.health(null)
+            }
         }
+
+        // optionally update the keywords set too if needed
         if (!cleanKeywords || !props.keywords){
             return
         }
