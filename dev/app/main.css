@@ -23,7 +23,7 @@
 		format("opentype");
 }
 
-html {
+svg {
 	--effect-blue-text: #49a0f8;
 	--effect-orange-text: #fad65a;
 	--effect-white-text: #fff;

@@ -75,8 +75,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const exportCard = useCallback(()=>{
             saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
-                width: 680,
-                height: 1024,
+                width: svgRef.width.baseVal.value,
+                height: svgRef.height.baseVal.value,
             }).then(uri=>{
                 openUri(uri)
             })
