@@ -34,10 +34,10 @@ async function getReplicateImage(url){
 
     const context = canvas.getContext("2d")
 
-    typeof context.imageSmoothingEnabled !== "undefined" && (context.imageSmoothingEnabled = false)
     typeof context.mozImageSmoothingEnabled !== "undefined" && (context.mozImageSmoothingEnabled = false)
     typeof context.oImageSmoothingEnabled !== "undefined" && (context.oImageSmoothingEnabled = false)
     typeof CanvasRenderingContext2D.webkitImageSmoothingEnabled !== "undefined" && (CanvasRenderingContext2D.webkitImageSmoothingEnabled = false)
+    typeof context.imageSmoothingEnabled !== "undefined" && (context.imageSmoothingEnabled = false)
     context.clearRect(0,0,canvas.width,canvas.height)
 
     // draw the initial image that's the right way around
