@@ -181,6 +181,8 @@ async function getSavedCardList(req, path){
 		return id
 	})
 
+	idList.reverse()
+
 	let idListToDataListTasks = idList.map(async id=>{
 		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
 		cardData.id = id

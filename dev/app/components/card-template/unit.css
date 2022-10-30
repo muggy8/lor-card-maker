@@ -47,7 +47,7 @@
 }
 
 .unit .cost {
-    color: #FFF;
+    color: var(--effect-white-text);
     width: 120px;
     height: 120px;
     left: 31px;
@@ -109,7 +109,7 @@
     top: 866px;
     font-size: 70px;
     will-change: font-size;
-    color: #FFF;
+    color: var(--effect-white-text);
     text-align: center;
 }
 
@@ -137,7 +137,7 @@
     height: 70px;
     font-size: 55px;
     will-change: font-size;
-    color: #FFF;
+    color: var(--effect-white-text);
     text-align: center;
     text-transform: uppercase;
 }

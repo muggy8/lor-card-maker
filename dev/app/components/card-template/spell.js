@@ -1,5 +1,5 @@
 import factory, { div } from "/Utils/elements.js"
-import { useRef, useLayoutEffect, useState, useEffect, useContext } from "/cdn/react"
+import { useRef, useState, useEffect, useContext } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import { FastAverageColor } from "/cdn/fast-average-color"
 import loadCss from "/Utils/load-css.js"
@@ -10,6 +10,7 @@ import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 import { speedOptions } from "/Components/card-config/edit-speed.js"
+import useEffectDebounce from "/Utils/use-debounce-effect.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -44,7 +45,7 @@ function SpellComponent(props){
     // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
     const [imageAvgColor, updateImageAvgColor] = useState("#000000")
-    useLayoutEffect(()=>{
+    useEffectDebounce(()=>{
         let fac = facref.current
         if (!fac){
             fac = facref.current = new FastAverageColor();
@@ -58,7 +59,7 @@ function SpellComponent(props){
                 updateImageAvgColor(color.hex)
             })
             .catch(console.warn)
-    }, [props.art])
+    }, 200, [props.art])
 
     // gotta manage all the stuff to do with card text size.
     const nameRef = useRef()
@@ -70,15 +71,16 @@ function SpellComponent(props){
     const costFitty = useRef()
     const powerFitty = useRef()
     const healthFitty = useRef()
-    useLayoutEffect(()=>{
+    
+    useEffectDebounce(()=>{
         scaleFontSize(nameRef.current, 70, 16)
-    }, [props.name])
+    }, 200, [props.name])
 
-    useLayoutEffect(()=>{
+    useEffectDebounce(()=>{
         scaleFontSize(clanRef.current, 40, 16)
-    }, [props.clan])
+    }, 200, [props.clan])
 
-    useLayoutEffect(()=>{
+    useEffectDebounce(()=>{
         const fittyInstance = costFitty.current
 
         if (!fittyInstance){
@@ -90,9 +92,9 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.mana])
+    }, 200, [props.mana])
 
-    useLayoutEffect(()=>{
+    useEffectDebounce(()=>{
         if (typeof props.power !== "number"){
             return
         }
@@ -108,9 +110,9 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.power])
+    }, 200, [props.power])
 
-    useLayoutEffect(()=>{
+    useEffectDebounce(()=>{
         if (typeof props.health !== "number"){
             return
         }
@@ -125,7 +127,7 @@ function SpellComponent(props){
         }
 
         fittyInstance.fit()
-    }, [props.health])
+    }, 200, [props.health])
 
     // manage the assets and convert them from URL form to base 64 form to make exporting easier
     const [backgroundUri, updateBackgroundUri] = useState("")

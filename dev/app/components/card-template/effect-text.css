@@ -1,7 +1,7 @@
 .effect-text {
     font-size: 36px;
     text-align: center;
-    color: #FFF;
+    color: var(--effect-white-text);
     will-change: font-size;
 }
 
@@ -16,8 +16,8 @@
 }
 
 .effect-text .blue-word {
-    color: var(--color-blue-text);
+    color: var(--effect-blue-text);
 }
 .effect-text .orange-word {
-    color: var(--color-orange-text);
+    color: var(--effect-orange-text);
 }

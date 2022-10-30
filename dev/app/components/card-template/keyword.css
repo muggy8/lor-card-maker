@@ -8,6 +8,12 @@
     background-repeat: no-repeat;
 }
 
+.keyword .blue-word {
+    color: var(--effect-blue-text);
+}
+.keyword .orange-word {
+    color: var(--effect-orange-text);
+}
 .keyword .content {
     padding-top: 100px;
     padding-left: 80px;
@@ -21,12 +27,24 @@
     justify-content: center;
     font-family: UniversforRiotGamesUltraCondensed;
     text-transform: uppercase;
+    font-weight: bold;
 
-    min-height: 1.2em;
+    min-height: 66px;
+    max-height: 74px;
 }
-.keyword .blue-word {
-    color: var(--color-blue-text);
+
+.keyword .division {
+    width: 128px;
+    height: 32px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+    margin-bottom: 16px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
-.keyword .orange-word {
-    color: var(--color-orange-text);
+.keyword .effect-container {
+    max-height: 200px;
 }
