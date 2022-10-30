@@ -23,6 +23,8 @@ function nextTick(){
     return new Promise(accept=>setImmediate(accept))
 }
 
+const currentlyRunningScalingTasks = new Map()
+
 export async function scaleFontSize(element, max = 36, min = effectTextSize){
     if (!element){
         return
@@ -35,31 +37,48 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
         return
     }
 
-    // perform binary search for the perfect font size
-    let upperbound = max, lowerBound = min, checkSize = currentFontSize
-
-    while(upperbound - lowerBound > 0.5){
-        element.style.fontSize = `${checkSize + 0.5}px`
-        await nextTick()
-        const overflowAtNextIncriment = isOverflown(element)
-
-        element.style.fontSize = `${checkSize}px`
-        await nextTick()
-        const overflowAtCurrentFontsize = isOverflown(element)
-
-        if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
-            return
-        }
-
-        if (overflowAtCurrentFontsize){
-            upperbound = checkSize
-            checkSize = avg(upperbound, lowerBound)
-        }
-        else{
-            lowerBound = checkSize
-            checkSize = avg(upperbound, lowerBound)
-        }
+    const alreadyExistingTask = currentlyRunningScalingTasks.get(element)
+    if (alreadyExistingTask){
+        return alreadyExistingTask
     }
+
+    const newScalingTask = new Promise((accept)=>{
+        (async ()=>{
+            // perform binary search for the perfect font size
+            let upperbound = max, lowerBound = min, checkSize = currentFontSize
+
+            while(upperbound - lowerBound > 0.5){
+                element.style.fontSize = `${checkSize + 0.5}px`
+                await nextTick()
+                const overflowAtNextIncriment = isOverflown(element)
+        
+                element.style.fontSize = `${checkSize}px`
+                await nextTick()
+                const overflowAtCurrentFontsize = isOverflown(element)
+        
+                if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
+                    return accept()
+                }
+        
+                if (overflowAtCurrentFontsize){
+                    upperbound = checkSize
+                    checkSize = avg(upperbound, lowerBound)
+                }
+                else{
+                    lowerBound = checkSize
+                    checkSize = avg(upperbound, lowerBound)
+                }
+            }
+
+            accept()
+        })()
+    })
+
+    currentlyRunningScalingTasks.set(element, newScalingTask.then(()=>{
+        currentlyRunningScalingTasks.delete(element)
+    }))
+
+    return currentlyRunningScalingTasks.get(element)
 }
 
 function EffectTextComponent(props){
