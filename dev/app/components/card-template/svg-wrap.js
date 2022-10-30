@@ -17,7 +17,7 @@ function SvgWrapComponent(props){
     const transformCallback = useRef()
     transformCallback.current = props.onTransform
 
-    const [cursor, updateCursor] = useState("default")
+    const [cursor, updateCursor] = useState("inherit")
 
     useEffect(()=>{
         if (!props.onTransform){
@@ -69,7 +69,7 @@ function SvgWrapComponent(props){
         return function(){
             element.removeEventListener("wheel", onWheel)
             gestureWatcher.unset();
-            updateCursor("default")
+            updateCursor("inherit")
         }
 
         function onWheel(ev){
