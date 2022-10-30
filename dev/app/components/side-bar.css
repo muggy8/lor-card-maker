@@ -55,6 +55,7 @@
 .side-bar .menu-option {
     font-size: 1.5rem;
     text-decoration: none;
+    display: block;
 }
 
 .side-bar .menu-option:hover,

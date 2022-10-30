@@ -1,5 +1,5 @@
-import factory, { div, span } from "/Utils/elements.js"
-import { useCallback, useEffect, useState } from "/cdn/react" 
+import factory, { div, span, label, a } from "/Utils/elements.js"
+import { useCallback, useEffect, useState, useRef } from "/cdn/react" 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 
@@ -13,6 +13,8 @@ function SidebarComponent(){
     const toggleOpened = useCallback(()=>{
         updateOpened(!opened)
     }, [opened])
+
+    const bugReportlink = useRef()
 
     return div(
         { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
@@ -37,9 +39,15 @@ function SidebarComponent(){
             { className: "menu-option clickable gutter-tb" },
             translate("import_save")
         ),
-        div(
-            { className: "menu-option clickable gutter-tb" },
-            translate("report_bug")
+        label(
+            { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
+            translate("report_bug"),
+            a({
+                ref: bugReportlink,
+                href: "https://github.com/muggy8/lor-card-maker/issues",
+                className: "hide",
+                target: "_blank"
+            })
         ),
     )
 

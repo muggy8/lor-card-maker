@@ -64,7 +64,7 @@ function EditArtComponent(props){
             div({className: "flex gutter-l-.5 gutter-r-.25 box-6"},
                 button(
                     {
-                        className: "box",
+                        className: "box gutter-trbl-.5",
                         onClick: ()=>{
                             if (props.value){
                                 globalState.patchState({moveableArt: !globalState.state.moveableArt})
@@ -83,7 +83,7 @@ function EditArtComponent(props){
             div({className: "flex gutter-r-.5 gutter-l-.25 box-6"},
                 button(
                     {
-                        className: "box",
+                        className: "box gutter-trbl-.5",
                         onClick: ()=>{
                             globalState.patchState({defaultBg: !globalState.state.defaultBg})
                         }
