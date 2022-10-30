@@ -1,12 +1,13 @@
 .side-bar {
-    position: absolute;
+    position: fixed;
     top: 0;
     height: 100vh;
     z-index: 2;
     left: 0;
     transform: translate(-100%, 0);
-    background-color: var(--color-bg);
+    backdrop-filter: blur(22px);
     border-right: solid 1px var(--color-border);
+    max-width: 90%;
     
     will-change: transform;
     transition: transform 1s;
@@ -19,15 +20,45 @@
 .side-bar .menu-icon {
     position: absolute;
     left: 100%;
+    top: 0;
     width: 2em;
     height: 2em;
     font-size: calc(var(--banner-height, 2rem) * 0.5);
-    color: var(--color-primary);
 
     transform: translate(0, 0);
     will-change: transform;
     transition: transform 1s;
 }
+
+.side-bar .menu-icon *,
+.side-bar .menu-icon *::before,
+.side-bar .menu-icon *::after
+{
+    color: var(--color-dark);
+    will-change: color;
+}
+.side-bar .menu-icon:hover *,
+.side-bar .menu-icon:hover *::before,
+.side-bar .menu-icon:hover *::after,
+.side-bar .menu-icon:focus *,
+.side-bar .menu-icon:focus *::before,
+.side-bar .menu-icon:focus *::after
+{
+    color: var(--color-link);
+}
+
 .side-bar.open .menu-icon {
     transform: translate(-100%, 0);
+}
+
+.side-bar .menu-option {
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.side-bar .menu-option:hover,
+.side-bar .menu-option:focus
+ {
+    color: var(--color-link);
+    text-decoration: underline;
 }
