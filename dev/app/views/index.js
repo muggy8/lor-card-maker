@@ -15,6 +15,7 @@ function App () {
     const [globalState, updateGlobalState] = useState({
         lang: "en",
         view: List,
+        defaultBg: true,
     })
 
     let accumulatedUpdateState = {...globalState}

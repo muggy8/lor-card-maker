@@ -1,5 +1,6 @@
-import factory, { div, img } from "/Utils/elements.js"
+import factory, { div } from "/Utils/elements.js"
 import { Component, createRef } from "/cdn/react"
+import { Globals } from "/Views/index.js"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import ArtRenderer from "/Components/card-template/image-render.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
@@ -28,6 +29,10 @@ export class UnitRendererComponent extends Component {
     clanFrame = "/Assets/champion/typing.png"
 
     regionPosition = "champion"
+
+    static get contextType(){
+        return Globals
+    }
 
     constructor(props) {
         super(props)
@@ -130,7 +135,10 @@ export class UnitRendererComponent extends Component {
             div(
                 {
                     style: {
-                        "--background-image": `url(${this.state.backdropUri || ""})`,
+                        "--background-image": this.context.state.defaultBg
+                            ? `url(${this.state.backdropUri || ""})`
+                            : `none`
+                        ,
                         "--scale": this.props.transform ? this.props.transform.scale : 1,
                         "--left": this.props.transform ? this.props.transform.x : 0,
                         "--top": this.props.transform ? this.props.transform.y : 0,

@@ -93,6 +93,8 @@ const lang = {
         "shade_darkness": "Shade Darkness",
         "blur_strength": "Blur Stength",
         "region": "Region",
-        "speed": "Speed"
+        "speed": "Speed",
+        "art_moveable": "Art can be moved",
+        "default_bg_show": "Show default background art",
     }
 }

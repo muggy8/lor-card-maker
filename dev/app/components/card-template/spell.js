@@ -1,5 +1,6 @@
-import factory, { div, img } from "/Utils/elements.js"
-import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
+import factory, { div } from "/Utils/elements.js"
+import { useRef, useLayoutEffect, useState, useEffect, useContext } from "/cdn/react"
+import { Globals } from "/Views/index.js"
 import { FastAverageColor } from "/cdn/fast-average-color"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
@@ -38,6 +39,7 @@ function generateCleanedKeywordSet(keywords, speed){
 }
 
 function SpellComponent(props){
+    const globalState = useContext(Globals)
 
     // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
@@ -246,7 +248,10 @@ function SpellComponent(props){
                 {
                     className: "art",
                     style: {
-                        backgroundImage: `url(${backdropUri})`,
+                        backgroundImage: globalState.state.defaultBg 
+                            ? `url(${backdropUri})`
+                            : "none"
+                        ,
                         "--scale": props.transform ? props.transform.scale : 1,
                         "--left": props.transform ? props.transform.x : 0,
                         "--top": props.transform ? props.transform.y : 0,

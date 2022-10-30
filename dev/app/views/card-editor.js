@@ -1,4 +1,4 @@
-import factory, { div, button } from "/Utils/elements.js"
+import factory, { div, button, strong } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import React, { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
@@ -115,27 +115,30 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         return div(
             { id: "card-editor", className: "flex hcenter" },
             div(
-                { className: "card-preview gutter-trl-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", style: { paddingBottom: previewHeight + "px"}},
+                { className: "card-preview gutter-t-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", style: { paddingBottom: previewHeight + "px"}},
                 div(
                     {className: "preview-content", ref: fixedDisplayRef, style: {
                         width: useableWidth + "px"
                     }},
-                    React.createElement(
-                        svgRefference.Provider,
-                        { value: {
-                            current: svgRef,
-                            setRef: updateSvgRef,
-                        } },
-                        cardRenderer({
-                            ...card,
-                            cardDataUpdaters,
-                            updateTransform: card.art ? cardDataUpdaters.transform : undefined,
-                        }),
+                    div(
+                        { className: "gutter-rl-2" },
+                        React.createElement(
+                            svgRefference.Provider,
+                            { value: {
+                                current: svgRef,
+                                setRef: updateSvgRef,
+                            } },
+                            cardRenderer({
+                                ...card,
+                                cardDataUpdaters,
+                                updateTransform: card.art && globalState.state.moveableArt ? cardDataUpdaters.transform : undefined,
+                            }),
+                        )
                     ),
                     div(
                         {className: "flex hcenter gutter-tb"},
                         div(
-                            { className: "gutter-rl" },
+                            { className: "gutter-rl-.5" },
                             button(
                                 { 
                                     className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
@@ -145,11 +148,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                         })
                                     }
                                 },
-                                translate("delete_card")
+                                strong(translate("delete_card"))
                             )
                         ),
                         div(
-                            { className: "gutter-rl" },
+                            { className: "gutter-rl-.5" },
                             button(
                                 {
                                     className: "gutter-trbl-.5",
@@ -162,14 +165,14 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                         cardDataUpdaters.id(newId)
                                     }
                                 },
-                                translate("save_card")
+                                strong(translate("save_card"))
                             )
                         ),
                         div(
-                            { className: "gutter-rl" },
+                            { className: "gutter-rl-.5" },
                             button(
                                 { className: "gutter-trbl-.5", onClick: exportCard },
-                                translate("export")
+                                strong(translate("export"))
                             )
                         ),
                     )
@@ -201,7 +204,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ,
                 canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
-                        {className: "flex-s no-wrap"},
+                        {className: "flex-l no-wrap"},
                         EditNumber({
                             className: "block gutter-b-2",
                             label: translate("power"),

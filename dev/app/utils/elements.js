@@ -1,4 +1,5 @@
 import factory from "/Utils/element-factory.js"
+import React from "/cdn/react"
 export default factory
 
 export const div = factory("div")
@@ -26,3 +27,4 @@ export const path = factory("path")
 export const foreignObject = factory("foreignObject")
 export const br = factory("br")
 export const style = factory("style")
+export const fragment = factory(React.Fragment)
