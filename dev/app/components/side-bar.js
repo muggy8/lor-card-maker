@@ -1,8 +1,8 @@
-import factory, { div, span, label, a } from "/Utils/elements.js"
-import { useCallback, useEffect, useState, useRef } from "/cdn/react" 
+import factory, { div, span, label, a, input } from "/Utils/elements.js"
+import { useCallback, useState, useRef } from "/cdn/react" 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import { getCardList } from "/Utils/service.js"
+import { getCardList, saveCard } from "/Utils/service.js"
 
 
 const cssLoaded = loadCss("/Components/side-bar.css")
@@ -27,6 +27,80 @@ function SidebarComponent(){
         downloadFile(output, "card-data.json", "application/json")
     }, [])
 
+    const importData = useCallback(async ev=>{
+        const loadedData = await new Promise(accept=>{
+            let reader = new FileReader()
+            let file = ev.target.files[0]
+
+            reader.addEventListener("load", ()=>{
+                let json = JSON.parse(reader.result)
+                accept(json)
+            })
+
+            if (file){
+                reader.readAsText(file)
+            }
+        })
+
+        console.log(loadedData)
+
+        // step 1: handle v1 data
+        const v1DataToImport = [
+            {
+                key: "savedChampions1",
+                type: "champion1"
+            },
+            {
+                key: "savedChampions2",
+                type: "champion2"
+            },
+            {
+                key: "savedChampions3",
+                type: "champion3"
+            },
+            {
+                key: "savedFollowers",
+                type: "follower"
+            },
+            {
+                key: "savedKeywords",
+                type: "keyword"
+            },
+            {
+                key: "savedLandmarks",
+                type: "landmark"
+            },
+            {
+                key: "savedSpells",
+                type: "spell"
+            },
+        ]
+            .map(placeToCheck=>{
+                return loadedData[placeToCheck.key]
+                    .map(({id, cardData})=>{
+                        cardData.id = id
+                        cardData.type = placeToCheck.type
+                        if (cardData.rarity === "gemless" || cardData.rarity === "none"){
+                            cardData.rarity = ""
+                        }
+                        cardData.dataVersion = 2
+
+                        return cardData
+                    })
+            })
+            .flat()
+
+        const v2DataToImport = loadedData.cards ? loadedData.cards.filter(cardData=>cardData.dataVersion === 2) : [] 
+
+        const allDataToImport = [...v1DataToImport, ...v2DataToImport]
+
+        for(let cardData of allDataToImport){
+            await saveCard(cardData.id, cardData)
+        }
+
+        document.location.reload()
+    })
+
     return div(
         { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
         div(
@@ -46,9 +120,15 @@ function SidebarComponent(){
             { className: "menu-option clickable gutter-tb", onClick: exportData },
             translate("export_save")
         ),
-        div(
+        label(
             { className: "menu-option clickable gutter-tb" },
-            translate("import_save")
+            translate("import_save"),
+            input({
+                className: "hide",
+                accept: "application/json",
+                type: "file",
+                onChange: importData,
+            }),
         ),
         label(
             { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
