@@ -9,6 +9,7 @@ import SvgWrap from "/Components/card-template/svg-wrap.js"
 import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 import { defaultShade } from "/Views/list.js"
+import debounce from "/Utils/debounce-function.js"
 
 const cssLoaded = loadCss("/Components/card-template/unit.css")
 
@@ -41,6 +42,14 @@ export class UnitRendererComponent extends Component {
         this.powerRef = createRef()
         this.healthRef = createRef()
         this.nameRef = createRef()
+
+        this.fitClan = debounce(()=>this.clanRef.current && caleFontSize(this.clanRef.current, 40, 16))
+        this.fitCost = debounce(()=>this.costFitty && this.costFitty.fit())
+        this.fitPower = debounce(()=>this.powerFitty && this.powerFitty.fit())
+        this.fitHealth = debounce(()=>this.healthRefFitty && this.healthRefFitty.fit())
+        this.fitName = debounce(()=>this.nameRef.current && scaleFontSize(this.nameRef.current, 70, 16))
+
+        console.log(this)
     }
 
     getRegionFrameUrl(){
@@ -105,11 +114,19 @@ export class UnitRendererComponent extends Component {
             name,
         } = this.props
 
-        previousProps.clan !== clan && scaleFontSize(this.clanRef.current, 40, 16)
-        previousProps.cost !== cost && this.costFitty.fit()
-        previousProps.power !== power && this.powerFitty.fit()
-        previousProps.health !== health && this.healthRefFitty.fit()
-        previousProps.name !== name && scaleFontSize(this.nameRef.current, 70, 16)
+        const {
+            fitClan,
+            fitCost,
+            fitPower,
+            fitHealth,
+            fitName
+        } = this
+
+        previousProps.clan !== clan && fitClan()
+        previousProps.cost !== cost && fitCost()
+        previousProps.power !== power && fitPower()
+        previousProps.health !== health && fitHealth()
+        previousProps.name !== name && fitName()
 
         if (previousProps.rarity !== this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"){
             this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
