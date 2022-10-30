@@ -241,7 +241,11 @@ function SpellComponent(props){
     }, [props.keywords])
 
     return SvgWrap(
-        { onTransform: props.updateTransform, ...(props.transform || {x: 0, y: 0, scale: 1}) },
+        {
+            loading: !frameUri,
+            onTransform: props.updateTransform, 
+            ...(props.transform || {x: 0, y: 0, scale: 1}),
+        },
         frameUri 
             ? div(
                 { className: `${props.speed} spell`, id: props.id },

@@ -181,221 +181,228 @@ export class UnitRendererComponent extends Component {
         const shade = this.props.shade || defaultShade
         const [trasnparentPercent, solidPercent] = shade.gradientLocation
         return SvgWrap(
-            { onTransform: this.props.updateTransform, ...(this.props.transform || {x: 0, y: 0, scale: 1}) },
-            div(
-                {
-                    style: {
-                        "--background-image": this.context.state.defaultBg
-                            ? `url(${this.state.backdropUri || ""})`
-                            : `none`
-                        ,
-                        "--scale": this.props.transform ? this.props.transform.scale : 1,
-                        "--left": this.props.transform ? this.props.transform.x : 0,
-                        "--top": this.props.transform ? this.props.transform.y : 0,
-                        "--blur": `${shade.blur}px`,
-                        "--darkness": shade.darkness,
-                        "--transparent-percent": trasnparentPercent + "%",
-                        "--solid-percent": solidPercent + "%",  
-                    },
-                    className: `unit ${this.regionPosition}`,
-                    id: this.props.id
-                },
-
-                div(
+            { 
+                loading: !this.state.frameUri,
+                onTransform: this.props.updateTransform, 
+                ...(this.props.transform || {x: 0, y: 0, scale: 1}),
+            },
+            this.state.frameUri 
+                ? div(
                     {
-                        className: "art",
                         style: {
-                            clipPath: `polygon(${
-                                this.clipPathPolygon.map((coordPair)=>{
-                                    return coordPair.map(coord=>coord+"px")
-                                        .join(" ")
-                                }).join(",")
-                            })`,
-                        }
-                    },
-                    div(
-                        {className: "scale-adjuster"},
-                        ArtRenderer({
-                            url: this.props.art
-                        })
-                    ),
-                ),
-
-                div(
-                    {
-                        className: "art blur",
-                        style: {
-                            clipPath: `polygon(${
-                                this.clipPathPolygon.map((coordPair)=>{
-                                    return coordPair.map(coord=>coord+"px")
-                                        .join(" ")
-                                }).join(",")
-                            })`,
-                        }
-                    },
-                    div(
-                        {className: "scale-adjuster"},
-                        ArtRenderer({
-                            url: this.props.art
-                        })
-                    ),
-                ),
-
-                div(
-                    { className: "card-text-wrapper" },
-                    // stuff to do with the card content goes here
-
-                    this.props.name
-                        ? div(
-                            { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
-                            this.props.name
-                        )
-                        : undefined
-                    ,
-
-                    this.props.keywords && this.props.keywords.length
-                        ? div(
-                            { className: "keyword-container card-text-bold" },
-                            this.props.keywords.map(keywordName=>KeywordRenderer({
-                                key: keywordName,
-                                name: keywordName,
-                                size: this.props.keywords.length > 1 ? "small" : "large"
-                            }))
-                        )
-                        : undefined
-                    ,
-
-                    this.props.effect
-                        ? EffectText(
-                            {
-                                blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords,
-                                className: "effect-container card-text-universe",
-                            },
-                            this.props.effect
-                        )
-                        : undefined
-                    ,
-
-                    this.props.lvup
-                        ? div({
-                            className: "level-bar",
-                            style: {
-                                backgroundImage: this.state.levelupBarUri 
-                                    ? `url(${this.state.levelupBarUri || ""})`
-                                    : "none"
-                            },
-                        })
-                        : undefined
-                    ,
-
-                    this.props.lvup
-                        ? EffectText(
-                            {
-                                blueWords: this.props.blueWords,
-                                orangeWords: this.props.orangeWords,
-                                className: "level-up-container card-text-universe",
-                            },
-                            this.props.lvup
-                        )
-                        : undefined
-                    ,
-                ),
-
-                div(
-                    {
-                        className: "frame",
-                        style: {
-                            backgroundImage: this.state.frameUri 
-                                ? `url(${this.state.frameUri || ""})` 
-                                : "none"
-                        }
-                    },
-                ),
-
-                div(
-                    { className: "cost fitty-nowrap card-text-bold", ref: this.costRef },
-                    this.props.mana,
-                ),
-
-                this.props.faction && this.props.faction.length
-                    ? div(
-                        {
-                            className: "region-frame" ,
-                            style: {
-                                backgroundImage: this.state.regionFrameUri
-                                    ? `url(${this.state.regionFrameUri || ""})`
-                                    : "none"
-                            }
+                            "--background-image": this.context.state.defaultBg
+                                ? `url(${this.state.backdropUri || ""})`
+                                : `none`
+                            ,
+                            "--scale": this.props.transform ? this.props.transform.scale : 1,
+                            "--left": this.props.transform ? this.props.transform.x : 0,
+                            "--top": this.props.transform ? this.props.transform.y : 0,
+                            "--blur": `${shade.blur}px`,
+                            "--darkness": shade.darkness,
+                            "--transparent-percent": trasnparentPercent + "%",
+                            "--solid-percent": solidPercent + "%",  
                         },
-                        this.state.factionUri
-                            ? this.state.factionUri.map(uri=>div(
-                                {
-                                    key: uri,
-                                    className: "region-icon",
-                                    style: {
-                                        backgroundImage: `url(${uri})`
-                                    }
-                                },
-                            ))
-                            : null
-                        ,
-                    )
-                    : undefined
-                ,
+                        className: `unit ${this.regionPosition}`,
+                        id: this.props.id
+                    },
 
-                this.props.clan
-                    ? div(
+                    div(
                         {
-                            className: "clan",
+                            className: "art",
                             style: {
-                                backgroundImage: this.state.clanFrameUri 
-                                    ? `url(${this.state.clanFrameUri || ""})`
-                                    : "none"
+                                clipPath: `polygon(${
+                                    this.clipPathPolygon.map((coordPair)=>{
+                                        return coordPair.map(coord=>coord+"px")
+                                            .join(" ")
+                                    }).join(",")
+                                })`,
                             }
                         },
                         div(
-                            {
-                                ref: this.clanRef,
-                                className: "card-text-universe-condensed text-area fitty-nowrap"
-                            },
-                            this.props.clan
+                            {className: "scale-adjuster"},
+                            ArtRenderer({
+                                url: this.props.art
+                            })
                         ),
-                    )
-                    : undefined
-                ,
+                    ),
 
-                typeof this.props.power !== "undefined"
-                    ? div(
-                        { className: "power fitty-nowrap card-text-bold", ref: this.powerRef },
-                        this.props.power
-                    )
-                    : undefined
-                ,
-
-                typeof this.props.health !== "undefined"
-                    ? div(
-                        { className: "health fitty-nowrap card-text-bold", ref: this.healthRef },
-                        this.props.health
-                    )
-                    : undefined
-                ,
-
-                this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"
-                    ? div(
+                    div(
                         {
-                            className: "rarity " + this.props.rarity,
+                            className: "art blur",
                             style: {
-                                backgroundImage: this.state.rarityUri 
-                                    ? `url(${this.state.rarityUri || ""})` 
+                                clipPath: `polygon(${
+                                    this.clipPathPolygon.map((coordPair)=>{
+                                        return coordPair.map(coord=>coord+"px")
+                                            .join(" ")
+                                    }).join(",")
+                                })`,
+                            }
+                        },
+                        div(
+                            {className: "scale-adjuster"},
+                            ArtRenderer({
+                                url: this.props.art
+                            })
+                        ),
+                    ),
+
+                    div(
+                        { className: "card-text-wrapper" },
+                        // stuff to do with the card content goes here
+
+                        this.props.name
+                            ? div(
+                                { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
+                                this.props.name
+                            )
+                            : undefined
+                        ,
+
+                        this.props.keywords && this.props.keywords.length
+                            ? div(
+                                { className: "keyword-container card-text-bold" },
+                                this.props.keywords.map(keywordName=>KeywordRenderer({
+                                    key: keywordName,
+                                    name: keywordName,
+                                    size: this.props.keywords.length > 1 ? "small" : "large"
+                                }))
+                            )
+                            : undefined
+                        ,
+
+                        this.props.effect
+                            ? EffectText(
+                                {
+                                    blueWords: this.props.blueWords,
+                                    orangeWords: this.props.orangeWords,
+                                    className: "effect-container card-text-universe",
+                                },
+                                this.props.effect
+                            )
+                            : undefined
+                        ,
+
+                        this.props.lvup
+                            ? div({
+                                className: "level-bar",
+                                style: {
+                                    backgroundImage: this.state.levelupBarUri 
+                                        ? `url(${this.state.levelupBarUri || ""})`
+                                        : "none"
+                                },
+                            })
+                            : undefined
+                        ,
+
+                        this.props.lvup
+                            ? EffectText(
+                                {
+                                    blueWords: this.props.blueWords,
+                                    orangeWords: this.props.orangeWords,
+                                    className: "level-up-container card-text-universe",
+                                },
+                                this.props.lvup
+                            )
+                            : undefined
+                        ,
+                    ),
+
+                    div(
+                        {
+                            className: "frame",
+                            style: {
+                                backgroundImage: this.state.frameUri 
+                                    ? `url(${this.state.frameUri || ""})` 
                                     : "none"
                             }
                         },
+                    ),
 
-                    )
-                    : undefined
-                ,
-            )
+                    div(
+                        { className: "cost fitty-nowrap card-text-bold", ref: this.costRef },
+                        this.props.mana,
+                    ),
+
+                    this.props.faction && this.props.faction.length
+                        ? div(
+                            {
+                                className: "region-frame" ,
+                                style: {
+                                    backgroundImage: this.state.regionFrameUri
+                                        ? `url(${this.state.regionFrameUri || ""})`
+                                        : "none"
+                                }
+                            },
+                            this.state.factionUri
+                                ? this.state.factionUri.map(uri=>div(
+                                    {
+                                        key: uri,
+                                        className: "region-icon",
+                                        style: {
+                                            backgroundImage: `url(${uri})`
+                                        }
+                                    },
+                                ))
+                                : null
+                            ,
+                        )
+                        : undefined
+                    ,
+
+                    this.props.clan
+                        ? div(
+                            {
+                                className: "clan",
+                                style: {
+                                    backgroundImage: this.state.clanFrameUri 
+                                        ? `url(${this.state.clanFrameUri || ""})`
+                                        : "none"
+                                }
+                            },
+                            div(
+                                {
+                                    ref: this.clanRef,
+                                    className: "card-text-universe-condensed text-area fitty-nowrap"
+                                },
+                                this.props.clan
+                            ),
+                        )
+                        : undefined
+                    ,
+
+                    typeof this.props.power !== "undefined"
+                        ? div(
+                            { className: "power fitty-nowrap card-text-bold", ref: this.powerRef },
+                            this.props.power
+                        )
+                        : undefined
+                    ,
+
+                    typeof this.props.health !== "undefined"
+                        ? div(
+                            { className: "health fitty-nowrap card-text-bold", ref: this.healthRef },
+                            this.props.health
+                        )
+                        : undefined
+                    ,
+
+                    this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"
+                        ? div(
+                            {
+                                className: "rarity " + this.props.rarity,
+                                style: {
+                                    backgroundImage: this.state.rarityUri 
+                                        ? `url(${this.state.rarityUri || ""})` 
+                                        : "none"
+                                }
+                            },
+
+                        )
+                        : undefined
+                    ,
+                )
+                : undefined
+            ,
         )
     }
 }

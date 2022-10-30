@@ -1,10 +1,10 @@
 import { useContext, useRef, useEffect, useState } from "/cdn/react"
-import factory, { svg, rect, foreignObject } from "/Utils/elements.js"
+import factory, { svg, rect, foreignObject, div } from "/Utils/elements.js"
 import { svgRefference } from "/Views/card-editor.js"
 import Gesto from "/cdn/gesto"
-// import load from "/Utils/load-js.js"
+import loadCss from "/Utils/load-css.js"
 
-// const jsTask = load("https://unpkg.com/gesto@1.13.3/dist/gesto.min.js")
+const cssLoaded = loadCss("/Components/card-template/svg-wrap.css")
 
 function SvgWrapComponent(props){
     const svgRef = useContext(svgRefference)
@@ -98,7 +98,14 @@ function SvgWrapComponent(props){
                     backgroundColor: "rgba(0,0,0,0)",
                 },
             },
-            props.children
+            props.children,
+            props.loading 
+                ? div({ className: "loading-shade" },
+                    div({ className: "icon" }, 
+                        div({ className: "loading" })
+                    )
+                )
+                : undefined,
         ),
         rect({
             x: 0,
@@ -115,4 +122,4 @@ function SvgWrapComponent(props){
     )
 }
 
-export default factory(SvgWrapComponent)
+export default factory(SvgWrapComponent, cssLoaded)
