@@ -42,8 +42,6 @@ function SidebarComponent(){
             }
         })
 
-        console.log(loadedData)
-
         // step 1: handle v1 data
         const v1DataToImport = [
             {
@@ -76,6 +74,10 @@ function SidebarComponent(){
             },
         ]
             .map(placeToCheck=>{
+                if (!loadedData[placeToCheck.key]){
+                    return []
+                }
+
                 return loadedData[placeToCheck.key]
                     .map(({id, cardData})=>{
                         cardData.id = id
