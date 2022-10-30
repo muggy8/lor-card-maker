@@ -94,7 +94,9 @@ const lang = {
         "blur_strength": "Blur Stength",
         "region": "Region",
         "speed": "Speed",
-        "art_moveable": "Art can be moved",
-        "default_bg_show": "Show default background art",
+        "unlock_art_movement": "🔒 Unlock Art Movement",
+        "lock_art_movement": "🔓 Lock Art Movement",
+        "default_bg_show": "Show Default Background",
+        "default_bg_hide": "Hide Default Background",
     }
 }

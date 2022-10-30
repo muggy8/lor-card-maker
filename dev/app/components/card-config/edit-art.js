@@ -59,40 +59,38 @@ function EditArtComponent(props){
                 onChange: uploadArt
             })
         ),
-        div({className: "flex gutter-trl-.5"},
-            label({className: "box-6 flex vcenter"}, 
-                input({
-                    type: "checkbox",
-                    checked: globalState.state.moveableArt,
-                    className: "gutter-tbrl-.25",
-                    onChange: (ev)=>{
-                        if (props.value){
-                            globalState.patchState({moveableArt: ev.target.checked})
-                        }
-                        else if (globalState.value.moveableArt){
-                            globalState.patchState({moveableArt: false})
-                        }
-                    }
-                }),
-                div(
-                    { className: "box-10 gutter-l-.5" }, 
-                    translate("art_moveable")
+        div(
+            {className: "flex gutter-t-.5"},
+            div({className: "flex gutter-l-.5 gutter-r-.25 box-6"},
+                button(
+                    {
+                        className: "box",
+                        onClick: ()=>{
+                            if (props.value){
+                                globalState.patchState({moveableArt: !globalState.state.moveableArt})
+                            }
+                            else if (globalState.value.moveableArt){
+                                globalState.patchState({moveableArt: false})
+                            }
+                        },
+                        disabled: !props.value
+                    }, 
+                    translate(
+                        globalState.state.moveableArt ? "lock_art_movement" : "unlock_art_movement"
+                    )
                 ),
             ),
-            label({className: "box-6 flex vcenter"}, 
-                input({
-                    type: "checkbox",
-                    checked: globalState.state.defaultBg,
-                    className: "gutter-tbrl-.25",
-                    onChange: (ev)=>{
-                        globalsRef.current.patchState({defaultBg: ev.target.checked})
-                    }
-                }),
-                div(
-                    { className: "box-10 gutter-l-.5" }, 
-                    translate("default_bg_show")
+            div({className: "flex gutter-r-.5 gutter-l-.25 box-6"},
+                button(
+                    {
+                        className: "box",
+                        onClick: ()=>{
+                            globalState.patchState({defaultBg: !globalState.state.defaultBg})
+                        }
+                    }, 
+                    translate(globalState.state.defaultBg ? "default_bg_hide" : "default_bg_show")
                 ),
-            ),
+            )
         )
     )
 }
