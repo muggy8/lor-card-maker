@@ -4,6 +4,7 @@ import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
+import useEffectDebounce from "/Utils/use-debounce-effect.js"
 
 const cssLoaded = loadCss("/Components/card-template/effect-text.css")
 
@@ -74,112 +75,102 @@ function EffectTextComponent(props){
     orangeWords.sort((a, b)=>b.length - a.length)
 
     const [contentArray, updateContentArray] = useState([])
-    useEffect(()=>{
-        let timeoutId = setTimeout(()=>{
-            timeoutId = undefined
-
-            let contentArray = [text]
-            keywordWithIcons.forEach(word=>{
-                const wordTag = `<${word}/>`
-                const keywordIcons = keywords[word]
-                contentArray = contentArray.map(textOrElement=>{
-                    if (typeof textOrElement !== "string"){
-                        return textOrElement
-                    }
-        
-                    let splitUpText = textOrElement.split(wordTag)
-        
-                    if (splitUpText.length === 1){
-                        return splitUpText[0]
-                    }
-        
-                    for(let i = splitUpText.length - 1; i; i--){
-                        splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
-                            key: pngName+i,
-                            pngName
-                        })))
-                    }
-        
-                    return splitUpText
-                }).flat()
-            })
-        
-            blueWords.forEach(word=>{
-                if (!word){
-                    return
-                }
-                contentArray = contentArray.map(textOrElement=>{
-                    if (typeof textOrElement !== "string"){
-                        return textOrElement
-                    }
-        
-                    let splitUpText = textOrElement.split(word)
-        
-                    if (splitUpText.length === 1){
-                        return splitUpText[0]
-                    }
-        
-                    for(let i = splitUpText.length - 1; i; i--){
-                        splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
-                    }
-        
-                    return splitUpText
-                }).flat()
-            })
-        
-            orangeWords.forEach(word=>{
-                if (!word){
-                    return
-                }
-                contentArray = contentArray.map(textOrElement=>{
-                    if (typeof textOrElement !== "string"){
-                        return textOrElement
-                    }
-        
-                    let splitUpText = textOrElement.split(word)
-        
-                    if (splitUpText.length === 1){
-                        return splitUpText[0]
-                    }
-        
-                    for(let i = splitUpText.length - 1; i; i--){
-                        splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
-                    }
-        
-                    return splitUpText
-                }).flat()
-            })
-        
-            // replace new lines with br tag... but br tag breaks during svg output so we just use a div instead
+    useEffectDebounce(()=>{
+        let contentArray = [text]
+        keywordWithIcons.forEach(word=>{
+            const wordTag = `<${word}/>`
+            const keywordIcons = keywords[word]
             contentArray = contentArray.map(textOrElement=>{
                 if (typeof textOrElement !== "string"){
                     return textOrElement
                 }
-        
-                let splitUpText = textOrElement.split(/\n+/g)
-        
+    
+                let splitUpText = textOrElement.split(wordTag)
+    
                 if (splitUpText.length === 1){
                     return splitUpText[0]
                 }
-        
+    
                 for(let i = splitUpText.length - 1; i; i--){
-                    splitUpText.splice(i, 0, div())
+                    splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
+                        key: pngName+i,
+                        pngName
+                    })))
                 }
-        
+    
                 return splitUpText
             }).flat()
-
-            contentArray = contentArray.filter(el=>!!el)
-
-            updateContentArray(contentArray)
-        }, 200)
-
-        return function(){
-            if (timeoutId){
-                clearTimeout(timeoutId)
+        })
+    
+        blueWords.forEach(word=>{
+            if (!word){
+                return
             }
-        }
-    }, [text, props.blueWords, props.orangeWords])
+            contentArray = contentArray.map(textOrElement=>{
+                if (typeof textOrElement !== "string"){
+                    return textOrElement
+                }
+    
+                let splitUpText = textOrElement.split(word)
+    
+                if (splitUpText.length === 1){
+                    return splitUpText[0]
+                }
+    
+                for(let i = splitUpText.length - 1; i; i--){
+                    splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
+                }
+    
+                return splitUpText
+            }).flat()
+        })
+    
+        orangeWords.forEach(word=>{
+            if (!word){
+                return
+            }
+            contentArray = contentArray.map(textOrElement=>{
+                if (typeof textOrElement !== "string"){
+                    return textOrElement
+                }
+    
+                let splitUpText = textOrElement.split(word)
+    
+                if (splitUpText.length === 1){
+                    return splitUpText[0]
+                }
+    
+                for(let i = splitUpText.length - 1; i; i--){
+                    splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
+                }
+    
+                return splitUpText
+            }).flat()
+        })
+    
+        // replace new lines with br tag... but br tag breaks during svg output so we just use a div instead
+        contentArray = contentArray.map(textOrElement=>{
+            if (typeof textOrElement !== "string"){
+                return textOrElement
+            }
+    
+            let splitUpText = textOrElement.split(/\n+/g)
+    
+            if (splitUpText.length === 1){
+                return splitUpText[0]
+            }
+    
+            for(let i = splitUpText.length - 1; i; i--){
+                splitUpText.splice(i, 0, div())
+            }
+    
+            return splitUpText
+        }).flat()
+
+        contentArray = contentArray.filter(el=>!!el)
+
+        updateContentArray(contentArray)
+    }, 200, [text, props.blueWords, props.orangeWords])
 
     const elementRef = useRef()
 

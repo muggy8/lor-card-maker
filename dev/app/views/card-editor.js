@@ -202,6 +202,13 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
+                canShow("speed", defaultCardData)
+                    ? EditSpeed({
+						value: card.speed,
+						updateValue: cardDataUpdaters.speed
+					})
+                    : undefined
+                ,
                 canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
                         {className: "flex-l no-wrap"},
@@ -252,13 +259,6 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         value: card.rarity,
                         updateValue: cardDataUpdaters.rarity
                     })
-                    : undefined
-                ,
-                canShow("speed", defaultCardData)
-                    ? EditSpeed({
-						value: card.speed,
-						updateValue: cardDataUpdaters.speed
-					})
                     : undefined
                 ,
                 canShow("keywords", defaultCardData)
