@@ -7,6 +7,7 @@ import loadCss from "/Utils/load-css.js"
 Promise.all([
     loadCss("/cdn/flex-box/flex-box.min.css"),
     loadCss("/cdn/flex-box/flex-box.gutters.min.css"),
+    loadCss("/cdn/mmc-3/app/css/icons.css"),
     loadCss("/App/main.css"),
 ]).then(()=>{
     const root = createRoot(document.getElementById("app"))

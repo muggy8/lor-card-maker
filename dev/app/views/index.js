@@ -79,7 +79,8 @@ function App () {
 
     return main(
         {style: {
-            paddingTop: globalState.bannerHeight || 0
+            paddingTop: globalState.bannerHeight || 0,
+            "--banner-height": (globalState.bannerHeight || 0) + "px",
         }},
         createElement(
             Globals.Provider,
