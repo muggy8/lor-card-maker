@@ -11,6 +11,7 @@ import Champion2 from "/Components/card-template/champion2.js"
 import Champion3 from "/Components/card-template/champion3.js"
 import Follower from "/Components/card-template/follower.js"
 import Landmark from "/Components/card-template/landmark.js"
+import Keyword from "/Components/card-template/keyword.js"
 import CardEditorFactory from "/Views/card-editor.js"
 
 const sharedDefaultCardData = {
@@ -136,6 +137,21 @@ const types = [
             }
         ),
     },
+    {
+        component: Keyword, 
+        labelKey: "keyword",
+        editor: CardEditorFactory(
+            Keyword,
+            {
+                name: "",
+                type: "keyword",
+                effect: "",
+                blueWords: [],
+                orangeWords: [],
+                dataVersion: 2,
+            }
+        ),
+    },
 ]
 
 function typeToComponent(type){
@@ -146,6 +162,7 @@ function typeToComponent(type){
         case "landmark": return Landmark
         case "follower": return Follower
         case "spell": return Spell
+        case "keyword": return Keyword
         default: return 
     }
 }

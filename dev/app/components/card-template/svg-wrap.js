@@ -92,8 +92,8 @@ function SvgWrapComponent(props){
         },
         foreignObject(
             {
-                width: "680",
-                height: "1024",
+                width: props.width || "680",
+                height: props.height || "1024",
                 style: {
                     backgroundColor: "rgba(0,0,0,0)",
                 },
