@@ -39,7 +39,6 @@ function BannarBarComponent(props){
     return div(
         {className: "banner fixed flex hcenter gutter-rl-3 card-text-bold", ref: setBannerElement},
         h1(
-            {className: "key-text"},
             translate("lor_card_foundry"),
             a(
                 {

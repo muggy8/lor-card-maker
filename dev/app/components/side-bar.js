@@ -11,13 +11,13 @@ function SidebarComponent(props){
     }, [opened])
 
     return div(
-        { className: "side-bar " + (opened ? "open" : "") },
+        { className: "side-bar gutter-rl-3 " + (opened ? "open" : "") },
         div(
             {
                 className: "menu-icon flex vhcenter",
                 onClick: toggleOpened
             },
-            div({className: "icon animate" }, 
+            div({className: "icon animate clickable" }, 
                 span({ className: opened ? "delete" : "menu" })
             ),
         )
