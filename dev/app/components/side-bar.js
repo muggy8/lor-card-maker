@@ -92,10 +92,10 @@ function SidebarComponent(){
             })
             .flat()
 
-        // step 2 get v2 data
+        // step 2: get v2 data
         const v2DataToImport = loadedData.cards ? loadedData.cards.filter(cardData=>cardData.dataVersion === 2) : [] 
 
-        // step 3 merge the updated v1 data and the v2 data
+        // step 3: merge the updated v1 data and the v2 data
         const allDataToImport = [...v1DataToImport, ...v2DataToImport]
 
         // save the data. we use the slow for loop version here as to not overload the storge and to perserve ordering
