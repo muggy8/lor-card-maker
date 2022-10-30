@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "/cdn/react"
 
-const debugRender = true
+const debugRender = false
 
 function factory(reactComponent, awaitThis){
     return function(){
@@ -20,12 +20,19 @@ function factory(reactComponent, awaitThis){
             props = propsOrChildren
         }
         if (awaitThis){
-            return React.createElement(DeferRenderComponent, {
+            let deferRenderProps = {
                 component: reactComponent,
                 componentProps: props,
                 componentChildren: children,
                 waitFor: awaitThis,
-            })
+            }
+
+            if (typeof props.key !== "undefined"){
+                deferRenderProps.key = props.key
+                delete props.key
+            }
+
+            return React.createElement(DeferRenderComponent, deferRenderProps)
         }
 
         if (debugRender && typeof reactComponent !== "string" ){
