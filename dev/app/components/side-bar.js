@@ -42,7 +42,7 @@ function SidebarComponent(){
             }
         })
 
-        // step 1: handle v1 data
+        // step 1: handle v1 data if needed
         const v1DataToImport = [
             {
                 key: "savedChampions1",
@@ -92,14 +92,18 @@ function SidebarComponent(){
             })
             .flat()
 
+        // step 2 get v2 data
         const v2DataToImport = loadedData.cards ? loadedData.cards.filter(cardData=>cardData.dataVersion === 2) : [] 
 
+        // step 3 merge the updated v1 data and the v2 data
         const allDataToImport = [...v1DataToImport, ...v2DataToImport]
 
+        // save the data. we use the slow for loop version here as to not overload the storge and to perserve ordering
         for(let cardData of allDataToImport){
             await saveCard(cardData.id, cardData)
         }
 
+        // the simplest way of getting the new data to show up in the UI. Probably should change this later XD
         document.location.reload()
     })
 
