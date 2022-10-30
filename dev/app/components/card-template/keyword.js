@@ -21,51 +21,54 @@ function KeywordComponent(props){
     const nameRef = useRef()
     useEffectDebounce(()=>{
         scaleFontSize(nameRef.current, 60, 16)
-    }, 200, [props.name])
+    }, 200, [props.name, !!frameUri])
 
     return SvgWrap(
         {
             width: 512,
             height: 512,
         },
-        div(
-            { 
-                className: "keyword", 
-                id: props.id,
-                style: {
-                    backgroundImage: frameUri ? `url(${frameUri})` : "none"
-                }
-            },
-            div(
-                { className: "content" },
-
-                div(
-                    { className: "name orange-word", ref: nameRef },
-                    props.name
-                ),
-
-                div({ 
-                    className: "division",
+        frameUri
+            ? div(
+                { 
+                    className: "keyword", 
+                    id: props.id,
                     style: {
-                        backgroundImage: divisionUri ? `url(${divisionUri})` : "none"
-                    },
-                }),
+                        backgroundImage: frameUri ? `url(${frameUri})` : "none"
+                    }
+                },
+                div(
+                    { className: "content" },
 
-                
-                props.effect
-                    ? EffectText(
-                        {
-                            blueWords: props.blueWords,
-                            orangeWords: props.orangeWords,
-                            className: "effect-container card-text-universe",
+                    div(
+                        { className: "name orange-word", ref: nameRef },
+                        props.name
+                    ),
+
+                    div({ 
+                        className: "division",
+                        style: {
+                            backgroundImage: divisionUri ? `url(${divisionUri})` : "none"
                         },
-                        props.effect
-                    )
-                    : undefined
-                ,
+                    }),
 
-            ),
-        )
+                    
+                    props.effect
+                        ? EffectText(
+                            {
+                                blueWords: props.blueWords,
+                                orangeWords: props.orangeWords,
+                                className: "effect-container card-text-universe",
+                            },
+                            props.effect
+                        )
+                        : undefined
+                    ,
+
+                ),
+            )
+            : null
+        ,
     )
 }
 

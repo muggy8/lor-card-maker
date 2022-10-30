@@ -61,74 +61,6 @@ function SpellComponent(props){
             .catch(console.warn)
     }, 200, [props.art])
 
-    // gotta manage all the stuff to do with card text size.
-    const nameRef = useRef()
-    const clanRef = useRef()
-    const costRef = useRef()
-    const powerRef = useRef()
-    const healthRef = useRef()
-
-    const costFitty = useRef()
-    const powerFitty = useRef()
-    const healthFitty = useRef()
-    
-    useEffectDebounce(()=>{
-        scaleFontSize(nameRef.current, 70, 16)
-    }, 200, [props.name])
-
-    useEffectDebounce(()=>{
-        scaleFontSize(clanRef.current, 40, 16)
-    }, 200, [props.clan])
-
-    useEffectDebounce(()=>{
-        const fittyInstance = costFitty.current
-
-        if (!fittyInstance){
-            if (!costRef.current){
-                return
-            }
-            costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 90 })
-            return
-        }
-
-        fittyInstance.fit()
-    }, 200, [props.mana])
-
-    useEffectDebounce(()=>{
-        if (typeof props.power !== "number"){
-            return
-        }
-
-        const fittyInstance = powerFitty.current
-
-        if (!fittyInstance){
-            if (!powerRef.current){
-                return
-            }
-            powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 70 })
-            return
-        }
-
-        fittyInstance.fit()
-    }, 200, [props.power])
-
-    useEffectDebounce(()=>{
-        if (typeof props.health !== "number"){
-            return
-        }
-        const fittyInstance = healthFitty.current
-
-        if (!fittyInstance){
-            if (!healthRef.current){
-                return
-            }
-            healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 70 })
-            return
-        }
-
-        fittyInstance.fit()
-    }, 200, [props.health])
-
     // manage the assets and convert them from URL form to base 64 form to make exporting easier
     const [backgroundUri, updateBackgroundUri] = useState("")
     const [backdropUri, updateBackdropUri] = useState("")
@@ -170,6 +102,74 @@ function SpellComponent(props){
             updateRarityGemUriUri("")
         }
     }, [props.rarity])
+
+    // gotta manage all the stuff to do with card text size.
+    const nameRef = useRef()
+    const clanRef = useRef()
+    const costRef = useRef()
+    const powerRef = useRef()
+    const healthRef = useRef()
+
+    const costFitty = useRef()
+    const powerFitty = useRef()
+    const healthFitty = useRef()
+    
+    useEffectDebounce(()=>{
+        scaleFontSize(nameRef.current, 70, 16)
+    }, 200, [props.name, !!frameUri])
+
+    useEffectDebounce(()=>{
+        scaleFontSize(clanRef.current, 40, 16)
+    }, 200, [props.clan, !!frameUri])
+
+    useEffectDebounce(()=>{
+        const fittyInstance = costFitty.current
+
+        if (!fittyInstance){
+            if (!costRef.current){
+                return
+            }
+            costFitty.current = fitty(costRef.current, { multiLine: false, maxSize: 90 })
+            return
+        }
+
+        fittyInstance.fit()
+    }, 200, [props.mana, !!frameUri])
+
+    useEffectDebounce(()=>{
+        if (typeof props.power !== "number"){
+            return
+        }
+
+        const fittyInstance = powerFitty.current
+
+        if (!fittyInstance){
+            if (!powerRef.current){
+                return
+            }
+            powerFitty.current = fitty(powerRef.current, { multiLine: false, maxSize: 70 })
+            return
+        }
+
+        fittyInstance.fit()
+    }, 200, [props.power, !!frameUri])
+
+    useEffectDebounce(()=>{
+        if (typeof props.health !== "number"){
+            return
+        }
+        const fittyInstance = healthFitty.current
+
+        if (!fittyInstance){
+            if (!healthRef.current){
+                return
+            }
+            healthFitty.current = fitty(healthRef.current, { multiLine: false, maxSize: 70 })
+            return
+        }
+
+        fittyInstance.fit()
+    }, 200, [props.health, !!frameUri])
 
     // here we automate the stuff with the frame and card type and stuff and keep them all in sync
     const propsRef = useRef()
@@ -242,152 +242,155 @@ function SpellComponent(props){
 
     return SvgWrap(
         { onTransform: props.updateTransform, ...(props.transform || {x: 0, y: 0, scale: 1}) },
-        div(
-            { className: `${props.speed} spell`, id: props.id },
-            div(
-                {
-                    className: "text-background",
-                    style: {
-                        backgroundColor: imageAvgColor,
-                    }
-                },
-                div({
-                    className: "text-background-image",
-                    style: {
-                        backgroundImage: backgroundUri ? `url(${backgroundUri})` : "none"
-                    }
-                },),
-            ),
-            div(
-                {
-                    className: "art",
-                    style: {
-                        backgroundImage: globalState.state.defaultBg && backdropUri
-                            ? `url(${backdropUri})`
-                            : "none"
-                        ,
-                        "--scale": props.transform ? props.transform.scale : 1,
-                        "--left": props.transform ? props.transform.x : 0,
-                        "--top": props.transform ? props.transform.y : 0,
-                    },
-                },
+        frameUri 
+            ? div(
+                { className: `${props.speed} spell`, id: props.id },
                 div(
-                    {className: "scale-adjuster"},
-                    ArtRenderer({
-                        url: props.art
-                    })
-                )
-            ),
-            div(
-                {
-                    className: "frame",
-                    style: {
-                        backgroundImage: frameUri ? `url(${frameUri})` : "none"
-                    }
-                },
-            ),
-            div(
-                { className: "cost fitty-nowrap card-text-bold", ref: costRef},
-                props.mana,
-            ),
-            props.faction && props.faction.length
-                ? div(
                     {
-                        className: "region-frame" ,
+                        className: "text-background",
                         style: {
-                            backgroundImage: regionboxUri ? `url(${regionboxUri})` : "none"
+                            backgroundColor: imageAvgColor,
                         }
                     },
-                    regionNameUri.map((dataUri, index)=>div(
-                        {
-                            key: dataUri,
-                            className: "region-icon region-icon-" + index,
-                            style: {
-                                backgroundImage: dataUri ? `url(${dataUri})` : "none"
-                            }
-                        },
-                    ))
-                )
-                : undefined
-            ,
-            props.clan
-                ? div(
-                    {
-                        className: "clan",
+                    div({
+                        className: "text-background-image",
                         style: {
-                            backgroundImage: typingUri ? `url(${typingUri})` : "none"
+                            backgroundImage: backgroundUri ? `url(${backgroundUri})` : "none"
                         }
+                    },),
+                ),
+                div(
+                    {
+                        className: "art",
+                        style: {
+                            backgroundImage: globalState.state.defaultBg && backdropUri
+                                ? `url(${backdropUri})`
+                                : "none"
+                            ,
+                            "--scale": props.transform ? props.transform.scale : 1,
+                            "--left": props.transform ? props.transform.x : 0,
+                            "--top": props.transform ? props.transform.y : 0,
+                        },
                     },
                     div(
-                        {
-                            ref: clanRef,
-                            className: "text-area fitty-nowrap text-area fitty-nowrap"
-                        },
-                        props.clan
-                    ),
-                )
-                : undefined
-            ,
-            props.rarity && props.rarity !== "gemless" && props.rarity !== "none"
-                ? div({
-                    className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
-                    style: {
-                        backgroundImage: rarityGemUri ? `url(${rarityGemUri})` : "none"
+                        {className: "scale-adjuster"},
+                        ArtRenderer({
+                            url: props.art
+                        })
+                    )
+                ),
+                div(
+                    {
+                        className: "frame",
+                        style: {
+                            backgroundImage: frameUri ? `url(${frameUri})` : "none"
+                        }
                     },
-                })
-                : undefined
-            ,
-            typeof props.power === "number"
-                ? div(
-                    { className: "power fitty-nowrap card-text-bold", ref: powerRef },
-                    props.power || 0
-                )
-                : undefined
-            ,
-            typeof props.health === "number"
-                ? div(
-                    { className: "health fitty-nowrap card-text-bold", ref: healthRef },
-                    props.health || 0
-                )
-                : undefined
-            ,
-            div(
-                { className: "card-text-wrapper" },
-                // stuff to do with the card content goes here
-
-                props.name
+                ),
+                div(
+                    { className: "cost fitty-nowrap card-text-bold", ref: costRef},
+                    props.mana,
+                ),
+                props.faction && props.faction.length
                     ? div(
-                        { className: "name fitty-wrap card-text-bold", ref: nameRef },
-                        props.name
-                    )
-                    : undefined
-                ,
-
-                props.keywords && props.keywords.length
-                    ? div(
-                        { className: "keyword-container card-text-bold" },
-                        props.keywords.map(keywordName=>KeywordRenderer({
-                            key: keywordName,
-                            name: keywordName,
-                            size: props.keywords.length > 1 ? "small" : "large"
-                        }))
-                    )
-                    : undefined
-                ,
-
-                props.effect
-                    ? EffectText(
                         {
-                            blueWords: props.blueWords,
-                            orangeWords: props.orangeWords,
-                            className: "effect-container card-text-universe",
+                            className: "region-frame" ,
+                            style: {
+                                backgroundImage: regionboxUri ? `url(${regionboxUri})` : "none"
+                            }
                         },
-                        props.effect
+                        regionNameUri.map((dataUri, index)=>div(
+                            {
+                                key: dataUri,
+                                className: "region-icon region-icon-" + index,
+                                style: {
+                                    backgroundImage: dataUri ? `url(${dataUri})` : "none"
+                                }
+                            },
+                        ))
                     )
                     : undefined
                 ,
-            )
-        )
+                props.clan
+                    ? div(
+                        {
+                            className: "clan",
+                            style: {
+                                backgroundImage: typingUri ? `url(${typingUri})` : "none"
+                            }
+                        },
+                        div(
+                            {
+                                ref: clanRef,
+                                className: "text-area fitty-nowrap text-area fitty-nowrap"
+                            },
+                            props.clan
+                        ),
+                    )
+                    : undefined
+                ,
+                props.rarity && props.rarity !== "gemless" && props.rarity !== "none"
+                    ? div({
+                        className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
+                        style: {
+                            backgroundImage: rarityGemUri ? `url(${rarityGemUri})` : "none"
+                        },
+                    })
+                    : undefined
+                ,
+                typeof props.power === "number"
+                    ? div(
+                        { className: "power fitty-nowrap card-text-bold", ref: powerRef },
+                        props.power || 0
+                    )
+                    : undefined
+                ,
+                typeof props.health === "number"
+                    ? div(
+                        { className: "health fitty-nowrap card-text-bold", ref: healthRef },
+                        props.health || 0
+                    )
+                    : undefined
+                ,
+                div(
+                    { className: "card-text-wrapper" },
+                    // stuff to do with the card content goes here
+
+                    props.name
+                        ? div(
+                            { className: "name fitty-wrap card-text-bold", ref: nameRef },
+                            props.name
+                        )
+                        : undefined
+                    ,
+
+                    props.keywords && props.keywords.length
+                        ? div(
+                            { className: "keyword-container card-text-bold" },
+                            props.keywords.map(keywordName=>KeywordRenderer({
+                                key: keywordName,
+                                name: keywordName,
+                                size: props.keywords.length > 1 ? "small" : "large"
+                            }))
+                        )
+                        : undefined
+                    ,
+
+                    props.effect
+                        ? EffectText(
+                            {
+                                blueWords: props.blueWords,
+                                orangeWords: props.orangeWords,
+                                className: "effect-container card-text-universe",
+                            },
+                            props.effect
+                        )
+                        : undefined
+                    ,
+                )
+            ) 
+            : null 
+        ,
     )
 }
 

@@ -43,13 +43,44 @@ export class UnitRendererComponent extends Component {
         this.healthRef = createRef()
         this.nameRef = createRef()
 
-        this.fitClan = debounce(()=>this.clanRef.current && caleFontSize(this.clanRef.current, 40, 16))
-        this.fitCost = debounce(()=>this.costFitty && this.costFitty.fit())
-        this.fitPower = debounce(()=>this.powerFitty && this.powerFitty.fit())
-        this.fitHealth = debounce(()=>this.healthRefFitty && this.healthRefFitty.fit())
+        this.fitClan = debounce(()=>this.clanRef.current && scaleFontSize(this.clanRef.current, 40, 16))
         this.fitName = debounce(()=>this.nameRef.current && scaleFontSize(this.nameRef.current, 70, 16))
+        this.fitCost = debounce(()=>{
+            if (!this.costRef.current){
+                return
+            }
 
-        console.log(this)
+            if (!this.costFitty){
+                this.costFitty = fitty(this.costRef.current, { multiLine: false, maxSize: 90 })
+                return
+            }
+
+            this.costFitty.fit()
+        })
+        this.fitPower = debounce(()=>{
+            if (!this.powerRef.current){
+                return
+            }
+
+            if (!this.powerFitty){
+                this.powerFitty = fitty(this.powerRef.current, { multiLine: false, maxSize: 70 })
+                return
+            }
+            
+            this.powerFitty.fit()
+        })
+        this.fitHealth = debounce(()=>{
+            if (!this.healthRef.current){
+                return
+            }
+
+            if (!this.healthFitty){
+                this.healthFitty = fitty(this.healthRef.current, { multiLine: false, maxSize: 70 })
+                return
+            }
+            
+            this.healthFitty.fit()
+        })
     }
 
     getRegionFrameUrl(){
@@ -62,18 +93,18 @@ export class UnitRendererComponent extends Component {
 
     componentDidMount(){
         const {
-            clanRef,
-            costRef,
-            powerRef,
-            healthRef,
-            nameRef,
+            fitClan,
+            fitCost,
+            fitPower,
+            fitHealth,
+            fitName,
         } = this
 
-        clanRef.current && scaleFontSize(clanRef.current, 40, 16)
-        costRef.current && (this.costFitty = fitty(costRef.current, { multiLine: false, maxSize: 90 }))
-        powerRef.current && (this.powerFitty = fitty(powerRef.current, { multiLine: false, maxSize: 70 }))
-        healthRef.current && (this.healthRefFitty = fitty(healthRef.current, { multiLine: false, maxSize: 70 }))
-        nameRef.current && scaleFontSize(nameRef.current, 70, 16)
+        fitClan()
+        fitCost()
+        fitPower()
+        fitHealth()
+        fitName()
 
         this.fetchUrlAsUriAndStoreInState("/Assets/champion/backdrop.png", "backdropUri")
         this.fetchUrlAsUriAndStoreInState(this.cardFrame, "frameUri")
@@ -105,7 +136,7 @@ export class UnitRendererComponent extends Component {
         })
     }
 
-    componentDidUpdate(previousProps){
+    componentDidUpdate(previousProps, previousState){
         const {
             clan,
             cost,
@@ -122,11 +153,13 @@ export class UnitRendererComponent extends Component {
             fitName
         } = this
 
-        previousProps.clan !== clan && fitClan()
-        previousProps.cost !== cost && fitCost()
-        previousProps.power !== power && fitPower()
-        previousProps.health !== health && fitHealth()
-        previousProps.name !== name && fitName()
+        const frameLoaded = !!this.state.frameUri !== !!previousState.frameUri
+
+        ;((previousProps.clan !== clan) || frameLoaded) && fitClan()
+        ;((previousProps.cost !== cost) || frameLoaded) && fitCost()
+        ;((previousProps.power !== power) || frameLoaded) && fitPower()
+        ;((previousProps.health !== health) || frameLoaded) && fitHealth()
+        ;((previousProps.name !== name) || frameLoaded) && fitName()
 
         if (previousProps.rarity !== this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"){
             this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
