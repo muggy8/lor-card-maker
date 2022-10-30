@@ -44,7 +44,7 @@ function SpellComponent(props){
 
     // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
-    const [imageAvgColor, updateImageAvgColor] = useState("#000000")
+    const [imageAvgColor, updateImageAvgColor] = useState("var(--color-dark, #777777)")
     useEffectDebounce(()=>{
         let fac = facref.current
         if (!fac){
