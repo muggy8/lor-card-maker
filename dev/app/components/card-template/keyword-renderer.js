@@ -86,13 +86,13 @@ function KeywordRendererComponent(props){
 
     return div(
         { className: "keyword-wrapper", ref: wrapperRef},
-        div({ className: "left-bumper", style: { backgroundImage: `url(${leftBumperUri})` } }),
+        div({ className: "left-bumper", style: { backgroundImage: leftBumperUri ? `url(${leftBumperUri})` : "none" } }),
         div(
             { className: `contents ${
                 icons.length 
                     ? size
                     : "small"
-            }`, style: { backgroundImage: `url(${centerBumperUri})` } },
+            }`, style: { backgroundImage: centerBumperUri ? `url(${centerBumperUri})` : "none" } },
             iconsUri.map(pngUri=>div(
                 { 
                     key: pngUri,
@@ -110,7 +110,7 @@ function KeywordRendererComponent(props){
                 : undefined
             ,
         ),
-        div({ className: "right-bumper", style: { backgroundImage: `url(${rightBumperUri})` }  }),
+        div({ className: "right-bumper", style: { backgroundImage: rightBumperUri ? `url(${rightBumperUri})` : "none" }  }),
     )
 }
 

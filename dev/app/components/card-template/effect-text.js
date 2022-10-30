@@ -193,7 +193,7 @@ function InlineIconComponent(props){
         {
             className: "inline-icon",
             style: {
-                backgroundImage: `url(${iconUri})`
+                backgroundImage: iconUri ? `url(${iconUri})` : "null"
             }
         }
     )

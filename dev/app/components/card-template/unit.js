@@ -231,7 +231,9 @@ export class UnitRendererComponent extends Component {
                         ? div({
                             className: "level-bar",
                             style: {
-                                backgroundImage: `url(${this.state.levelupBarUri || ""})`
+                                backgroundImage: this.state.levelupBarUri 
+                                    ? `url(${this.state.levelupBarUri || ""})`
+                                    : "none"
                             },
                         })
                         : undefined
@@ -254,7 +256,9 @@ export class UnitRendererComponent extends Component {
                     {
                         className: "frame",
                         style: {
-                            backgroundImage: `url(${this.state.frameUri || ""})`
+                            backgroundImage: this.state.frameUri 
+                                ? `url(${this.state.frameUri || ""})` 
+                                : "none"
                         }
                     },
                 ),
@@ -269,7 +273,9 @@ export class UnitRendererComponent extends Component {
                         {
                             className: "region-frame" ,
                             style: {
-                                backgroundImage: `url(${this.state.regionFrameUri || ""})`
+                                backgroundImage: this.state.regionFrameUri
+                                    ? `url(${this.state.regionFrameUri || ""})`
+                                    : "none"
                             }
                         },
                         this.state.factionUri
@@ -293,7 +299,9 @@ export class UnitRendererComponent extends Component {
                         {
                             className: "clan",
                             style: {
-                                backgroundImage: `url(${this.state.clanFrameUri || ""})`
+                                backgroundImage: this.state.clanFrameUri 
+                                    ? `url(${this.state.clanFrameUri || ""})`
+                                    : "none"
                             }
                         },
                         div(
@@ -328,7 +336,9 @@ export class UnitRendererComponent extends Component {
                         {
                             className: "rarity " + this.props.rarity,
                             style: {
-                                backgroundImage: `url(${this.state.rarityUri || ""})`
+                                backgroundImage: this.state.rarityUri 
+                                    ? `url(${this.state.rarityUri || ""})` 
+                                    : "none"
                             }
                         },
 

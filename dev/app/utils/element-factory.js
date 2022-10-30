@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "/cdn/react"
 
+const debugRender = true
+
 function factory(reactComponent, awaitThis){
     return function(){
         let params = arguments 
@@ -18,12 +20,16 @@ function factory(reactComponent, awaitThis){
             props = propsOrChildren
         }
         if (awaitThis){
-            return DeferRender({
+            return React.createElement(DeferRenderComponent, {
                 component: reactComponent,
                 componentProps: props,
                 componentChildren: children,
                 waitFor: awaitThis,
             })
+        }
+
+        if (debugRender && typeof reactComponent !== "string" ){
+            console.log("Rendering", reactComponent.name)
         }
         return React.createElement.apply(React, [reactComponent, props, ...children])
     }
@@ -40,6 +46,10 @@ function DeferRenderComponent(props){
     }
 
     const { component, componentProps, componentChildren } = props
+
+    if (debugRender && typeof component !== "string" ){
+        console.log("Rendering", component.name)
+    }
     return React.createElement.apply(React, [component, componentProps, ...componentChildren])
 }
 

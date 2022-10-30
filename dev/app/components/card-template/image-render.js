@@ -109,7 +109,7 @@ function ArtComponent(props){
         style: {
             "--width": replicatedArt.width || 0,
             "--height": replicatedArt.height || 0,
-            backgroundImage: `url(${replicatedArt.b64})` || "",
+            backgroundImage: replicatedArt.b64 ? `url(${replicatedArt.b64})` : "",
         }
     })
 }

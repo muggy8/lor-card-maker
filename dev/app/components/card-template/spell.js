@@ -252,7 +252,7 @@ function SpellComponent(props){
                 div({
                     className: "text-background-image",
                     style: {
-                        backgroundImage: `url(${backgroundUri})`
+                        backgroundImage: backgroundUri ? `url(${backgroundUri})` : "none"
                     }
                 },),
             ),
@@ -260,7 +260,7 @@ function SpellComponent(props){
                 {
                     className: "art",
                     style: {
-                        backgroundImage: globalState.state.defaultBg 
+                        backgroundImage: globalState.state.defaultBg && backdropUri
                             ? `url(${backdropUri})`
                             : "none"
                         ,
@@ -280,7 +280,7 @@ function SpellComponent(props){
                 {
                     className: "frame",
                     style: {
-                        backgroundImage: `url(${frameUri})`
+                        backgroundImage: frameUri ? `url(${frameUri})` : "none"
                     }
                 },
             ),
@@ -293,7 +293,7 @@ function SpellComponent(props){
                     {
                         className: "region-frame" ,
                         style: {
-                            backgroundImage: `url(${regionboxUri})`
+                            backgroundImage: regionboxUri ? `url(${regionboxUri})` : "none"
                         }
                     },
                     regionNameUri.map((dataUri, index)=>div(
@@ -301,7 +301,7 @@ function SpellComponent(props){
                             key: dataUri,
                             className: "region-icon region-icon-" + index,
                             style: {
-                                backgroundImage: `url(${dataUri})`
+                                backgroundImage: dataUri ? `url(${dataUri})` : "none"
                             }
                         },
                     ))
@@ -313,7 +313,7 @@ function SpellComponent(props){
                     {
                         className: "clan",
                         style: {
-                            backgroundImage: `url(${typingUri})`
+                            backgroundImage: typingUri ? `url(${typingUri})` : "none"
                         }
                     },
                     div(
@@ -330,7 +330,7 @@ function SpellComponent(props){
                 ? div({
                     className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
                     style: {
-                        backgroundImage: `url(${rarityGemUri})`
+                        backgroundImage: rarityGemUri ? `url(${rarityGemUri})` : "none"
                     },
                 })
                 : undefined
