@@ -140,6 +140,7 @@ const types = [
     {
         component: Keyword, 
         labelKey: "keyword",
+        beta: true,
         editor: CardEditorFactory(
             Keyword,
             {
@@ -197,7 +198,7 @@ function ListComponent(props){
                         }
                     },
                     type.component({
-                        name: `${translate("new")} ${translate(type.labelKey)}`
+                        name: `${translate("new")} ${translate(type.labelKey)}` + (type.beta ? " " + translate("beta") : "")
                     })
                 )
             }),
