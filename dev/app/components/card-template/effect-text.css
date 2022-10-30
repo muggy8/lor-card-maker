@@ -16,8 +16,8 @@
 }
 
 .effect-text .blue-word {
-    color: #49a0f8;
+    color: var(--color-blue-text);
 }
 .effect-text .orange-word {
-    color: #fad65a;
+    color: var(--color-orange-text);
 }

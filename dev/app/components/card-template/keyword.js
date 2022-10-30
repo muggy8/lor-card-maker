@@ -1,4 +1,4 @@
-import factory, { div } from "/Utils/elements.js"
+import factory, { div, strong } from "/Utils/elements.js"
 import { useRef, useLayoutEffect, useState, useEffect, useContext } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
@@ -28,6 +28,13 @@ function KeywordComponent(props){
                 }
             },
 
+            div(
+                { className: "content" },
+                div(
+                    { className: "name orange-word" },
+                    strong(props.name)
+                )
+            )
         )
     )
 }

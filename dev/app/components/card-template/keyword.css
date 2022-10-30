@@ -7,3 +7,26 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+
+.keyword .content {
+    padding-top: 100px;
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.keyword .name {
+    font-size: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: UniversforRiotGamesUltraCondensed;
+    text-transform: uppercase;
+
+    min-height: 1.2em;
+}
+.keyword .blue-word {
+    color: var(--color-blue-text);
+}
+.keyword .orange-word {
+    color: var(--color-orange-text);
+}

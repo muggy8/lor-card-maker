@@ -46,5 +46,5 @@
 .keyword-wrapper .contents .keyword-text {
     text-transform: uppercase;
     font-size: 36px;
-    color: #EDCB75;
+    color: var(--color-orange-text);
 }
