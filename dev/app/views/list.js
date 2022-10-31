@@ -155,7 +155,7 @@ const types = [
     },
 ]
 
-function typeToComponent(type){
+export function typeToComponent(type){
     switch(type){
         case "champion1": return Champion1
         case "champion2": return Champion2
@@ -170,7 +170,7 @@ function typeToComponent(type){
 
 const cssLoaded = loadCss("/Views/list.css")
 
-function ListComponent(props){
+function ListComponent(){
     const globalState = useContext(Globals)
 
     const translate = useLang()
