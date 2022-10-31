@@ -1,14 +1,17 @@
 import factory, { div, span, label, a, input } from "/Utils/elements.js"
-import { useCallback, useState, useRef } from "/cdn/react" 
+import { useCallback, useState, useRef, useContext } from "/cdn/react" 
+import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList, saveCard } from "/Utils/service.js"
-
+import BatchExport from "/Views/batch-export.js"
 
 const cssLoaded = loadCss("/Components/side-bar.css")
 
 function SidebarComponent(){
     const translate = useLang()
+
+    const globalState = useContext(Globals)
 
     const [opened, updateOpened] = useState(false)
     const toggleOpened = useCallback(()=>{
@@ -107,6 +110,11 @@ function SidebarComponent(){
         document.location.reload()
     })
 
+    const focusBatchExport = useCallback(()=>{
+        globalState.setView(BatchExport)
+        updateOpened(false)
+    }, [globalState.setView])
+
     return div(
         { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
         div(
@@ -119,7 +127,7 @@ function SidebarComponent(){
             ),
         ),
         div(
-            { className: "menu-option clickable gutter-tb" },
+            { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
             translate("batch_export")
         ),
         div(
