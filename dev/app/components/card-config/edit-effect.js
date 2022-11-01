@@ -23,7 +23,7 @@ function EditEffectComponent(props){
     const [cursorPos, updateCursorPos] = useState({})
 
     const saveCursorPos = useCallback(ev=>{
-		let cursorPos = getCursorPos(ev.target)
+		let cursorPos = getContentEditablePos(ev.target)
 		cursorPos !== -1 && updateCursorPos(cursorPos)
 	}, [])
 
@@ -33,14 +33,13 @@ function EditEffectComponent(props){
 		props.updateValue(ev.target.value)
 	}, [props.updateValue])
 
+	const contentEditDiv = useRef()
 	const insertKeyword = useCallback((keywordName)=>{
 		if (cursorPos.start === cursorPos.end){
-			const newEffect = stringSplice(props.value, cursorPos.start, 0, `<${keywordName}/>`)
-			props.updateValue(newEffect)
+			// to do figure this shit out.
 		}
 	}, [props.updateValue, cursorPos])
 
-	const contentEditDiv = useRef()
 	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 
     return label(
@@ -73,7 +72,9 @@ function EditEffectComponent(props){
 						ref: contentEditDiv,
 						contentEditable: true,
 						className: "textarea box gutter-trbl-.5",
-						"data-placeholder": translate("insert_icon_instruction")
+						"data-placeholder": translate("insert_icon_instruction"),
+						onKeyPress: onInput,
+						onBlur: onInput,
 					}),
 				),
 			),
@@ -103,6 +104,7 @@ function EditEffectComponent(props){
 				})
 				.map(keywordName=>{
 					return MenuItem(
+						{ onClick: ()=>insertKeyword(keywordName) },
 						div(
 							{
 								key: keywordName,
