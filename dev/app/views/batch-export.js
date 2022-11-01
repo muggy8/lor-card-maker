@@ -1,18 +1,11 @@
-import factory, { div } from "/Utils/elements.js"
-import { useContext, useEffect, useState, useLayoutEffect, useRef } from "/cdn/react" 
+import factory, { div, button, strong } from "/Utils/elements.js"
+import { createElement, useEffect, useState, useLayoutEffect, useRef, useCallback } from "/cdn/react" 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
 import { typeToComponent } from "/Views/list.js"
+import { svgRefference } from "/Views/card-editor.js"
 import BatchRenderer from "/Components/batch-renderer.js"
-
-import Spell from "/Components/card-template/spell.js"
-import Champion1 from "/Components/card-template/champion1.js"
-import Champion2 from "/Components/card-template/champion2.js"
-import Champion3 from "/Components/card-template/champion3.js"
-import Follower from "/Components/card-template/follower.js"
-import Landmark from "/Components/card-template/landmark.js"
-import Keyword from "/Components/card-template/keyword.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -58,6 +51,22 @@ function BatchExportComponent(){
         }
     }, [])
 
+    const [svgRef, updateSvgRef] = useState(null)
+
+    const exportCards = useCallback(()=>{
+        if (!Object.keys(selectedCards).length){
+            return
+        }
+
+        saveSvgAsPng.svgAsPngUri(svgRef, {
+            excludeUnusedCss: true,
+            width: svgRef.width.baseVal.value,
+            height: svgRef.height.baseVal.value,
+        }).then(uri=>{
+            openUri(uri)
+        })
+    }, [svgRef, selectedCards])
+
     return div(
         {
             id: "batch-exporter",
@@ -73,17 +82,43 @@ function BatchExportComponent(){
                 {className: "preview-content", ref: fixedDisplayRef, style: {
                     width: useableWidth + "px"
                 }},
-                div({ className: "gutter-rl-2" },
-                    BatchRenderer({
-                        cards: savedCards.filter(cardData=>selectedCards[cardData.id])
-                    })
+                div(
+                    { className: "gutter-rl-.5 gutter-b flex hcenter" },
+                    Object.keys(selectedCards).length 
+                        ? button(
+                            { 
+                                className: "gutter-trbl-.5", 
+                                onClick: exportCards,
+                            },
+                            strong(translate("export_selection"))
+                        )
+                        : undefined 
+                    ,
+                ),
+                div(
+                    { className: "gutter-rl-2" },
+                    createElement(
+                        svgRefference.Provider,
+                        { value: {
+                            current: svgRef,
+                            setRef: updateSvgRef,
+                        } },
+                        BatchRenderer({
+                            cards: savedCards.filter(cardData=>selectedCards[cardData.id])
+                        })
+                    ),
                 ),
             )
         ),
         div(
             { className: "export-selection gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4" },
+            div(
+                { className: "flex hcenter" },
+                strong( translate("select_exports") )
+            ),
+            div(
+                { className: "gutter-trbl-.5 flex",},
 
-            div({ className: "gutter-trbl-.5 flex",},
                 savedCards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)
                     if (!renderingComponent){

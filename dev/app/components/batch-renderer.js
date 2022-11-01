@@ -1,7 +1,9 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
-import { useState, useEffect } from "/cdn/react" 
+import { createElement, useState, useCallback } from "/cdn/react" 
 import { typeToComponent } from "/Views/list.js"
+import { svgRefference } from "/Views/card-editor.js"
+import BatchRenderer from "/Components/batch-renderer.js"
 
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 
@@ -117,28 +119,37 @@ function BatchRendererComponent(props){
 
     const {width, height, resolution} = calculateRowsAndColsForCardsRecursivelyWithCacheUse(cardsList)
 
+    const doNothing = useCallback(()=>{}, [])
+
     return SvgWrap(
         {width, height},
-        div(
-            { className: "cards-grid" },
-            
-            props.cards.map((cardData)=>{
-                const renderingComponent = typeToComponent(cardData.type)
-                if (!renderingComponent){
-                    return div({key: cardData.id})
-                }
-                return div(
-                    { 
-                        className: "card", 
-                        key: cardData.id,
-                        style: {
-                            width: `${resolution.width}px`,
-                            height: `${resolution.height}px`,
-                        }
-                    },
-                    renderingComponent(cardData)
-                )
-            }),
+        createElement(
+            svgRefference.Provider,
+            { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
+                current: null,
+                setRef: doNothing,
+            } },
+            div(
+                { className: "cards-grid" },
+                
+                props.cards.map((cardData)=>{
+                    const renderingComponent = typeToComponent(cardData.type)
+                    if (!renderingComponent){
+                        return div({key: cardData.id})
+                    }
+                    return div(
+                        { 
+                            className: "card", 
+                            key: cardData.id,
+                            style: {
+                                width: `${resolution.width}px`,
+                                height: `${resolution.height}px`,
+                            }
+                        },
+                        renderingComponent(cardData)
+                    )
+                }),
+            ),
         ),
     )
 }
