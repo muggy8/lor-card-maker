@@ -1,4 +1,9 @@
 .loading-shade {
+    display: none;
+}
+
+html .loading-shade {
+    /* make sure the loading shade only shows when being rendered in the page instead of in the export process */
     position: absolute;
     top: 0;
     bottom: 0;

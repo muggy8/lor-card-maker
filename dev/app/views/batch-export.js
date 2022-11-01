@@ -4,6 +4,7 @@ import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
 import { typeToComponent } from "/Views/list.js"
+import BatchRenderer from "/Components/batch-renderer.js"
 
 import Spell from "/Components/card-template/spell.js"
 import Champion1 from "/Components/card-template/champion1.js"
@@ -73,7 +74,9 @@ function BatchExportComponent(){
                     width: useableWidth + "px"
                 }},
                 div({ className: "gutter-rl-2" },
-                    "placeholder"
+                    BatchRenderer({
+                        cards: savedCards.filter(cardData=>selectedCards[cardData.id])
+                    })
                 ),
             )
         ),
