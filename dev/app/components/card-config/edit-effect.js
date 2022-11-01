@@ -1,9 +1,19 @@
 import factory, { div, label, strong, small } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useRef } from "/cdn/react"
+import { useCallback, useState, useRef, useEffect } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
+// import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
+import datauri from "/Utils/datauri.js"
+import { 
+	ContextMenu as ContextMenuComponent, 
+	MenuItem as MenuItemComponent, 
+	ContextMenuTrigger as ContextMenuTriggerComponent 
+} from "/cdn/react-contextmenu";
+
+const ContextMenu = factory(ContextMenuComponent)
+const MenuItem = factory(MenuItemComponent)
+const ContextMenuTrigger = factory(ContextMenuTriggerComponent)
 
 const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 
@@ -31,6 +41,7 @@ function EditEffectComponent(props){
 	}, [props.updateValue, cursorPos])
 
 	const contentEditDiv = useRef()
+	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 
     return label(
         { className: "box edit-effect" },
@@ -56,12 +67,15 @@ function EditEffectComponent(props){
             // ),
 			div(
 				{className: "gutter-trbl-.5"},
-				div({
-					ref: contentEditDiv,
-					contentEditable: true,
-					className: "textarea box gutter-trbl-.5",
-					"data-placeholder": translate("insert_icon_instruction")
-				})
+				ContextMenuTrigger(
+					{id: contextId},
+					div({
+						ref: contentEditDiv,
+						contentEditable: true,
+						className: "textarea box gutter-trbl-.5",
+						"data-placeholder": translate("insert_icon_instruction")
+					}),
+				),
 			),
             // div(
 			// 	{ className: "box-12 flex" },
@@ -80,9 +94,57 @@ function EditEffectComponent(props){
 			// 			)
 			// 		})
             // )
-        )
+        ),
+		ContextMenu(
+			{id: contextId},
+			Object.keys(keywords)
+				.filter((keywordName)=>{
+					return keywords[keywordName].length
+				})
+				.map(keywordName=>{
+					return MenuItem(
+						div(
+							{
+								key: keywordName,
+								className: "flex vend"
+							},
+							KeywordIcon({name: keywordName}),
+							translate(keywordName)
+						)
+					)
+				})
+		)
     )
 }
+
+function KeywordIconComponent(props){
+    const [iconsUri, updateIconsUri] = useState([])
+	useEffect(()=>{
+		const icons = keywords[props.name]
+		const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+        Promise.all(iconsFetch).then(updateIconsUri)
+	}, [props.name])
+
+	return div(
+		{
+			contentEditable: false,
+			className: "keyword-icon-wrapper",
+			"data-keyword-name": props.name,
+			style: {
+				height: "1em",
+				width: iconsUri.length + "em",
+			}
+		}, 
+		iconsUri.map((uri, index)=>div({
+			key: index,
+			className: "keyword-icon",
+			style: {
+				backgroundImage: `url(${uri})`
+			}
+		}))
+	)
+}
+const KeywordIcon = factory(KeywordIconComponent)
 
 export function getCursorPos(input) {
 	// function source: https://stackoverflow.com/questions/7745867/how-do-you-get-the-cursor-position-in-a-textarea

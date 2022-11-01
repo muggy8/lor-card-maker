@@ -31,32 +31,36 @@ const pathMap = {
 		"mmc-3": "https://cdn.jsdelivr.net/gh/muggy8/mmc-3@374aa14106e6133f758cf68f2cb9e35b5392cfe5",
 		fitty: {
 			url: "https://esm.sh/fitty@2.3.6",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		setimmediate: {
 			url: "https://esm.sh/setimmediate@1.0.5",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		hammerjs: {
 			url: "https://esm.sh/hammerjs@2.0.8",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		"fast-average-color": {
 			url: "https://esm.sh/fast-average-color@9.1.1",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		"save-svg-as-png": {
 			url: "https://esm.sh/save-svg-as-png@1.4.17",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		"gesto": {
 			url: "https://esm.sh/gesto@1.13.3",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
 		"react-input-range": {
 			url: "https://esm.sh/react-input-range@1.3.0",
-			query: {...esmshQueryConfigs, bundle: true},
+			query: esmshQueryConfigs,
 		},
+		"react-contextmenu": {
+			url: "https://esm.sh/react-contextmenu@2.14.0",
+			query: esmshQueryConfigs,
+		}
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",
