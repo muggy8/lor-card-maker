@@ -3,7 +3,6 @@ import loadCss from "/Utils/load-css.js"
 import { createElement, useState, useCallback } from "/cdn/react" 
 import { typeToComponent } from "/Views/list.js"
 import { svgRefference } from "/Views/card-editor.js"
-import BatchRenderer from "/Components/batch-renderer.js"
 
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 

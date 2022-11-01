@@ -321,7 +321,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
     return factory(component, cssLoaded)
 }
 
-function openUri(base64ImageData) {
+export function openUri(base64ImageData) {
     const typeRegex = /data:([^;]+);base64,/
     const matched = typeRegex.exec(base64ImageData)
 
