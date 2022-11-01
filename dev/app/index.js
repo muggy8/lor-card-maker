@@ -10,8 +10,9 @@ Promise.all([
     loadCss("/cdn/mmc-3/app/css/icons.css"),
     loadCss("/App/main.css"),
 ]).then(()=>{
-    const root = createRoot(document.getElementById("app"))
-    root.render(App())
+    const rootElement = document.getElementById("app")
+    const root = createRoot(rootElement)
+    root.render(App({root: rootElement}))
     
     document.body.classList.remove("loading")    
 })

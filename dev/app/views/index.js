@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef, createContext, createElement } from "/cdn/react" 
-import factory, { main } from "/Utils/elements.js"
+import factory, { section } from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
 
@@ -10,7 +10,7 @@ export const Globals = createContext({
 
 export let navigationHistory = []
 
-function App () {
+function App (props) {
 
     const [globalState, updateGlobalState] = useState({
         lang: "en",
@@ -77,25 +77,29 @@ function App () {
         navigationHistory.push(newView)
     }, [])
 
-    return main(
-        {style: {
-            paddingTop: globalState.bannerHeight || 0,
-            "--banner-height": (globalState.bannerHeight || 0) + "px",
-        }},
-        createElement(
-            Globals.Provider,
-            {
-                value: {
-                    state: globalState,
-                    setState: updateGlobalState,
-                    patchState: patchGlboalState,
-                    setView
-                }
-            },
-            globalState.view(),
-            BannerBar(),
-            SideBar(),
-        )
+    useEffect(()=>{
+        if (!props.root){
+            return
+        }
+
+        const bannerHeightWithUnits = (globalState.bannerHeight || 0) + "px"
+        props.root.style.setProperty("padding-top", bannerHeightWithUnits)
+        props.root.style.setProperty("--banner-height", bannerHeightWithUnits)
+    }, [globalState.bannerHeight, props.root])
+
+    return createElement(
+        Globals.Provider,
+        {
+            value: {
+                state: globalState,
+                setState: updateGlobalState,
+                patchState: patchGlboalState,
+                setView
+            }
+        },
+        BannerBar(),
+        SideBar(),
+        globalState.view(),
     )
 }
 

@@ -1,4 +1,4 @@
-import factory, { div, button, strong } from "/Utils/elements.js"
+import factory, { div, button, strong, section } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import React, { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
@@ -112,7 +112,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
-        return div(
+        return section(
             { id: "card-editor", className: "flex hcenter" },
             div(
                 { className: "card-preview gutter-t-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", style: { paddingBottom: previewHeight + "px"}},

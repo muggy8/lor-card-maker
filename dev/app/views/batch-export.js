@@ -1,4 +1,4 @@
-import factory, { div, button, strong } from "/Utils/elements.js"
+import factory, { div, button, strong, section } from "/Utils/elements.js"
 import { createElement, useEffect, useState, useLayoutEffect, useCallback, useRef } from "/cdn/react" 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -88,7 +88,7 @@ function BatchExportComponent(){
         })
     }
 
-    return div(
+    return section(
         {
             id: "batch-exporter",
             className: "gutter-t-2 flex hcenter",

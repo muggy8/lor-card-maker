@@ -1,4 +1,4 @@
-import factory, { div } from "/Utils/elements.js"
+import factory, { div, section } from "/Utils/elements.js"
 import { useContext, useEffect, useState } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
@@ -181,7 +181,7 @@ function ListComponent(){
         getCardList().then(updateSavedCards)
     }, [])
 
-    return div(
+    return section(
         {
             id: "card-type-list",
             className: "gutter-t-2",

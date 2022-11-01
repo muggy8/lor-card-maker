@@ -1,4 +1,4 @@
-import factory, { div, h1, a, svg, path, style } from "/Utils/elements.js"
+import factory, { div, h1, a, svg, path, style, header } from "/Utils/elements.js"
 import { useLayoutEffect, useContext, useRef, useCallback, useEffect, useState } from "/cdn/react" 
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
@@ -36,7 +36,7 @@ function BannarBarComponent(props){
         }
     }, [globalState.patchState])
 
-    return div(
+    return header(
         {className: "banner fixed flex hcenter gutter-rl-3 card-text-bold", ref: setBannerElement},
         h1(
             translate("lor_card_foundry"),

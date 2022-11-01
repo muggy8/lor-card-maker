@@ -1,4 +1,4 @@
-import factory, { div, span, label, a, input } from "/Utils/elements.js"
+import factory, { div, span, label, a, input, nav } from "/Utils/elements.js"
 import { useCallback, useState, useRef, useContext } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
@@ -115,7 +115,7 @@ function SidebarComponent(){
         updateOpened(false)
     }, [globalState.setView])
 
-    return div(
+    return nav(
         { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
         div(
             {
