@@ -4,3 +4,10 @@
     border-radius: 0.25em;
     border: solid 1px var(--color-border)
 }
+
+[contenteditable=true]:empty:not(:focus):before{
+    content:attr(data-placeholder);
+    color:var(--color-dark);
+    font-style:italic;
+    font-size: smaller;
+}

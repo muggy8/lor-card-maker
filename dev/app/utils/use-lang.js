@@ -98,5 +98,6 @@ const lang = {
         "lock_art_movement": "🔓 Lock Art Movement",
         "default_bg_show": "Show Default Background",
         "default_bg_hide": "Hide Default Background",
+        "insert_icon_instruction": "Right-Click or Long-Press to insert icons",
     }
 }

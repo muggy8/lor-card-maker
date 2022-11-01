@@ -1,6 +1,6 @@
-import factory, { div, label, strong, textarea } from "/Utils/elements.js"
+import factory, { div, label, strong, small } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState } from "/cdn/react"
+import { useCallback, useState, useRef } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
@@ -30,11 +30,17 @@ function EditEffectComponent(props){
 		}
 	}, [props.updateValue, cursorPos])
 
+	const contentEditDiv = useRef()
+
     return label(
         { className: "box edit-effect" },
         div(
 			strong(
 				props.label
+			),
+			" ",
+			small(
+				translate("insert_icon_instruction")
 			)
         ),
         div(
@@ -51,27 +57,29 @@ function EditEffectComponent(props){
 			div(
 				{className: "gutter-trbl-.5"},
 				div({
+					ref: contentEditDiv,
 					contentEditable: true,
-					className: "textarea box gutter-trbl-.5"
+					className: "textarea box gutter-trbl-.5",
+					"data-placeholder": translate("insert_icon_instruction")
 				})
 			),
-            div(
-				{ className: "box-12 flex" },
-				Object.keys(keywords)
-					.filter((keywordName)=>{
-						return keywords[keywordName].length
-					})
-					.map(keywordName=>{
-						return div(
-							{ className: "box-2 flex vhcenter", key: keywordName },
-							KeywordImageCheck({
-								isChecked: true,
-								onClick: ()=>insertKeyword(keywordName),
-								keywordName,
-							})
-						)
-					})
-            )
+            // div(
+			// 	{ className: "box-12 flex" },
+			// 	Object.keys(keywords)
+			// 		.filter((keywordName)=>{
+			// 			return keywords[keywordName].length
+			// 		})
+			// 		.map(keywordName=>{
+			// 			return div(
+			// 				{ className: "box-2 flex vhcenter", key: keywordName },
+			// 				KeywordImageCheck({
+			// 					isChecked: true,
+			// 					onClick: ()=>insertKeyword(keywordName),
+			// 					keywordName,
+			// 				})
+			// 			)
+			// 		})
+            // )
         )
     )
 }
@@ -105,6 +113,32 @@ export function getCursorPos(input) {
 		}
 	}
 	return -1;
+}
+
+export function getContentEditablePos(editableDiv){
+	// code from https://stackoverflow.com/questions/3972014/get-contenteditable-caret-position
+	var caretPos = 0,
+    sel, range;
+	if (window.getSelection) {
+		sel = window.getSelection();
+		if (sel.rangeCount) {
+		range = sel.getRangeAt(0);
+		if (range.commonAncestorContainer.parentNode == editableDiv) {
+			caretPos = range.endOffset;
+		}
+		}
+	} else if (document.selection && document.selection.createRange) {
+		range = document.selection.createRange();
+		if (range.parentElement() == editableDiv) {
+		var tempEl = document.createElement("span");
+		editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+		var tempRange = range.duplicate();
+		tempRange.moveToElementText(tempEl);
+		tempRange.setEndPoint("EndToEnd", range);
+		caretPos = tempRange.text.length;
+		}
+	}
+	return caretPos;
 }
 
 export function stringSplice(string, start, delCount, newSubStr) {
