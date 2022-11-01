@@ -1,5 +1,5 @@
 import factory, { div, button, strong } from "/Utils/elements.js"
-import { createElement, useEffect, useState, useLayoutEffect, useRef, useCallback } from "/cdn/react" 
+import { createElement, useEffect, useState, useLayoutEffect, useCallback, useRef } from "/cdn/react" 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
@@ -15,8 +15,28 @@ function BatchExportComponent(){
     const translate = useLang()
 
     const [savedCards, updateSavedCards] = useState([])
+    const [savedCardsById, updateSavedCardsById] = useState({})
+    useEffect(()=>{
+        const collectionById = savedCards.reduce((collection, cardData)=>{
+            collection[cardData.id] = cardData
+            return collection
+        }, {})
 
-    const [selectedCards, updateSelectedCards] = useState({})
+        updateSavedCardsById(collectionById)
+    }, [savedCards])
+
+    const [reRenderKey, updateRerenderKey] = useState(false)
+    const forceRerender = useCallback(()=>{
+        updateRerenderKey(!reRenderKey)
+    }, [reRenderKey])
+
+    const selectedCards = useRef(new Map)
+
+    const selectedCardsData = []
+    for(let pair of selectedCards.current.entries()){
+        const [id, included] = pair
+        included && selectedCardsData.push(savedCardsById[id])
+    }
 
     useEffect(()=>{
         getCardList().then(updateSavedCards)
@@ -54,8 +74,8 @@ function BatchExportComponent(){
 
     const [svgRef, updateSvgRef] = useState(null)
 
-    const exportCards = useCallback(()=>{
-        if (!Object.keys(selectedCards).length){
+    const exportCards = ()=>{
+        if (!Object.keys(selectedCardsData).length){
             return
         }
 
@@ -66,7 +86,7 @@ function BatchExportComponent(){
         }).then(uri=>{
             openUri(uri)
         })
-    }, [svgRef, selectedCards])
+    }
 
     return div(
         {
@@ -85,7 +105,7 @@ function BatchExportComponent(){
                 }},
                 div(
                     { className: "gutter-rl-.5 gutter-b flex hcenter" },
-                    Object.keys(selectedCards).length 
+                    selectedCardsData
                         ? button(
                             { 
                                 className: "gutter-trbl-.5", 
@@ -105,7 +125,7 @@ function BatchExportComponent(){
                             setRef: updateSvgRef,
                         } },
                         BatchRenderer({
-                            cards: savedCards.filter(cardData=>selectedCards[cardData.id])
+                            cards: selectedCardsData
                         })
                     ),
                 ),
@@ -128,19 +148,18 @@ function BatchExportComponent(){
                     return div(
                         { 
                             className: "clickable gutter-trbl-.5 box-xs-6 box-s-4 flex column vhcenter"
-                                + (selectedCards[cardData.id] ? "" : " ghost"), 
+                                + (selectedCards.current.get(cardData.id) ? "" : " ghost"), 
                             key: cardData.id,
                             onClick: ()=>{
-                                const newSelection = { ...selectedCards }
 
-                                if (newSelection[cardData.id]){
-                                    delete newSelection[cardData.id]
+                                if (selectedCards.current.get(cardData.id)){
+                                    selectedCards.current.delete(cardData.id)
                                 }
                                 else{
-                                    newSelection[cardData.id] = true
+                                    selectedCards.current.set(cardData.id, true)
                                 }
 
-                                updateSelectedCards(newSelection)
+                                forceRerender()
                             }
                         },
                         renderingComponent(cardData)
