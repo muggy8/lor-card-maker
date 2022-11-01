@@ -3,6 +3,9 @@ import useLang from "/Utils/use-lang.js"
 import { useCallback, useState } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
+import loadCss from "/Utils/load-css.js"
+
+const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 
 function EditEffectComponent(props){
     const translate = useLang()
@@ -28,23 +31,30 @@ function EditEffectComponent(props){
 	}, [props.updateValue, cursorPos])
 
     return label(
-        { className: "box" },
+        { className: "box edit-effect" },
         div(
 			strong(
 				props.label
 			)
         ),
         div(
-            {className: "flex gutter-b-2"},
-            div(
-				{ className: "grow-wrap box-12 gutter-trl-.5" },
-				textarea({
-					value: props.value,
-					onInput,
-					onClick: saveCursorPos,
-					className: "gutter-trbl-.5"
+            {className: "flex column gutter-b-2"},
+            // div(
+			// 	{ className: "grow-wrap box-12 gutter-trl-.5" },
+			// 	textarea({
+			// 		value: props.value,
+			// 		onInput,
+			// 		onClick: saveCursorPos,
+			// 		className: "gutter-trbl-.5"
+			// 	})
+            // ),
+			div(
+				{className: "gutter-trbl-.5"},
+				div({
+					contentEditable: true,
+					className: "textarea box gutter-trbl-.5"
 				})
-            ),
+			),
             div(
 				{ className: "box-12 flex" },
 				Object.keys(keywords)
@@ -101,4 +111,4 @@ export function stringSplice(string, start, delCount, newSubStr) {
 	return string.slice(0, start) + newSubStr + string.slice(start + Math.abs(delCount));
 };
 
-export default factory(EditEffectComponent)
+export default factory(EditEffectComponent, cssLoaded)
