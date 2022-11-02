@@ -50,9 +50,19 @@ function App (props) {
         statePatcherRef.current = patchGlboalState
     }, [patchGlboalState])
 
+    const allowBack = useRef(()=>true)
     useEffect(()=>{
         navigationHistory.push(globalState.view)
-        const popStateListener = function(){
+        const popStateListener = function(ev){
+            const allowedToContinue = allowBack.current()
+
+            if (allowedToContinue === false){
+                ev.preventDefault()
+                ev.stopPropagation()
+                history.pushState({},  "")
+                return 
+            }
+
             navigationHistory.splice(-1, 1)
             const restoredView = navigationHistory[navigationHistory.length -1]
 
@@ -94,7 +104,11 @@ function App (props) {
                 state: globalState,
                 setState: updateGlobalState,
                 patchState: patchGlboalState,
-                setView
+                setView, 
+                allowBack: allowBack.current,
+                setAllowBack: (callback)=>{
+                    allowBack.current = callback
+                }
             }
         },
         BannerBar(),

@@ -5,7 +5,7 @@ import React, { useState, useCallback, useContext, createContext, useRef, useLay
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { Globals } from "/Views/index.js"
 import { getCard, saveCard, deleteCard } from "/Utils/service.js"
-
+import setImmediate from "/Utils/set-immediate-batch.js"
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
@@ -38,8 +38,25 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const globalStateRef = useRef()
         globalStateRef.current = globalState
 
-        const [card, updateCard] = useState(defaultCardData)
+        useEffect(()=>{
+            const storedCallback = globalState.allowBack
 
+            globalStateRef.current.setAllowBack(()=>{
+                if (document.documentElement.scrollTop){
+                    setImmediate(()=>window.scrollTo({top: 0, left: 0, behavior: "smooth"}))
+                    return false
+                }
+                else{
+                    return storedCallback()
+                }
+            })
+
+            return function(){
+                globalStateRef.current.setAllowBack(storedCallback)
+            }
+        }, [])
+
+        const [card, updateCard] = useState(defaultCardData)
         useEffect(()=>{
             globalState.state.cardId && getCard(globalState.state.cardId).then(updateCard)
             return ()=>{
