@@ -24,9 +24,19 @@ function EditEffectComponent(props){
 
 	const contentEditDiv = useRef()
 
+	const [beginEditing, updateBeginEditing] = useState(false)
+	useEffect(()=>{
+		// this task is only done once when this component loads input for the very first time 
+
+		if (!props.value || beginEditing){
+			return
+		}
+
+		contentEditDiv.current.replaceChildren(generateEditableContent(props.value))
+	}, [!!props.value, beginEditing])
+
 	const updateValue = useCallbackDebounce(()=>{
 		const saveableEffectText = generateSaveableEffectText(contentEditDiv.current)
-		console.log(saveableEffectText)
 
 		props.updateValue(saveableEffectText)
 	}, 600, [props.updateValue])
@@ -57,7 +67,8 @@ function EditEffectComponent(props){
 				}
 			})
 		}
-
+		
+		updateBeginEditing(true)
 		updateValue()
 	}, [updateValue])
 
@@ -228,6 +239,61 @@ function generateSaveableEffectText(container){
 	})
 
 	return textBits.join("")
+}
+
+const keywordWithIcons = Object.keys(keywords).filter(word=>keywords[word].length)
+function generateEditableContent(text){
+	let contentArray = [text]
+
+	keywordWithIcons.forEach(word=>{
+		const wordTag = `<${word}/>`
+		contentArray = contentArray.map(textOrElement=>{
+			if (typeof textOrElement !== "string"){
+				return textOrElement
+			}
+
+			let splitUpText = textOrElement.split(wordTag)
+
+			if (splitUpText.length === 1){
+				return splitUpText[0]
+			}
+
+			for(let i = splitUpText.length - 1; i; i--){
+				splitUpText.splice(i, 0, createKeywordHtmlElement(word))
+			}
+
+			return splitUpText
+		}).flat()
+	})
+
+	contentArray = contentArray.map(textOrElement=>{
+		if (typeof textOrElement !== "string"){
+			return textOrElement
+		}
+
+		let splitUpText = textOrElement.split(/\n+/g)
+
+		if (splitUpText.length === 1){
+			return splitUpText[0]
+		}
+
+		for(let i = splitUpText.length - 1; i; i--){
+			splitUpText.splice(i, 0, document.createElement("br"))
+		}
+
+		return splitUpText
+	}).flat()
+
+	const wrapper = document.createDocumentFragment()
+	contentArray = contentArray.forEach(textOrElement=>{
+		if (typeof textOrElement !== "string"){
+			return wrapper.appendChild(textOrElement)
+		}
+
+		wrapper.appendChild(new Text(textOrElement))
+	})
+
+	return wrapper
 }
 
 export default factory(EditEffectComponent, cssLoaded)

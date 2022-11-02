@@ -11,8 +11,6 @@ export default function useCallbackDebounce(callback, duration, watched){
         currentTimeoutId.current = setTimeout(function(){
             Function.prototype.apply.call(currentCallback.current, undefined, args)
         }, duration)
-
-        console.log("bleb")
     }, watched)
 
     return trueMethod
