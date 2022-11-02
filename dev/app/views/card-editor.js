@@ -272,6 +272,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? EditEffect({
 						value: card.effect,
 						updateValue: cardDataUpdaters.effect,
+                        orangeWords: card.orangeWords,
+                        updateOrangeWords: cardDataUpdaters.orangeWords,
 						label: translate("effect")
 					})
                     : undefined
@@ -280,6 +282,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? EditEffect({
 						value: card.lvup,
 						updateValue: cardDataUpdaters.lvup,
+                        orangeWords: card.orangeWords,
+                        updateOrangeWords: cardDataUpdaters.orangeWords,
 						label: translate("lv_up")
 					})
                     : undefined

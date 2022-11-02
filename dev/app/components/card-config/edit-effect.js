@@ -55,17 +55,26 @@ function EditEffectComponent(props){
 		}
 
 		const editingTextNode = editingSelection.node
+		const keywordLabel = translate(keywordName)
 
 		if (editingTextNode === contentEditDiv.current){
 			editingTextNode.appendChild(createKeywordHtmlElement(keywordName))
-			editingTextNode.appendChild(document.createTextNode(translate(keywordName)))
+			editingTextNode.appendChild(document.createTextNode(keywordLabel))
 		}
 		else{
 			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
 			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(keywordName), splitOffTextNode )
-			splitOffTextNode.parentNode.insertBefore(document.createTextNode(" " + translate(keywordName)), splitOffTextNode )
+			splitOffTextNode.parentNode.insertBefore(document.createTextNode(" " + keywordLabel), splitOffTextNode )
 		}
-	}, [props.updateValue, editingSelection])
+
+		const alreadyInList = props.orangeWords.reduce((assumption, existingWord)=>{
+			return assumption || existingWord === keywordLabel
+		}, false)
+
+		if (!alreadyInList){
+			props.updateOrangeWords([...props.orangeWords, keywordLabel])
+		}
+	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords])
 
 	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 

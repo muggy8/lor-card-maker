@@ -9,7 +9,7 @@ function EditColorTextComponent(props){
 
     return div(
         div(
-            { className: "flex-s" },
+            { className: "flex-m" },
             label(
                 { className: "box gutter-b-.5" },
                 div(
