@@ -34,7 +34,6 @@ function EditEffectComponent(props){
 
 		const inTextIcons = contentEditDiv.current.querySelectorAll(".keyword-icon-wrapper")
 
-		console.log(inTextIcons)
 		if (inTextIcons.length){
 			Array.prototype.forEach.call(inTextIcons, (iconElement)=>{
 				if (!(iconElement.nextSibling instanceof Text)){
@@ -57,17 +56,12 @@ function EditEffectComponent(props){
 
 		const editingTextNode = editingSelection.node
 
-		console.log(editingSelection)
-
 		if (editingTextNode === contentEditDiv.current){
 			editingTextNode.appendChild(createKeywordHtmlElement(keywordName))
 			editingTextNode.appendChild(document.createTextNode(translate(keywordName)))
 		}
 		else{
 			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
-
-			console.log({splitOffTextNode, parent: splitOffTextNode.parentNode})
-
 			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(keywordName), splitOffTextNode )
 			splitOffTextNode.parentNode.insertBefore(document.createTextNode(" " + translate(keywordName)), splitOffTextNode )
 		}
