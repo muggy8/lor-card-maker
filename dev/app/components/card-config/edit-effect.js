@@ -69,14 +69,17 @@ function EditEffectComponent(props){
 		const editingTextNode = editingSelection.node
 		const keywordLabel = translate(keywordName)
 
-		if (editingTextNode === contentEditDiv.current){
+		if (editingTextNode instanceof HTMLDivElement){
 			editingTextNode.appendChild(createKeywordHtmlElement(keywordName))
 			editingTextNode.appendChild(document.createTextNode(keywordLabel))
 		}
-		else{
+		else if (editingTextNode instanceof Text){
 			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
 			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(keywordName), splitOffTextNode )
 			splitOffTextNode.parentNode.insertBefore(document.createTextNode(keywordLabel), splitOffTextNode )
+		}
+		else{
+			editingTextNode.after(createKeywordHtmlElement(keywordName), document.createTextNode(keywordLabel))
 		}
 
 		const alreadyInList = props.orangeWords.reduce((assumption, existingWord)=>{
@@ -212,7 +215,7 @@ const KeywordIcon = factory(KeywordIconComponent)
 function generateSaveableEffectText(container){
 	const textBits = Array.prototype.map.call(container.childNodes, (child)=>{
 		if (child instanceof HTMLDivElement){
-			return generateSaveableEffectText(child) + "\n"
+			return "\n" + generateSaveableEffectText(child)
 		}
 
 		if (child instanceof Text){
