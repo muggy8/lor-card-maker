@@ -130,6 +130,7 @@ function EditEffectComponent(props){
 				.filter((keywordName)=>{
 					return keywords[keywordName].length
 				})
+				.sort()
 				.map(keywordName=>{
 					return MenuItem(
 						{ 
