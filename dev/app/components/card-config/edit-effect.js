@@ -20,25 +20,42 @@ const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 function EditEffectComponent(props){
     const translate = useLang()
 
-    const [cursorPos, updateCursorPos] = useState({})
-
-    const saveCursorPos = useCallback(ev=>{
-		let cursorPos = getContentEditablePos(ev.target)
-		cursorPos !== -1 && updateCursorPos(cursorPos)
+	const [editingSelection, updateEditingSelection] = useState()
+	const onInput = useCallback(()=>{
+		const editingRange = window.getSelection()
+		const selectedNode = editingRange.focusNode
+		
+		if (editingRange && (selectedNode === contentEditDiv.current || contentEditDiv.current.contains(selectedNode))){
+			updateEditingSelection({
+				node: selectedNode,
+				offset: editingRange.focusOffset,
+			})
+		}
 	}, [])
-
-	const onInput = useCallback((ev)=>{
-		ev.target.parentNode.dataset.replicatedValue = ev.target.value
-		saveCursorPos(ev)
-		props.updateValue(ev.target.value)
-	}, [props.updateValue])
 
 	const contentEditDiv = useRef()
 	const insertKeyword = useCallback((keywordName)=>{
-		if (cursorPos.start === cursorPos.end){
-			// to do figure this shit out.
+		if (!editingSelection){
+			return
 		}
-	}, [props.updateValue, cursorPos])
+
+		const editingTextNode = editingSelection.node
+
+		console.log(editingSelection)
+
+		if (editingTextNode === contentEditDiv.current){
+			editingTextNode.appendChild(createKeywordHtmlElement(keywordName))
+			editingTextNode.appendChild(document.createTextNode(translate(keywordName)))
+		}
+		else{
+			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
+
+			console.log({splitOffTextNode, parent: splitOffTextNode.parentNode})
+
+			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(keywordName), splitOffTextNode )
+			splitOffTextNode.parentNode.insertBefore(document.createTextNode(" " + translate(keywordName)), splitOffTextNode )
+		}
+	}, [props.updateValue, editingSelection])
 
 	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 
@@ -74,6 +91,7 @@ function EditEffectComponent(props){
 						className: "textarea box gutter-trbl-.5",
 						"data-placeholder": translate("insert_icon_instruction"),
 						onKeyPress: onInput,
+						onFocus: onInput,
 						onBlur: onInput,
 					}),
 				),
@@ -104,10 +122,12 @@ function EditEffectComponent(props){
 				})
 				.map(keywordName=>{
 					return MenuItem(
-						{ onClick: ()=>insertKeyword(keywordName) },
+						{ 
+							onClick: ()=>insertKeyword(keywordName),
+							key: keywordName
+						},
 						div(
 							{
-								key: keywordName,
 								className: "flex vend"
 							},
 							KeywordIcon({name: keywordName}),
@@ -117,6 +137,28 @@ function EditEffectComponent(props){
 				})
 		)
     )
+}
+
+function createKeywordHtmlElement(keywordName){
+	const icons = keywords[keywordName]
+	const wrapper = document.createElement("div")
+	wrapper.classList.add("keyword-icon-wrapper")
+	wrapper.dataset.keywordName = keywordName
+	wrapper.style.width = "1em"
+	wrapper.style.height = (icons.length || 1) + "em"
+
+	const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+	Promise.all(iconsFetch).then((iconUris)=>{
+		iconUris.forEach(iconUri=>{
+			const iconImage = document.createElement("div")
+			iconImage.classList.add("keyword-icon")
+			iconImage.style.backgroundImage = `url(${iconUri})`
+
+			wrapper.appendChild(iconImage)
+		})
+	})
+
+	return wrapper
 }
 
 function KeywordIconComponent(props){
@@ -147,63 +189,6 @@ function KeywordIconComponent(props){
 	)
 }
 const KeywordIcon = factory(KeywordIconComponent)
-
-export function getCursorPos(input) {
-	// function source: https://stackoverflow.com/questions/7745867/how-do-you-get-the-cursor-position-in-a-textarea
-	if ("selectionStart" in input && document.activeElement == input) {
-		return {
-			start: input.selectionStart,
-			end: input.selectionEnd
-		};
-	}
-	else if (input.createTextRange) {
-		var sel = document.selection.createRange();
-		if (sel.parentElement() === input) {
-			var rng = input.createTextRange();
-			rng.moveToBookmark(sel.getBookmark());
-			for (var len = 0;
-					 rng.compareEndPoints("EndToStart", rng) > 0;
-					 rng.moveEnd("character", -1)) {
-				len++;
-			}
-			rng.setEndPoint("StartToStart", input.createTextRange());
-			for (var pos = { start: 0, end: len };
-					 rng.compareEndPoints("EndToStart", rng) > 0;
-					 rng.moveEnd("character", -1)) {
-				pos.start++;
-				pos.end++;
-			}
-			return pos;
-		}
-	}
-	return -1;
-}
-
-export function getContentEditablePos(editableDiv){
-	// code from https://stackoverflow.com/questions/3972014/get-contenteditable-caret-position
-	var caretPos = 0,
-    sel, range;
-	if (window.getSelection) {
-		sel = window.getSelection();
-		if (sel.rangeCount) {
-		range = sel.getRangeAt(0);
-		if (range.commonAncestorContainer.parentNode == editableDiv) {
-			caretPos = range.endOffset;
-		}
-		}
-	} else if (document.selection && document.selection.createRange) {
-		range = document.selection.createRange();
-		if (range.parentElement() == editableDiv) {
-		var tempEl = document.createElement("span");
-		editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-		var tempRange = range.duplicate();
-		tempRange.moveToElementText(tempEl);
-		tempRange.setEndPoint("EndToEnd", range);
-		caretPos = tempRange.text.length;
-		}
-	}
-	return caretPos;
-}
 
 export function stringSplice(string, start, delCount, newSubStr) {
 	return string.slice(0, start) + newSubStr + string.slice(start + Math.abs(delCount));
