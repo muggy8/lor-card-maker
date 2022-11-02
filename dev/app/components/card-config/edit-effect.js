@@ -31,6 +31,22 @@ function EditEffectComponent(props){
 				offset: editingRange.focusOffset,
 			})
 		}
+
+		const inTextIcons = contentEditDiv.current.querySelectorAll(".keyword-icon-wrapper")
+
+		console.log(inTextIcons)
+		if (inTextIcons.length){
+			Array.prototype.forEach.call(inTextIcons, (iconElement)=>{
+				if (!(iconElement.nextSibling instanceof Text)){
+					if (iconElement.nextSibling){
+						iconElement.parentNode.insertBefore(document.createTextNode(" ") , iconElement.nextSibling)
+					}
+					else{
+						iconElement.parentNode.appendChild(document.createTextNode(" "))
+					}
+				}
+			})
+		}
 	}, [])
 
 	const contentEditDiv = useRef()
@@ -90,7 +106,7 @@ function EditEffectComponent(props){
 						contentEditable: true,
 						className: "textarea box gutter-trbl-.5",
 						"data-placeholder": translate("insert_icon_instruction"),
-						onKeyPress: onInput,
+						onInput: onInput,
 						onFocus: onInput,
 						onBlur: onInput,
 					}),
