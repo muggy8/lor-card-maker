@@ -58,3 +58,9 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.edit-effect img.keyword-img {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+}

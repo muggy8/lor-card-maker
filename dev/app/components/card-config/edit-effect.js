@@ -152,22 +152,32 @@ function EditEffectComponent(props){
 
 function createKeywordHtmlElement(keywordName){
 	const icons = keywords[keywordName]
-	const wrapper = document.createElement("div")
-	wrapper.classList.add("keyword-icon-wrapper")
-	wrapper.dataset.keywordName = keywordName
-	wrapper.style.width = "1em"
-	wrapper.style.height = (icons.length || 1) + "em"
+	const wrapper = document.createDocumentFragment()
+	// wrapper.classList.add("keyword-icon-wrapper")
+	// wrapper.dataset.keywordName = keywordName
+	// wrapper.style.width = "1em"
+	// wrapper.style.height = (icons.length || 1) + "em"
 
-	const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
-	Promise.all(iconsFetch).then((iconUris)=>{
-		iconUris.forEach(iconUri=>{
-			const iconImage = document.createElement("div")
-			iconImage.classList.add("keyword-icon")
-			iconImage.style.backgroundImage = `url(${iconUri})`
+	icons.forEach(iconFile=>{
+		const img = document.createElement("img");
+		img.classList.add("keyword-img")
+		wrapper.appendChild(img)
 
-			wrapper.appendChild(iconImage)
+		datauri(`/Assets/keyword/${iconFile}`).then(iconUri=>{
+			img.src = iconUri
 		})
 	})
+
+	// const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+	// Promise.all(iconsFetch).then((iconUris)=>{
+	// 	iconUris.forEach(iconUri=>{
+	// 		const iconImage = document.createElement("div")
+	// 		iconImage.classList.add("keyword-icon")
+	// 		iconImage.style.backgroundImage = `url(${iconUri})`
+
+	// 		wrapper.appendChild(iconImage)
+	// 	})
+	// })
 
 	return wrapper
 }
