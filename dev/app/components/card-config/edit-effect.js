@@ -10,6 +10,8 @@ import {
 	MenuItem as MenuItemComponent, 
 	ContextMenuTrigger as ContextMenuTriggerComponent 
 } from "/cdn/react-contextmenu";
+import useCallbackDebounce from "/Utils/use-debounce-callback.js"
+
 
 const ContextMenu = factory(ContextMenuComponent)
 const MenuItem = factory(MenuItemComponent)
@@ -19,6 +21,15 @@ const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 
 function EditEffectComponent(props){
     const translate = useLang()
+
+	const contentEditDiv = useRef()
+
+	const updateValue = useCallbackDebounce(()=>{
+		const saveableEffectText = generateSaveableEffectText(contentEditDiv.current)
+		console.log(saveableEffectText)
+
+		props.updateValue(saveableEffectText)
+	}, 600, [props.updateValue])
 
 	const [editingSelection, updateEditingSelection] = useState()
 	const onInput = useCallback(()=>{
@@ -46,9 +57,10 @@ function EditEffectComponent(props){
 				}
 			})
 		}
-	}, [])
 
-	const contentEditDiv = useRef()
+		updateValue()
+	}, [updateValue])
+
 	const insertKeyword = useCallback((keywordName)=>{
 		if (!editingSelection){
 			return
@@ -64,7 +76,7 @@ function EditEffectComponent(props){
 		else{
 			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
 			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(keywordName), splitOffTextNode )
-			splitOffTextNode.parentNode.insertBefore(document.createTextNode(" " + keywordLabel), splitOffTextNode )
+			splitOffTextNode.parentNode.insertBefore(document.createTextNode(keywordLabel), splitOffTextNode )
 		}
 
 		const alreadyInList = props.orangeWords.reduce((assumption, existingWord)=>{
@@ -74,7 +86,9 @@ function EditEffectComponent(props){
 		if (!alreadyInList){
 			props.updateOrangeWords([...props.orangeWords, keywordLabel])
 		}
-	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords])
+
+		updateValue()
+	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
 	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 
@@ -91,16 +105,7 @@ function EditEffectComponent(props){
         ),
         div(
             {className: "flex column gutter-b-2"},
-            // div(
-			// 	{ className: "grow-wrap box-12 gutter-trl-.5" },
-			// 	textarea({
-			// 		value: props.value,
-			// 		onInput,
-			// 		onClick: saveCursorPos,
-			// 		className: "gutter-trbl-.5"
-			// 	})
-            // ),
-			div(
+            div(
 				{className: "gutter-trbl-.5"},
 				ContextMenuTrigger(
 					{id: contextId},
@@ -115,23 +120,6 @@ function EditEffectComponent(props){
 					}),
 				),
 			),
-            // div(
-			// 	{ className: "box-12 flex" },
-			// 	Object.keys(keywords)
-			// 		.filter((keywordName)=>{
-			// 			return keywords[keywordName].length
-			// 		})
-			// 		.map(keywordName=>{
-			// 			return div(
-			// 				{ className: "box-2 flex vhcenter", key: keywordName },
-			// 				KeywordImageCheck({
-			// 					isChecked: true,
-			// 					onClick: ()=>insertKeyword(keywordName),
-			// 					keywordName,
-			// 				})
-			// 			)
-			// 		})
-            // )
         ),
 		ContextMenu(
 			{id: contextId},
@@ -170,6 +158,7 @@ function createKeywordHtmlElement(keywordName){
 	icons.forEach(iconFile=>{
 		const img = document.createElement("img");
 		img.classList.add("keyword-img")
+		img.dataset.keywordName = keywordName
 		wrapper.appendChild(img)
 
 		datauri(`/Assets/keyword/${iconFile}`).then(iconUri=>{
@@ -220,8 +209,22 @@ function KeywordIconComponent(props){
 }
 const KeywordIcon = factory(KeywordIconComponent)
 
-export function stringSplice(string, start, delCount, newSubStr) {
-	return string.slice(0, start) + newSubStr + string.slice(start + Math.abs(delCount));
-};
+function generateSaveableEffectText(container){
+	const textBits = Array.prototype.map.call(container.childNodes, (child)=>{
+		if (child instanceof HTMLDivElement){
+			return generateSaveableEffectText(child) + "\n"
+		}
+
+		if (child instanceof Text){
+			return child.textContent
+		}
+
+		if (child instanceof Image){
+			return `<${child.dataset.keywordName}/>`
+		}
+	})
+
+	return textBits.join("")
+}
 
 export default factory(EditEffectComponent, cssLoaded)

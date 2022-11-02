@@ -63,4 +63,5 @@
     display: inline-block;
     width: 1em;
     height: 1em;
+    transform: translate(0, 0.125em) scale(1.25);
 }
