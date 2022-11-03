@@ -56,7 +56,11 @@ const pathMap = {
 		"react-contextmenu": {
 			url: "https://esm.sh/react-contextmenu@2.14.0",
 			query: esmshQueryConfigs,
-		}
+		},
+		"react-use-pwa-install": {
+			url: "https://esm.sh/react-use-pwa-install@0.2.1",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

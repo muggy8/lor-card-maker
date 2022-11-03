@@ -149,5 +149,6 @@ const lang = {
         "light": "Light", 
         "flash-bomb": "Flash Bomb",
         "theme": "Theme",
+        "install_app": "Install On This Device",
     }
 }

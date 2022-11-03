@@ -5,6 +5,8 @@ import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
+import { usePWAInstall } from '/cdn/react-use-pwa-install'
+
 
 const cssLoaded = loadCss("/Components/side-bar.css")
 
@@ -28,6 +30,8 @@ function SidebarComponent(){
     }, [opened])
 
     const bugReportlink = useRef()
+
+    const installApp = usePWAInstall()
 
     const exportData = useCallback(async ()=>{
         const cards = await getCardList()
@@ -161,6 +165,13 @@ function SidebarComponent(){
             { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
             translate("batch_export")
         ),
+        installApp 
+            ? div(
+                { className: "menu-option clickable gutter-tb", onClick: installApp },
+                translate("install_app")
+            )
+            : undefined
+        ,
         div(
             { className: "menu-option clickable gutter-tb", onClick: exportData },
             translate("export_save")
