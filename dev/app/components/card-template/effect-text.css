@@ -6,15 +6,28 @@
 }
 
 .effect-text .inline-icon {
-    min-height: 1.2em; 
-    min-width: 1.2em;
+    /* min-height: 1.2em; 
+    min-width: 1.2em; */
     padding-left: 1.2em;
-    display:inline-block; 
-    background-repeat: no-repeat; 
-    background-size: 1.2em 1.2em;
-    background-position: left 0 top 0;
-    vertical-align: middle;
+    display: inline; 
     /* transform: translate(0,-0.125em) scale(1.25); */
+
+    position: relative;
+}
+.effect-text .inline-icon::before {
+    display: block;
+    content: " ";    
+
+    background-repeat: no-repeat; 
+    background-image: var(--icon-image);
+    background-size: 1.2em 1.2em;
+    width: 1.2em;
+    height: 1.2em;
+
+    position: absolute;
+    top: -0.35em;
+    left: 0;
+    transform: scale(1.33);
 }
 
 .effect-text .blue-word {

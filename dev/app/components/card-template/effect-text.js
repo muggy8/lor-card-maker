@@ -81,17 +81,6 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
     return currentlyRunningScalingTasks.get(element)
 }
 
-console.log(div(
-    div(),
-    div(),
-    div(),
-    [
-        div({key : 1}),
-        div({key : 2}),
-        div({key : 3}),
-    ]
-))
-
 function EffectTextComponent(props){
     let text = props.children
     if (text && typeof text !== "string"){
@@ -246,7 +235,6 @@ function EffectTextComponent(props){
 
         updateContentArray(contentArray)
 
-        console.log(contentArray)
     }, 200, [text, props.blueWords, props.orangeWords])
 
     const elementRef = useRef()
@@ -270,7 +258,7 @@ function InlineIconComponent(props){
         {
             className: "inline-icon",
             style: {
-                backgroundImage: iconUri ? `url(${iconUri})` : "null"
+                "--icon-image": iconUri ? `url(${iconUri})` : "null"
             }
         },
         props.children,

@@ -7,6 +7,7 @@ import { typeToComponent } from "/Views/list.js"
 import { svgRefference, openUri } from "/Views/card-editor.js"
 import BatchRenderer from "/Components/batch-renderer.js"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
+import useToggle from "/Utils/use-toggle.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -74,18 +75,21 @@ function BatchExportComponent(){
 
     const [svgRef, updateSvgRef] = useState(null)
 
+    const [exproting, _toggleExporting, setExporting] = useToggle(false)
+
     const exportCards = ()=>{
-        if (!Object.keys(selectedCardsData).length){
+        if (exproting || !Object.keys(selectedCardsData).length){
             return
         }
-
+        setExporting(true)
         saveSvgAsPng.svgAsPngUri(svgRef, {
             excludeUnusedCss: true,
             width: svgRef.width.baseVal.value,
             height: svgRef.height.baseVal.value,
         }).then(uri=>{
             openUri(uri)
-        })
+            setExporting(false)
+        }, ()=>setExporting(false))
     }
 
     return section(
@@ -110,6 +114,7 @@ function BatchExportComponent(){
                             { 
                                 className: "gutter-trbl-.5", 
                                 onClick: exportCards,
+                                [(!Object.keys(selectedCardsData).length || exproting ? "disabled" : "data-foo")]: true
                             },
                             strong(translate("export_selection"))
                         )
@@ -125,7 +130,8 @@ function BatchExportComponent(){
                             setRef: updateSvgRef,
                         } },
                         BatchRenderer({
-                            cards: selectedCardsData
+                            cards: selectedCardsData,
+                            loading: exproting,
                         })
                     ),
                 ),

@@ -121,7 +121,7 @@ function BatchRendererComponent(props){
     const doNothing = useCallback(()=>{}, [])
 
     return SvgWrap(
-        {width, height},
+        {width, height, loading: props.loading},
         createElement(
             svgRefference.Provider,
             { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
