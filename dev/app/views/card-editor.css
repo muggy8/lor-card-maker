@@ -16,6 +16,17 @@
     will-change: width;
 }
 
+#card-editor .preview-content svg {
+    max-width: 100%;
+    max-height: calc(90vh - var(--banner-height) - 4em);
+    width: auto;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-family: UniversforRiotGamesRegular;
+}
+
 #card-editor .card-configs {
     z-index: 1;
     position: relative;

@@ -49,12 +49,7 @@ svg {
 
 img, svg {
     max-width: 100%;
-    max-height: calc(90vh - var(--banner-height) - 4em);
-    width: auto;
     height: auto;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
     font-family: UniversforRiotGamesRegular;
 }
 
