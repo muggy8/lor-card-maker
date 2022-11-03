@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Classic",
+        "target": "ES2018",
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "paths": {
+            "/Views/*": ["./views/*"],
+            "/Utils/*": ["./utils/*"],
+            "/Components/*": ["./components/*"],
+            "/Assets/*": ["./assets/*"],
+            "/App/*": ["./*"],
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}
