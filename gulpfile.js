@@ -4,55 +4,57 @@ const terser = require('gulp-terser')
 const cleanCSS = require('gulp-clean-css')
 const imagemin = require('gulp-imagemin')
 const htmlmin = require('gulp-htmlmin')
-const jsonminify = require('gulp-jsonminify');
+const jsonminify = require('gulp-jsonminify')
 const replace = require('gulp-replace')
+
+const sourceDir = "dev"
 
 let copy = exports.copy = function() {
 	return src([
-		'src/**/*.*',
-		'!src/**/*.md',
-		'!src/**/*.png',
-		'!src/**/*.svg',
-		'!src/**/*.webp',
+		`${sourceDir}/**/*.*`,
+		`!${sourceDir}/**/*.md`,
+		`!${sourceDir}/**/*.png`,
+		`!${sourceDir}/**/*.svg`,
+		`!${sourceDir}/**/*.webp`,
 	])
 	.pipe(dest('docs/'))
 }
 let copyArt = exports.copyArt = function() {
 	return src([
-		'src/**/*.png',
-		'src/**/*.svg',
-		'src/**/*.webp',
+		`${sourceDir}/**/*.png`,
+		`${sourceDir}/**/*.svg`,
+		`${sourceDir}/**/*.webp`,
 	])
 	.pipe(dest('docs/'))
 }
 
 let minifyJs = exports.minifyJs = function() {
-	return src('src/**/*.js')
+	return src(`${sourceDir}/**/*.js`)
 		.pipe(terser())
 		.pipe(replace(/(\\n)+(\\t)+/gm, " "))
 		.pipe(dest('docs/'))
 }
 
 let minifyCss = exports.minifyCss = function() {
-	return src('src/**/*.css')
+	return src(`${sourceDir}/**/*.css`)
 		.pipe(cleanCSS())
 		.pipe(dest('docs/'))
 }
 
 let minifyPng = exports.minifyPng = function() {
-	return src('src/**/*.png')
+	return src(`${sourceDir}/**/*.png`)
 		.pipe(imagemin())
 		.pipe(dest('docs/'))
 }
 
 let minifyHtml = exports.minifyHtml = function() {
-	return src('src/**/*.html')
+	return src(`${sourceDir}/**/*.html`)
 		.pipe(htmlmin({ collapseWhitespace: true }))
 		.pipe(dest('docs/'))
 }
 
 let minifyJson = exports.minifyJson = function(){
-	return src('src/**/*.json')
+	return src(`${sourceDir}/**/*.json`)
 		.pipe(jsonminify())
 		.pipe(dest('docs/'))
 }
@@ -72,7 +74,7 @@ exports.default = series(
 		minifyHtml,
 		minifyJson,
 	),
-	pathReplace,
+	// pathReplace,
 )
 
 exports.art = series(
