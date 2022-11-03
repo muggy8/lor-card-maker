@@ -15,7 +15,7 @@
     ],
     "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "display": "fullscreen",
+    "display": "standalone",
     "description" : "An open source and mobile-friendly web based Card Maker application for the Legends of Runeterra digital CCG. Supports Followers, Champions (level 1 - 3), Spells, Landmarks, Keywords, and Multi-Region.",
     "scope" : "./",
     "start_url" : "./",
