@@ -142,5 +142,10 @@ const lang = {
         "trigger": "Trigger",
         // "impact": ["impactn.png"],
         "imbue": "Imbue",
+
+        "oled": "Black", 
+        "dark": "Dark", 
+        "light": "Light", 
+        "flash-bomb": "Flash Bomb"
     }
 }

@@ -21,3 +21,18 @@ export function deleteCard(id){
         method: "DEL",
     })
 }
+
+
+export function getSettings(){
+    return fetch("pseudo-api/settings/").then(res=>res.json())
+}
+
+export function saveSettings(data){
+    return fetch("pseudo-api/settings/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+}

@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef, createContext, createElement 
 import factory, { section } from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
+import { getSettings, saveSettings } from "/Utils/service.js"
 
 export const Globals = createContext({
     lang: "en",
@@ -16,6 +17,7 @@ function App (props) {
         lang: "en",
         view: List,
         defaultBg: true,
+        settings: {}
     })
 
     let accumulatedUpdateState = {...globalState}
@@ -43,6 +45,17 @@ function App (props) {
 
         updateGlobalState(mergedState)
     }, [globalState, updateGlobalState])
+
+    useEffect(()=>{
+        getSettings().then(settings=>patchGlboalState({settings}))
+    }, [])
+
+    const patchSettings = useCallback((patchUpdate)=>{
+        const newSettingsState = {...globalState.settings, ...patchUpdate}
+        patchGlboalState({settings: newSettingsState})
+        
+        saveSettings(newSettingsState)
+    }, [globalState.settings, patchGlboalState])
 
     const statePatcherRef = useRef()
 
@@ -105,6 +118,7 @@ function App (props) {
                 setState: updateGlobalState,
                 patchState: patchGlboalState,
                 setView, 
+                patchSettings,
                 allowBack: allowBack.current,
                 setAllowBack: (callback)=>{
                     allowBack.current = callback

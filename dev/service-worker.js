@@ -88,8 +88,10 @@ self.addEventListener("activate", function(ev){
 })
 
 const cacheLocation = "cards"
+const settingsLocation = "settings"
 const cardListPath = "pseudo-api/card-list/"
 const cardDataPath = "pseudo-api/card/"
+const settingsPath = "pseudo-api/settings/"
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
@@ -104,7 +106,11 @@ self.addEventListener("fetch", function(ev){
 			let responded = false
 			if (ev.request.method === "POST" || ev.request.method === "PUT"){
 				if (filePathRelativeToURLRoot.includes(cardDataPath)){
-					ev.respondWith(saveCardData(ev.request, filePathRelativeToURLRoot))
+					ev.respondWith(saveData(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				if (filePathRelativeToURLRoot.includes(settingsPath)){
+					ev.respondWith(saveSettings(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -115,6 +121,10 @@ self.addEventListener("fetch", function(ev){
 				}
 				else if (filePathRelativeToURLRoot.includes(cardDataPath)){
 					ev.respondWith(getSavedCard(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(settingsPath)){
+					ev.respondWith(getSettings(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -140,7 +150,32 @@ self.addEventListener("fetch", function(ev){
     }
 })
 
-async function saveCardData(req, path){
+async function saveSettings(req, path){
+	let data = await req.text()
+	let cache = await caches.open(settingsLocation)
+
+	let dataResponse = new Response(data, {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
+	await cache.put(path, dataResponse.clone())
+  	return dataResponse
+}
+
+async function getSettings(req, path){
+	let cache = await caches.open(settingsLocation)
+	let cachedResponse = await cache.match(path)
+
+	if (cachedResponse){
+		return cachedResponse
+	}
+	return new Response("{}", {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
+}
+
+async function saveData(req, path){
   let data = await req.text()
   let cache = await caches.open(cacheLocation)
   let dataResponse = new Response(data, {

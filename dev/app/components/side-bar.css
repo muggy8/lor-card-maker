@@ -64,3 +64,7 @@
     color: var(--color-link);
     text-decoration: underline;
 }
+
+.side-bar .select-theme {
+    font-size: 1.5rem;
+}

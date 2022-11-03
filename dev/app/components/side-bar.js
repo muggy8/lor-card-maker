@@ -1,5 +1,5 @@
-import factory, { div, span, label, a, input, nav } from "/Utils/elements.js"
-import { useCallback, useState, useRef, useContext } from "/cdn/react" 
+import factory, { div, span, label, a, input, nav, select, option } from "/Utils/elements.js"
+import { useCallback, useState, useRef, useContext, useEffect } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -8,10 +8,19 @@ import BatchExport from "/Views/batch-export.js"
 
 const cssLoaded = loadCss("/Components/side-bar.css")
 
+const themeClassNames = [
+    "oled", "dark", "light", "flash-bomb"
+]
+
 function SidebarComponent(){
     const translate = useLang()
 
     const globalState = useContext(Globals)
+
+    useEffect(()=>{
+        document.body.classList.remove(...document.body.classList)
+        document.body.classList.add(globalState.state.settings.theme)
+    }, [globalState.state.settings])
 
     const [opened, updateOpened] = useState(false)
     const toggleOpened = useCallback(()=>{
@@ -124,6 +133,26 @@ function SidebarComponent(){
             },
             div({className: "icon animate clickable" }, 
                 span({ className: opened ? "delete" : "menu" })
+            ),
+        ),
+        label(
+            {
+                className: "menu-option clickable gutter-tb",
+            },
+            select(
+                { 
+                    onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
+                    className: "select-theme gutter-rl-1 gutter-tb-.5"
+                },
+                themeClassNames.map(className=>{
+                    return option(
+                        {
+                            key: className,
+                            value: className
+                        },
+                        translate(className)
+                    )
+                })
             ),
         ),
         div(
