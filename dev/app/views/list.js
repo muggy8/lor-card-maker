@@ -103,6 +103,7 @@ const types = [
                 type: "spell",
                 power: null,
                 health: null,
+                mana: "",
             }
         ),
     },
