@@ -38,7 +38,7 @@ function BannarBarComponent(props){
     return header(
         {className: "banner fixed flex hcenter gutter-rl-3 card-text-bold", ref: setBannerElement},
         h1(
-            translate("lor_card_foundry"),
+            translate("lor_card_maker"),
             a(
                 {
                     href:"https://github.com/muggy8/lor-card-maker",
