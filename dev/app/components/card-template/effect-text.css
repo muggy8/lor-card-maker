@@ -6,13 +6,15 @@
 }
 
 .effect-text .inline-icon {
-    height: 1.2em; 
-    width: 1.2em; 
+    min-height: 1.2em; 
+    min-width: 1.2em;
+    padding-left: 1.2em;
     display:inline-block; 
     background-repeat: no-repeat; 
-    background-size: contain;
-    background-position: center;
+    background-size: 1.2em 1.2em;
+    background-position: left 0 top 0;
     vertical-align: middle;
+    /* transform: translate(0,-0.125em) scale(1.25); */
 }
 
 .effect-text .blue-word {

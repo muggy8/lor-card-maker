@@ -1,6 +1,6 @@
-import factory, { div, span, br } from "/Utils/elements.js"
+import factory, { div, span } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
+import React, { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
@@ -80,6 +80,17 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
 
     return currentlyRunningScalingTasks.get(element)
 }
+
+console.log(div(
+    div(),
+    div(),
+    div(),
+    [
+        div({key : 1}),
+        div({key : 2}),
+        div({key : 3}),
+    ]
+))
 
 function EffectTextComponent(props){
     let text = props.children
@@ -188,7 +199,54 @@ function EffectTextComponent(props){
 
         contentArray = contentArray.filter(el=>!!el)
 
+        // next up, the icons needs to absorb it's next neighbour unless it's empty or a div, then absorb the one after that too
+        for(let i = 0; i < contentArray.length; i++){
+            const currentNode = contentArray[i]
+            if (typeof currentNode === "string"){
+                continue
+            }
+            if (!React.isValidElement(currentNode)){
+                continue
+            }
+
+            if (!currentNode.props.pngName){
+                continue
+            }
+
+            const replacementInlineIconProps = {}
+            const replacementInlineIconchildren = []
+
+            Object.keys(currentNode.props).forEach(propName=>{
+                replacementInlineIconProps[propName] = currentNode.props[propName]
+            })
+
+            if (currentNode.props.children && !Array.isArray(currentNode.props.children)){
+                replacementInlineIconchildren.push(currentNode.props.children)
+            }
+
+            let nextNode = contentArray[i + 1]
+            while(nextNode){
+                contentArray.splice(i + 1, 1)
+
+                replacementInlineIconchildren.push(nextNode)
+
+                if (typeof nextNode === "string" && !nextNode.trim()){
+                    nextNode = contentArray[i + 1] // we have to consume another sibling
+                }
+                else if (React.isValidElement(nextNode) && nextNode.props.pngName){
+                    nextNode = contentArray[i + 1] // we have to consume another sibling
+                }
+                else{
+                    nextNode = undefined // dont need to consume any more siblings
+                }
+            }
+
+            contentArray.splice(i, 1, Function.apply.call(InlineIcon, factory, [replacementInlineIconProps, ...replacementInlineIconchildren]))
+        }
+
         updateContentArray(contentArray)
+
+        console.log(contentArray)
     }, 200, [text, props.blueWords, props.orangeWords])
 
     const elementRef = useRef()
@@ -214,7 +272,8 @@ function InlineIconComponent(props){
             style: {
                 backgroundImage: iconUri ? `url(${iconUri})` : "null"
             }
-        }
+        },
+        props.children,
     )
 }
 
