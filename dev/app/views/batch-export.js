@@ -1,5 +1,6 @@
 import factory, { div, button, strong, section } from "/Utils/elements.js"
-import { createElement, useEffect, useState, useLayoutEffect, useCallback, useRef } from "/cdn/react" 
+import { createElement, useEffect, useState, useLayoutEffect, useCallback, useRef, useContext } from "/cdn/react" 
+import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
@@ -15,6 +16,28 @@ const cssLoaded = loadCss("/Views/batch-export.css")
 function BatchExportComponent(){
 
     const translate = useLang()
+
+    const globalState = useContext(Globals)
+    const globalStateRef = useRef()
+    globalStateRef.current = globalState
+
+    useEffect(()=>{
+        const storedCallback = globalState.allowBack
+
+        globalStateRef.current.setAllowBack(()=>{
+            if (document.documentElement.scrollTop){
+                setImmediate(()=>window.scrollTo(0, 0))
+                return false
+            }
+            else{
+                return storedCallback()
+            }
+        })
+
+        return function(){
+            globalStateRef.current.setAllowBack(storedCallback)
+        }
+    }, [])
 
     const [savedCards, updateSavedCards] = useState([])
     const [savedCardsById, updateSavedCardsById] = useState({})
