@@ -395,21 +395,23 @@ async function migrateDataFromVersion1To2(){
 			cardData.type = typeName
 			cardData.dataVersion = 2
 
-			if (cardData.rarity.includes("gemless")){
+			if (cardData.rarity.includes("gemless") || cardData.rarity.includes("none")){
 				cardData.rarity = ""
 			}
+
+			console.log(cardData)
 
 			const updatedSaveData = new Response(JSON.stringify(cardData), {
 				'Content-Type': 'application/json',
 				"status" : 200
 			})
 
-			return cache.put(path, updatedSaveData)
+			// return cache.put(path, updatedSaveData)
 		})
 
 		await Promise.all(migrateCardDataTasks)
 
-		return cache.delete(cardListPath + typeName)
+		// return cache.delete(cardListPath + typeName)
 	})
 
 	await Promise.all(convertTasks)
