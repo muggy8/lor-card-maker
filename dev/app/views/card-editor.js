@@ -95,6 +95,10 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const [isExporting, _toggleExporting, setExporting] = useToggle(false)
 
         const exportCard = useCallback(()=>{
+            if (isExporting){
+                return
+            }
+
             setExporting(true)
             saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
@@ -107,7 +111,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 }, 
                 ()=>setExporting(false)
             )
-        }, [svgRef])
+        }, [svgRef, isExporting])
 
         const fixedDisplayRef = useRef()
         const [useableWidth, updateUseableWidth] = useState(0)
@@ -140,6 +144,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         }, [])
 
         const [canSave, _toggleCanSave, setCanSave] = useToggle(!!card.id)
+        const [isSaving, _toggleIsSaving, setisSaving] = useToggle(false)
         useEffect(()=>{
             setCanSave(true)
         }, knownCardDataKeys.map(key=>card[key]))
@@ -164,7 +169,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                 ...card,
                                 cardDataUpdaters,
                                 updateTransform: card.art && globalState.state.moveableArt ? cardDataUpdaters.transform : undefined,
-                                loading: isExporting,
+                                loading: isExporting || isSaving,
                             }),
                         )
                     ),
@@ -190,17 +195,22 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                 {
                                     className: "gutter-trbl-.5",
                                     onClick: ()=>{
-                                        if (!canSave){
+                                        if (!canSave || isSaving){
                                             return
                                         }
+                                        setisSaving(true)
+                                        function doneSaving(){
+                                            setCanSave(false)
+                                            setisSaving(false)
+                                        }
                                         if (card.id){
-                                            return saveCard(card.id, card).then(()=>setCanSave(false))
+                                            return saveCard(card.id, card).then(doneSaving, doneSaving)
                                         }
                                         const newId = Date.now().toString()
-                                        saveCard(newId, card).then(()=>setCanSave(false))
+                                        saveCard(newId, card).then(doneSaving, doneSaving)
                                         cardDataUpdaters.id(newId)
                                     },
-                                    [(canSave ? "data-foo" : "disabled")]: true
+                                    [(canSave || !setisSaving ? "data-foo" : "disabled")]: true
                                 },
                                 strong(translate("save_card"))
                             )
@@ -208,7 +218,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         div(
                             { className: "gutter-rl-.5" },
                             button(
-                                { className: "gutter-trbl-.5", onClick: exportCard },
+                                { 
+                                    className: "gutter-trbl-.5", 
+                                    onClick: exportCard,
+                                    [(isExporting ? "disabled" : "data-foo")]: true
+                                },
                                 strong(translate("export"))
                             )
                         ),
