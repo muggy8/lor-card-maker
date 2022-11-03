@@ -1,0 +1,1 @@
+const cache={};export default async function datauri(e){return cache[e]?cache[e]:cache[e]=fetch(e).then(e=>e.blob()).then(e=>{const t=new FileReader;return new Promise(a=>{t.addEventListener("load",()=>{a(t.result)},!1),t.readAsDataURL(e)})})}

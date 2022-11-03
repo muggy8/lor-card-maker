@@ -1,0 +1,1 @@
+import{useCallback,useState}from"/cdn/react";export default function useToggle(e){const[t,a]=useState(e),u=useCallback(()=>{a(!t)},[t]);return[t,u,a]}

@@ -1,1 +1,0 @@
-function svg2dom(r){return(new DOMParser).parseFromString(r,"image/svg+xml").firstElementChild}
