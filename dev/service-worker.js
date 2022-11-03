@@ -384,8 +384,9 @@ async function migrateDataFromVersion1To2(){
 
 	const convertTasks = Object.keys(listData).map(async typeName=>{
 		const associatedCards = listData[typeName]
-		const migrateCardDataTasks = associatedCards.map(async cardId=>{
+		const migrateCardDataTasks = associatedCards.reduce(async (previousCardMigration, cardId)=>{
 			const path = cardDataPath + cardId
+			await previousCardMigration
 			let cardData = await getSavedCard(undefined, path).then(res=>res.json())
 
 			if (cardData.dataVersion && cardData.dataVersion > 1){
@@ -395,23 +396,21 @@ async function migrateDataFromVersion1To2(){
 			cardData.type = typeName
 			cardData.dataVersion = 2
 
-			if (cardData.rarity.includes("gemless") || cardData.rarity.includes("none")){
+			if (cardData.rarity && (cardData.rarity.includes("gemless") || cardData.rarity.includes("none"))){
 				cardData.rarity = ""
 			}
-
-			console.log(cardData)
 
 			const updatedSaveData = new Response(JSON.stringify(cardData), {
 				'Content-Type': 'application/json',
 				"status" : 200
 			})
 
-			// return cache.put(path, updatedSaveData)
-		})
+			return cache.put(path, updatedSaveData)
+		}, Promise.resolve())
 
-		await Promise.all(migrateCardDataTasks)
+		await migrateCardDataTasks
 
-		// return cache.delete(cardListPath + typeName)
+		return cache.delete(cardListPath + typeName)
 	})
 
 	await Promise.all(convertTasks)
