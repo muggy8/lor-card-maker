@@ -99,7 +99,7 @@ self.addEventListener("fetch", function(ev){
 
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
 
-	console.log({indexUrl, urlRoot, filePathRelativeToURLRoot, filePathRelativeToInstallPath, fetchUrl})
+	// console.log({indexUrl, urlRoot, filePathRelativeToURLRoot, filePathRelativeToInstallPath, fetchUrl})
 
     if (fetchUrl){
 		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){
