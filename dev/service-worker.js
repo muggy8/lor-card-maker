@@ -91,8 +91,7 @@ const settingsPath = "pseudo-api/settings/"
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
-    // const mappedUrl = importMap[filePathRelativeToPageRoot]
-    // console.log("sw fetch event", filePathRelativeToURLRoot)
+	const filePathRelativeToInstallPath = ev.request.url.replace(indexUrl, "")
 
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
 
@@ -138,7 +137,13 @@ self.addEventListener("fetch", function(ev){
 
 		}
 		else {
-			ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
+			if (fetchUrl === filePathRelativeToURLRoot){
+				ev.respondWith(intelegentFetch(filePathRelativeToInstallPath))
+			}
+			else{
+				ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
+			}
+		
 		}
     }
     else{
