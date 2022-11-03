@@ -6,11 +6,12 @@
         "strictNullChecks": true,
         "strictFunctionTypes": true,
         "paths": {
-            "/Views/*": ["./views/*"],
-            "/Utils/*": ["./utils/*"],
-            "/Components/*": ["./components/*"],
-            "/Assets/*": ["./assets/*"],
-            "/App/*": ["./*"],
+            "/Views/*": ["./app/views/*"],
+            "/Utils/*": ["./app/utils/*"],
+            "/Components/*": ["./app/components/*"],
+            "/Assets/*": ["./app/assets/*"],
+            "/App/*": ["./app/*"],
+            "/cdn/*": ["../node_modules/*"],
         }
     },
     "exclude": [

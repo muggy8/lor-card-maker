@@ -37,10 +37,6 @@ const pathMap = {
 			url: "https://esm.sh/setimmediate@1.0.5",
 			query: esmshQueryConfigs,
 		},
-		hammerjs: {
-			url: "https://esm.sh/hammerjs@2.0.8",
-			query: esmshQueryConfigs,
-		},
 		"fast-average-color": {
 			url: "https://esm.sh/fast-average-color@9.1.1",
 			query: esmshQueryConfigs,
