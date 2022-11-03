@@ -95,9 +95,11 @@ const settingsPath = "pseudo-api/settings/"
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
-	const filePathRelativeToInstallPath = ev.request.url.replace(indexUrl, "")
+	const filePathRelativeToInstallPath = ev.request.url.replace(indexUrl, "") || indexUrl
 
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
+
+	console.log({indexUrl, urlRoot, filePathRelativeToURLRoot, filePathRelativeToInstallPath, fetchUrl})
 
     if (fetchUrl){
 		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){

@@ -14,7 +14,7 @@ const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
 const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
 const cdnGitRegex = /https\:\/\/cdn\.jsdelivr\.net\/gh\/[^\/]+\/([^\@]+)\@[^\/]+/gm
 
-const appDir = "dev"
+const appDir = "."
 
 if (argv.proxymity){
 	app.get("/", async function(req, res, next){
@@ -77,5 +77,5 @@ app.use(express.static(appDir))
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}/`)
 
-  open(`http://localhost:${port}/`)
+//   open(`http://localhost:${port}/`)
 })
