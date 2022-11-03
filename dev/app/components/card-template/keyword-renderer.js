@@ -52,7 +52,7 @@ export const keywords = {
     "boon": [],
     "silence": ["silence.png"],
     "trigger": ["trigger.png"],
-    "impact": ["impactn.png"],
+    // "impact": ["impactn.png"],
     "imbue": ["imbue.png"],
 }
 
