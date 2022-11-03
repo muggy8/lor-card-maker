@@ -4,6 +4,7 @@ import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
+import listLimit from "/Components/list-limit.js"
 
 import Spell from "/Components/card-template/spell.js"
 import Champion1 from "/Components/card-template/champion1.js"
@@ -189,41 +190,42 @@ function ListComponent(){
         },
         div(
             { className: "gutter-trbl-.5 flex",},
-            types.map((type)=>{
-                return div(
-                    { 
-                        className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
-                        key: type.labelKey,
-                        onClick: ()=>{
-                            globalState.setView(type.editor)
-                        }
-                    },
-                    type.component({
-                        name: `${translate("new")} ${translate(type.labelKey)}` + (type.beta ? " " + translate("beta") : "")
-                    })
-                )
-            }),
-
-            savedCards.map((cardData)=>{
-                const renderingComponent = typeToComponent(cardData.type)
-                if (!renderingComponent){
-                    return div({key: cardData.id})
-                }
-                return div(
-                    { 
-                        className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
-                        key: cardData.id,
-                        onClick: ()=>{
-                            const editor = types.find(type=>type.component === renderingComponent)
-                            
-                            globalState.setView(editor.editor)
-                            globalState.patchState({cardId: cardData.id})
-                        }
-                    },
-                    renderingComponent(cardData)
-                )
-            }),
-
+            listLimit(
+                types.map((type)=>{
+                    return div(
+                        { 
+                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
+                            key: type.labelKey,
+                            onClick: ()=>{
+                                globalState.setView(type.editor)
+                            }
+                        },
+                        type.component({
+                            name: `${translate("new")} ${translate(type.labelKey)}` + (type.beta ? " " + translate("beta") : "")
+                        })
+                    )
+                }),
+    
+                savedCards.map((cardData)=>{
+                    const renderingComponent = typeToComponent(cardData.type)
+                    if (!renderingComponent){
+                        return div({key: cardData.id})
+                    }
+                    return div(
+                        { 
+                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
+                            key: cardData.id,
+                            onClick: ()=>{
+                                const editor = types.find(type=>type.component === renderingComponent)
+                                
+                                globalState.setView(editor.editor)
+                                globalState.patchState({cardId: cardData.id})
+                            }
+                        },
+                        renderingComponent(cardData)
+                    )
+                }),
+            ),
         ),
     )
 }
