@@ -261,7 +261,7 @@ function InlineIconComponent(props){
                 "--icon-image": iconUri ? `url(${iconUri})` : "none"
             }
         },
-        div({className: "icon-renderer"}),
+        // div({className: "icon-renderer"}),
         props.children,
     )
 }
