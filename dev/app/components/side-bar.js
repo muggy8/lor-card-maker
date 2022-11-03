@@ -6,6 +6,7 @@ import useLang from "/Utils/use-lang.js"
 import { getCardList, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
 import { usePWAInstall } from '/cdn/react-use-pwa-install'
+import useToggle from "/Utils/use-toggle.js"
 
 
 const cssLoaded = loadCss("/Components/side-bar.css")
@@ -43,7 +44,9 @@ function SidebarComponent(){
         downloadFile(output, "card-data.json", "application/json")
     }, [])
 
+    const [isImporting, _toggleIsImporting, setIsImporting] = useToggle(false)
     const importData = useCallback(async ev=>{
+        setIsImporting(true)
         const loadedData = await new Promise(accept=>{
             let reader = new FileReader()
             let file = ev.target.files[0]
@@ -119,6 +122,7 @@ function SidebarComponent(){
             await saveCard(cardData.id, cardData)
         }
 
+        setIsImporting(false)
         // the simplest way of getting the new data to show up in the UI. Probably should change this later XD
         document.location.reload()
     })
@@ -178,13 +182,19 @@ function SidebarComponent(){
         ),
         label(
             { className: "menu-option clickable gutter-tb" },
-            translate("import_save"),
-            input({
+            isImporting ? undefined : translate("import_save"),
+            isImporting ? undefined : input({
                 className: "hide",
                 accept: "application/json",
                 type: "file",
                 onChange: importData,
             }),
+            isImporting 
+                ? div({className: "icon"},
+                    div({className: "loading"})
+                ) 
+                : undefined
+            ,
         ),
         label(
             { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
