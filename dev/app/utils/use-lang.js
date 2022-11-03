@@ -124,7 +124,7 @@ const lang = {
         "quick attack": "Quick Attack",
         "vulnerable": "Vulnerable",
         "challenger": "Challenger",
-        "fearsome": "Cearsome",
+        "fearsome": "Fearsome",
         "regeneration": "Regeneration",
         "spellshield": "Spellshield",
         "fury": "Fury",
