@@ -1,0 +1,9 @@
+.input-range__track--active, 
+.input-range__slider 
+{
+    background-color: var(--color-primary);
+}
+
+.input-range__slider {
+    border-color: var(--color-primary);
+}

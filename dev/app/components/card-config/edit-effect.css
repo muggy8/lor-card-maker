@@ -1,0 +1,67 @@
+.edit-effect .textarea {
+    min-height: 5em;
+    background-color: rgba(var(--rgb-white), 0.6);
+    border-radius: 0.25em;
+    border: solid 1px var(--color-border)
+}
+
+[contenteditable=true]:empty:not(:focus):before{
+    content:attr(data-placeholder);
+    color:var(--color-dark);
+    font-style:italic;
+    font-size: smaller;
+}
+
+.edit-effect .react-contextmenu {
+    background-color: rgba(var(--rgb-white), 0.6);
+    border: solid 1px var(--color-border);
+    backdrop-filter: blur(12px);
+    max-height: 25vh;
+    overflow-y: auto;
+}
+
+.edit-effect .react-contextmenu-item {
+    padding: 0.5em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border-top: solid 1px var(--color-border)
+}
+.edit-effect .react-contextmenu-itemfirst-of-type {
+    border-top: none;
+}
+
+.edit-effect .react-contextmenu-item:hover {
+    background-color: rgba(var(--rgb-primary), 0.2);
+}
+
+.edit-effect .react-contextmenu-item--disabled  {
+    background-color: rgba(var(--rgb-light), 0.6);
+}
+
+.edit-effect .react-contextmenu-item--divider   {
+    color: var(--color-border)
+}
+
+.edit-effect .keyword-icon-wrapper {
+    display: inline-block;
+}
+
+.edit-effect .react-contextmenu-item .keyword-icon-wrapper {
+    margin-right: 0.5em;
+}
+
+.edit-effect .keyword-icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.edit-effect img.keyword-img {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    transform: translate(0, 0.125em) scale(1.25);
+}

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Classic",
+        "target": "ES2018",
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "paths": {
+            "/Views/*": ["./app/views/*"],
+            "/Utils/*": ["./app/utils/*"],
+            "/Components/*": ["./app/components/*"],
+            "/Assets/*": ["./app/assets/*"],
+            "/App/*": ["./app/*"],
+            "/cdn/*": ["../node_modules/*"],
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

@@ -14,9 +14,11 @@ const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
 const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
 const cdnGitRegex = /https\:\/\/cdn\.jsdelivr\.net\/gh\/[^\/]+\/([^\@]+)\@[^\/]+/gm
 
+const appDir = "dev"
+
 if (argv.proxymity){
 	app.get("/", async function(req, res, next){
-		let indexPage = await fs.readFile("src/index.html", "utf-8")
+		let indexPage = await fs.readFile(appDir + "/index.html", "utf-8")
 		indexPage = indexPage.replace(proxymityScriptRegex, `
 			<script src="src/proxymity-util.js"></script>
 			<script src="src/on-next-event-cycle.js"></script>
@@ -57,7 +59,7 @@ if (argv.proxymity){
 }
 else{
 	app.get("/", async function(req, res, next){
-		let indexPage = await fs.readFile("src/index.html", "utf-8")
+		let indexPage = await fs.readFile(appDir + "/index.html", "utf-8")
 
 		indexPage = indexPage.replace(cdnJsRegex, function(match, packageName){
 			return `/node_modules/${packageName}`
@@ -70,7 +72,7 @@ else{
 	})
 }
 app.use("/node_modules", express.static("node_modules"))
-app.use(express.static('src'))
+app.use(express.static(appDir))
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}/`)

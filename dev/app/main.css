@@ -1,0 +1,143 @@
+@font-face{
+	font-family: BeaufortforLOLBold;
+	src:
+		url("/Assets/BeaufortforLOL-Bold.otf")
+		format("truetype");
+}
+@font-face{
+	font-family: BeaufortforLOLRegular;
+	src:
+		url("/Assets/BeaufortforLOLJa-Regular.ttf")
+		format("opentype");
+}
+@font-face{
+	font-family: UniversforRiotGamesRegular;
+	src:
+		url("/Assets/UniversforRiotGames-Regular.otf")
+		format("opentype");
+}
+@font-face{
+	font-family: UniversforRiotGamesUltraCondensed;
+	src:
+		url("/Assets/UniversforRiotGames-UltCond.otf")
+		format("opentype");
+}
+
+svg {
+	--effect-blue-text: #49a0f8;
+	--effect-orange-text: #fad65a;
+	--effect-white-text: #fff;
+}
+
+.card-text-universe {
+	font-family: UniversforRiotGamesRegular;
+}
+.card-text-universe-condensed {
+	font-family: UniversforRiotGamesUltraCondensed;
+	letter-spacing: 0.09em;
+}
+.card-text-bold {
+	font-family: BeaufortforLOLBold;
+}
+.card-text {
+	font-family: BeaufortforLOLRegular;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+img, svg {
+	max-width: 100%;
+	height: auto;
+	font-family: UniversforRiotGamesRegular;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.caps {
+	text-transform: uppercase;
+}
+
+.fixed {
+	position: fixed;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.hide {
+	display: none;
+}
+
+.block, label {
+	display: block;
+}
+
+.ghost {
+	filter: saturate(0.05) contrast(0.75);
+}
+
+.invisable {
+	opacity: 0;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+.relative { position: relative }
+.absolute { position: absolute }
+
+.card-render-test {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fitty-wrap {
+	display: inline-block !important;
+    white-space: normal !important;
+}
+
+.fitty-nowrap {
+	display: inline-block !important;
+    white-space: nowrap !important;
+}
+
+/* cute trick from https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
+.grow-wrap {
+	/* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+	display: grid;
+	min-height: 7em;
+}
+.grow-wrap::after {
+	/* Note the weird space! Needed to preventy jumpy behavior */
+	content: attr(data-replicated-value) " ";
+
+	/* This is how textarea text behaves */
+	white-space: pre-wrap;
+
+	/* Hidden from view, clicks, and screen readers */
+	visibility: hidden;
+}
+.grow-wrap > textarea {
+	/* You could leave this, but after a user resizes, then it ruins the auto sizing */
+	resize: none;
+
+	/* Firefox shows scrollbar on growth, you can hide like this. */
+	overflow: hidden;
+}
+.grow-wrap > textarea,
+.grow-wrap::after {
+	/* Identical styling required!! */
+	border: 1px solid black;
+	padding: 0.5rem;
+	font: inherit;
+
+	/* Place on top of each other */
+	grid-area: 1 / 1 / 2 / 2;
+}

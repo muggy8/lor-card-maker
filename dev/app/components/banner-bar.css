@@ -1,0 +1,10 @@
+.banner {
+	top: 0;
+	left: 0;
+	width: 100%;
+	background-color: var(--color-bg);
+	color: var(--color-primary);
+	border-bottom: solid 0.125rem var(--color-border);
+	z-index: 2;
+	font-size: 1.25rem;
+}
