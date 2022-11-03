@@ -10,11 +10,12 @@ html .loading-shade {
     left: 0;
     right: 0;
     backdrop-filter: blur(10px);
-    background-color: rgba(var(--rgb-light, 0.3));
+    /* background-color: rgba(var(--rgb-light), 0.3); */
     color: var(--color-dark);
 
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 6rem;
+    border-radius: 0.5em;
 }
