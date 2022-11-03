@@ -3,6 +3,7 @@ import { useLayoutEffect, useContext, useRef, useCallback, useEffect, useState }
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import { Globals } from "/Views/index.js"
+import debounceFunction from "/Utils/debounce-function.js"
 
 const cssLoaded = loadCss("/Components/banner-bar.css")
 
@@ -16,17 +17,15 @@ function BannarBarComponent(props){
     }, [])
 
     useLayoutEffect(()=>{
-        function reportBannerWidth(){
-            requestAnimationFrame(() => {
-                if (!bannerElement.current){
-                    return
-                }
-    
-                globalState.patchState({
-                    bannerHeight: bannerElement.current.clientHeight
-                })
-            });            
-        }
+        const reportBannerWidth = debounceFunction(()=>{
+            if (!bannerElement.current){
+                return
+            }
+
+            globalState.patchState({
+                bannerHeight: bannerElement.current.clientHeight
+            })           
+        }, 350)
 
         window.addEventListener('resize', reportBannerWidth)
         reportBannerWidth()

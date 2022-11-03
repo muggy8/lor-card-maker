@@ -4,6 +4,15 @@
     margin-right: auto;
 }
 
+#batch-exporter .no-export-selected {
+    font-size: 1.5em;
+    color: var(--color-dark);
+    text-align: center;
+}
+#batch-exporter .export-button {
+    font-size: 1.5em;
+}
+
 #batch-exporter .export-preview {
     will-change: padding-bottom;
     transition: padding-bottom 1s;

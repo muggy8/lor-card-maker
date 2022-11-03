@@ -8,6 +8,7 @@ import { svgRefference, openUri } from "/Views/card-editor.js"
 import BatchRenderer from "/Components/batch-renderer.js"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 import useToggle from "/Utils/use-toggle.js"
+import debounceFunction from "/Utils/debounce-function.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -92,12 +93,32 @@ function BatchExportComponent(){
         }, ()=>setExporting(false))
     }
 
+    const mbInstruction = useRef()
+    const [opacity, updateOpacity] = useState(0)
+    useEffect(()=>{
+        const onScale = debounceFunction(()=>{
+            const currentDisplay = window.getComputedStyle(mbInstruction.current).display
+            if (typeof currentDisplay === "string" && currentDisplay.includes("flex")){
+                updateOpacity(0)
+            }
+            else{
+                updateOpacity(1)
+            }
+        }, 350)
+        onScale()
+
+        window.addEventListener("resize", onScale)
+
+        return ()=>{
+            window.removeEventListener("resize", onScale)
+        }
+    }, [])
+
     return section(
         {
             id: "batch-exporter",
             className: "gutter-t-2 flex hcenter",
         },
-
         div(
             { 
                 className: "export-preview gutter-t-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", 
@@ -112,7 +133,7 @@ function BatchExportComponent(){
                     selectedCardsData
                         ? button(
                             { 
-                                className: "gutter-trbl-.5", 
+                                className: "export-button gutter-tb-.5 gutter-rl-2", 
                                 onClick: exportCards,
                                 [(!Object.keys(selectedCardsData).length || exproting ? "disabled" : "data-foo")]: true
                             },
@@ -123,6 +144,22 @@ function BatchExportComponent(){
                 ),
                 div(
                     { className: "gutter-rl-2" },
+                    
+                    Object.keys(selectedCardsData).length 
+                        ? undefined
+                        : div(
+                            { className: "no-export-selected" },
+                            div(
+                                { className: "flex vhcenter" },
+                                translate("no_export_selected")
+                            ),
+                            div(
+                                { className: "flex-m", style: {opacity}, ref: mbInstruction}, 
+                                translate("scroll_down_for_selection"),
+                            )
+                        )
+                    , 
+
                     createElement(
                         svgRefference.Provider,
                         { value: {
