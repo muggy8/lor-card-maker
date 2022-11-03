@@ -216,7 +216,13 @@ function KeywordIconComponent(props){
 const KeywordIcon = factory(KeywordIconComponent)
 
 function generateSaveableEffectText(container){
+	let skipThis = false
 	const textBits = Array.prototype.map.call(container.childNodes, (child)=>{
+		if (skipThis){
+			skipThis = false
+			return ""
+		}
+
 		if (child instanceof HTMLDivElement){
 			return "\n" + generateSaveableEffectText(child)
 		}
@@ -226,6 +232,9 @@ function generateSaveableEffectText(container){
 		}
 
 		if (child instanceof Image){
+			if (child.nextSibling instanceof Image && child.nextSibling.dataset.keywordName === child.dataset.keywordName){
+				skipThis = true
+			}
 			return `<${child.dataset.keywordName}/>`
 		}
 	})
