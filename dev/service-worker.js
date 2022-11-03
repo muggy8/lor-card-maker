@@ -57,6 +57,10 @@ const pathMap = {
 			url: "https://esm.sh/react-contextmenu@2.14.0",
 			query: esmshQueryConfigs,
 		},
+		"react-jsx-context-menu": {
+			url: "https://esm.sh/react-jsx-context-menu@1.0.10",
+			query: esmshQueryConfigs,
+		},
 		"react-use-pwa-install": {
 			url: "https://esm.sh/react-use-pwa-install@0.2.1",
 			query: esmshQueryConfigs,
@@ -149,7 +153,7 @@ self.addEventListener("fetch", function(ev){
 			else{
 				ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
 			}
-		
+
 		}
     }
     else{
@@ -420,12 +424,12 @@ async function migrateDataFromVersion1To2(){
 
 async function fetchWithTimeout(resource, options = {}) {
 	const { timeout = 8000 } = options;
-	
+
 	const controller = new AbortController();
 	const id = setTimeout(() => controller.abort(), timeout);
 	const response = await fetch(resource, {
 	  ...options,
-	  signal: controller.signal  
+	  signal: controller.signal
 	});
 	clearTimeout(id);
 	return response;

@@ -5,17 +5,8 @@ import { keywords } from "/Components/card-template/keyword-renderer.js"
 // import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
-import { 
-	ContextMenu as ContextMenuComponent, 
-	MenuItem as MenuItemComponent, 
-	ContextMenuTrigger as ContextMenuTriggerComponent 
-} from "/cdn/react-contextmenu";
+import contextMenu from "/Components/context-menu.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
-
-
-const ContextMenu = factory(ContextMenuComponent)
-const MenuItem = factory(MenuItemComponent)
-const ContextMenuTrigger = factory(ContextMenuTriggerComponent)
 
 const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 
@@ -26,7 +17,7 @@ function EditEffectComponent(props){
 
 	const [beginEditing, updateBeginEditing] = useState(false)
 	useEffect(()=>{
-		// this task is only done once when this component loads input for the very first time 
+		// this task is only done once when this component loads input for the very first time
 
 		if (!props.value || beginEditing){
 			return
@@ -45,7 +36,7 @@ function EditEffectComponent(props){
 	const onInput = useCallback(()=>{
 		const editingRange = window.getSelection()
 		const selectedNode = editingRange.focusNode
-		
+
 		if (editingRange && (selectedNode === contentEditDiv.current || contentEditDiv.current.contains(selectedNode))){
 			updateEditingSelection({
 				node: selectedNode,
@@ -67,7 +58,7 @@ function EditEffectComponent(props){
 				}
 			})
 		}
-		
+
 		updateBeginEditing(true)
 		updateValue()
 	}, [updateValue])
@@ -104,7 +95,7 @@ function EditEffectComponent(props){
 		updateValue()
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
-	const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
+	//~ const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
 
     return label(
         { className: "box edit-effect" },
@@ -121,8 +112,32 @@ function EditEffectComponent(props){
             {className: "flex column gutter-b-2"},
             div(
 				{className: "gutter-trbl-.5"},
-				ContextMenuTrigger(
-					{id: contextId},
+				contextMenu(
+					{
+						className: "react-contextmenu",
+						menu: Object.keys(keywords)
+							.filter((keywordName)=>{
+								return keywords[keywordName].length
+							})
+							.sort()
+							.map(keywordName=>{
+								return div(
+									{
+										onClick: ()=>insertKeyword(keywordName),
+										key: keywordName,
+										className: "react-contextmenu-item",
+									},
+									div(
+										{
+											className: "flex vend"
+										},
+										KeywordIcon({name: keywordName}),
+										translate(keywordName)
+									)
+								)
+							})
+
+					},
 					div({
 						ref: contentEditDiv,
 						contentEditable: true,
@@ -135,29 +150,6 @@ function EditEffectComponent(props){
 				),
 			),
         ),
-		ContextMenu(
-			{id: contextId},
-			Object.keys(keywords)
-				.filter((keywordName)=>{
-					return keywords[keywordName].length
-				})
-				.sort()
-				.map(keywordName=>{
-					return MenuItem(
-						{ 
-							onClick: ()=>insertKeyword(keywordName),
-							key: keywordName
-						},
-						div(
-							{
-								className: "flex vend"
-							},
-							KeywordIcon({name: keywordName}),
-							translate(keywordName)
-						)
-					)
-				})
-		)
     )
 }
 
@@ -211,7 +203,7 @@ function KeywordIconComponent(props){
 				height: "1em",
 				width: iconsUri.length + "em",
 			}
-		}, 
+		},
 		iconsUri.map((uri, index)=>div({
 			key: index,
 			className: "keyword-icon",
