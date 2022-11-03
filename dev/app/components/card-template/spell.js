@@ -242,7 +242,7 @@ function SpellComponent(props){
 
     return SvgWrap(
         {
-            loading: !frameUri,
+            loading: !frameUri || props.loading,
             onTransform: props.updateTransform, 
             ...(props.transform || {x: 0, y: 0, scale: 1}),
         },

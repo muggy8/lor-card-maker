@@ -18,6 +18,7 @@ import EditColorText from "/Components/card-config/edit-colored-text.js"
 import EditArt from "/Components/card-config/edit-art.js"
 import EditShade from "/Components/card-config/edit-shade.js"
 import { defaultShade } from "/Views/list.js"
+import useToggle from "/Utils/use-toggle.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -31,6 +32,9 @@ export const svgRefference = createContext({
 })
 
 export default function EditorViewFactory(cardRenderer, defaultCardData){
+    const knownCardDataKeys = Object.keys(defaultCardData)
+    knownCardDataKeys.sort()
+
     const component =  function EditorView(){
         const translate = useLang()
 
@@ -64,7 +68,6 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
-        const knownCardDataKeys = Object.keys(defaultCardData)
         let accumulatedCardUpdates = {...card}
         const cardDataUpdaters = knownCardDataKeys.reduce((updaterCollection, key)=>{
             updaterCollection[key] = useCallback((updatedValue)=>{
@@ -89,14 +92,21 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
         const [svgRef, updateSvgRef] = useState(null)
 
+        const [isExporting, _toggleExporting, setExporting] = useToggle(false)
+
         const exportCard = useCallback(()=>{
+            setExporting(true)
             saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
                 width: svgRef.width.baseVal.value,
                 height: svgRef.height.baseVal.value,
-            }).then(uri=>{
-                openUri(uri)
-            })
+            }).then(
+                uri=>{
+                    openUri(uri)
+                    setExporting(false)
+                }, 
+                ()=>setExporting(false)
+            )
         }, [svgRef])
 
         const fixedDisplayRef = useRef()
@@ -129,6 +139,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
+        const [canSave, _toggleCanSave, setCanSave] = useToggle(!!card.id)
+        useEffect(()=>{
+            setCanSave(true)
+        }, knownCardDataKeys.map(key=>card[key]))
+
         return section(
             { id: "card-editor", className: "flex hcenter" },
             div(
@@ -149,6 +164,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                 ...card,
                                 cardDataUpdaters,
                                 updateTransform: card.art && globalState.state.moveableArt ? cardDataUpdaters.transform : undefined,
+                                loading: isExporting,
                             }),
                         )
                     ),
@@ -174,13 +190,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                 {
                                     className: "gutter-trbl-.5",
                                     onClick: ()=>{
+                                        if (!canSave){
+                                            return
+                                        }
                                         if (card.id){
-                                            return saveCard(card.id, card) 
+                                            return saveCard(card.id, card).then(()=>setCanSave(false))
                                         }
                                         const newId = Date.now().toString()
-                                        saveCard(newId, card)
+                                        saveCard(newId, card).then(()=>setCanSave(false))
                                         cardDataUpdaters.id(newId)
-                                    }
+                                    },
+                                    [(canSave ? "data-foo" : "disabled")]: true
                                 },
                                 strong(translate("save_card"))
                             )

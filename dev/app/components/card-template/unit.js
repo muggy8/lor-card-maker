@@ -182,7 +182,7 @@ export class UnitRendererComponent extends Component {
         const [trasnparentPercent, solidPercent] = shade.gradientLocation
         return SvgWrap(
             { 
-                loading: !this.state.frameUri,
+                loading: !this.state.frameUri || this.props.loading,
                 onTransform: this.props.updateTransform, 
                 ...(this.props.transform || {x: 0, y: 0, scale: 1}),
             },
