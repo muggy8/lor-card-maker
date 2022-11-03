@@ -10,6 +10,7 @@ import BatchRenderer from "/Components/batch-renderer.js"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
+import listLimit from "/Components/list-limit.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -205,32 +206,33 @@ function BatchExportComponent(){
             ),
             div(
                 { className: "gutter-trbl-.5 flex",},
+                listLimit(
+                    savedCards.map((cardData)=>{
+                        const renderingComponent = typeToComponent(cardData.type)
+                        if (!renderingComponent){
+                            return div({key: cardData.id})
+                        }
+                        return div(
+                            { 
+                                className: "clickable gutter-trbl-.5 box-xs-6 box-s-4 flex column vhcenter"
+                                    + (selectedCards.current.get(cardData.id) ? "" : " ghost"), 
+                                key: cardData.id,
+                                onClick: ()=>{
 
-                savedCards.map((cardData)=>{
-                    const renderingComponent = typeToComponent(cardData.type)
-                    if (!renderingComponent){
-                        return div({key: cardData.id})
-                    }
-                    return div(
-                        { 
-                            className: "clickable gutter-trbl-.5 box-xs-6 box-s-4 flex column vhcenter"
-                                + (selectedCards.current.get(cardData.id) ? "" : " ghost"), 
-                            key: cardData.id,
-                            onClick: ()=>{
+                                    if (selectedCards.current.get(cardData.id)){
+                                        selectedCards.current.delete(cardData.id)
+                                    }
+                                    else{
+                                        selectedCards.current.set(cardData.id, true)
+                                    }
 
-                                if (selectedCards.current.get(cardData.id)){
-                                    selectedCards.current.delete(cardData.id)
+                                    forceRerender()
                                 }
-                                else{
-                                    selectedCards.current.set(cardData.id, true)
-                                }
-
-                                forceRerender()
-                            }
-                        },
-                        renderingComponent(cardData)
-                    )
-                }),
+                            },
+                            renderingComponent(cardData)
+                        )
+                    })
+                ),
             ),
 
         )
