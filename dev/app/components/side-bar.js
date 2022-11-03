@@ -140,7 +140,8 @@ function SidebarComponent(){
                 className: "menu-option clickable gutter-tb",
             },
             select(
-                { 
+                {
+                    value: globalState.state.settings.theme || "oled",
                     onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
                     className: "select-theme gutter-rl-1 gutter-tb-.5"
                 },
