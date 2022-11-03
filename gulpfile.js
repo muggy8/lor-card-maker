@@ -54,7 +54,10 @@ let minifyHtml = exports.minifyHtml = function() {
 }
 
 let minifyJson = exports.minifyJson = function(){
-	return src(`${sourceDir}/**/*.json`)
+	return src([
+			`${sourceDir}/**/*.json`,
+			`${sourceDir}/**/*.webmanifest`,
+		])
 		.pipe(jsonminify())
 		.pipe(dest('docs/'))
 }
