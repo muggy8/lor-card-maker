@@ -220,6 +220,14 @@ function generateSaveableEffectText(container){
 	const textBits = Array.prototype.map.call(container.childNodes, (child)=>{
 		if (skipThis){
 			skipThis = false
+			if (
+				child instanceof Image && 
+				child.nextSibling instanceof Image && 
+				child.nextSibling.dataset.keywordName === child.dataset.keywordName
+			){
+				skipThis = true
+			}
+
 			return ""
 		}
 
