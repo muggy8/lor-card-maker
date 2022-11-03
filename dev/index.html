@@ -144,23 +144,35 @@
 				})
 					.then(async function(registration) {
 						// console.log('Registration successful:', registration)
+						
+						try {
+							// check for worker update because we dont want to load anything until the worker is known to be the latest worker.
+							const updatedRegistration = await registration.update()
 
-						// check for worker update because we dont want to load anything until the worker is known to be the latest worker.
-						const updatedRegistration = await registration.update()
-
-						// if the updatedRegistration has something in the installing prop, we know that we found an update so we will want to wait for it to finish it's install and activate process before we continue.
-						if (updatedRegistration.installing || updatedRegistration.active.state !== "activated"){
-							return await new Promise((accept)=>{
-								updatedRegistration.installing.addEventListener("statechange", ev=>{
-									// console.log(ev)
-									if (ev.target.state === "activated"){
-										accept(updatedRegistration)
-									}
+							// if the updatedRegistration has something in the installing prop, we know that we found an update so we will want to wait for it to finish it's install and activate process before we continue.
+							if (updatedRegistration.installing || updatedRegistration.active.state !== "activated"){
+								return await new Promise((accept)=>{
+									updatedRegistration.installing.addEventListener("statechange", ev=>{
+										// console.log(ev)
+										if (ev.target.state === "activated"){
+											accept(updatedRegistration)
+										}
+									})
 								})
-							})
+							}
+							
+							// return updatedRegistration
 						}
+						catch(err){
+							// failed to update the SW but that's ok, we might be offline so we might as well check if there's an already existing worker and if there is, lets just roll with it.
 
-						return updatedRegistration
+							const res = await fetch("pseudo-api/settings/")
+
+							if (res.ok){
+								return res.text()
+							}
+							return Promise.reject(err)
+						}
 					})
 					.then(async function(){
 						// at this point, we know that the service worker has been registered and is active. that means we can use ESM to import our main app and we'll let the service worker figure out how to fulfill the import requests

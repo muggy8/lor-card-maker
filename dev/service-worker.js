@@ -323,6 +323,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 		}
 		catch(uwu){
 			console.warn(uwu)
+			return cachedAsset
 		}
 
 		if (remoteHeaders && remoteHeaders.headers){
@@ -403,4 +404,17 @@ async function migrateDataFromVersion1To2(){
 	})
 
 	await Promise.all(convertTasks)
+}
+
+async function fetchWithTimeout(resource, options = {}) {
+	const { timeout = 8000 } = options;
+	
+	const controller = new AbortController();
+	const id = setTimeout(() => controller.abort(), timeout);
+	const response = await fetch(resource, {
+	  ...options,
+	  signal: controller.signal  
+	});
+	clearTimeout(id);
+	return response;
 }
