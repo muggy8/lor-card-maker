@@ -14,8 +14,8 @@
 
     position: relative;
 }
-.effect-text .inline-icon::before {
-    display: block;
+.effect-text .inline-icon > .icon-renderer {
+    display: inline-block;
     content: " ";    
 
     background-repeat: no-repeat; 
@@ -25,9 +25,9 @@
     height: 1.2em;
 
     position: absolute;
-    top: -0.35em;
+    top: -0.22em;
     left: 0;
-    transform: scale(1.33);
+    transform: scale(1.23);
 }
 
 .effect-text .blue-word {

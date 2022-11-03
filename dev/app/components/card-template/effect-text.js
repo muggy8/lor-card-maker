@@ -258,9 +258,10 @@ function InlineIconComponent(props){
         {
             className: "inline-icon",
             style: {
-                "--icon-image": iconUri ? `url(${iconUri})` : "null"
+                "--icon-image": iconUri ? `url(${iconUri})` : "none"
             }
         },
+        div({className: "icon-renderer"}),
         props.children,
     )
 }
