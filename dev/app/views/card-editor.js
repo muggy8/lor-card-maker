@@ -43,7 +43,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
             globalStateRef.current.setAllowBack(()=>{
                 if (document.documentElement.scrollTop){
-                    setImmediate(()=>window.scrollTo({top: 0, left: 0, behavior: "smooth"}))
+                    setImmediate(()=>window.scrollTo(0, 0))
                     return false
                 }
                 else{
