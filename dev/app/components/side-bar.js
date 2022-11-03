@@ -139,6 +139,7 @@ function SidebarComponent(){
             {
                 className: "menu-option clickable gutter-tb",
             },
+            div({ className: "flex vhcenter" }, translate("theme")),
             select(
                 {
                     value: globalState.state.settings.theme || "oled",

@@ -147,6 +147,7 @@ const lang = {
         "oled": "Black", 
         "dark": "Dark", 
         "light": "Light", 
-        "flash-bomb": "Flash Bomb"
+        "flash-bomb": "Flash Bomb",
+        "theme": "Theme",
     }
 }
