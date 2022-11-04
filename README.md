@@ -8,7 +8,12 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 ## Todo:
 - custom keywords
 - improve performance
+- re-introduce art URL
+- re-introduce artist input
+- custom card deck builder
+- toggle for "Made with LoRCaM"
 - better user feedback when error happens
+- improve code quality
 - iOS support?
 
 ## Running Locally
