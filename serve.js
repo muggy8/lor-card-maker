@@ -14,7 +14,7 @@ const proxymityScriptRegex = /<script\ssrc\s?=\s?['"][^"']+proxymity.+$/m
 const cdnJsRegex = /https\:\/\/cdn\.jsdelivr\.net\/npm\/([^\@]+)\@[^\/]+/gm
 const cdnGitRegex = /https\:\/\/cdn\.jsdelivr\.net\/gh\/[^\/]+\/([^\@]+)\@[^\/]+/gm
 
-const appDir = "docs"
+const appDir = "dev"
 
 if (argv.proxymity){
 	app.get("/", async function(req, res, next){
