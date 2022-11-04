@@ -32,7 +32,6 @@
     "gulp-htmlmin": "^5.0.1",
     "gulp-imagemin": "^7.1.0",
     "gulp-jsonminify": "^1.1.0",
-    "gulp-minify-inline": "^1.1.0",
     "gulp-terser": "^1.4.0",
     "gulp-uglify": "^3.0.2",
     "mmc-3": "https://github.com/muggy8/mmc-3.git#374aa14106e6133f758cf68f2cb9e35b5392cfe5",
