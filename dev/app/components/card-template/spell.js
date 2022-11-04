@@ -278,9 +278,7 @@ function SpellComponent(props){
                     },
                     div(
                         {className: "scale-adjuster"},
-                        ArtRenderer({
-                            url: props.art
-                        })
+                        ArtRenderer({ url: props.art })
                     )
                 ),
                 div(

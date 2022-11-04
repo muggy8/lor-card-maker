@@ -45,6 +45,7 @@
     "react-use-pwa-install": "0.2.1",
     "save-svg-as-png": "1.4.17",
     "setimmediate": "1.0.5",
+    "terser": "^5.15.1",
     "yargs": "^17.3.1"
   }
 }

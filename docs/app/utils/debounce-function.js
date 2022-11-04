@@ -1,1 +1,1 @@
-export default function(t,o=200){let e=void 0;return function(...n){clearTimeout(e),e=setTimeout((function(){Function.prototype.apply.call(t,void 0,n)}),o)}}
+export default function(t,o=200){let e;return function(...n){clearTimeout(e),e=setTimeout((function(){Function.prototype.apply.call(t,void 0,n)}),o)}}

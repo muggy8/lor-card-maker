@@ -63,6 +63,8 @@ let minifyHtml = exports.minifyHtml = function() {
 			return match.replace(cssCode, cleanedCss.styles)
 		}))
 		.pipe(replace(/<script[^>]*>(.+?)<\/script>/gs, async function(match, jsCode){
+			return match
+
 			const minifiedJs = await terser.minify(jsCode)
 			return match.replace(jsCode, minifiedJs.code)
 

@@ -1,1 +1,1 @@
-import{useEffect}from"/cdn/react";export default function useEffectDebounce(e,t,f){useEffect(()=>{let f=setTimeout(()=>{f=void 0,e()},t);return function(){f&&clearTimeout(f)}},f)}
+import{useEffect as t}from"/cdn/react";export default function e(e,o,r){t((()=>{let t=setTimeout((()=>{t=void 0,e()}),o);return function(){t&&clearTimeout(t)}}),r)}

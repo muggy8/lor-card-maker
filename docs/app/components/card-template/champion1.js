@@ -1,1 +1,1 @@
-import Champion1 from"/Components/card-template/unit.js";export default Champion1;
+import t from"/Components/card-template/unit.js";export default t;

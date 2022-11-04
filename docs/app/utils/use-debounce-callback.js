@@ -1,1 +1,1 @@
-import{useCallback,useRef}from"/cdn/react";export default function useCallbackDebounce(e,t,u){const c=useRef(e);c.current=e;const n=useRef();return useCallback((function(...e){clearTimeout(n.current),n.current=setTimeout((function(){Function.prototype.apply.call(c.current,void 0,e)}),t)}),u)}
+import{useCallback as t,useRef as n}from"/cdn/react";export default function r(r,c,o){const e=n(r);e.current=r;const u=n();return t((function(...t){clearTimeout(u.current),u.current=setTimeout((function(){Function.prototype.apply.call(e.current,void 0,t)}),c)}),o)}
