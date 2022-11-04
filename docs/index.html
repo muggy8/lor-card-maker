@@ -135,7 +135,7 @@
 						catch(err){
 							// failed to update the SW but that's ok, we might be offline so we might as well check if there's an already existing worker and if there is, lets just roll with it.
 
-							const res = await fetch("pseudo-api/settings/")
+							const res = await fetch("/pseudo-api/settings/")
 
 							if (res.ok){
 								return res.text()
