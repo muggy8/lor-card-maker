@@ -107,14 +107,16 @@ function BatchExportComponent(){
             return
         }
         setExporting(true)
-        saveSvgAsPng.svgAsPngUri(svgRef, {
-            excludeUnusedCss: true,
-            width: svgRef.width.baseVal.value,
-            height: svgRef.height.baseVal.value,
-        }).then(uri=>{
-            openUri(uri)
-            setExporting(false)
-        }, ()=>setExporting(false))
+        requestAnimationFrame(() => {
+            saveSvgAsPng.svgAsPngUri(svgRef, {
+                excludeUnusedCss: true,
+                width: svgRef.width.baseVal.value,
+                height: svgRef.height.baseVal.value,
+            }).then(uri=>{
+                openUri(uri)
+                setExporting(false)
+            }, ()=>setExporting(false))
+        })        
     }
 
     const mbInstruction = useRef()
