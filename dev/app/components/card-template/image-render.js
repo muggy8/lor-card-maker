@@ -99,14 +99,21 @@ function ArtComponent(props){
         getReplicateImage(url).then(updateReplicatedArt)
     }, [url])
 
-    return div({
-        className: "processed-art",
-        style: {
-            "--width": replicatedArt.width || 0,
-            "--height": replicatedArt.height || 0,
-            backgroundImage: replicatedArt.b64 ? `url(${replicatedArt.b64})` : "",
-        }
-    })
+    return div(
+        {
+            className: `processed-art ${url && !replicatedArt.b64 ? "loading" : "" }`,
+            style: {
+                "--width": replicatedArt.width || 0,
+                "--height": replicatedArt.height || 0,
+                backgroundImage: replicatedArt.b64 ? `url(${replicatedArt.b64})` : "",
+            },
+        }, 
+        url && !replicatedArt.b64 
+            ? div({ className: "icon" }, 
+                div({ className: "loading" })
+            ) 
+            : undefined
+    )
 }
 
 export default factory(ArtComponent, cssLoaded)

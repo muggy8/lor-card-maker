@@ -9,3 +9,10 @@
     right: 0;
     will-change: background-size, background-position;
 }
+
+.processed-art.loading {
+    font-size: calc(16em * calc(1 / var(--scale)));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
