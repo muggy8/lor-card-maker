@@ -20,76 +20,71 @@ function getDimensions(url){
     })
 }
 
+const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+  
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+function blobToBase64(blob) {
+    return new Promise((resolve, _) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+    });
+}
+
 let replicationCache = {}
-async function getReplicateImage(url){
+function getReplicateImage(url){
     if (replicationCache[url]){
         return replicationCache[url]
     }
 
-    const { width, height, image } = await getDimensions(url)
-    const canvas = document.createElement('canvas');
+    const replicationCalculationWorker = new Worker("/Components/card-template/image-render-worker.js");
 
-    canvas.width = width * 2
-    canvas.height = height * 2
+    return replicationCache[url] = getDimensions(url)
+        .then((results)=>{
+            return new Promise((accept, reject)=>{
+                const commaIndex = url.indexOf(",")
+                const b64 = url.substring(commaIndex + 1)
+                const dataType = url.substring(0, commaIndex)
 
-    const context = canvas.getContext("2d")
+                replicationCalculationWorker.onmessage = ev=>{
+                    replicationCalculationWorker.terminate()
+                    accept({...results, blob: ev.data})
+                }
+        
+                replicationCalculationWorker.onerror = ev=>{
+                    replicationCalculationWorker.terminate()
+                    reject(ev)
+                }
+        
+                const imgBlob = b64toBlob(b64, dataType.replace("data:", "").replace(";base64", ""))
+                replicationCalculationWorker.postMessage({
+                    ...results,
+                    image: imgBlob,
+                })
+            })
+        })
+        .then(async rawTransform=>{
+            rawTransform.b64 = await blobToBase64(rawTransform.blob)
+            return rawTransform
+        })   
 
-    typeof context.mozImageSmoothingEnabled !== "undefined" && (context.mozImageSmoothingEnabled = false)
-    typeof context.oImageSmoothingEnabled !== "undefined" && (context.oImageSmoothingEnabled = false)
-    typeof CanvasRenderingContext2D.webkitImageSmoothingEnabled !== "undefined" && (CanvasRenderingContext2D.webkitImageSmoothingEnabled = false)
-    typeof context.imageSmoothingEnabled !== "undefined" && (context.imageSmoothingEnabled = false)
-    context.clearRect(0,0,canvas.width,canvas.height)
-
-    // draw the initial image that's the right way around
-    context.drawImage(
-        image, 
-        0, 0, width, height, // location of source
-        0, 0, width, height, // location to render
-    )
-
-    // draw the mirrored image to the right
-    context.scale(-1, 1)
-    context.drawImage(
-        image, 
-        0, 0, width, height, // location of source
-        -canvas.width, 0, width, height, // location to render
-    )
-    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
-
-
-
-    // draw the mirrored image to the bottom
-    context.scale(1, -1)
-    context.drawImage(
-        image, 
-        0, 0, width, height, // location of source
-        0, -canvas.height, width, height, // location to render
-    )
-    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
-
-
-    // draw the mirrored image to the bottom
-    context.scale(-1, -1)
-    context.drawImage(
-        image, 
-        0, 0, width, height, // location of source
-        -canvas.width, -canvas.height, width, height, // location to render
-    )
-    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
-
-    return replicationCache[url] = {
-        width: canvas.width, 
-        height: canvas.height,
-        b64: canvas.toDataURL()
-    }
-
-    // let data = canvas.toDataURL();
-    // let w = window.open('about:blank');
-    // let i = new Image();
-    // i.src = data;
-    // setTimeout(function(){
-    // w.document.write(i.outerHTML);
-    // }, 0);
 }
 
 function ArtComponent(props){
