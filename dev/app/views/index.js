@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect, useRef, createContext, createElement } from "/cdn/react" 
-import factory, { section } from "/Utils/elements.js"
+import factory from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
 import { getSettings, saveSettings } from "/Utils/service.js"
+import setImmediate from "/Utils/set-immediate-batch.js"
 
 export const Globals = createContext({
     lang: "en",
@@ -93,11 +94,15 @@ function App (props) {
     }, [])
 
     const setView = useCallback((newView)=>{
-        statePatcherRef.current({
-            view: newView,
+        window.scrollTo(0, 0)
+
+        requestAnimationFrame(()=>{
+            statePatcherRef.current({
+                view: newView,
+            })
+            history.pushState({},  "")
+            navigationHistory.push(newView)
         })
-        history.pushState({},  "")
-        navigationHistory.push(newView)
     }, [])
 
     useEffect(()=>{

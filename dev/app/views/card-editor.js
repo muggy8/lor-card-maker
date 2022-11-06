@@ -19,6 +19,7 @@ import EditArt from "/Components/card-config/edit-art.js"
 import EditShade from "/Components/card-config/edit-shade.js"
 import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
+import debounceFunction from "/Utils/debounce-function.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -47,7 +48,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
             globalStateRef.current.setAllowBack(()=>{
                 if (document.documentElement.scrollTop){
-                    setImmediate(()=>window.scrollTo(0, 0))
+                    setImmediate(()=>window.scrollTo(0,0))
                     return false
                 }
                 else{
@@ -117,9 +118,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const [useableWidth, updateUseableWidth] = useState(0)
         const [previewHeight, updatePreviewHeight] = useState(0)
         useLayoutEffect(()=>{
-            window.scroll(0,0)
             
-            function setFixedDisplayDimentions(){
+            const setFixedDisplayDimentions = debounceFunction(function(){
                 let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
                 const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
 
@@ -127,14 +127,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
                 updateUseableWidth(useableWidth)
                 updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
-            }
+            }, 250)
 			requestAnimationFrame(setFixedDisplayDimentions)
 
             const observer = new MutationObserver(setFixedDisplayDimentions)
 
             window.addEventListener("resize", setFixedDisplayDimentions)
             observer.observe(fixedDisplayRef.current, {
-                attributes: true
+                attributes: true,
+                // childList: true,
+                // subtree: true,
+                // attributes: ["style"]
             })
 
             return function(){

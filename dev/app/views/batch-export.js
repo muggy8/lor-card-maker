@@ -71,10 +71,8 @@ function BatchExportComponent(){
     const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
     const [previewHeight, updatePreviewHeight] = useState(0)
-    useLayoutEffect(()=>{
-        window.scroll(0,0)
-        
-        function setFixedDisplayDimentions(){
+    useLayoutEffect(()=>{        
+        const setFixedDisplayDimentions = debounceFunction(function(){
             let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
             const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
 
@@ -82,14 +80,16 @@ function BatchExportComponent(){
 
             updateUseableWidth(useableWidth)
             updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
-        }
+        }, 250)
         requestAnimationFrame(setFixedDisplayDimentions)
 
         const observer = new MutationObserver(setFixedDisplayDimentions)
 
         window.addEventListener("resize", setFixedDisplayDimentions)
         observer.observe(fixedDisplayRef.current, {
-            attributes: true
+            childList: true,
+            subtree: true,
+            attributes: ["style"]
         })
 
         return function(){
