@@ -190,7 +190,7 @@
     width: 560px;
     margin-left: auto;
     margin-right: auto;
-    height: 70px;
+    max-height: 70px;
     font-size: 55px;
     will-change: font-size;
     color: var(--effect-white-text);
