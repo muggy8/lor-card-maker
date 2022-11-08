@@ -1,0 +1,1 @@
+export default function n(){let n=[],t=[];const c={concurrent:function(e,...o){const r=e(...o);if(!r instanceof Promise)return s(),r;function s(){const e=n.findIndex((n=>r));if(n.splice(e,1),0===n.length){const n=t.shift();n&&c.concurrent(n.callback,...n.args)}}n.push(r),r.then(s,s)},sequential:function(e,...o){n.length?t.push({callback:e,args:o}):c.concurrent(e,...o)}};return c}
