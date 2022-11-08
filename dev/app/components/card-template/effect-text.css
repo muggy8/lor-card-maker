@@ -1,5 +1,5 @@
 .effect-text {
-    font-size: 36px;
+    font-size: inherit;
     text-align: center;
     color: var(--effect-white-text);
     will-change: font-size;
@@ -23,4 +23,17 @@
 }
 .effect-text .orange-word {
     color: var(--effect-orange-text);
+}
+.effect-text.level-color {
+    color: #d6946b;
+}
+
+.card-effects-wrapper .level-bar {
+    width: 680px;
+    height: 44px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-left: auto;
+    margin-right: auto;
 }

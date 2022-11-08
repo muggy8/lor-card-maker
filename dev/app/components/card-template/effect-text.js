@@ -224,32 +224,78 @@ function reactifyEffectText(text, blueWords, orangeWords){
 }
 
 function EffectTextComponent(props){
-    let text = props.children
-    if (text && typeof text !== "string"){
+    let effectText = props.effectText
+    let levelText = props.levelText
+    if ((effectText && typeof effectText !== "string") || (levelText && typeof levelText !== "string")){
         throw new Error("Only strings accepted")
     }
 
-    //~ let { blueWords, orangeWords } = props
-    let blueWords = [...props.blueWords]
-    let orangeWords = [...props.orangeWords]
-    blueWords.sort((a, b)=>b.length - a.length)
-    orangeWords.sort((a, b)=>b.length - a.length)
-
-    const [contentArray, updateContentArray] = useState([])
+    // cut up text with a 200ms debounce
+    const [effectTextArray, updateEffectTextArray] = useState([])
     useEffectDebounce(()=>{
-        const contentArray = reactifyEffectText(text, blueWords, orangeWords)
+        let blueWords = props.blueWords ? [...props.blueWords] : []
+        let orangeWords = props.orangeWords ? [...props.orangeWords] : []
+        blueWords.sort((a, b)=>b.length - a.length)
+        orangeWords.sort((a, b)=>b.length - a.length)
+        
+        const contentArray = reactifyEffectText(effectText, blueWords, orangeWords)
 
-        updateContentArray(contentArray)
+        updateEffectTextArray(contentArray)
 
-    }, 200, [text, props.blueWords, props.orangeWords])
+    }, 200, [effectText, props.blueWords, props.orangeWords])
 
-    const elementRef = useRef()
+    const [levelTextArray, updateLevelTextArray] = useState([])
+    useEffectDebounce(()=>{
+        let blueWords = props.blueWords ? [...props.blueWords] : []
+        let orangeWords = props.orangeWords ? [...props.orangeWords] : []
+        blueWords.sort((a, b)=>b.length - a.length)
+        orangeWords.sort((a, b)=>b.length - a.length)
+        
+        const contentArray = reactifyEffectText(levelText, blueWords, orangeWords)
 
-    useLayoutEffect(()=>{
-        scaleFontSize(elementRef.current)
-    }, [contentArray])
+        updateLevelTextArray(contentArray)
 
-    return div.apply(factory, [{className: `effect-text ${props.className || ""}`, ref: elementRef}, ...contentArray])
+    }, 200, [levelText, props.blueWords, props.orangeWords])
+
+
+    // get the art for the level up bar
+    const [levelupBarUri, updateLevelupBarUri] = useState("")
+    useEffect(()=>{
+        datauri("/Assets/champion/levelupbar.png").then(updateLevelupBarUri)
+    })
+
+    // create text content elements
+    const effectDiv = div.apply(factory, [{className: `effect-text ${props.className || ""}`}, ...effectTextArray])
+
+    const levelDiv = div.apply(factory, [{className: `effect-text level-color ${props.className || ""}`}, ...levelTextArray])
+
+    if (!effectText && !levelText){
+        return null
+    }
+
+    return div(
+        { className: "card-effects-wrapper" },
+
+        effectText 
+            ? effectDiv 
+            : undefined,
+
+        levelText
+            ? div({
+                className: "level-bar",
+                style: {
+                    backgroundImage: levelupBarUri 
+                        ? `url(${levelupBarUri || ""})`
+                        : "none"
+                },
+            })
+            : undefined
+        ,
+
+        levelText
+            ? levelDiv
+            : undefined
+    )
 }
 
 function InlineIconComponent(props){

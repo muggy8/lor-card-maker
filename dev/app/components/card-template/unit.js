@@ -42,6 +42,7 @@ export class UnitRendererComponent extends Component {
         this.powerRef = createRef()
         this.healthRef = createRef()
         this.nameRef = createRef()
+        this.cardTextWrapperRef = createRef()
 
         this.fitClan = debounce(()=>this.clanRef.current && scaleFontSize(this.clanRef.current, 40, 16))
         this.fitName = debounce(()=>this.nameRef.current && scaleFontSize(this.nameRef.current, 70, 16))
@@ -81,6 +82,8 @@ export class UnitRendererComponent extends Component {
             
             this.healthFitty.fit()
         })
+
+        this.scaleText = debounce(()=>this.cardTextWrapperRef.current && scaleFontSize(this.cardTextWrapperRef.current))
     }
 
     getRegionFrameUrl(){
@@ -109,7 +112,6 @@ export class UnitRendererComponent extends Component {
         this.fetchUrlAsUriAndStoreInState("/Assets/champion/backdrop.png", "backdropUri")
         this.fetchUrlAsUriAndStoreInState(this.cardFrame, "frameUri")
         this.fetchUrlAsUriAndStoreInState(this.clanFrame, "clanFrameUri")
-        this.fetchUrlAsUriAndStoreInState("/Assets/champion/levelupbar.png", "levelupBarUri")
 
         if (this.props.rarity){
             this.props.rarity !== "gemless" && this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
@@ -143,6 +145,9 @@ export class UnitRendererComponent extends Component {
             power,
             health,
             name,
+            effectText,
+            lvup,
+            keywords
         } = this.props
 
         const {
@@ -150,16 +155,22 @@ export class UnitRendererComponent extends Component {
             fitCost,
             fitPower,
             fitHealth,
-            fitName
+            fitName,
+            scaleText,
         } = this
 
         const frameLoaded = !!this.state.frameUri !== !!previousState.frameUri
-
+        const keywordsUpdated = previousProps.keywords !== keywords || 
+            ((previousProps.keywords && previousProps.keywords.length) !== (keywords && keywords.length))
+        
         ;((previousProps.clan !== clan) || frameLoaded) && fitClan()
         ;((previousProps.cost !== cost) || frameLoaded) && fitCost()
         ;((previousProps.power !== power) || frameLoaded) && fitPower()
         ;((previousProps.health !== health) || frameLoaded) && fitHealth()
-        ;((previousProps.name !== name) || frameLoaded) && fitName()
+        ;((previousProps.name !== name) || frameLoaded) && (fitName() + scaleText())
+        ;((previousProps.effectText !== effectText) || frameLoaded) && scaleText()
+        ;((previousProps.lvup !== lvup) || frameLoaded) && scaleText()
+        ;(keywordsUpdated || frameLoaded) && scaleText()
 
         if (previousProps.rarity !== this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"){
             this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
@@ -247,7 +258,18 @@ export class UnitRendererComponent extends Component {
                     ),
 
                     div(
-                        { className: "card-text-wrapper" },
+                        {
+                            className: "frame",
+                            style: {
+                                backgroundImage: this.state.frameUri 
+                                    ? `url(${this.state.frameUri || ""})` 
+                                    : "none"
+                            }
+                        },
+                    ),
+
+                    div(
+                        { className: "card-text-wrapper", ref: this.cardTextWrapperRef },
                         // stuff to do with the card content goes here
 
                         this.props.name
@@ -270,52 +292,15 @@ export class UnitRendererComponent extends Component {
                             : undefined
                         ,
 
-                        this.props.effect
-                            ? EffectText(
-                                {
-                                    blueWords: this.props.blueWords,
-                                    orangeWords: this.props.orangeWords,
-                                    className: "effect-container card-text-universe",
-                                },
-                                this.props.effect
-                            )
-                            : undefined
-                        ,
-
-                        this.props.lvup
-                            ? div({
-                                className: "level-bar",
-                                style: {
-                                    backgroundImage: this.state.levelupBarUri 
-                                        ? `url(${this.state.levelupBarUri || ""})`
-                                        : "none"
-                                },
-                            })
-                            : undefined
-                        ,
-
-                        this.props.lvup
-                            ? EffectText(
-                                {
-                                    blueWords: this.props.blueWords,
-                                    orangeWords: this.props.orangeWords,
-                                    className: "level-up-container card-text-universe",
-                                },
-                                this.props.lvup
-                            )
-                            : undefined
-                        ,
-                    ),
-
-                    div(
-                        {
-                            className: "frame",
-                            style: {
-                                backgroundImage: this.state.frameUri 
-                                    ? `url(${this.state.frameUri || ""})` 
-                                    : "none"
-                            }
-                        },
+                        EffectText(
+                            {
+                                blueWords: this.props.blueWords,
+                                orangeWords: this.props.orangeWords,
+                                className: "effect-container card-text-universe",
+                                effectText: this.props.effect,
+                                levelText: this.props.lvup,
+                            },
+                        ),
                     ),
 
                     div(

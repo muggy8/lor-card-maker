@@ -128,6 +128,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-height: 460px;
 }
 
 .unit .card-text-wrapper .name {
@@ -148,22 +149,10 @@
     margin-right: auto;
 }
 
-.unit .card-text-wrapper .effect-container, .unit .card-text-wrapper .level-up-container{
+.unit .card-text-wrapper .effect-container {
     width: 520px;
     margin-left: auto;
     margin-right: auto;
-    max-height: 154px;
-}
-.unit .card-text-wrapper .level-bar {
-    width: 680px;
-    height: 44px;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-}
-
-.unit .card-text-wrapper .level-up-container {
-    color: #d6946b;
 }
 
 .unit .rarity {
