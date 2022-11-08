@@ -209,7 +209,7 @@ export class UnitRendererComponent extends Component {
                 ? div(
                     {
                         style: {
-                            "--background-image": this.context.state.defaultBg
+                            "--background-image": !this.props.art && this.state.backdropUri && this.context.state.defaultBg
                                 ? `url(${this.state.backdropUri || ""})`
                                 : `none`
                             ,

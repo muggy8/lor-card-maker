@@ -296,7 +296,7 @@ function SpellComponent(props){
                     {
                         className: "art",
                         style: {
-                            backgroundImage: globalState.state.defaultBg && backdropUri
+                            backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
                                 ? `url(${backdropUri})`
                                 : "none"
                             ,
