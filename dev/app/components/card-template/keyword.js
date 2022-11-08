@@ -6,6 +6,7 @@ import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
+import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
 const cssLoaded = loadCss("/Components/card-template/keyword.css")
 
@@ -18,10 +19,20 @@ function KeywordComponent(props){
         datauri("/Assets/keyword/division.png").then(updateDivisionUri)
     }, [])
 
+    const concurrencyManagerRef = useRef()
+    useEffect(()=>{
+		concurrencyManagerRef.current = concurrencyManagerFactory()
+	}, [])
+
     const nameRef = useRef()
     useEffectDebounce(()=>{
-        scaleFontSize(nameRef.current, 60, 16)
+        concurrencyManagerRef.current.concurrent(()=>scaleFontSize(nameRef.current, 60, 16))
     }, 200, [props.name, !!frameUri])
+
+    const textAreaRef = useRef()
+    useEffectDebounce(()=>{
+        concurrencyManagerRef.current.sequential(scaleFontSize(textAreaRef.current))
+    }, 200, [props.effect, !!frameUri])
 
     return SvgWrap(
         {
@@ -31,37 +42,37 @@ function KeywordComponent(props){
         },
         frameUri
             ? div(
-                { 
-                    className: "keyword", 
+                {
+                    className: "keyword",
                     id: props.id,
                     style: {
                         backgroundImage: frameUri ? `url(${frameUri})` : "none"
                     }
                 },
                 div(
-                    { className: "content" },
+                    { className: "content", ref: textAreaRef },
 
                     div(
                         { className: "name orange-word", ref: nameRef },
                         props.name
                     ),
 
-                    div({ 
+                    div({
                         className: "division",
                         style: {
                             backgroundImage: divisionUri ? `url(${divisionUri})` : "none"
                         },
                     }),
 
-                    
+
                     props.effect
                         ? EffectText(
                             {
                                 blueWords: props.blueWords,
                                 orangeWords: props.orangeWords,
                                 className: "effect-container card-text-universe",
-                            },
-                            props.effect
+								effectText: props.effect
+                            }
                         )
                         : undefined
                     ,
