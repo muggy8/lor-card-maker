@@ -81,6 +81,148 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
     return currentlyRunningScalingTasks.get(element)
 }
 
+function reactifyEffectText(text, blueWords, orangeWords){
+    let contentArray = [text]
+    keywordWithIcons.forEach(word=>{
+        const wordTag = `<${word}/>`
+        const keywordIcons = keywords[word]
+        contentArray = contentArray.map(textOrElement=>{
+            if (typeof textOrElement !== "string"){
+                return textOrElement
+            }
+
+            let splitUpText = textOrElement.split(wordTag)
+
+            if (splitUpText.length === 1){
+                return splitUpText[0]
+            }
+
+            for(let i = splitUpText.length - 1; i; i--){
+                splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
+                    key: pngName+i,
+                    pngName
+                })))
+            }
+
+            return splitUpText
+        }).flat()
+    })
+
+    blueWords.forEach(word=>{
+        if (!word){
+            return
+        }
+        contentArray = contentArray.map(textOrElement=>{
+            if (typeof textOrElement !== "string"){
+                return textOrElement
+            }
+
+            let splitUpText = textOrElement.split(word)
+
+            if (splitUpText.length === 1){
+                return splitUpText[0]
+            }
+
+            for(let i = splitUpText.length - 1; i; i--){
+                splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
+            }
+
+            return splitUpText
+        }).flat()
+    })
+
+    orangeWords.forEach(word=>{
+        if (!word){
+            return
+        }
+        contentArray = contentArray.map(textOrElement=>{
+            if (typeof textOrElement !== "string"){
+                return textOrElement
+            }
+
+            let splitUpText = textOrElement.split(word)
+
+            if (splitUpText.length === 1){
+                return splitUpText[0]
+            }
+
+            for(let i = splitUpText.length - 1; i; i--){
+                splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
+            }
+
+            return splitUpText
+        }).flat()
+    })
+
+    // replace new lines with br tag... but br tag breaks during svg output so we just use a div instead
+    contentArray = contentArray.map(textOrElement=>{
+        if (typeof textOrElement !== "string"){
+            return textOrElement
+        }
+
+        let splitUpText = textOrElement.split(/\n+/g)
+
+        if (splitUpText.length === 1){
+            return splitUpText[0]
+        }
+
+        for(let i = splitUpText.length - 1; i; i--){
+            splitUpText.splice(i, 0, div())
+        }
+
+        return splitUpText
+    }).flat()
+
+    contentArray = contentArray.filter(el=>!!el)
+
+    // next up, the icons needs to absorb it's next neighbour unless it's empty or a div, then absorb the one after that too
+    for(let i = 0; i < contentArray.length; i++){
+        const currentNode = contentArray[i]
+        if (typeof currentNode === "string"){
+            continue
+        }
+        if (!React.isValidElement(currentNode)){
+            continue
+        }
+
+        if (!currentNode.props.pngName){
+            continue
+        }
+
+        const replacementInlineIconProps = {}
+        const replacementInlineIconchildren = []
+
+        Object.keys(currentNode.props).forEach(propName=>{
+            replacementInlineIconProps[propName] = currentNode.props[propName]
+        })
+
+        if (currentNode.props.children && !Array.isArray(currentNode.props.children)){
+            replacementInlineIconchildren.push(currentNode.props.children)
+        }
+
+        let nextNode = contentArray[i + 1]
+        while(nextNode){
+            contentArray.splice(i + 1, 1)
+
+            replacementInlineIconchildren.push(nextNode)
+
+            if (typeof nextNode === "string" && !nextNode.trim()){
+                nextNode = contentArray[i + 1] // we have to consume another sibling
+            }
+            else if (React.isValidElement(nextNode) && nextNode.props.pngName){
+                nextNode = contentArray[i + 1] // we have to consume another sibling
+            }
+            else{
+                nextNode = undefined // dont need to consume any more siblings
+            }
+        }
+
+        contentArray.splice(i, 1, Function.apply.call(InlineIcon, factory, [replacementInlineIconProps, ...replacementInlineIconchildren]))
+    }
+
+    return contentArray
+}
+
 function EffectTextComponent(props){
     let text = props.children
     if (text && typeof text !== "string"){
@@ -95,143 +237,7 @@ function EffectTextComponent(props){
 
     const [contentArray, updateContentArray] = useState([])
     useEffectDebounce(()=>{
-        let contentArray = [text]
-        keywordWithIcons.forEach(word=>{
-            const wordTag = `<${word}/>`
-            const keywordIcons = keywords[word]
-            contentArray = contentArray.map(textOrElement=>{
-                if (typeof textOrElement !== "string"){
-                    return textOrElement
-                }
-    
-                let splitUpText = textOrElement.split(wordTag)
-    
-                if (splitUpText.length === 1){
-                    return splitUpText[0]
-                }
-    
-                for(let i = splitUpText.length - 1; i; i--){
-                    splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
-                        key: pngName+i,
-                        pngName
-                    })))
-                }
-    
-                return splitUpText
-            }).flat()
-        })
-    
-        blueWords.forEach(word=>{
-            if (!word){
-                return
-            }
-            contentArray = contentArray.map(textOrElement=>{
-                if (typeof textOrElement !== "string"){
-                    return textOrElement
-                }
-    
-                let splitUpText = textOrElement.split(word)
-    
-                if (splitUpText.length === 1){
-                    return splitUpText[0]
-                }
-    
-                for(let i = splitUpText.length - 1; i; i--){
-                    splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
-                }
-    
-                return splitUpText
-            }).flat()
-        })
-    
-        orangeWords.forEach(word=>{
-            if (!word){
-                return
-            }
-            contentArray = contentArray.map(textOrElement=>{
-                if (typeof textOrElement !== "string"){
-                    return textOrElement
-                }
-    
-                let splitUpText = textOrElement.split(word)
-    
-                if (splitUpText.length === 1){
-                    return splitUpText[0]
-                }
-    
-                for(let i = splitUpText.length - 1; i; i--){
-                    splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
-                }
-    
-                return splitUpText
-            }).flat()
-        })
-    
-        // replace new lines with br tag... but br tag breaks during svg output so we just use a div instead
-        contentArray = contentArray.map(textOrElement=>{
-            if (typeof textOrElement !== "string"){
-                return textOrElement
-            }
-    
-            let splitUpText = textOrElement.split(/\n+/g)
-    
-            if (splitUpText.length === 1){
-                return splitUpText[0]
-            }
-    
-            for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, div())
-            }
-    
-            return splitUpText
-        }).flat()
-
-        contentArray = contentArray.filter(el=>!!el)
-
-        // next up, the icons needs to absorb it's next neighbour unless it's empty or a div, then absorb the one after that too
-        for(let i = 0; i < contentArray.length; i++){
-            const currentNode = contentArray[i]
-            if (typeof currentNode === "string"){
-                continue
-            }
-            if (!React.isValidElement(currentNode)){
-                continue
-            }
-
-            if (!currentNode.props.pngName){
-                continue
-            }
-
-            const replacementInlineIconProps = {}
-            const replacementInlineIconchildren = []
-
-            Object.keys(currentNode.props).forEach(propName=>{
-                replacementInlineIconProps[propName] = currentNode.props[propName]
-            })
-
-            if (currentNode.props.children && !Array.isArray(currentNode.props.children)){
-                replacementInlineIconchildren.push(currentNode.props.children)
-            }
-
-            let nextNode = contentArray[i + 1]
-            while(nextNode){
-                contentArray.splice(i + 1, 1)
-
-                replacementInlineIconchildren.push(nextNode)
-
-                if (typeof nextNode === "string" && !nextNode.trim()){
-                    nextNode = contentArray[i + 1] // we have to consume another sibling
-                }
-                else if (React.isValidElement(nextNode) && nextNode.props.pngName){
-                    nextNode = contentArray[i + 1] // we have to consume another sibling
-                }
-                else{
-                    nextNode = undefined // dont need to consume any more siblings
-                }
-            }
-
-            contentArray.splice(i, 1, Function.apply.call(InlineIcon, factory, [replacementInlineIconProps, ...replacementInlineIconchildren]))
-        }
+        const contentArray = reactifyEffectText(text, blueWords, orangeWords)
 
         updateContentArray(contentArray)
 
