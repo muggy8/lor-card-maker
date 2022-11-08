@@ -109,20 +109,30 @@ function SpellComponent(props){
     const costRef = useRef()
     const powerRef = useRef()
     const healthRef = useRef()
+    const cardTextAreaRef = useRef()
 
     const costFitty = useRef()
     const powerFitty = useRef()
     const healthFitty = useRef()
     
     useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
         scaleFontSize(nameRef.current, 70, 16)
     }, 200, [props.name, !!frameUri])
 
     useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
         scaleFontSize(clanRef.current, 40, 16)
     }, 200, [props.clan, !!frameUri])
 
     useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
         const fittyInstance = costFitty.current
 
         if (!fittyInstance){
@@ -137,6 +147,9 @@ function SpellComponent(props){
     }, 200, [props.mana, !!frameUri])
 
     useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
         if (typeof props.power !== "number"){
             return
         }
@@ -155,6 +168,9 @@ function SpellComponent(props){
     }, 200, [props.power, !!frameUri])
 
     useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
         if (typeof props.health !== "number"){
             return
         }
@@ -170,6 +186,13 @@ function SpellComponent(props){
 
         fittyInstance.fit()
     }, 200, [props.health, !!frameUri])
+
+    useEffectDebounce(()=>{
+        if (!frameUri){
+            return
+        }
+        scaleFontSize(cardTextAreaRef.current)
+    }, 200, [!!props.name, !!(props.keywords && props.keywords.length), props.effect, props.lvup, !!frameUri])
 
     // here we automate the stuff with the frame and card type and stuff and keep them all in sync
     const propsRef = useRef()
@@ -355,7 +378,7 @@ function SpellComponent(props){
                     : undefined
                 ,
                 div(
-                    { className: "card-text-wrapper" },
+                    { className: "card-text-wrapper", ref: cardTextAreaRef },
                     // stuff to do with the card content goes here
 
                     props.name
@@ -378,17 +401,13 @@ function SpellComponent(props){
                         : undefined
                     ,
 
-                    props.effect
-                        ? EffectText(
-                            {
-                                blueWords: props.blueWords,
-                                orangeWords: props.orangeWords,
-                                className: "effect-container card-text-universe",
-                            },
-                            props.effect
-                        )
-                        : undefined
-                    ,
+                    EffectText({
+                        blueWords: props.blueWords,
+                        orangeWords: props.orangeWords,
+                        className: "effect-container card-text-universe",
+                        effectText: props.effect,
+                        levelText: props.lvup,
+                    })
                 )
             ) 
             : null 

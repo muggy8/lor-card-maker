@@ -105,6 +105,7 @@ const types = [
                 power: null,
                 health: null,
                 mana: "",
+                lvup: "",
             }
         ),
     },

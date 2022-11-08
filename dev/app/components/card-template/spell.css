@@ -183,6 +183,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    max-height: 328px;
 }
 
 .spell .card-text-wrapper .name {

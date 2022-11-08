@@ -160,17 +160,19 @@ export class UnitRendererComponent extends Component {
         } = this
 
         const frameLoaded = !!this.state.frameUri !== !!previousState.frameUri
-        const keywordsUpdated = previousProps.keywords !== keywords || 
-            ((previousProps.keywords && previousProps.keywords.length) !== (keywords && keywords.length))
+        const shouldScaleEffect = (
+            !!previousProps.name !== name ||
+            !!(previousProps.keywords && previousProps.keywords.length) !== !!(keywords && keywords.length) ||
+            previousProps.effectText !== effectText ||
+            previousProps.lvup !== lvup 
+        )
         
         ;((previousProps.clan !== clan) || frameLoaded) && fitClan()
         ;((previousProps.cost !== cost) || frameLoaded) && fitCost()
         ;((previousProps.power !== power) || frameLoaded) && fitPower()
         ;((previousProps.health !== health) || frameLoaded) && fitHealth()
-        ;((previousProps.name !== name) || frameLoaded) && (fitName() + scaleText())
-        ;((previousProps.effectText !== effectText) || frameLoaded) && scaleText()
-        ;((previousProps.lvup !== lvup) || frameLoaded) && scaleText()
-        ;(keywordsUpdated || frameLoaded) && scaleText()
+        ;((previousProps.name !== name) || frameLoaded) && fitName()
+        ;(shouldScaleEffect || frameLoaded) && scaleText()
 
         if (previousProps.rarity !== this.props.rarity && this.props.rarity !== "gemless" && this.props.rarity !== "none"){
             this.fetchUrlAsUriAndStoreInState(`/Assets/shared/gem${this.props.rarity}.png`, "rarityUri")
