@@ -353,7 +353,7 @@ function SpellComponent(props){
                         div(
                             {
                                 ref: clanRef,
-                                className: "text-area fitty-nowrap text-area fitty-nowrap"
+                                className: "card-text-universe-condensed text-area fitty-nowrap"
                             },
                             props.clan
                         ),
