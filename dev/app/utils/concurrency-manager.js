@@ -1,20 +1,20 @@
 export default function concurrencyManagerFactory(){
     let runningProcesses = []
     let waiting = []
-    
+
     const manager =  {
         concurrent: function(callback, ...args){
             const promise = callback(...args)
             if (!promise instanceof Promise){
                 processComplete()
-                return promise
+                return
             }
-            runningProcesses.push(promise)
             promise.then(processComplete, processComplete)
-            
+            runningProcesses.push(promise)
+
             function processComplete(){
-                const jobInde = runningProcesses.findIndex(running => running === promise)
-                runningProcesses.splice(jobInde, 1)
+                const jobIndex = runningProcesses.findIndex(running => running === promise)
+                runningProcesses.splice(jobIndex, 1)
 
                 if (runningProcesses.length === 0){
                     const todo = waiting.shift()

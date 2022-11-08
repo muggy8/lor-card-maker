@@ -26,12 +26,18 @@ function KeywordComponent(props){
 
     const nameRef = useRef()
     useEffectDebounce(()=>{
+		if (!frameUri){
+			return
+		}
         concurrencyManagerRef.current.concurrent(()=>scaleFontSize(nameRef.current, 60, 16))
     }, 200, [props.name, !!frameUri])
 
     const textAreaRef = useRef()
     useEffectDebounce(()=>{
-        concurrencyManagerRef.current.sequential(scaleFontSize(textAreaRef.current))
+		if (!frameUri){
+			return
+		}
+        concurrencyManagerRef.current.sequential(()=>scaleFontSize(textAreaRef.current))
     }, 200, [props.effect, !!frameUri])
 
     return SvgWrap(
