@@ -10,6 +10,7 @@ import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 import { defaultShade } from "/Views/list.js"
 import debounce from "/Utils/debounce-function.js"
+import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
 const cssLoaded = loadCss("/Components/card-template/unit.css")
 
@@ -43,9 +44,12 @@ export class UnitRendererComponent extends Component {
         this.healthRef = createRef()
         this.nameRef = createRef()
         this.cardTextWrapperRef = createRef()
+        const concurrencyManager = concurrencyManagerFactory()
 
         this.fitClan = debounce(()=>this.clanRef.current && scaleFontSize(this.clanRef.current, 40, 16))
-        this.fitName = debounce(()=>this.nameRef.current && scaleFontSize(this.nameRef.current, 70, 16))
+        this.fitName = debounce(()=>{
+            this.nameRef.current && concurrencyManager.concurrent(()=>scaleFontSize(this.nameRef.current, 70, 16))
+        })
         this.fitCost = debounce(()=>{
             if (!this.costRef.current){
                 return
@@ -83,7 +87,9 @@ export class UnitRendererComponent extends Component {
             this.healthFitty.fit()
         })
 
-        this.scaleText = debounce(()=>this.cardTextWrapperRef.current && scaleFontSize(this.cardTextWrapperRef.current))
+        this.scaleText = debounce(()=>{
+            this.cardTextWrapperRef.current && concurrencyManager.sequential(()=>scaleFontSize(this.cardTextWrapperRef.current))
+        }, 300)
     }
 
     getRegionFrameUrl(){

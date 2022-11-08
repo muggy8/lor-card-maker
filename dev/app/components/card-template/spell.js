@@ -11,6 +11,7 @@ import fitty from "/cdn/fitty"
 import datauri from "/Utils/datauri.js"
 import { speedOptions } from "/Components/card-config/edit-speed.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
+import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -44,6 +45,7 @@ function SpellComponent(props){
 
     // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
+    const [concurrencyManager] = useState(concurrencyManagerFactory())
     const [imageAvgColor, updateImageAvgColor] = useState("var(--color-dark, #777777)")
     useEffectDebounce(()=>{
         let fac = facref.current
@@ -119,7 +121,7 @@ function SpellComponent(props){
         if (!frameUri){
             return
         }
-        scaleFontSize(nameRef.current, 70, 16)
+        concurrencyManager.concurrent(()=>scaleFontSize(nameRef.current, 70, 16))
     }, 200, [props.name, !!frameUri])
 
     useEffectDebounce(()=>{
@@ -191,8 +193,8 @@ function SpellComponent(props){
         if (!frameUri){
             return
         }
-        scaleFontSize(cardTextAreaRef.current)
-    }, 200, [!!props.name, !!(props.keywords && props.keywords.length), props.effect, props.lvup, !!frameUri])
+        concurrencyManager.sequential(()=>scaleFontSize(cardTextAreaRef.current))
+    }, 300, [!!props.name, !!(props.keywords && props.keywords.length), props.effect, props.lvup, !!frameUri])
 
     // here we automate the stuff with the frame and card type and stuff and keep them all in sync
     const propsRef = useRef()
