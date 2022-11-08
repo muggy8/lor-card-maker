@@ -45,7 +45,11 @@ function SpellComponent(props){
 
     // figure out the background and stuff so we can have a color for the card text back
     const facref = useRef()
-    const [concurrencyManager] = useState(concurrencyManagerFactory())
+    const concurrencyManager = useRef()
+    useEffect(()=>{
+        concurrencyManager.current = concurrencyManagerFactory()
+    }, [])
+
     const [imageAvgColor, updateImageAvgColor] = useState("var(--color-dark, #777777)")
     useEffectDebounce(()=>{
         let fac = facref.current
@@ -121,7 +125,7 @@ function SpellComponent(props){
         if (!frameUri){
             return
         }
-        concurrencyManager.concurrent(()=>scaleFontSize(nameRef.current, 70, 16))
+        concurrencyManager.current.concurrent(()=>scaleFontSize(nameRef.current, 70, 16))
     }, 200, [props.name, !!frameUri])
 
     useEffectDebounce(()=>{
@@ -193,7 +197,7 @@ function SpellComponent(props){
         if (!frameUri){
             return
         }
-        concurrencyManager.sequential(()=>scaleFontSize(cardTextAreaRef.current))
+        concurrencyManager.current.sequential(()=>scaleFontSize(cardTextAreaRef.current))
     }, 300, [!!props.name, !!(props.keywords && props.keywords.length), props.effect, props.lvup, !!frameUri])
 
     // here we automate the stuff with the frame and card type and stuff and keep them all in sync
