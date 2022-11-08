@@ -13,7 +13,7 @@ export default function concurrencyManagerFactory(){
             promise.then(processComplete, processComplete)
             
             function processComplete(){
-                const jobInde = runningProcesses.findIndex(running => running = promise)
+                const jobInde = runningProcesses.findIndex(running => running === promise)
                 runningProcesses.splice(jobInde, 1)
 
                 if (runningProcesses.length === 0){
