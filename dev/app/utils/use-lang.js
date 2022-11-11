@@ -150,5 +150,10 @@ const lang = {
         "flash-bomb": "Flash Bomb",
         "theme": "Theme",
         "install_app": "Install On This Device",
+        "keyword_icon": "Keyword Icon",
+        "upload_icon": "Upload Icons",
+        "create_icon": "Create Icon From Template",
+        "base_icon": "Base Icon",
+        "select_base_icon": "Select Base Icon...",
     }
 }

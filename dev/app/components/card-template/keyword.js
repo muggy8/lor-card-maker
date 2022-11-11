@@ -59,9 +59,24 @@ function KeywordComponent(props){
                     { className: "content", ref: textAreaRef },
 
                     div(
-                        { className: "name orange-word", ref: nameRef },
-                        props.name
+                        { className: "name-area" },
+                        props.icon
+                            ? div(
+                                { 
+                                    className: "keyword-icon",
+                                    style: {
+                                        backgroundImage: props.icon,
+                                    },
+                                }
+                            )
+                            : undefined 
+                        ,
+                        div(
+                            { className: "name orange-word", ref: nameRef },
+                            props.name
+                        ), 
                     ),
+                    
 
                     div({
                         className: "division",

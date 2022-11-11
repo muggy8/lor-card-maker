@@ -1,0 +1,17 @@
+.edit-icon .inline-icon {
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    background-size: contain;
+    background-image: var(--icon-image);
+}
+
+.edit-icon .custom-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: inline-block;
+    background-size: contain;
+}

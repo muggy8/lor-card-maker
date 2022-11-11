@@ -42,7 +42,7 @@ function EditArtComponent(props){
     return fragment(
         label(
             div(
-                strong(translate("card_art"))
+                strong(props.label)
             ),
             div(
                 {className: "flex hcenter gutter-trl-.5"},

@@ -65,6 +65,10 @@ const pathMap = {
 			url: "https://esm.sh/react-use-pwa-install@0.2.1",
 			query: esmshQueryConfigs,
 		},
+		"react-select": {
+			url: "https://esm.sh/react-select@5.6.0",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

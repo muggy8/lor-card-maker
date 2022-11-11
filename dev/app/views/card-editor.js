@@ -17,6 +17,7 @@ import EditSpeed from "/Components/card-config/edit-speed.js"
 import EditColorText from "/Components/card-config/edit-colored-text.js"
 import EditArt from "/Components/card-config/edit-art.js"
 import EditShade from "/Components/card-config/edit-shade.js"
+import EditIcon from "/Components/card-config/edit-icon.js"
 import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
@@ -245,6 +246,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
+                canShow("icon", defaultCardData)
+                    ? div(
+                        {className: "flex hcenter gutter-b-2"},
+                        EditIcon({
+                            value: card.icon,
+                            updateValue: cardDataUpdaters.icon
+                        })
+                    )
+                    : undefined
+                ,
                 canShow("mana", defaultCardData)
                     ? div(
                         { className: "gutter-b-2" },
@@ -302,6 +313,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? div(
                         {className: "gutter-b-2"},
                         EditShade({
+                            label: translate("card_art"),
                             value: card.shade || defaultShade,
                             updateValue: cardDataUpdaters.shade,
                         })

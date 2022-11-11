@@ -303,7 +303,9 @@ function InlineIconComponent(props){
     const [iconUri, updateIconUri] = useState('')
 
     useEffect(()=>{
-        datauri(`/Assets/keyword/${props.pngName}`).then(updateIconUri)
+        const url = props.url || `/Assets/keyword/${props.pngName}`
+
+        datauri(url).then(updateIconUri)
     }, [props.pngName])
 
     return span(
