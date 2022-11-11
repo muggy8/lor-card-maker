@@ -1,6 +1,14 @@
 import factory from "/Utils/element-factory.js"
 import React from "/cdn/react"
+import InputRangeComponent from '/cdn/react-input-range';
+import loadCss from "/Utils/load-css.js"
 export default factory
+
+const cssLoaded = Promise.all([
+    loadCss("/cdn/react-input-range/lib/css/index.css"),
+    loadCss("/Utils/elements.js"),
+])
+
 
 export const div = factory("div")
 export const a = factory("a")
@@ -31,3 +39,4 @@ export const nav = factory("nav")
 export const header = factory("header")
 export const small = factory("small")
 export const fragment = factory(React.Fragment)
+export const InputRange = factory(InputRangeComponent, cssLoaded)

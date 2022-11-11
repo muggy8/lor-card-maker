@@ -155,5 +155,11 @@ const lang = {
         "create_icon": "Create Icon From Template",
         "base_icon": "Base Icon",
         "select_base_icon": "Select Base Icon...",
+        "hue_rotation": "Hue Rotation",
+        "contrast": "Contrast",
+        "sepia": "Sepia",
+        "brightness": "Brightness",
+        "saturation": "Saturation",
+        "or": "Or",
     }
 }

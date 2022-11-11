@@ -1,15 +1,6 @@
-import factory, { div, label, strong, input } from "/Utils/elements.js"
+import factory, { div, label, strong, InputRange } from "/Utils/elements.js"
 import { useCallback } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
-import InputRangeComponent from '/cdn/react-input-range';
-import loadCss from "/Utils/load-css.js"
-
-const cssLoaded = Promise.all([
-    loadCss("/cdn/react-input-range/lib/css/index.css"),
-    loadCss("/Components/card-config/edit-shade.css")
-])
-
-const InputRange = factory(InputRangeComponent)
 
 function EditShadeComponent(props){
     // const onChange = useCallback(ev=>{
@@ -108,10 +99,10 @@ function EditShadeComponent(props){
     )
 }
 
-function decimalLimit(number, limit = 3){
+export function decimalLimit(number, limit = 3){
     const limitScale = Math.pow(10, limit)
 
     return Math.round(number * limitScale) / limitScale
 }
 
-export default factory(EditShadeComponent, cssLoaded)
+export default factory(EditShadeComponent)
