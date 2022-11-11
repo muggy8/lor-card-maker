@@ -107,9 +107,6 @@ function iconEditorComponent(props){
                             div(
                                 { 
                                     className: "flex vhcenter gutter-t-.5",
-                                    // style: {
-                                        
-                                    // }
                                 },
                                 svgWrap(
                                     { width: 128, height: 128 },
@@ -120,6 +117,27 @@ function iconEditorComponent(props){
                                             filter: `brightness(${brightness}) sepia(${sepia}) saturate(${saturation}) hue-rotate(${hue}deg) contrast(${contrast})`,
                                         },
                                     }),
+                                )
+                            ),
+                            label(
+                                { className: "box gutter-trbl-.5 flex-s" },
+                                div(
+                                    { className: "box-4" },
+                                    translate("saturation"),
+                                    ":",
+                                ),
+                                div(
+                                    { className: "grow gutter-tb" },
+                                    InputRange(
+                                        {
+                                            formatLabel: value => `${decimalLimit(value*100)}%`,
+                                            value: saturation,
+                                            minValue: 0,
+                                            maxValue: 5,
+                                            step: 0.01,
+                                            onChange: updateSaturation,
+                                        }
+                                    )
                                 )
                             ),
                             label(
@@ -137,29 +155,8 @@ function iconEditorComponent(props){
                                             value: hue,
                                             minValue: 0,
                                             maxValue: 360,
-                                            step: 0.01,
+                                            step: 1,
                                             onChange: updateHue,
-                                        }
-                                    )
-                                )
-                            ),
-                            label(
-                                { className: "box gutter-trbl-.5 flex-s" },
-                                div(
-                                    { className: "box-4" },
-                                    translate("contrast"),
-                                    ":",
-                                ),
-                                div(
-                                    { className: "grow gutter-tb" },
-                                    InputRange(
-                                        {
-                                            formatLabel: value => `${decimalLimit(value*100)}%`,
-                                            value: contrast,
-                                            minValue: 0,
-                                            maxValue: 5,
-                                            step: 0.01,
-                                            onChange: udpateContrast,
                                         }
                                     )
                                 )
@@ -189,7 +186,7 @@ function iconEditorComponent(props){
                                 { className: "box gutter-trbl-.5 flex-s" },
                                 div(
                                     { className: "box-4" },
-                                    translate("saturation"),
+                                    translate("contrast"),
                                     ":",
                                 ),
                                 div(
@@ -197,11 +194,11 @@ function iconEditorComponent(props){
                                     InputRange(
                                         {
                                             formatLabel: value => `${decimalLimit(value*100)}%`,
-                                            value: saturation,
+                                            value: contrast,
                                             minValue: 0,
                                             maxValue: 5,
                                             step: 0.01,
-                                            onChange: updateSaturation,
+                                            onChange: udpateContrast,
                                         }
                                     )
                                 )
