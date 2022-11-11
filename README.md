@@ -8,6 +8,7 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 ## Todo:
 - custom keywords
 - ~~improve performance~~
+- PWA share support
 - re-introduce art URL
 - re-introduce artist input
 - custom card deck builder
