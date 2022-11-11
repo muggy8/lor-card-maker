@@ -1,6 +1,6 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
-import { createElement, useState, useCallback } from "/cdn/react" 
+import { createElement, useState, useCallback } from "/cdn/react"
 import { typeToComponent } from "/Views/list.js"
 import { svgRefference } from "/Views/card-editor.js"
 
@@ -42,7 +42,7 @@ function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
     }
 
     const numberOfCards = cards.length
-    
+
     const rows = Math.ceil(numberOfCards / cols)
 
     if (!cards.length){
@@ -69,6 +69,12 @@ function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
 
     calculationCache.pairs[cols] = {cols, rows, width: largestResolution.width * cols, height: largestResolution.height * rows, resolution: largestResolution} // fallback in case nothing gets found
 
+    if (numberOfCards === 3){
+		// special case for 3 cards.
+		const rows = 1
+		return calculationCache.pairs[cols] = {rows, cols: 3,  width: largestResolution.width * 3, height: largestResolution.height * rows, resolution: largestResolution}
+	}
+
     if (sigleItemAspectRatio === collectiveAspectRatio){
         return calculationCache.pairs[cols]
     }
@@ -83,8 +89,8 @@ function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
     else if (collectiveAspectRatio < sigleItemAspectRatio * 0.75){
         calculationCache.pairs[cols] = calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols + 1)
     }
-    
-    return calculationCache.pairs[cols] 
+
+    return calculationCache.pairs[cols]
 }
 
 function useOldListIfNothingChanged(newList){
@@ -130,15 +136,15 @@ function BatchRendererComponent(props){
             } },
             div(
                 { className: "cards-grid" },
-                
+
                 props.cards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)
                     if (!renderingComponent){
                         return div({key: cardData.id})
                     }
                     return div(
-                        { 
-                            className: "card", 
+                        {
+                            className: "card",
                             key: cardData.id,
                             style: {
                                 width: `${resolution.width}px`,
