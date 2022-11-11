@@ -85,6 +85,7 @@ function iconEditorComponent(props){
                 { className: "gutter-trl-.5" },
                 translate("create_icon"),
                 div(
+                    { className: "gutter-t-.5" },
                     select({
                         options: dummyIcons.map(iconName=>{
                             return {
