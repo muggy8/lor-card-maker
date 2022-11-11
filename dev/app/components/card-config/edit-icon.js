@@ -79,7 +79,7 @@ function iconEditorComponent(props){
         div(
             { className: "box edit-icon" },
 
-            label({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or"))),
+            div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or"))),
 
             div(
                 { className: "gutter-trl-.5" },
