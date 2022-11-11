@@ -6,7 +6,7 @@ export default factory
 
 const cssLoaded = Promise.all([
     loadCss("/cdn/react-input-range/lib/css/index.css"),
-    loadCss("/Utils/elements.js"),
+    loadCss("/Utils/elements.css"),
 ])
 
 

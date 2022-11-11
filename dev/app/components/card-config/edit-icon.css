@@ -6,7 +6,7 @@
     background-image: var(--icon-image);
 }
 
-.edit-icon .custom-icon {
+.custom-icon {
     position: absolute;
     top: 0;
     left: 0;

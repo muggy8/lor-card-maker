@@ -1,5 +1,5 @@
 import { Globals } from "/Views/index.js"
-import { useContext } from "/cdn/react" 
+import { useContext } from "/cdn/react"
 
 
 export default function useLang(){
@@ -144,9 +144,9 @@ const lang = {
         // "impact": ["impactn.png"],
         "imbue": "Imbue",
 
-        "oled": "Black", 
-        "dark": "Dark", 
-        "light": "Light", 
+        "oled": "Black",
+        "dark": "Dark",
+        "light": "Light",
         "flash-bomb": "Flash Bomb",
         "theme": "Theme",
         "install_app": "Install On This Device",
@@ -161,5 +161,6 @@ const lang = {
         "brightness": "Brightness",
         "saturation": "Saturation",
         "or": "Or",
+        "use_icon": "Use Icon",
     }
 }

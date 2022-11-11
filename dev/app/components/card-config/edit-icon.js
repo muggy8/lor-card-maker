@@ -1,15 +1,15 @@
-import factory, { div, label, strong, fragment, InputRange } from "/Utils/elements.js"
+import factory, { div, label, strong, fragment, button, InputRange } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useRef, useEffect } from "/cdn/react"
+import { useCallback, useState, useRef, useEffect, createElement } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import EditArt from "/Components/card-config/edit-art.js"
-// import useCallbackDebounce from "/Utils/use-debounce-callback.js"
+import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { InlineIcon } from "/Components/card-template/effect-text.js"
 import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
-
+import { svgRefference, openUri } from "/Views/card-editor.js"
 loadCss("/Components/card-config/edit-icon.css")
 
 const select = factory(reactSelect)
@@ -57,6 +57,26 @@ function iconEditorComponent(props){
         datauri(selected.icon).then(updateIconUri)
     }, [selected])
 
+    const [svgRef, updateSvgRef] = useState(null)
+    const [exporting, setExporting] = useState(false)
+    const exportIcon = useCallback(()=>{
+		if (exporting){
+            return
+        }
+        setExporting(true)
+
+        requestAnimationFrame(() => {
+            saveSvgAsPng.svgAsPngUri(svgRef, {
+                excludeUnusedCss: true,
+                width: svgRef.width.baseVal.value,
+                height: svgRef.height.baseVal.value,
+            }).then(uri=>{
+                openUri(uri)
+                setExporting(false)
+            }, ()=>setExporting(false))
+        })
+	}, [svgRef, exporting])
+
     return fragment(
         label(
             { className: "box edit-icon" },
@@ -94,30 +114,38 @@ function iconEditorComponent(props){
                                 icon: `/Assets/custom-icon/${iconName}`
                             }
                         }),
-                        components: { 
-                            Option: iconSelectOptionComponent, 
-                            SingleValue: selectedDefaultIconComponent 
+                        components: {
+                            Option: iconSelectOptionComponent,
+                            SingleValue: selectedDefaultIconComponent
                         },
                         placeholder: translate("select_base_icon"),
                         onChange: updateSelected
                     }),
 
-                    iconUri 
+                    iconUri
                         ? div(
                             div(
-                                { 
+                                {
                                     className: "flex vhcenter gutter-t-.5",
                                 },
-                                svgWrap(
-                                    { width: 128, height: 128 },
-                                    div({ 
-                                        className: "custom-icon",
-                                        style: {
-                                            backgroundImage: iconUri ? `url(${iconUri})` : undefined,
-                                            filter: `brightness(${brightness}) sepia(${sepia}) saturate(${saturation}) hue-rotate(${hue}deg) contrast(${contrast})`,
-                                        },
-                                    }),
-                                )
+                                createElement(
+									svgRefference.Provider,
+									{ value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
+										current: svgRef,
+										setRef: updateSvgRef,
+									} },
+
+									svgWrap(
+										{ width: 128, height: 128 },
+										div({
+											className: "custom-icon",
+											style: {
+												backgroundImage: iconUri ? `url(${iconUri})` : undefined,
+												filter: `brightness(${brightness}) sepia(${sepia}) saturate(${saturation}) hue-rotate(${hue}deg) contrast(${contrast})`,
+											},
+										}),
+									)
+								),
                             ),
                             label(
                                 { className: "box gutter-trbl-.5 flex-s" },
@@ -224,10 +252,18 @@ function iconEditorComponent(props){
                                     )
                                 )
                             ),
+                            div(
+								{ className: "flex gutter-t-.5" },
+								button(
+									{ className: "box gutter-trbl-1", onClick: exportIcon },
+									translate("use_icon")
+								)
+                            ),
+
                         )
                         : undefined
                     ,
-                    
+
                 )
             ),
         )
@@ -246,13 +282,13 @@ function iconSelectOptionComponent (props){
 
 function selectedDefaultIconComponent (props){
     const translate = useLang()
-    
-    return singleValue( 
-        {...props}, 
+
+    return singleValue(
+        {...props},
         div(
             {className: "flex vcenter"},
             `${translate("base_icon")}: `,
-            InlineIcon({ url: props.data.icon}) 
+            InlineIcon({ url: props.data.icon})
         ),
     )
 }
