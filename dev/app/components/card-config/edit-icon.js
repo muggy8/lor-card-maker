@@ -79,10 +79,15 @@ function iconEditorComponent(props){
             }, ()=>setExporting(false))
         })
 	}, [svgRef, exporting, props.value])
+    
 
-    return fragment(
+    const [uploadedIcon, updateUploadedIcon] = useState("")
+    
+    return div(
+        { className: "box" },
+
         label(
-            { className: "box edit-icon" },
+            { className: "edit-icon" },
             div(
                 strong(
                     translate("keyword_icon"),
@@ -91,16 +96,19 @@ function iconEditorComponent(props){
         ),
 
         div(
-            { className: "box" },
             div(
                 { className: "gutter-trl-.5" },
                 translate("upload_icon")
             ),
-            EditArt({...props})
+            EditArt({
+                value: uploadedIcon, 
+                updateValue: updateUploadedIcon,
+                moveable: false,
+            })
         ),
 
         div(
-            { className: "box edit-icon" },
+            { className: "edit-icon" },
 
             div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or"))),
 

@@ -59,7 +59,9 @@ function EditArtComponent(props){
                 onChange: uploadArt
             })
         ),
-        div(
+        
+        props.moveable !== false 
+        ? div(
             {className: "flex gutter-t-.5"},
             div({className: "flex gutter-l-.5 gutter-r-.25 box-6"},
                 button(
@@ -92,6 +94,8 @@ function EditArtComponent(props){
                 ),
             )
         )
+        : undefined
+        ,
     )
 }
 
