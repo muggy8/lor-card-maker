@@ -110,7 +110,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 uri=>{
                     openUri(uri)
                     setExporting(false)
-                }, 
+                },
                 ()=>setExporting(false)
             )
         }, [svgRef, isExporting])
@@ -119,7 +119,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const [useableWidth, updateUseableWidth] = useState(0)
         const [previewHeight, updatePreviewHeight] = useState(0)
         useLayoutEffect(()=>{
-            
+
             const setFixedDisplayDimentions = debounceFunction(function(){
                 let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
                 const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
@@ -182,7 +182,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         div(
                             { className: "gutter-rl-.5" },
                             button(
-                                { 
+                                {
                                     className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
                                     onClick: ()=>{
                                         deleteCard(card.id).then(()=>{
@@ -222,8 +222,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         div(
                             { className: "gutter-rl-.5" },
                             button(
-                                { 
-                                    className: "gutter-trbl-.5", 
+                                {
+                                    className: "gutter-trbl-.5",
                                     onClick: exportCard,
                                     [(isExporting ? "disabled" : "data-foo")]: true
                                 },
@@ -251,7 +251,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         {className: "flex hcenter gutter-b-2"},
                         EditIcon({
                             value: card.icon,
-                            updateValue: cardDataUpdaters.icon
+                            updateValue: cardDataUpdaters.icon,
+                            updateTransform: cardDataUpdaters.transform
                         })
                     )
                     : undefined

@@ -71,8 +71,11 @@ function iconEditorComponent(props){
                 width: svgRef.width.baseVal.value,
                 height: svgRef.height.baseVal.value,
             }).then(uri=>{
-                openUri(uri)
-                setExporting(false)
+                //~ openUri(uri)
+                //~ setExporting(false)
+
+                props.updateValue(uri)
+                props.updateTransform({x: 0, y: 0, scale: 0.5})
             }, ()=>setExporting(false))
         })
 	}, [svgRef, exporting])

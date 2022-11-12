@@ -8,6 +8,23 @@
     background-repeat: no-repeat;
 }
 
+.keyword .keyword-icon {
+	width: 64px;
+	height: 64px;
+	display: inline-block;
+	position: relative;
+}
+
+.keyword .keyword-icon .scale-adjuster {
+    position: absolute;
+    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    transform: scale(var(--scale));
+    will-change: transform, top, bottom, left, right;
+}
+
 .keyword .blue-word {
     color: var(--effect-blue-text);
 }
@@ -19,6 +36,12 @@
     padding-left: 80px;
     padding-right: 80px;
 	max-height: 432px;
+}
+
+.keyword .name-area {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .keyword .name {

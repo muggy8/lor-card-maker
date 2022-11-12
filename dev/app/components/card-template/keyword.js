@@ -5,6 +5,7 @@ import SvgWrap from "/Components/card-template/svg-wrap.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import EffectText, { scaleFontSize } from "/Components/card-template/effect-text.js"
+import ArtRenderer from "/Components/card-template/image-render.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
@@ -62,21 +63,30 @@ function KeywordComponent(props){
                         { className: "name-area" },
                         props.icon
                             ? div(
-                                { 
+                                {
                                     className: "keyword-icon",
                                     style: {
-                                        backgroundImage: props.icon,
+                                        //~ backgroundImage: `url(${props.icon})`,
+                                        "--scale": props.transform ? props.transform.scale : 1,
+										"--left": props.transform ? props.transform.x : 0,
+										"--top": props.transform ? props.transform.y : 0,
                                     },
-                                }
+                                },
+								div(
+									{
+										className: "scale-adjuster"
+									},
+									ArtRenderer({ url: props.icon })
+								)
                             )
-                            : undefined 
+                            : undefined
                         ,
                         div(
                             { className: "name orange-word", ref: nameRef },
                             props.name
-                        ), 
+                        ),
                     ),
-                    
+
 
                     div({
                         className: "division",
