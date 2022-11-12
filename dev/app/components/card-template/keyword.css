@@ -13,6 +13,7 @@
 	height: 64px;
 	display: inline-block;
 	position: relative;
+	transform: translateY(-8px);
 }
 
 .keyword .keyword-icon .scale-adjuster {
