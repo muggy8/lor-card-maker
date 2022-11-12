@@ -61,24 +61,16 @@ function KeywordComponent(props){
 
                     div(
                         { className: "name-area" },
-                        props.icon
-                            ? div(
-                                {
+                        props.icons && props.icons.length
+                            ? props.icons.map(iconUri=>{
+                                return  div({
                                     className: "keyword-icon",
                                     style: {
-                                        //~ backgroundImage: `url(${props.icon})`,
-                                        "--scale": props.transform ? props.transform.scale : 1,
-										"--left": props.transform ? props.transform.x : 0,
-										"--top": props.transform ? props.transform.y : 0,
+                                        backgroundImage: `url(${iconUri})`,
                                     },
-                                },
-								div(
-									{
-										className: "scale-adjuster"
-									},
-									ArtRenderer({ url: props.icon })
-								)
-                            )
+                                    key: iconUri
+                                })
+                            })
                             : undefined
                         ,
                         div(

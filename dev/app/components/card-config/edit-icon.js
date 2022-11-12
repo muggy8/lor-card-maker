@@ -1,7 +1,7 @@
 import factory, { div, label, strong, fragment, button, InputRange } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useRef, useEffect, createElement } from "/cdn/react"
+import { useCallback, useState, useEffect, createElement } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import EditArt from "/Components/card-config/edit-art.js"
@@ -9,7 +9,7 @@ import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { InlineIcon } from "/Components/card-template/effect-text.js"
 import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
-import { svgRefference, openUri } from "/Views/card-editor.js"
+import { svgRefference } from "/Views/card-editor.js"
 loadCss("/Components/card-config/edit-icon.css")
 
 const select = factory(reactSelect)
@@ -48,7 +48,7 @@ function iconEditorComponent(props){
     const [brightness, updateBrightness] = useState(1)
     const [sepia, updateSepia] = useState(1)
 
-    const [selected, updateSelected] = useState()
+    const [selected, updateSelected] = useState(null)
     const [iconUri, updateIconUri] = useState("")
     useEffect(()=>{
         if (!selected){
@@ -71,14 +71,14 @@ function iconEditorComponent(props){
                 width: svgRef.width.baseVal.value,
                 height: svgRef.height.baseVal.value,
             }).then(uri=>{
-                //~ openUri(uri)
-                //~ setExporting(false)
+                console.log(props)
 
-                props.updateValue(uri)
-                props.updateTransform({x: 0, y: 0, scale: 0.5})
+                props.updateValue([...props.value || [], uri])
+                updateSelected(null)
+                updateIconUri("")
             }, ()=>setExporting(false))
         })
-	}, [svgRef, exporting])
+	}, [svgRef, exporting, props.value])
 
     return fragment(
         label(

@@ -12,19 +12,12 @@
 	width: 64px;
 	height: 64px;
 	display: inline-block;
-	position: relative;
 	transform: translateY(-8px);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
-.keyword .keyword-icon .scale-adjuster {
-    position: absolute;
-    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    transform: scale(var(--scale));
-    will-change: transform, top, bottom, left, right;
-}
 
 .keyword .blue-word {
     color: var(--effect-blue-text);

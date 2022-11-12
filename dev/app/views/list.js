@@ -153,8 +153,7 @@ const types = [
                 blueWords: [],
                 orangeWords: [],
                 dataVersion: 2,
-                icon: "",
-                transform: {x: 0, y: 0, scale: 1},
+                icons: [],
             }
         ),
     },

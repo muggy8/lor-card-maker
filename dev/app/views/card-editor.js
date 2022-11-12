@@ -246,13 +246,12 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("icon", defaultCardData)
+                canShow("icons", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},
                         EditIcon({
-                            value: card.icon,
-                            updateValue: cardDataUpdaters.icon,
-                            updateTransform: cardDataUpdaters.transform
+                            value: card.icons,
+                            updateValue: cardDataUpdaters.icons,
                         })
                     )
                     : undefined
