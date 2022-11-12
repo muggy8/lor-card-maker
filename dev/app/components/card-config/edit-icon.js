@@ -122,7 +122,8 @@ function iconEditorComponent(props){
                             SingleValue: selectedDefaultIconComponent
                         },
                         placeholder: translate("select_base_icon"),
-                        onChange: updateSelected
+                        onChange: updateSelected,
+                        value: selected
                     }),
 
                     iconUri
