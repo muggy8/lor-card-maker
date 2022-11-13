@@ -22,7 +22,7 @@ function EditColorTextComponent(props){
                 )
             ),
             div(
-                {className: "flex gutter-rl-.5"},
+                {className: "flex gutter-l-.5"},
                 button(
                     {
                         onClick: ()=>{

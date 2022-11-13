@@ -354,7 +354,6 @@ function selectedDefaultIconComponent (props){
 }
 
 function placeholderOverrideComponent(props){
-    console.log(props)
     return placeholder(
         props,
         div(
