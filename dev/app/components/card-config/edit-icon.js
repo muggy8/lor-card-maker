@@ -65,12 +65,12 @@ function iconEditorComponent(props){
     }, [selected])
 
     const [teplatedSvgRef, updateTemplatedeSvgRef] = useState(null)
-    const [exporting, setExporting] = useState(false)
+    const [exportingPremade, setExportingPremade] = useState(false)
     const exportIcon = useCallback(()=>{
-		if (exporting){
+		if (exportingPremade){
             return
         }
-        setExporting(true)
+        setExportingPremade(true)
 
         requestAnimationFrame(() => {
             saveSvgAsPng.svgAsPngUri(teplatedSvgRef, {
@@ -81,14 +81,14 @@ function iconEditorComponent(props){
                 props.updateValue([...props.value || [], uri])
                 updateSelected(null)
                 updateIconUri("")
-                setExporting(false)
-            }, ()=>setExporting(false))
+                setExportingPremade(false)
+            }, ()=>setExportingPremade(false))
         })
-	}, [teplatedSvgRef, exporting, props.value])
+	}, [teplatedSvgRef, exportingPremade, props.value])
     const cancelFromTemplate = useCallback(()=>{
         updateSelected(null)
         updateIconUri("")
-        setExporting(false)
+        setExportingPremade(false)
     }, [])
 
 
@@ -99,6 +99,7 @@ function iconEditorComponent(props){
         scale: 1,
     })
     const [uploadedSvgRef, updateUploadedSvgRef] = useState(null)
+    const [exportingUpload, setExportingUpload] = useState(false)
     useEffect(()=>{
         updateUploadTransform({
             x: 0,
@@ -179,7 +180,13 @@ function iconEditorComponent(props){
                             } },
 
                             svgWrap(
-                                { width: 128, height: 128, loading: exporting },
+                                { 
+                                    width: 128, 
+                                    height: 128, 
+                                    loading: exportingUpload,
+                                    onTrasnform: updateUploadTransform,
+                                    ...uploadTransform,
+                                },
                                 div(
                                     {
                                         style: {
@@ -248,7 +255,7 @@ function iconEditorComponent(props){
                                         } },
 
                                         svgWrap(
-                                            { width: 128, height: 128, loading: exporting },
+                                            { width: 128, height: 128, loading: exportingPremade },
                                             div({
                                                 className: "custom-icon",
                                                 style: {
