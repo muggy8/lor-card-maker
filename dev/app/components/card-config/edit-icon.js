@@ -99,9 +99,9 @@ function iconEditorComponent(props){
 
         props.value && props.value.length
             ? div(
-                { className: "gutter-rl-.5" },
+                { className: "gutter-trl-.5" },
                 div(
-                    strong(translate("icons"))
+                    translate("icons")
                 ),
 
                 props.value.map((uri, index)=>{
@@ -137,20 +137,26 @@ function iconEditorComponent(props){
             : undefined
         ,
 
-        div(
-            div(
-                { className: "gutter-trl-.5" },
-                translate("upload_icon")
-            ),
-            EditArt({
-                value: uploadedIcon, 
-                updateValue: updateUploadedIcon,
-                moveable: false,
-            })
-        ),
+        !selected 
+            ? div(
+                div(
+                    { className: "gutter-trl-.5" },
+                    translate("upload_icon")
+                ),
+                EditArt({
+                    value: uploadedIcon, 
+                    updateValue: updateUploadedIcon,
+                    moveable: false,
+                })
+            )
+            : undefined 
+        ,
 
         div(
-            div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or"))),
+            !selected 
+                ? div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or")))
+                : undefined
+            ,
 
             div(
                 { className: "gutter-trl-.5" },
