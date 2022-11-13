@@ -17,9 +17,9 @@
 }
 
 .edit-icon .uploaded-icon {
-    width: 6em;
+    /* width: 6em;
     height: 6em;
-    position: relative;
+    position: relative; */
     box-shadow: 0 0 1em 0.5em rgba(var(--rgb-light), 0.8);
 }
 
@@ -40,8 +40,8 @@
 }
 
 .edit-icon .existing-icon-preview {
-    width: 6em;
-    height: 6em;
+    width: 4em;
+    height: 4em;
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;

@@ -64,7 +64,7 @@ function iconEditorComponent(props){
         updateSepia(1)
     }, [selected])
 
-    const [svgRef, updateSvgRef] = useState(null)
+    const [teplatedSvgRef, updateTemplatedeSvgRef] = useState(null)
     const [exporting, setExporting] = useState(false)
     const exportIcon = useCallback(()=>{
 		if (exporting){
@@ -73,10 +73,10 @@ function iconEditorComponent(props){
         setExporting(true)
 
         requestAnimationFrame(() => {
-            saveSvgAsPng.svgAsPngUri(svgRef, {
+            saveSvgAsPng.svgAsPngUri(teplatedSvgRef, {
                 excludeUnusedCss: true,
-                width: svgRef.width.baseVal.value,
-                height: svgRef.height.baseVal.value,
+                width: teplatedSvgRef.width.baseVal.value,
+                height: teplatedSvgRef.height.baseVal.value,
             }).then(uri=>{
                 props.updateValue([...props.value || [], uri])
                 updateSelected(null)
@@ -84,7 +84,7 @@ function iconEditorComponent(props){
                 setExporting(false)
             }, ()=>setExporting(false))
         })
-	}, [svgRef, exporting, props.value])
+	}, [teplatedSvgRef, exporting, props.value])
     const cancelFromTemplate = useCallback(()=>{
         updateSelected(null)
         updateIconUri("")
@@ -98,6 +98,7 @@ function iconEditorComponent(props){
         y: 0,
         scale: 1,
     })
+    const [uploadedSvgRef, updateUploadedSvgRef] = useState(null)
     useEffect(()=>{
         updateUploadTransform({
             x: 0,
@@ -169,20 +170,33 @@ function iconEditorComponent(props){
                 uploadedIcon
                     ? div(
                         { className: "flex vhcenter gutter-tb-2" },
-                        div(
-                            {
-                                className: "uploaded-icon",
-                                style: {
-                                    "--scale": uploadTransform.scale,
-                                    "--left": uploadTransform.x,
-                                    "--top": uploadTransform.y,
-                                },
-                            },
-                            div(
-                                {className: "scale-adjuster"},
-                                ArtRenderer({ url: uploadedIcon })
+
+                        createElement(
+                            svgRefference.Provider,
+                            { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
+                                current: uploadedSvgRef,
+                                setRef: updateUploadedSvgRef,
+                            } },
+
+                            svgWrap(
+                                { width: 128, height: 128, loading: exporting },
+                                div(
+                                    {
+                                        style: {
+                                            "--scale": uploadTransform.scale,
+                                            "--left": uploadTransform.x,
+                                            "--top": uploadTransform.y,
+                                        },
+                                    },
+                                    div(
+                                        {className: "scale-adjuster"},
+                                        ArtRenderer({ url: uploadedIcon })
+                                    )
+                                )
                             )
-                        )
+                        ),
+
+                        
                     )
                     : undefined
                 ,
@@ -229,8 +243,8 @@ function iconEditorComponent(props){
                                     createElement(
                                         svgRefference.Provider,
                                         { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
-                                            current: svgRef,
-                                            setRef: updateSvgRef,
+                                            current: teplatedSvgRef,
+                                            setRef: updateTemplatedeSvgRef,
                                         } },
 
                                         svgWrap(
