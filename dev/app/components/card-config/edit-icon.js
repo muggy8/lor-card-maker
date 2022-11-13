@@ -14,7 +14,8 @@ loadCss("/Components/card-config/edit-icon.css")
 
 const select = factory(reactSelect)
 const option = factory( components.Option )
-const singleValue = factory( components.SingleValue  )
+const singleValue = factory( components.SingleValue )
+const placeholder = factory( components.Placeholder )
 
 const dummyIcons = [
     "negate.png",
@@ -105,10 +106,10 @@ function iconEditorComponent(props){
                     strong(translate("icons"))
                 ),
 
-                props.value.map(uri=>{
+                props.value.map((uri, index)=>{
                     return div(
                         { 
-                            className: "flex gutter-tb-.5",
+                            className: "flex gutter-b-.5",
                             key: uri,
                         },
                         div(
@@ -122,7 +123,14 @@ function iconEditorComponent(props){
                         ),
 
                         button(
-                            { className: "gutter-trbl-1" },
+                            { 
+                                className: "gutter-trbl-1",
+                                onClick: ()=>{
+                                    const newValueSet = [...props.value]
+                                    newValueSet.splice(index, 1)
+                                    props.updateValue(newValueSet)
+                                }
+                            },
                             "X"
                         )
                     )
@@ -161,7 +169,8 @@ function iconEditorComponent(props){
                         }),
                         components: {
                             Option: iconSelectOptionComponent,
-                            SingleValue: selectedDefaultIconComponent
+                            SingleValue: selectedDefaultIconComponent,
+                            Placeholder: placeholderOverrideComponent,
                         },
                         placeholder: translate("select_base_icon"),
                         onChange: updateSelected,
@@ -337,10 +346,21 @@ function selectedDefaultIconComponent (props){
     return singleValue(
         {...props},
         div(
-            {className: "flex vcenter gutter-trbl-1"},
+            {className: "flex vhcenter gutter-tb-.5"},
             `${translate("base_icon")}: `,
             InlineIcon({ url: props.data.icon})
         ),
+    )
+}
+
+function placeholderOverrideComponent(props){
+    console.log(props)
+    return placeholder(
+        props,
+        div(
+            { className: "flex vhcenter gutter-tb-1", style: { color: "var(--color-black)" } },
+            props.children
+        )
     )
 }
 

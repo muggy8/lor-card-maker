@@ -30,6 +30,7 @@
 .edit-icon .existing-icon-bg {
     background-color: var(--color-light);
     border-radius: .5em;
+    margin-right: calc(var(--flex-box-gutter) * 0.5);
 }
 
 .edit-icon .existing-icon-preview {
