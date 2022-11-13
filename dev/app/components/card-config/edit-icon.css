@@ -23,7 +23,7 @@
     box-shadow: 0 0 1em 0.5em rgba(var(--rgb-light), 0.8);
 }
 
-.edit-icon .scale-adjuster {
+.icon-svg-content .scale-adjuster {
     position: absolute;
     top: calc(50% - calc(50% * calc( 1/ var(--scale))));
     bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));

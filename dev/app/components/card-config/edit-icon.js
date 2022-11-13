@@ -12,6 +12,7 @@ import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
+import { openUri } from "/Views/card-editor.js"
 
 loadCss("/Components/card-config/edit-icon.css")
 
@@ -82,7 +83,7 @@ function iconEditorComponent(props){
                 width: teplatedSvgRef.width.baseVal.value,
                 height: teplatedSvgRef.height.baseVal.value,
             }).then(uri=>{
-                props.updateValue([...props.value || [], uri])
+                props.updateValue([...(props.value || []), uri])
                 updateSelected(null)
                 updateIconUri("")
                 setExportingPremade(false)
@@ -115,6 +116,24 @@ function iconEditorComponent(props){
     const cancelUpload = useCallback(()=>{
         updateUploadedIcon("")
     }, [])
+
+    const useUploadedIcon = useCallback(()=>{
+        if (exportingUpload){
+            return
+        }
+
+        setExportingUpload(true)
+        saveSvgAsPng.svgAsPngUri(uploadedSvgRef, {
+            excludeUnusedCss: true,
+            width: uploadedSvgRef.width.baseVal.value,
+            height: uploadedSvgRef.height.baseVal.value,
+        }).then(uri=>{
+            props.updateValue([...(props.value || []), uri])
+            updateUploadedIcon("")
+            setExportingUpload(false)
+        }, ()=>setExportingUpload(false))
+
+    }, [uploadedSvgRef, exportingUpload, props.value])
     
     return div(
         { className: "edit-icon box" },
@@ -178,48 +197,51 @@ function iconEditorComponent(props){
                 }),
                 uploadedIcon
                     ? div(
-                        { className: "flex vhcenter gutter-tb-2" },
+                        div(
+                            { className: "flex vhcenter gutter-tb-2" },
 
-                        createElement(
-                            svgRefference.Provider,
-                            { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
-                                current: uploadedSvgRef,
-                                setRef: updateUploadedSvgRef,
-                            } },
+                            createElement(
+                                svgRefference.Provider,
+                                { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
+                                    current: uploadedSvgRef,
+                                    setRef: updateUploadedSvgRef,
+                                } },
 
-                            svgWrap(
-                                { 
-                                    width: 128, 
-                                    height: 128, 
-                                    loading: exportingUpload,
-                                    onTransform: updateUploadTransform,
-                                    ...uploadTransform,
-                                },
-                                div(
-                                    {
-                                        style: {
-                                            "--scale": uploadTransform.scale,
-                                            "--left": uploadTransform.x,
-                                            "--top": uploadTransform.y,
-                                        },
+                                svgWrap(
+                                    { 
+                                        width: 128, 
+                                        height: 128, 
+                                        loading: exportingUpload,
+                                        onTransform: updateUploadTransform,
+                                        ...uploadTransform,
                                     },
                                     div(
-                                        {className: "scale-adjuster"},
-                                        ArtRenderer({ url: uploadedIcon })
+                                        {
+                                            className: "icon-svg-content",
+                                            style: {
+                                                "--scale": uploadTransform.scale,
+                                                "--left": uploadTransform.x,
+                                                "--top": uploadTransform.y,
+                                            },
+                                        },
+                                        div(
+                                            {className: "scale-adjuster"},
+                                            ArtRenderer({ url: uploadedIcon })
+                                        )
                                     )
                                 )
-                            )
+                            ),
                         ),
 
                         div(
                             { className: "flex gutter-t-.5" },
                             button(
-                                { className: "box gutter-trbl-1", },
+                                { className: "box gutter-trbl-1", onClick: useUploadedIcon },
                                 translate("use_icon")
                             ),
                             div({ className: "gutter-r-.5" }),
                             button(
-                                { className: "gutter-trbl-1", onClick: cancelFromTemplate},
+                                { className: "gutter-trbl-1", onClick: cancelUpload},
                                 translate("cancel")
                             )
                         ),
