@@ -15,3 +15,27 @@
     background-size: contain;
     will-change: filter;
 }
+
+
+.edit-icon .scale-adjuster {
+    position: absolute;
+    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    transform: scale(var(--scale));
+    will-change: transform, top, bottom, left, right;
+}
+
+.edit-icon .existing-icon-bg {
+    background-color: var(--color-light);
+    border-radius: .5em;
+}
+
+.edit-icon .existing-icon-preview {
+    width: 4em;
+    height: 4em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}

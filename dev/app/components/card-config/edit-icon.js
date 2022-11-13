@@ -1,4 +1,4 @@
-import factory, { div, label, strong, fragment, button, InputRange } from "/Utils/elements.js"
+import factory, { div, label, strong, button, InputRange } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useEffect, createElement } from "/cdn/react"
@@ -71,29 +71,65 @@ function iconEditorComponent(props){
                 width: svgRef.width.baseVal.value,
                 height: svgRef.height.baseVal.value,
             }).then(uri=>{
-                console.log(props)
-
                 props.updateValue([...props.value || [], uri])
                 updateSelected(null)
                 updateIconUri("")
+                setExporting(false)
             }, ()=>setExporting(false))
         })
 	}, [svgRef, exporting, props.value])
-    
+    const cancelFromTemplate = useCallback(()=>{
+        updateSelected(null)
+        updateIconUri("")
+        setExporting(false)
+    }, [])
+
 
     const [uploadedIcon, updateUploadedIcon] = useState("")
     
     return div(
-        { className: "box" },
+        { className: "edit-icon box" },
 
         label(
-            { className: "edit-icon" },
             div(
                 strong(
                     translate("keyword_icon"),
                 ),
             ),
         ),
+
+        props.value && props.value.length
+            ? div(
+                { className: "gutter-rl-.5" },
+                div(
+                    strong(translate("icons"))
+                ),
+
+                props.value.map(uri=>{
+                    return div(
+                        { 
+                            className: "flex gutter-tb-.5",
+                            key: uri,
+                        },
+                        div(
+                            { className: "box gutter-trbl-.5 existing-icon-bg" },
+                            div({ 
+                                className: "existing-icon-preview",
+                                style: {
+                                    backgroundImage: `url(${uri})`
+                                }
+                            }),
+                        ),
+
+                        button(
+                            { className: "gutter-trbl-1" },
+                            "X"
+                        )
+                    )
+                })
+            )
+            : undefined
+        ,
 
         div(
             div(
@@ -108,8 +144,6 @@ function iconEditorComponent(props){
         ),
 
         div(
-            { className: "edit-icon" },
-
             div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or"))),
 
             div(
@@ -148,7 +182,7 @@ function iconEditorComponent(props){
 									} },
 
 									svgWrap(
-										{ width: 128, height: 128 },
+										{ width: 128, height: 128, loading: exporting },
 										div({
 											className: "custom-icon",
 											style: {
@@ -269,7 +303,12 @@ function iconEditorComponent(props){
 								button(
 									{ className: "box gutter-trbl-1", onClick: exportIcon },
 									translate("use_icon")
-								)
+								),
+                                div({ className: "gutter-r-.5" }),
+                                button(
+                                    { className: "gutter-trbl-1", onClick: cancelFromTemplate},
+                                    translate("cancel")
+                                )
                             ),
 
                         )
@@ -298,7 +337,7 @@ function selectedDefaultIconComponent (props){
     return singleValue(
         {...props},
         div(
-            {className: "flex vcenter"},
+            {className: "flex vcenter gutter-trbl-1"},
             `${translate("base_icon")}: `,
             InlineIcon({ url: props.data.icon})
         ),

@@ -31,7 +31,7 @@ function KeywordComponent(props){
 			return
 		}
         concurrencyManagerRef.current.concurrent(()=>scaleFontSize(nameRef.current, 60, 16))
-    }, 200, [props.name, !!frameUri])
+    }, 200, [props.name, props.icons, !!frameUri])
 
     const textAreaRef = useRef()
     useEffectDebounce(()=>{
