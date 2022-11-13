@@ -5,7 +5,8 @@ export default function concurrencyManagerFactory(){
     const manager =  {
         concurrent: function(callback, ...args){
             const promise = callback(...args)
-            if (!(promise instanceof Promise)){
+            // console.log(promise)
+            if (!promise || !promise.then){
                 processComplete()
                 return
             }

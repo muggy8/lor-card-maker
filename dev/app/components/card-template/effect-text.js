@@ -27,14 +27,7 @@ const currentlyRunningScalingTasks = new Map()
 
 export async function scaleFontSize(element, max = 36, min = effectTextSize){
     if (!element){
-        return
-    }
-
-    let currentFontSize = window.getComputedStyle(element).getPropertyValue('font-size')
-    currentFontSize = parseFloat(currentFontSize)
-
-    if (currentFontSize == max && !isOverflown(element)){
-        return
+        return nextTick()
     }
 
     const alreadyExistingTask = currentlyRunningScalingTasks.get(element)
@@ -42,37 +35,47 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
         return alreadyExistingTask
     }
 
-    const newScalingTask = new Promise((accept)=>{
-        (async ()=>{
-            // perform binary search for the perfect font size
-            let upperbound = max, lowerBound = min, checkSize = currentFontSize
+    let currentFontSize = window.getComputedStyle(element).getPropertyValue('font-size')
+    currentFontSize = parseFloat(currentFontSize)
 
-            while(upperbound - lowerBound > 0.5){
-                element.style.fontSize = `${checkSize + 0.5}px`
-                await nextTick()
-                const overflowAtNextIncriment = isOverflown(element)
-        
-                element.style.fontSize = `${checkSize}px`
-                await nextTick()
-                const overflowAtCurrentFontsize = isOverflown(element)
-        
-                if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
-                    return accept()
-                }
-        
-                if (overflowAtCurrentFontsize){
-                    upperbound = checkSize
-                    checkSize = avg(upperbound, lowerBound)
-                }
-                else{
-                    lowerBound = checkSize
-                    checkSize = avg(upperbound, lowerBound)
-                }
-            }
+    let newScalingTask
 
-            accept()
-        })()
-    })
+    if (currentFontSize == max && !isOverflown(element)){
+        newScalingTask = nextTick()
+    }
+    else{
+        newScalingTask = new Promise((accept)=>{
+            (async ()=>{
+                // perform binary search for the perfect font size
+                let upperbound = max, lowerBound = min, checkSize = currentFontSize
+    
+                while(upperbound - lowerBound > 0.5){
+                    element.style.fontSize = `${checkSize + 0.5}px`
+                    await nextTick()
+                    const overflowAtNextIncriment = isOverflown(element)
+            
+                    element.style.fontSize = `${checkSize}px`
+                    await nextTick()
+                    const overflowAtCurrentFontsize = isOverflown(element)
+            
+                    if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
+                        return accept()
+                    }
+            
+                    if (overflowAtCurrentFontsize){
+                        upperbound = checkSize
+                        checkSize = avg(upperbound, lowerBound)
+                    }
+                    else{
+                        lowerBound = checkSize
+                        checkSize = avg(upperbound, lowerBound)
+                    }
+                }
+    
+                accept()
+            })()
+        })
+    }
 
     currentlyRunningScalingTasks.set(element, newScalingTask.then(()=>{
         currentlyRunningScalingTasks.delete(element)

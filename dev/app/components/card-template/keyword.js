@@ -30,7 +30,9 @@ function KeywordComponent(props){
 		if (!frameUri){
 			return
 		}
-        concurrencyManagerRef.current.concurrent(()=>scaleFontSize(nameRef.current, 60, 16))
+        concurrencyManagerRef.current.concurrent(()=>{
+            return scaleFontSize(nameRef.current, 60, 16)
+        })
     }, 200, [props.name, props.icons, !!frameUri])
 
     const textAreaRef = useRef()
@@ -38,8 +40,10 @@ function KeywordComponent(props){
 		if (!frameUri){
 			return
 		}
-        concurrencyManagerRef.current.sequential(()=>scaleFontSize(textAreaRef.current))
-    }, 200, [props.effect, !!frameUri])
+        concurrencyManagerRef.current.sequential(()=>{
+            return scaleFontSize(textAreaRef.current)
+        })
+    }, 300, [props.effect, !!frameUri])
 
     return SvgWrap(
         {

@@ -93,9 +93,7 @@ function iconEditorComponent(props){
 
         label(
             div(
-                strong(
-                    translate("keyword_icon"),
-                ),
+                translate("keyword_icon"),
             ),
         ),
 
