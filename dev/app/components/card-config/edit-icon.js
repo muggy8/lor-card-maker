@@ -1,7 +1,7 @@
 import factory, { div, label, strong, button, InputRange } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useEffect, createElement } from "/cdn/react"
+import { useCallback, useState, useEffect, useContext, createElement } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import EditArt from "/Components/card-config/edit-art.js"
@@ -11,6 +11,8 @@ import { InlineIcon } from "/Components/card-template/effect-text.js"
 import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
+import { Globals } from "/Views/index.js"
+
 loadCss("/Components/card-config/edit-icon.css")
 
 const select = factory(reactSelect)
@@ -43,6 +45,8 @@ const dummyIcons = [
 function iconEditorComponent(props){
 
     const translate = useLang()
+
+    const globals = useContext(Globals)
 
     const [hue, updateHue] = useState(0)
     const [contrast, udpateContrast] = useState(1)
@@ -107,6 +111,10 @@ function iconEditorComponent(props){
             scale: 1,
         })
     }, [uploadedIcon])
+
+    const cancelUpload = useCallback(()=>{
+        updateUploadedIcon("")
+    }, [])
     
     return div(
         { className: "edit-icon box" },
@@ -184,7 +192,7 @@ function iconEditorComponent(props){
                                     width: 128, 
                                     height: 128, 
                                     loading: exportingUpload,
-                                    onTrasnform: updateUploadTransform,
+                                    onTransform: updateUploadTransform,
                                     ...uploadTransform,
                                 },
                                 div(
@@ -203,7 +211,18 @@ function iconEditorComponent(props){
                             )
                         ),
 
-                        
+                        div(
+                            { className: "flex gutter-t-.5" },
+                            button(
+                                { className: "box gutter-trbl-1", },
+                                translate("use_icon")
+                            ),
+                            div({ className: "gutter-r-.5" }),
+                            button(
+                                { className: "gutter-trbl-1", onClick: cancelFromTemplate},
+                                translate("cancel")
+                            )
+                        ),
                     )
                     : undefined
                 ,

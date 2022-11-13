@@ -20,7 +20,7 @@ function SvgWrapComponent(props){
     const [cursor, updateCursor] = useState("inherit")
 
     useEffect(()=>{
-        if (!props.onTransform){
+        if (!props.onTransform || !svgRef.current){
             return
         }
 
@@ -78,7 +78,7 @@ function SvgWrapComponent(props){
             lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * (1 + (ev.deltaY / 1000))
             transformCallback.current({...lastStoppedPosition.current})
         }
-    }, [!!props.onTransform])
+    }, [!!props.onTransform, svgRef.current])
 
     return svg(
         {
