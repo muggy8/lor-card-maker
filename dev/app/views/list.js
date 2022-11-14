@@ -147,6 +147,7 @@ const types = [
         editor: CardEditorFactory(
             Keyword,
             {
+                id: "",
                 name: "",
                 type: "keyword",
                 effect: "",
