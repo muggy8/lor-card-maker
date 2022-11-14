@@ -291,11 +291,22 @@ export class UnitRendererComponent extends Component {
                         this.props.keywords && this.props.keywords.length
                             ? div(
                                 { className: "keyword-container card-text-bold" },
-                                this.props.keywords.map(keywordName=>KeywordRenderer({
-                                    key: keywordName,
-                                    name: keywordName,
-                                    size: this.props.keywords.length > 1 ? "small" : "large"
-                                }))
+                                this.props.keywords.map(keyword=>{
+                                    if (typeof keyword === "string"){
+                                        return KeywordRenderer({
+                                            key: keyword,
+                                            name: keyword,
+                                            size: this.props.keywords.length > 1 ? "small" : "large"
+                                        })
+                                    }
+    
+                                    return KeywordRenderer({
+                                        name: keyword.name,
+                                        icons: keyword.icons,
+                                        key: keyword.id,
+                                        size: this.props.keywords.length > 1 ? "small" : "large"
+                                    })
+                                })
                             )
                             : undefined
                         ,

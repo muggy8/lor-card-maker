@@ -398,11 +398,24 @@ function SpellComponent(props){
                     props.keywords && props.keywords.length
                         ? div(
                             { className: "keyword-container card-text-bold" },
-                            props.keywords.map(keywordName=>KeywordRenderer({
-                                key: keywordName,
-                                name: keywordName,
-                                size: props.keywords.length > 1 ? "small" : "large"
-                            }))
+                            props.keywords.map(keyword=>{
+
+                                if (typeof keyword === "string"){
+                                    return KeywordRenderer({
+                                        key: keyword,
+                                        name: keyword,
+                                        size: props.keywords.length > 1 ? "small" : "large"
+                                    })
+                                }
+
+                                return KeywordRenderer({
+                                    name: keyword.name,
+                                    icons: keyword.icons,
+                                    key: keyword.id,
+                                    size: props.keywords.length > 1 ? "small" : "large"
+                                })
+                                
+                            })
                         )
                         : undefined
                     ,

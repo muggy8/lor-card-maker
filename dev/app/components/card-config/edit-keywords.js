@@ -18,10 +18,22 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    const [savedKeyword, updateSavedKeyword] = useState([])
+    const [customKeywords, updateCustomKeywords] = useState([])
     useEffect(()=>{
-        getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateSavedKeyword)
+        getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateCustomKeywords)
     }, [])
+    const toggleCustomKeyword = useCallback((customKeyword)=>{
+        const keywordIndex = props.value.findIndex(savedKeyword=>{
+            return savedKeyword.id === customKeyword.id
+        })
+
+        if (keywordIndex > -1){
+            const toggledOffState = props.value.filter(savedKeyword=>savedKeyword.id !== customKeyword.id)
+            return props.updateValue(toggledOffState)
+        }
+        const toggledOnState = [...props.value, customKeyword]
+        props.updateValue(toggledOnState)
+    }, [props.value, props.updateValue])
 
     return label(
         div(
@@ -45,12 +57,20 @@ function EditKeywordComponent(props){
 	                })
                 )
             }),
-            savedKeyword.map(savedKeyword=>{
+            customKeywords.map(customKeyword=>{
+                const isChecked = props.value.some(checkedValue=>{
+                    return checkedValue.id === customKeyword.id
+                })
+
                 return div(
-					{ className: "box-3 flex vhcenter", key: savedKeyword.id },
+					{ className: "box-3 flex vhcenter", key: customKeyword.id },
 	                KeywordImageCheck({
-	                    keywordName: savedKeyword.name,
-                        icons: savedKeyword.icons
+	                    keywordName: customKeyword.name,
+                        icons: customKeyword.icons,
+                        isChecked,
+                        onClick: ()=>{
+                            toggleCustomKeyword(customKeyword)
+                        }
 	                })
                 )
             })
