@@ -73,9 +73,18 @@ function KeywordRendererComponent(props){
         datauri("/Assets/keyword/keywordmiddle.png").then(centerRightBumperUri)
     }, [])
     useEffect(()=>{
+        if (!icons || !icons.length || (props.icons && props.icons.length)){
+            return
+        }
         const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
         Promise.all(iconsFetch).then(updateIconsUri)
-    }, [icons])
+    }, [icons, props.icons])
+
+    useEffect(()=>{
+        if (props.icons){
+            updateIconsUri(props.icons)
+        }
+    }, [props.icons])
 
     useLayoutEffect(()=>{
         props.onDimension && props.onDimension({
@@ -102,7 +111,7 @@ function KeywordRendererComponent(props){
                     },
                 }
             )),
-            size !== "small" || !icons.length
+            size !== "small" || !iconsUri.length
                 ? div(
                     { className: "keyword-text card-text-bold" },
                     translate(name),

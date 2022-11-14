@@ -1,24 +1,27 @@
 import factory, { label, div, strong } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState } from "/cdn/react"
+import { useCallback, useState, useEffect } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
+import { getCardList } from "/Utils/service.js"
 
 function EditKeywordComponent(props){
     const translate = useLang()
 
-    const toggleFaction = useCallback((keywordName)=>{
-        const factionNameIndex = props.value.indexOf(keywordName)
-        if (factionNameIndex > -1){
+    const toggleKeyword = useCallback((keywordName)=>{
+        const keywordIndex = props.value.indexOf(keywordName)
+        if (keywordIndex > -1){
             const toggledOffState = props.value.filter(name=>name !== keywordName)
             return props.updateValue(toggledOffState)
         }
         const toggledOnState = [...props.value, keywordName]
-        // if (toggledOnState.length > 5){
-        //     return props.updateValue(toggledOnState.slice(-5))
-        // }
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
+
+    const [savedKeyword, updateSavedKeyword] = useState([])
+    useEffect(()=>{
+        getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateSavedKeyword)
+    }, [])
 
     return label(
         div(
@@ -36,12 +39,21 @@ function EditKeywordComponent(props){
 	                KeywordImageCheck({
 	                    isChecked,
 	                    onClick: ()=>{
-	                        toggleFaction(keywordName)
+	                        toggleKeyword(keywordName)
 	                    },
 	                    keywordName,
 	                })
                 )
             }),
+            savedKeyword.map(savedKeyword=>{
+                return div(
+					{ className: "box-3 flex vhcenter", key: savedKeyword.id },
+	                KeywordImageCheck({
+	                    keywordName: savedKeyword.name,
+                        icons: savedKeyword.icons
+	                })
+                )
+            })
         )
     )
 }
@@ -64,6 +76,7 @@ function KeywordImageCheckComponent(props){
             Keyword({
                 name: props.keywordName,
                 size: "small",
+                icons: props.icons,
                 onDimension: updateDimensions
             })
         ),
