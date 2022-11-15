@@ -18,6 +18,11 @@
     background-position: top -0.22em left -0.15em;;
 }
 
+.effect-text .inline-icon.custom {
+    background-size: 0.9em 0.9em;
+    background-position: top -0.05em left 0;
+}
+
 .effect-text .blue-word {
     color: var(--effect-blue-text);
 }

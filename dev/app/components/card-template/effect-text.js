@@ -131,6 +131,7 @@ function reactifyEffectText(text, blueWords, orangeWords, customKeywords){
                 splitUpText.splice(i, 0, keywordIcons.map((url)=>InlineIcon({
                     key: (url) + "+" + i,
                     url,
+                    className: "custom"
                 })))
             }
 
@@ -342,7 +343,7 @@ function InlineIconComponent(props){
 
     return span(
         {
-            className: "inline-icon",
+            className: "inline-icon " + (props.className || ""),
             style: {
                 "--icon-image": iconUri ? `url(${iconUri})` : "none"
             }

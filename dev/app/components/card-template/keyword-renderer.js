@@ -105,7 +105,7 @@ function KeywordRendererComponent(props){
             iconsUri.map(pngUri=>div(
                 { 
                     key: pngUri,
-                    className: "keyword-icon",
+                    className: `keyword-icon ${props.icons && props.icons.length ? "custom" : ""}`,
                     style: {
                         backgroundImage: `url(${pngUri})`
                     },

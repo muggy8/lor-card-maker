@@ -41,6 +41,11 @@
     height: 57px;
     background-position: center;
     background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.keyword-wrapper .contents .keyword-icon.custom {
+    background-size: 75% 75%;
 }
 
 .keyword-wrapper .contents .keyword-text {
