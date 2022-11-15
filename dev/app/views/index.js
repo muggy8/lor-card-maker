@@ -2,8 +2,7 @@ import { useState, useCallback, useEffect, useRef, createContext, createElement 
 import factory from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
-import { getSettings, saveSettings } from "/Utils/service.js"
-import setImmediate from "/Utils/set-immediate-batch.js"
+import { getSettings, saveSettings, getCardList } from "/Utils/service.js"
 
 export const Globals = createContext({
     lang: "en",
@@ -51,6 +50,14 @@ function App (props) {
         getSettings().then(settings=>patchGlboalState({settings}))
     }, [])
 
+    const [customKeywords, updateCustomKeywords] = useState([])
+    const refreshCustomKeywords = useCallback(()=>{
+        return getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateCustomKeywords)
+    }, [])
+    useEffect(()=>{
+        refreshCustomKeywords()
+    }, [])
+
     const patchSettings = useCallback((patchUpdate)=>{
         const newSettingsState = {...globalState.settings, ...patchUpdate}
         patchGlboalState({settings: newSettingsState})
@@ -84,6 +91,7 @@ function App (props) {
                 navigationHistory.push(globalState.view)
                 return statePatcherRef.current({view: List})
             }
+            refreshCustomKeywords()
             statePatcherRef.current({view: restoredView})
         }
         window.addEventListener("popstate", popStateListener)
@@ -125,6 +133,7 @@ function App (props) {
                 setView, 
                 patchSettings,
                 allowBack: allowBack.current,
+                customKeywords,
                 setAllowBack: (callback)=>{
                     allowBack.current = callback
                 }

@@ -1,30 +1,31 @@
 import factory, { div, label, strong, small } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useRef, useEffect } from "/cdn/react"
+import { useCallback, useState, useRef, useEffect, useContext } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 // import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import contextMenu from "/Components/context-menu.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
+import { Globals } from "/Views/index.js"
 
 const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 
 function EditEffectComponent(props){
     const translate = useLang()
+	const { customKeywords } = useContext(Globals)
 
 	const contentEditDiv = useRef()
 
-	const [beginEditing, updateBeginEditing] = useState(false)
 	useEffect(()=>{
 		// this task is only done once when this component loads input for the very first time
 
-		if (!props.value || beginEditing){
+		if (!props.value ){
 			return
 		}
 
-		contentEditDiv.current.replaceChildren(generateEditableContent(props.value))
-	}, [!!props.value, beginEditing])
+		contentEditDiv.current.replaceChildren(generateEditableContent(props.value, customKeywords))
+	}, [!!props.value])
 
 	const updateValue = useCallbackDebounce(()=>{
 		const saveableEffectText = generateSaveableEffectText(contentEditDiv.current)
@@ -59,7 +60,6 @@ function EditEffectComponent(props){
 			})
 		}
 
-		updateBeginEditing(true)
 		updateValue()
 	}, [updateValue])
 
@@ -95,7 +95,37 @@ function EditEffectComponent(props){
 		updateValue()
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
-	//~ const [contextId] = useState(Math.floor(Math.random()*1000000000000000).toString())
+	const insertCustomKeyword = useCallback((customKeyword)=>{
+		if (!editingSelection){
+			return
+		}
+
+		const editingTextNode = editingSelection.node
+		const keywordLabel = customKeyword.name
+
+		if (editingTextNode instanceof HTMLDivElement){
+			editingTextNode.appendChild(createKeywordHtmlElement(customKeyword.id, customKeyword.icons))
+			editingTextNode.appendChild(document.createTextNode(keywordLabel))
+		}
+		else if (editingTextNode instanceof Text){
+			const splitOffTextNode = editingTextNode.splitText(editingSelection.offset)
+			splitOffTextNode.parentNode.insertBefore(createKeywordHtmlElement(customKeyword.id, customKeyword.icons), splitOffTextNode )
+			splitOffTextNode.parentNode.insertBefore(document.createTextNode(keywordLabel), splitOffTextNode )
+		}
+		else{
+			editingTextNode.after(createKeywordHtmlElement(customKeyword.id, customKeyword.icons), document.createTextNode(keywordLabel))
+		}
+
+		const alreadyInList = props.orangeWords.reduce((assumption, existingWord)=>{
+			return assumption || existingWord === keywordLabel
+		}, false)
+
+		if (!alreadyInList){
+			props.updateOrangeWords([...props.orangeWords, keywordLabel])
+		}
+
+		updateValue()
+	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
     return label(
         { className: "box edit-effect" },
@@ -115,28 +145,47 @@ function EditEffectComponent(props){
 				contextMenu(
 					{
 						className: "react-contextmenu",
-						menu: Object.keys(keywords)
-							.filter((keywordName)=>{
-								return keywords[keywordName].length
-							})
-							.sort()
-							.map(keywordName=>{
+						menu: div(
+							Object.keys(keywords)
+								.filter((keywordName)=>{
+									return keywords[keywordName].length
+								})
+								.sort()
+								.map(keywordName=>{
+									return div(
+										{
+											onClick: ()=>insertKeyword(keywordName),
+											key: keywordName,
+											className: "react-contextmenu-item",
+										},
+										div(
+											{
+												className: "flex vend"
+											},
+											KeywordIcon({name: keywordName}),
+											translate(keywordName)
+										)
+									)
+								})
+							,
+							customKeywords.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
+							.map(customKeyword=>{
 								return div(
 									{
-										onClick: ()=>insertKeyword(keywordName),
-										key: keywordName,
+										onClick: ()=>insertCustomKeyword(customKeyword),
+										key: customKeyword.id,
 										className: "react-contextmenu-item",
 									},
 									div(
 										{
 											className: "flex vend"
 										},
-										KeywordIcon({name: keywordName}),
-										translate(keywordName)
+										KeywordIcon({icons: customKeyword.icons}),
+										customKeyword.name
 									)
 								)
 							})
-
+						)
 					},
 					div({
 						ref: contentEditDiv,
@@ -153,8 +202,8 @@ function EditEffectComponent(props){
     )
 }
 
-function createKeywordHtmlElement(keywordName){
-	const icons = keywords[keywordName]
+function createKeywordHtmlElement(keywordName, iconList){
+	const icons = iconList || keywords[keywordName]
 	const wrapper = document.createDocumentFragment()
 	// wrapper.classList.add("keyword-icon-wrapper")
 	// wrapper.dataset.keywordName = keywordName
@@ -167,7 +216,11 @@ function createKeywordHtmlElement(keywordName){
 		img.dataset.keywordName = keywordName
 		wrapper.appendChild(img)
 
-		datauri(`/Assets/keyword/${iconFile}`).then(iconUri=>{
+		datauri(
+			iconList
+				? iconFile
+				: `/Assets/keyword/${iconFile}`
+		).then(iconUri=>{
 			img.src = iconUri
 		})
 	})
@@ -189,10 +242,21 @@ function createKeywordHtmlElement(keywordName){
 function KeywordIconComponent(props){
     const [iconsUri, updateIconsUri] = useState([])
 	useEffect(()=>{
+		if (!props.name){
+			return
+		}
 		const icons = keywords[props.name]
 		const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
         Promise.all(iconsFetch).then(updateIconsUri)
 	}, [props.name])
+
+	useEffect(()=>{
+		if (!props.icons){
+			return
+		}
+		const iconsFetch = props.icons.map(iconUrl=>datauri(iconUrl))
+        Promise.all(iconsFetch).then(updateIconsUri)
+	}, [props.icons])
 
 	return div(
 		{
@@ -251,7 +315,7 @@ function generateSaveableEffectText(container){
 }
 
 const keywordWithIcons = Object.keys(keywords).filter(word=>keywords[word].length)
-function generateEditableContent(text){
+function generateEditableContent(text, customKeywords){
 	let contentArray = [text]
 
 	keywordWithIcons.forEach(word=>{
@@ -269,6 +333,27 @@ function generateEditableContent(text){
 
 			for(let i = splitUpText.length - 1; i; i--){
 				splitUpText.splice(i, 0, createKeywordHtmlElement(word))
+			}
+
+			return splitUpText
+		}).flat()
+	})
+
+	customKeywords.forEach(customKeyword=>{
+		const wordTag = `<${customKeyword.id}/>`
+		contentArray = contentArray.map(textOrElement=>{
+			if (typeof textOrElement !== "string"){
+				return textOrElement
+			}
+
+			let splitUpText = textOrElement.split(wordTag)
+
+			if (splitUpText.length === 1){
+				return splitUpText[0]
+			}
+
+			for(let i = splitUpText.length - 1; i; i--){
+				splitUpText.splice(i, 0, createKeywordHtmlElement(customKeyword.id, customKeyword.icons))
 			}
 
 			return splitUpText

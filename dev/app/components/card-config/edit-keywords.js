@@ -1,12 +1,13 @@
 import factory, { label, div, strong } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useEffect } from "/cdn/react"
+import { useCallback, useState, useEffect, useContext } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
-import { getCardList } from "/Utils/service.js"
+import { Globals } from "/Views/index.js"
 
 function EditKeywordComponent(props){
     const translate = useLang()
+    const { customKeywords } = useContext(Globals)
 
     const toggleKeyword = useCallback((keywordName)=>{
         const keywordIndex = props.value.indexOf(keywordName)
@@ -18,10 +19,6 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    const [customKeywords, updateCustomKeywords] = useState([])
-    useEffect(()=>{
-        getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateCustomKeywords)
-    }, [])
     const toggleCustomKeyword = useCallback((customKeyword)=>{
         const keywordIndex = props.value.findIndex(savedKeyword=>{
             return savedKeyword.id === customKeyword.id

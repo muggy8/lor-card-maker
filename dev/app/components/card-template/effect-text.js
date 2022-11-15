@@ -1,10 +1,11 @@
 import factory, { div, span } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import React, { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
+import React, { useContext, useState, useEffect } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
+import { Globals } from "/Views/index.js"
 
 const cssLoaded = loadCss("/Components/card-template/effect-text.css")
 
@@ -84,7 +85,7 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
     return currentlyRunningScalingTasks.get(element)
 }
 
-function reactifyEffectText(text, blueWords, orangeWords){
+function reactifyEffectText(text, blueWords, orangeWords, customKeywords){
     let contentArray = [text]
     keywordWithIcons.forEach(word=>{
         const wordTag = `<${word}/>`
@@ -104,6 +105,32 @@ function reactifyEffectText(text, blueWords, orangeWords){
                 splitUpText.splice(i, 0, keywordIcons.map((pngName)=>InlineIcon({
                     key: pngName+i,
                     pngName
+                })))
+            }
+
+            return splitUpText
+        }).flat()
+    })
+
+    customKeywords.forEach(customKeyword=>{
+        const wordTag = `<${customKeyword.id}/>`
+        const keywordIcons = customKeyword.icons
+
+        contentArray = contentArray.map(textOrElement=>{
+            if (typeof textOrElement !== "string"){
+                return textOrElement
+            }
+
+            let splitUpText = textOrElement.split(wordTag)
+
+            if (splitUpText.length === 1){
+                return splitUpText[0]
+            }
+
+            for(let i = splitUpText.length - 1; i; i--){
+                splitUpText.splice(i, 0, keywordIcons.map((url)=>InlineIcon({
+                    key: (url) + "+" + i,
+                    url,
                 })))
             }
 
@@ -233,6 +260,8 @@ function EffectTextComponent(props){
         throw new Error("Only strings accepted")
     }
 
+    const { customKeywords } = useContext(Globals)
+
     // cut up text with a 200ms debounce
     const [effectTextArray, updateEffectTextArray] = useState([])
     useEffectDebounce(()=>{
@@ -241,7 +270,7 @@ function EffectTextComponent(props){
         blueWords.sort((a, b)=>b.length - a.length)
         orangeWords.sort((a, b)=>b.length - a.length)
         
-        const contentArray = reactifyEffectText(effectText, blueWords, orangeWords)
+        const contentArray = reactifyEffectText(effectText, blueWords, orangeWords, customKeywords)
 
         updateEffectTextArray(contentArray)
 
@@ -254,7 +283,7 @@ function EffectTextComponent(props){
         blueWords.sort((a, b)=>b.length - a.length)
         orangeWords.sort((a, b)=>b.length - a.length)
         
-        const contentArray = reactifyEffectText(levelText, blueWords, orangeWords)
+        const contentArray = reactifyEffectText(levelText, blueWords, orangeWords, customKeywords)
 
         updateLevelTextArray(contentArray)
 
@@ -309,7 +338,7 @@ function InlineIconComponent(props){
         const url = props.url || `/Assets/keyword/${props.pngName}`
 
         datauri(url).then(updateIconUri)
-    }, [props.pngName])
+    }, [props.pngName, props.url])
 
     return span(
         {
