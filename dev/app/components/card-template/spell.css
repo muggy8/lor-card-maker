@@ -203,6 +203,8 @@
     width: 560px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: -0.25em;
+    margin-bottom: -0.5em;
 }
 
 .spell .card-text-wrapper .effect-container {

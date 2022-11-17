@@ -81,9 +81,9 @@
 }
 
 .unit .clan {
-    width: 360px; 
-    height: 84px; 
-    left: 160px; 
+    width: 360px;
+    height: 84px;
+    left: 160px;
     top: 14px;
     display: flex;
     justify-content: center;
@@ -147,6 +147,8 @@
     width: 520px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: -0.25em;
+    margin-bottom: -0.5em;
 }
 
 .unit .card-text-wrapper .effect-container {
