@@ -1,15 +1,17 @@
-import factory, { div, label, strong, small, fragment } from "/Utils/elements.js"
+import factory, { div, label, strong, small } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useRef, useEffect, useContext } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 // import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
-import { contextMenuItem, contextMenuTrigger, contextMenu, makeid } from "/Components/context-menu.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
 import { Globals } from "/Views/index.js"
+import {ContextMenu, ContextMenuItem, useContextMenu} from '/cdn/usecontextmenu-react'
 
 const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
+const contextMenu = factory(ContextMenu)
+const contextMenuItem = factory(ContextMenuItem)
 
 function EditEffectComponent(props){
     const translate = useLang()
@@ -64,7 +66,6 @@ function EditEffectComponent(props){
 	}, [updateValue])
 
 	const insertKeyword = useCallback((keywordName)=>{
-		console.log("known")
 		if (!editingSelection){
 			return
 		}
@@ -97,8 +98,6 @@ function EditEffectComponent(props){
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
 	const insertCustomKeyword = useCallback((customKeyword)=>{
-		console.log("custom")
-
 		if (!editingSelection){
 			return
 		}
@@ -130,9 +129,22 @@ function EditEffectComponent(props){
 		updateValue()
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
-	const [triggerId, updateTriggerId] = useState()
+	const {menuProps, onContextMenu, visibleOnPosition} = useContextMenu()
+	const [menuOpen, updateMenuOpen] = useState(false)
 	useEffect(()=>{
-		updateTriggerId(makeid(10))
+		function closeMenu (){
+			updateMenuOpen(false)
+		}
+
+		document.addEventListener('scroll', closeMenu)
+		window.addEventListener('resize', closeMenu)
+		document.addEventListener('click', closeMenu)
+
+		return function(){
+			document.removeEventListener('scroll', closeMenu)
+			window.removeEventListener('resize', closeMenu)
+			document.removeEventListener('click', closeMenu)
+		}
 	}, [])
 
     return label(
@@ -150,68 +162,60 @@ function EditEffectComponent(props){
             {className: "flex column gutter-b-2"},
             div(
 				{className: "gutter-trbl-.5"},
-				triggerId 
-					? contextMenuTrigger(
-						{
-							id: triggerId,
-						},
-						div({
-							ref: contentEditDiv,
-							contentEditable: true,
-							className: "textarea box gutter-trbl-.5",
-							"data-placeholder": translate("insert_icon_instruction"),
-							onInput: onInput,
-							onFocus: onInput,
-							onBlur: onInput,
-						}),
-					)
-					: undefined
-				,
+				div({
+					ref: contentEditDiv,
+					contentEditable: true,
+					className: "textarea box gutter-trbl-.5",
+					"data-placeholder": translate("insert_icon_instruction"),
+					onInput: onInput,
+					onFocus: onInput,
+					onBlur: onInput,
+					onContextMenu: (...args)=>{
+						onContextMenu(...args)
+						updateMenuOpen(true)
+					}
+				}),
 			),
         ),
-		triggerId
-			? contextMenu(
-				{
-					className: "effect-text-menu",
-					id: triggerId,
-					appendTo: "body",
-					animation: "pop",
-				},
-				Object.keys(keywords)
-					.filter((keywordName)=>{
-						return keywords[keywordName].length
-					})
-					.sort()
-					.map(keywordName=>{
-						return contextMenuItem(
-							{
-								key: keywordName,
-								onClick: ()=>insertKeyword(keywordName),
-								className: "flex vend"
-							},
-							KeywordIcon({name: keywordName}),
-							translate(keywordName)
-						)
-					})
-				,
-				customKeywords
-					.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
-					.map(customKeyword=>{
-						return contextMenuItem(
-							{
-								key: customKeyword.id,
-								onClick: ()=>insertCustomKeyword(customKeyword),
-								className: "flex vend",
-								preventClose: true,
-								
-							},
-							KeywordIcon({icons: customKeyword.icons}),
-							customKeyword.name
-						)
-					})
-				,
-			)
-			: undefined
+		contextMenu(
+			{
+				...menuProps,
+				visible: menuOpen,
+			},
+			Object.keys(keywords)
+				.filter((keywordName)=>{
+					return keywords[keywordName].length
+				})
+				.sort()
+				.map(keywordName=>{
+					return contextMenuItem(
+						{
+							key: keywordName,
+							onClick: ()=>insertKeyword(keywordName),
+							className: "flex vend"
+						},
+						KeywordIcon({name: keywordName}),
+						translate(keywordName)
+					)
+				})
+			,
+			customKeywords
+				.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
+				.map(customKeyword=>{
+					return contextMenuItem(
+						{
+							key: customKeyword.id,
+							onClick: ()=>insertCustomKeyword(customKeyword),
+							className: "flex vend",
+							preventClose: true,
+							
+						},
+						KeywordIcon({icons: customKeyword.icons}),
+						customKeyword.name
+					)
+				})
+			,
+		)
 		,
     )
 }
