@@ -57,16 +57,16 @@ const pathMap = {
 			url: "https://esm.sh/react-contextmenu@2.14.0",
 			query: esmshQueryConfigs,
 		},
-		"react-jsx-context-menu": {
-			url: "https://esm.sh/react-jsx-context-menu@1.0.10",
-			query: esmshQueryConfigs,
-		},
 		"react-use-pwa-install": {
 			url: "https://esm.sh/react-use-pwa-install@0.2.1",
 			query: esmshQueryConfigs,
 		},
 		"react-select": {
 			url: "https://esm.sh/react-select@5.6.0",
+			query: esmshQueryConfigs,
+		},
+		"rctx-contextmenu": {
+			url: "https://esm.sh/rctx-contextmenu@1.3.7",
 			query: esmshQueryConfigs,
 		},
 	},

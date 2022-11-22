@@ -1,11 +1,11 @@
-import factory, { div, label, strong, small } from "/Utils/elements.js"
+import factory, { div, label, strong, small, fragment } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useRef, useEffect, useContext } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
 // import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
-import contextMenu from "/Components/context-menu.js"
+import contextMenu, { contextMenuItem } from "/Components/context-menu.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
 import { Globals } from "/Views/index.js"
 
@@ -64,6 +64,7 @@ function EditEffectComponent(props){
 	}, [updateValue])
 
 	const insertKeyword = useCallback((keywordName)=>{
+		console.log("known")
 		if (!editingSelection){
 			return
 		}
@@ -96,6 +97,8 @@ function EditEffectComponent(props){
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
 	const insertCustomKeyword = useCallback((customKeyword)=>{
+		console.log("custom")
+
 		if (!editingSelection){
 			return
 		}
@@ -144,22 +147,22 @@ function EditEffectComponent(props){
 				{className: "gutter-trbl-.5"},
 				contextMenu(
 					{
-						className: "react-contextmenu",
-						menu: div(
-							Object.keys(keywords)
+						className: "effect-text-menu",
+						menu: [
+							...Object.keys(keywords)
 								.filter((keywordName)=>{
 									return keywords[keywordName].length
 								})
 								.sort()
 								.map(keywordName=>{
-									return div(
+									return contextMenuItem(
 										{
-											onClick: ()=>insertKeyword(keywordName),
 											key: keywordName,
-											className: "react-contextmenu-item",
+											preventClose: true,
 										},
 										div(
 											{
+												onClick: ()=>insertKeyword(keywordName),
 												className: "flex vend"
 											},
 											KeywordIcon({name: keywordName}),
@@ -168,24 +171,25 @@ function EditEffectComponent(props){
 									)
 								})
 							,
-							customKeywords.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
-							.map(customKeyword=>{
-								return div(
-									{
-										onClick: ()=>insertCustomKeyword(customKeyword),
-										key: customKeyword.id,
-										className: "react-contextmenu-item",
-									},
-									div(
+							...customKeywords
+								.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
+								.map(customKeyword=>{
+									return contextMenuItem(
 										{
-											className: "flex vend"
+											key: customKeyword.id,
 										},
-										KeywordIcon({icons: customKeyword.icons}),
-										customKeyword.name
+										div(
+											{
+												onClick: ()=>insertCustomKeyword(customKeyword),
+												className: "flex vend"
+											},
+											KeywordIcon({icons: customKeyword.icons}),
+											customKeyword.name
+										)
 									)
-								)
-							})
-						)
+								})
+							,
+						]
 					},
 					div({
 						ref: contentEditDiv,
@@ -295,20 +299,22 @@ function generateSaveableEffectText(container){
 			return ""
 		}
 
-		if (child instanceof HTMLDivElement){
-			return "\n" + generateSaveableEffectText(child)
-		}
-
-		if (child instanceof Text){
-			return child.textContent
-		}
-
 		if (child instanceof Image){
 			if (child.nextSibling instanceof Image && child.nextSibling.dataset.keywordName === child.dataset.keywordName){
 				skipThis = true
 			}
 			return `<${child.dataset.keywordName}/>`
 		}
+
+		if (child instanceof Text){
+			return child.textContent
+		}
+
+		if (child instanceof HTMLDivElement){
+			return "\n" + generateSaveableEffectText(child)
+		}
+
+		return generateSaveableEffectText(child)
 	})
 
 	return textBits.join("")

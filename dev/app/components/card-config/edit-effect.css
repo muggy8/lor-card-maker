@@ -20,6 +20,7 @@
     font-size: smaller;
 }
 
+/* 
 .edit-effect .react-contextmenu {
     background-color: rgba(var(--rgb-white), 0.6);
     border: solid 1px var(--color-border);
@@ -28,7 +29,6 @@
     overflow-y: auto;
     z-index: 2;
 }
-
 .edit-effect .react-contextmenu-item {
     padding: 0.5em;
     padding-left: 0.75em;
@@ -58,8 +58,29 @@
 .edit-effect .react-contextmenu-item .keyword-icon-wrapper {
     margin-right: 0.5em;
 }
+ */
 
-.edit-effect .keyword-icon {
+ .effect-text-menu.contextmenu {
+    font-size: 2.5em;
+    max-height: 33vh;
+    overflow-y: auto;
+    background-color: var(--color-white);
+    border: solid 1px var(--color-border)
+}
+
+.effect-text-menu.contextmenu .contextmenu__item:hover:not(.contextmenu__item--disabled) {
+    background-color: var(--color-lgiht); 
+}
+
+.effect-text-menu.contextmenu .submenu:hover > .contextmenu__item {
+    background-color: var(--color-lgiht); 
+}
+
+.effect-text-menu.contextmenu .submenu__item {
+    background-color: var(--color-white);
+}
+
+.effect-text-menu.contextmenu .keyword-icon {
     display: inline-block;
     width: 1em;
     height: 1em;
