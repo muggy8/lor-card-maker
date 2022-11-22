@@ -60,7 +60,7 @@
 }
  */
 
- .effect-text-menu.contextmenu {
+.effect-text-menu.contextmenu {
     font-size: 2.5em;
     max-height: 33vh;
     overflow-y: auto;
@@ -69,15 +69,19 @@
 }
 
 .effect-text-menu.contextmenu .contextmenu__item:hover:not(.contextmenu__item--disabled) {
-    background-color: var(--color-lgiht); 
+    background-color: var(--color-dark); 
 }
 
 .effect-text-menu.contextmenu .submenu:hover > .contextmenu__item {
-    background-color: var(--color-lgiht); 
+    background-color: var(--color-dark); 
 }
 
 .effect-text-menu.contextmenu .submenu__item {
     background-color: var(--color-white);
+}
+
+.effect-text-menu.contextmenu .keyword-icon-wrapper {
+    margin-right: 0.5em;
 }
 
 .effect-text-menu.contextmenu .keyword-icon {

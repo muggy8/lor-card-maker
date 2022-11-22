@@ -1,9 +1,8 @@
-import factory, { fragment } from "/Utils/elements.js"
-import React, { useContext, useState, useEffect } from "/cdn/react"
-import { ContextMenuTrigger, ContextMenu, ContextMenuItem } from '/cdn/rctx-contextmenu';
+import factory from "/Utils/elements.js"
+import { ContextMenuTrigger, ContextMenu, MenuItem } from '/cdn/react-contextmenu';
 export const contextMenuTrigger = factory(ContextMenuTrigger)
 export const contextMenu = factory(ContextMenu)
-export const contextMenuItem = factory(ContextMenuItem)
+export const contextMenuItem = factory(MenuItem)
 
 export function makeid(length) {
     var result           = '';
@@ -14,35 +13,3 @@ export function makeid(length) {
     }
     return result;
 }
-
-function ContextMenuComponent(props){
-	const [triggerId, updateTriggerId] = useState()
-	useEffect(()=>{
-		updateTriggerId(makeid(10))
-	}, [])
-
-	if (!triggerId){
-		return null
-	}
-
-	return fragment(
-		contextMenuTrigger(
-			{
-				id: triggerId,
-				disabled: props.disabled,
-			},
-			props.children
-		),
-		
-		contextMenu(
-			{
-				id: triggerId,
-				appendTo: "body",
-				className: props.className,
-				animation: "pop",
-			},
-			props.menu
-		)
-	)
-}
-export default factory (ContextMenuComponent)

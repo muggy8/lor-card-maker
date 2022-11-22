@@ -5,7 +5,7 @@ import { keywords } from "/Components/card-template/keyword-renderer.js"
 // import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
-import contextMenu, { contextMenuItem } from "/Components/context-menu.js"
+import { contextMenuItem, contextMenuTrigger, contextMenu, makeid } from "/Components/context-menu.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
 import { Globals } from "/Views/index.js"
 
@@ -130,6 +130,11 @@ function EditEffectComponent(props){
 		updateValue()
 	}, [props.updateValue, editingSelection, props.orangeWords, props.updateOrangeWords, updateValue])
 
+	const [triggerId, updateTriggerId] = useState()
+	useEffect(()=>{
+		updateTriggerId(makeid(10))
+	}, [])
+
     return label(
         { className: "box edit-effect" },
         div(
@@ -145,64 +150,69 @@ function EditEffectComponent(props){
             {className: "flex column gutter-b-2"},
             div(
 				{className: "gutter-trbl-.5"},
-				contextMenu(
-					{
-						className: "effect-text-menu",
-						menu: [
-							...Object.keys(keywords)
-								.filter((keywordName)=>{
-									return keywords[keywordName].length
-								})
-								.sort()
-								.map(keywordName=>{
-									return contextMenuItem(
-										{
-											key: keywordName,
-											preventClose: true,
-										},
-										div(
-											{
-												onClick: ()=>insertKeyword(keywordName),
-												className: "flex vend"
-											},
-											KeywordIcon({name: keywordName}),
-											translate(keywordName)
-										)
-									)
-								})
-							,
-							...customKeywords
-								.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
-								.map(customKeyword=>{
-									return contextMenuItem(
-										{
-											key: customKeyword.id,
-										},
-										div(
-											{
-												onClick: ()=>insertCustomKeyword(customKeyword),
-												className: "flex vend"
-											},
-											KeywordIcon({icons: customKeyword.icons}),
-											customKeyword.name
-										)
-									)
-								})
-							,
-						]
-					},
-					div({
-						ref: contentEditDiv,
-						contentEditable: true,
-						className: "textarea box gutter-trbl-.5",
-						"data-placeholder": translate("insert_icon_instruction"),
-						onInput: onInput,
-						onFocus: onInput,
-						onBlur: onInput,
-					}),
-				),
+				triggerId 
+					? contextMenuTrigger(
+						{
+							id: triggerId,
+						},
+						div({
+							ref: contentEditDiv,
+							contentEditable: true,
+							className: "textarea box gutter-trbl-.5",
+							"data-placeholder": translate("insert_icon_instruction"),
+							onInput: onInput,
+							onFocus: onInput,
+							onBlur: onInput,
+						}),
+					)
+					: undefined
+				,
 			),
         ),
+		triggerId
+			? contextMenu(
+				{
+					className: "effect-text-menu",
+					id: triggerId,
+					appendTo: "body",
+					animation: "pop",
+				},
+				Object.keys(keywords)
+					.filter((keywordName)=>{
+						return keywords[keywordName].length
+					})
+					.sort()
+					.map(keywordName=>{
+						return contextMenuItem(
+							{
+								key: keywordName,
+								onClick: ()=>insertKeyword(keywordName),
+								className: "flex vend"
+							},
+							KeywordIcon({name: keywordName}),
+							translate(keywordName)
+						)
+					})
+				,
+				customKeywords
+					.filter(customKeyword=>customKeyword.icons && customKeyword.icons.length)
+					.map(customKeyword=>{
+						return contextMenuItem(
+							{
+								key: customKeyword.id,
+								onClick: ()=>insertCustomKeyword(customKeyword),
+								className: "flex vend",
+								preventClose: true,
+								
+							},
+							KeywordIcon({icons: customKeyword.icons}),
+							customKeyword.name
+						)
+					})
+				,
+			)
+			: undefined
+		,
     )
 }
 
