@@ -6,7 +6,7 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 <a href="https://www.buymeacoffee.com/muggyate" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-violet.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 ## Todo:
-- custom keywords
+- ~~custom keywords~~
 - ~~improve performance~~
 - PWA share support
 - re-introduce art URL
