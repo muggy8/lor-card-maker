@@ -101,6 +101,7 @@
     will-change: font-size;
     width: 214px;
     text-align: center;
+    transform: translateY(4px);
 }
 
 .unit .power, .unit .health {
