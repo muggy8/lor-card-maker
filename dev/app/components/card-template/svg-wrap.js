@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useState, createElement } from "/cdn/react"
+import React, { useContext, useRef, useEffect, useState } from "/cdn/react"
 import factory, { svg, rect, foreignObject, div } from "/Utils/elements.js"
 import { svgRefference } from "/Views/card-editor.js"
 import Gesto from "/cdn/gesto"
@@ -113,48 +113,50 @@ function SvgWrapComponent(props){
 		}
 	}, [props.loading])
 
-    return svg(
-        {
-            width: props.width || "680",
-            height: props.height || "1024",
-            xmlns: "http://www.w3.org/2000/svg",
-            viewBox: `0 0 ${ props.width || "680" } ${ props.height || "1024" }`,
-            ref: (current)=>{
-                current && current !== svgRef.current && svgRef.setRef(current)
-            },
-        },
-        foreignObject(
-            {
-                width: props.width || "680",
-                height: props.height || "1024",
-                style: {
-                    backgroundColor: "rgba(0,0,0,0)",
-                    ...safariFixStyles,
-                },
-                ref: foreignObjectRef,
-                className: isSafari || isIOS ? "fix-safari" : ""
-            },
-			props.children,
-			props.loading
-				? div({ className: "loading-shade" },
-					div({ className: "icon" },
-						div({ className: "loading" })
+    return div(
+		{ style: safariFixStyles },
+		svg(
+			{
+				width: props.width || "680",
+				height: props.height || "1024",
+				xmlns: "http://www.w3.org/2000/svg",
+				viewBox: `0 0 ${ props.width || "680" } ${ props.height || "1024" }`,
+				ref: (current)=>{
+					current && current !== svgRef.current && svgRef.setRef(current)
+				},
+			},
+			foreignObject(
+				{
+					width: props.width || "680",
+					height: props.height || "1024",
+					style: {
+						backgroundColor: "rgba(0,0,0,0)",
+					},
+					ref: foreignObjectRef,
+					className: isSafari || isIOS ? "fix-safari" : ""
+				},
+				props.children,
+				props.loading
+					? div({ className: "loading-shade" },
+						div({ className: "icon" },
+							div({ className: "loading" })
+						)
 					)
-				)
-				: undefined,
-        ),
-        rect({
-            x: 0,
-            y: 0,
-            width: props.width || "680",
-            height: props.height || "1024",
-            opacity: 0,
-            ref: gestureReceiver,
-            style: {
-                touchAction: "manipulation",
-                cursor
-            }
-        })
+					: undefined,
+			),
+			rect({
+				x: 0,
+				y: 0,
+				width: props.width || "680",
+				height: props.height || "1024",
+				opacity: 0,
+				ref: gestureReceiver,
+				style: {
+					touchAction: "manipulation",
+					cursor
+				}
+			})
+		)
     )
 }
 
