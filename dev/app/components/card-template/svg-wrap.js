@@ -1,8 +1,9 @@
-import { useContext, useRef, useEffect, useState } from "/cdn/react"
+import React, { useContext, useRef, useEffect, useState, createElement } from "/cdn/react"
 import factory, { svg, rect, foreignObject, div } from "/Utils/elements.js"
 import { svgRefference } from "/Views/card-editor.js"
 import Gesto from "/cdn/gesto"
 import loadCss from "/Utils/load-css.js"
+import rdd, { isSafari, isIOS } from '/cdn/react-device-detect'
 
 const cssLoaded = loadCss("/Components/card-template/svg-wrap.css")
 
@@ -19,6 +20,7 @@ function SvgWrapComponent(props){
 
     const [cursor, updateCursor] = useState("inherit")
 
+	// logic to handle touch drag
     useEffect(()=>{
         if (!props.onTransform || !svgRef.current){
             return
@@ -80,6 +82,25 @@ function SvgWrapComponent(props){
         }
     }, [!!props.onTransform, svgRef.current])
 
+	// logic to fix safari because fuck you apple
+	const foreignObjectRef = useRef()
+	const [safariFixStyles, updateSafariFixStyles] = useState({})
+	useEffect(()=>{
+		if (!isSafari && !isIOS){
+			return
+		}
+
+		function scaleFO(){
+			const elWidth = foreignObjectRef.current.clientWidth
+			const parentWidth = foreignObjectRef.current.parentElement.clientWidth
+
+			const scale = parentWidth / elWidth
+			updateSafariFixStyles({"--safari-scale-fix": scale})
+		}
+
+		scaleFO()
+	}, [])
+
     return svg(
         {
             width: props.width || "680",
@@ -96,16 +117,19 @@ function SvgWrapComponent(props){
                 height: props.height || "1024",
                 style: {
                     backgroundColor: "rgba(0,0,0,0)",
+                    ...safariFixStyles,
                 },
+                ref: foreignObjectRef,
+                className: isSafari || isIOS ? "fix-safari" : ""
             },
-            props.children,
-            props.loading 
-                ? div({ className: "loading-shade" },
-                    div({ className: "icon" }, 
-                        div({ className: "loading" })
-                    )
-                )
-                : undefined,
+			props.children,
+			props.loading
+				? div({ className: "loading-shade" },
+					div({ className: "icon" },
+						div({ className: "loading" })
+					)
+				)
+				: undefined,
         ),
         rect({
             x: 0,

@@ -19,3 +19,8 @@ html .loading-shade {
     font-size: 6rem;
     border-radius: 0.5em;
 }
+
+.fix-safari > * {
+	transform: scale(var(--safari-scale-fix));
+	transform-origin: top left;
+}

@@ -69,6 +69,10 @@ const pathMap = {
 			url: "https://esm.sh/usecontextmenu-react@1.0.3",
 			query: esmshQueryConfigs,
 		},
+		"react-device-detect": {
+			url: "https://esm.sh/react-device-detect@2.2.2",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",
