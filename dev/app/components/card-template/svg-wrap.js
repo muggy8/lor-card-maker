@@ -94,12 +94,24 @@ function SvgWrapComponent(props){
 			const elWidth = foreignObjectRef.current.clientWidth
 			const parentWidth = foreignObjectRef.current.parentElement.clientWidth
 
+			if (!elWidth || !parentWidth){
+				// something's wrong. probably because the UI hasn't been mounted yet. lets try again next time the frame gets painted
+				return requestAnimationFrame(scaleFO)
+			}
+
 			const scale = parentWidth / elWidth
+
 			updateSafariFixStyles({"--safari-scale-fix": scale})
 		}
 
-		scaleFO()
-	}, [])
+		requestAnimationFrame(scaleFO)
+
+		window.addEventListener("resize", scaleFO)
+
+		return function(){
+			window.removeEventListener("resize", scaleFO)
+		}
+	}, [props.loading])
 
     return svg(
         {
