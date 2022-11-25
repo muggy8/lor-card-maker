@@ -1,12 +1,12 @@
 import factory, { div } from "/Utils/elements.js"
-import { useEffect, useState } from "/cdn/react" 
+import { useEffect, useState } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 
 const cssLoaded = loadCss("/Components/card-template/image-render.css")
 
 function getDimensions(url){
     return new Promise(accept=>{
-        const imageLoader = new Image(); 
+        const imageLoader = new Image();
 
         imageLoader.addEventListener("load", ()=>{
             accept({
@@ -16,26 +16,26 @@ function getDimensions(url){
             })
         })
 
-        imageLoader.src = url; 
+        imageLoader.src = url;
     })
 }
 
 const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
-  
+
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-  
+
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-  
+
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
-  
+
     const blob = new Blob(byteArrays, {type: contentType});
     return blob;
 }
@@ -49,14 +49,22 @@ function blobToBase64(blob) {
 }
 
 let replicationCache = {}
+const workerContentsPromise = fetch("/Components/card-template/image-render-worker.js").then(res=>res.text())
 function getReplicateImage(url){
     if (replicationCache[url]){
         return replicationCache[url]
     }
 
-    const replicationCalculationWorker = new Worker("/Components/card-template/image-render-worker.js");
+    //~ const replicationCalculationWorker = new Worker("/Components/card-template/image-render-worker.js");
 
-    return replicationCache[url] = getDimensions(url)
+    let replicationCalculationWorker
+
+    return replicationCache[url] = workerContentsPromise.then(codeText=>{
+			// we do this weird shit because some browsers (looking at you Safari) somehow doesn't hit the service worker when getting the code for the worker so it ends up with a 404.
+			const codeB64 = `data:text/javascript;base64,${btoa(codeText)}`
+			replicationCalculationWorker = new Worker(codeB64)
+		})
+		.then(()=>getDimensions(url))
         .then((results)=>{
             return new Promise((accept, reject)=>{
                 const commaIndex = url.indexOf(",")
@@ -67,12 +75,12 @@ function getReplicateImage(url){
                     replicationCalculationWorker.terminate()
                     accept({...results, blob: ev.data})
                 }
-        
+
                 replicationCalculationWorker.onerror = ev=>{
                     replicationCalculationWorker.terminate()
                     reject(ev)
                 }
-        
+
                 const imgBlob = b64toBlob(b64, dataType.replace("data:", "").replace(";base64", ""))
                 replicationCalculationWorker.postMessage({
                     ...results,
@@ -83,7 +91,7 @@ function getReplicateImage(url){
         .then(async rawTransform=>{
             rawTransform.b64 = await blobToBase64(rawTransform.blob)
             return rawTransform
-        })   
+        })
 
 }
 
@@ -107,11 +115,11 @@ function ArtComponent(props){
                 "--height": replicatedArt.height || 0,
                 backgroundImage: replicatedArt.b64 ? `url(${replicatedArt.b64})` : "",
             },
-        }, 
-        url && !replicatedArt.b64 
-            ? div({ className: "icon" }, 
+        },
+        url && !replicatedArt.b64
+            ? div({ className: "icon" },
                 div({ className: "loading" })
-            ) 
+            )
             : undefined
     )
 }
