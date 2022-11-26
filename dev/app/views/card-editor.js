@@ -428,7 +428,9 @@ export function openUri(base64ImageData, fileName = "export.png") {
         })
         .catch((err)=>{
             // share failed so lets fall back to making a new page
-            console.error(err)
+            if (err.name === "AbortError" || err.message.toLowerCase() === "share canceled"){
+				return
+			}
 
             const blobUrl = URL.createObjectURL(blob)
             window.open(blobUrl, '_blank')
