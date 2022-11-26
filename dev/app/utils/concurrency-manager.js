@@ -10,8 +10,7 @@ export default function concurrencyManagerFactory(){
                 processComplete()
                 return
             }
-            promise.then(processComplete, processComplete)
-            runningProcesses.push(promise)
+            runningProcesses.push(promise.then(processComplete, processComplete))
 
             function processComplete(){
                 const jobIndex = runningProcesses.findIndex(running => running === promise)
