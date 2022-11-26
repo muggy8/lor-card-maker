@@ -108,7 +108,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 height: svgRef.height.baseVal.value,
             }).then(
                 uri=>{
-                    openUri(uri)
+                    openUri(uri, `${(card.name || "export").toUpperCase()}.png`)
                     setExporting(false)
                 },
                 ()=>setExporting(false)
@@ -391,29 +391,47 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
     return factory(component, cssLoaded)
 }
 
-export function openUri(base64ImageData) {
+export function openUri(base64ImageData, fileName = "export.png") {
     const typeRegex = /data:([^;]+);base64,/
     const matched = typeRegex.exec(base64ImageData)
 
-    const contentType = matched[1];
+    const contentType = matched[1]
 
-    const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length));
-    const byteArrays = [];
+    const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length))
+    const byteArrays = []
 
     for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-        const slice = byteCharacters.slice(offset, offset + 1024);
+        const slice = byteCharacters.slice(offset, offset + 1024)
 
-        const byteNumbers = new Array(slice.length);
+        const byteNumbers = new Array(slice.length)
         for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
+            byteNumbers[i] = slice.charCodeAt(i)
         }
 
-        const byteArray = new Uint8Array(byteNumbers);
+        const byteArray = new Uint8Array(byteNumbers)
 
-        byteArrays.push(byteArray);
+        byteArrays.push(byteArray)
     }
-    const blob = new Blob(byteArrays, {type: contentType});
-    const blobUrl = URL.createObjectURL(blob);
+    const blob = new Blob(byteArrays, {type: contentType})
+    const shareFile = new File([
+            blob
+        ],
+        fileName
+    )
 
-    window.open(blobUrl, '_blank');
+    if ("share" in navigator && "canShare" in navigator && navigator.canShare({files: [shareFile]})){
+        navigator.share({
+            files: [shareFile]
+        })
+        .catch(()=>{
+            // share failed so lets fall back to making a new page
+            const blobUrl = URL.createObjectURL(blob)
+            window.open(blobUrl, '_blank')
+        })
+    }
+    else{
+        const blobUrl = URL.createObjectURL(blob)
+        window.open(blobUrl, '_blank')
+    }
+
 }
