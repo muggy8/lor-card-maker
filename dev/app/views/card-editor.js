@@ -426,8 +426,10 @@ export function openUri(base64ImageData, fileName = "export.png") {
         navigator.share({
             files: [shareFile]
         })
-        .catch(()=>{
+        .catch((err)=>{
             // share failed so lets fall back to making a new page
+            console.error(err)
+
             const blobUrl = URL.createObjectURL(blob)
             window.open(blobUrl, '_blank')
         })
