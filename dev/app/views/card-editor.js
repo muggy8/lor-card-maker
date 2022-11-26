@@ -416,7 +416,10 @@ export function openUri(base64ImageData, fileName = "export.png") {
     const shareFile = new File([
             blob
         ],
-        fileName
+        fileName,
+        {
+            type: blob.type
+        }
     )
 
     if ("share" in navigator && "canShare" in navigator && navigator.canShare({files: [shareFile]})){
