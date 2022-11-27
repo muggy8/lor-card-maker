@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.muggy8.lor_card_maker">
    <application
-        android:label="lor_card_maker"
+        android:label="LoR Card Maker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
