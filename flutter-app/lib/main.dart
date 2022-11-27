@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_pro/webview_flutter.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const AppView());
 }
 
 class MyApp extends StatelessWidget {
@@ -110,6 +111,28 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return MaterialApp(
+      title: 'LoR Card Maker',
+      home: Scaffold(
+        body: Builder(builder: (BuildContext context) {
+          return const WebView(
+            initialUrl: 'https://muggy8.github.io/lor-card-maker/',
+            javascriptMode: JavascriptMode.unrestricted,
+            gestureNavigationEnabled: false,
+            geolocationEnabled: false,
+          );
+        }),
+      )
     );
   }
 }
