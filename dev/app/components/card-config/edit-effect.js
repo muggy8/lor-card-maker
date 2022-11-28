@@ -26,6 +26,10 @@ function EditEffectComponent(props){
 			return
 		}
 
+		if (contentEditDiv.current && contentEditDiv.current.innerText){
+			return
+		}
+
 		contentEditDiv.current.replaceChildren(generateEditableContent(props.value, customKeywords))
 	}, [!!props.value])
 
@@ -326,6 +330,10 @@ function generateSaveableEffectText(container){
 
 		if (child instanceof Text){
 			return child.textContent
+		}
+
+		if (child instanceof HTMLBRElement){
+			return "\n"
 		}
 
 		if (child instanceof HTMLDivElement){
