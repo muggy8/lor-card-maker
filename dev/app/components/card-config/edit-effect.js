@@ -131,6 +131,10 @@ function EditEffectComponent(props){
 
 	const {menuProps, onContextMenu, visibleOnPosition} = useContextMenu()
 	const [menuOpen, updateMenuOpen] = useState(false)
+	const onKeyPress = useCallback((ev)=>{
+		onInput(ev)
+		updateMenuOpen(false)
+	}, [onInput])
 	useEffect(()=>{
 		function closeMenu (){
 			updateMenuOpen(false)
@@ -167,7 +171,7 @@ function EditEffectComponent(props){
 					contentEditable: true,
 					className: "textarea box gutter-trbl-.5",
 					"data-placeholder": translate("insert_icon_instruction"),
-					onInput: onInput,
+					onInput: onKeyPress,
 					onFocus: onInput,
 					onBlur: onInput,
 					onContextMenu: (...args)=>{
@@ -208,7 +212,7 @@ function EditEffectComponent(props){
 							onClick: ()=>insertCustomKeyword(customKeyword),
 							className: "flex vend",
 							preventClose: true,
-							
+
 						},
 						KeywordIcon({icons: customKeyword.icons}),
 						customKeyword.name
@@ -303,8 +307,8 @@ function generateSaveableEffectText(container){
 		if (skipThis){
 			skipThis = false
 			if (
-				child instanceof Image && 
-				child.nextSibling instanceof Image && 
+				child instanceof Image &&
+				child.nextSibling instanceof Image &&
 				child.nextSibling.dataset.keywordName === child.dataset.keywordName
 			){
 				skipThis = true
