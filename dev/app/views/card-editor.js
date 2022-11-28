@@ -436,13 +436,13 @@ export function openUri(base64ImageData, fileName = "export.png") {
             window.open(blobUrl, '_blank')
         })
     }
-    else if(window._native && window.messageHandler){
+    else if(window.AndroidNativeInterface){
 		const message = JSON.stringify({
 			image: base64ImageData.substr(`data:${contentType};base64,`.length),
 			//~ image: base64ImageData,
 			fileName
 		})
-		window.messageHandler.postMessage(message)
+		window.AndroidNativeInterface.postMessage(message)
 	}
     else{
         const blobUrl = URL.createObjectURL(blob)
