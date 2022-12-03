@@ -73,6 +73,10 @@ const pathMap = {
 			url: "https://esm.sh/react-device-detect@2.2.2",
 			query: esmshQueryConfigs,
 		},
+		"zip.js": {
+			url: "https://esm.sh/@zip.js/zip.js@2.6.60",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",
@@ -101,9 +105,12 @@ self.addEventListener("activate", function(ev){
 
 const cacheLocation = "cards"
 const settingsLocation = "settings"
+const ritoDataLocation = "rito-data"
 const cardListPath = "pseudo-api/card-list/"
 const cardDataPath = "pseudo-api/card/"
 const settingsPath = "pseudo-api/settings/"
+const gameDataPath = "pseudo-api/game-data/"
+const gameDataListPath = "pseudo-api/game-data/card-list/"
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
@@ -122,8 +129,16 @@ self.addEventListener("fetch", function(ev){
 					ev.respondWith(saveData(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
-				if (filePathRelativeToURLRoot.includes(settingsPath)){
+				else if (filePathRelativeToURLRoot.includes(settingsPath)){
 					ev.respondWith(saveSettings(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
+					ev.respondWith(saveRitoCardList(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(gameDataPath)){
+					ev.respondWith(saveRitoCard(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -138,6 +153,14 @@ self.addEventListener("fetch", function(ev){
 				}
 				else if (filePathRelativeToURLRoot.includes(settingsPath)){
 					ev.respondWith(getSettings(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
+					ev.respondWith(getRitoCardList(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(gameDataPath)){
+					ev.respondWith(getRitoCard(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -168,6 +191,57 @@ self.addEventListener("fetch", function(ev){
 		ev.respondWith(intelegentFetch(ev.request))
     }
 })
+
+async function getRitoCardList(req, path){
+	let cache = await caches.open(ritoDataLocation)
+	let cachedResponse = await cache.match(path)
+
+	if (cachedResponse){
+		return cachedResponse
+	}
+	return new Response("[]", {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
+}
+
+async function saveRitoCardList(req, path){
+	let data = await req.text()
+	let cache = await caches.open(ritoDataLocation)
+
+	let dataResponse = new Response(data, {
+		'Content-Type': 'application/json',
+		"status" : 200
+	})
+	await cache.put(path, dataResponse.clone())
+  	return dataResponse
+}
+
+async function getRitoCard(req, path){
+	let cache = await caches.open(ritoDataLocation)
+	let cachedResponse = await cache.match(path)
+
+	if (cachedResponse){
+		return cachedResponse
+	}
+	return new Response("not found", {
+		'Content-Type': 'text/plain',
+		"status" : 404
+	})
+}
+
+async function saveRitoCard(req, path){
+	let data = await req.blob()
+	let cache = await caches.open(ritoDataLocation)
+	let headers = req.headers
+
+	let dataResponse = new Response(data, {
+		'Content-Type': headers.get('Content-Type'),
+		"status" : 200
+	})
+	await cache.put(path, dataResponse.clone())
+  	return dataResponse
+}
 
 async function saveSettings(req, path){
 	let data = await req.text()
