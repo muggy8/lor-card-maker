@@ -45,12 +45,10 @@ class _AppViewState extends State<AppView> {
                 geolocationEnabled: false,
                 onWebViewCreated: (WebViewController webViewController) {
                   _webViewController = webViewController;
-                  // _webViewController.
-                  _webViewController.runJavascript("window._native = true");
                 },
                 javascriptChannels: {
                   JavascriptChannel(
-                    name: 'messageHandler',
+                    name: 'AndroidNativeInterface',
                     onMessageReceived: (JavascriptMessage message) async {
                       Map<String, dynamic> shareData = jsonDecode(message.message);
                       Uint8List bytes = base64.decode(shareData["image"]);
@@ -64,6 +62,7 @@ class _AppViewState extends State<AppView> {
                       ]);
                     })
                 },
+                debuggingEnabled: true,
               );
             })
           ),
