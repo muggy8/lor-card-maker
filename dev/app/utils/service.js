@@ -63,3 +63,32 @@ export function patchRitoCards(updatedData){
 		})
 	})
 }
+
+export async function getLatestRitoData(){
+	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json"
+
+	const coreData = await fetch(coreDataUrl).then(res=>res.json())
+
+	console.log(coreData)
+
+	const fetchJobs = coreData.sets.map(expantion=>{
+		const setNameLowerCase = expantion.nameRef.toLowerCase()
+
+		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json`
+
+		return fetch(expantionDataUrl)
+			.then(res=>res.json())
+			.then(data=>{
+				expantion.data = data
+			})
+			.catch(()=>{})
+	})
+
+	await Promise.all(fetchJobs)
+
+	coreData.sets.filter(expantion=>expantion.data)
+
+	console.log(coreData)
+
+	return coreData
+}

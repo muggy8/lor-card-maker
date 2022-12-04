@@ -73,10 +73,6 @@ const pathMap = {
 			url: "https://esm.sh/react-device-detect@2.2.2",
 			query: esmshQueryConfigs,
 		},
-		"zip.js": {
-			url: "https://esm.sh/@zip.js/zip.js@2.6.60",
-			query: esmshQueryConfigs,
-		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",
