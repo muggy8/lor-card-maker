@@ -1,5 +1,5 @@
 import factory, { div, section } from "/Utils/elements.js"
-import { useContext, useEffect, useState } from "/cdn/react" 
+import { useContext, useEffect, useState } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -14,6 +14,7 @@ import Follower from "/Components/card-template/follower.js"
 import Landmark from "/Components/card-template/landmark.js"
 import Keyword from "/Components/card-template/keyword.js"
 import CardEditorFactory from "/Views/card-editor.js"
+import DeckBuilder from "/Views/deck-builder.js"
 
 const sharedDefaultCardData = {
     name: "",
@@ -43,7 +44,7 @@ export const defaultShade = shade
 
 const types = [
     {
-        component: Champion1, 
+        component: Champion1,
         labelKey: "champ1",
         editor: CardEditorFactory(
             Champion1,
@@ -59,7 +60,7 @@ const types = [
         ),
     },
     {
-        component: Champion2, 
+        component: Champion2,
         labelKey: "champ2",
         editor: CardEditorFactory(
             Champion2,
@@ -75,7 +76,7 @@ const types = [
         )
     },
     {
-        component: Champion3, 
+        component: Champion3,
         labelKey: "champ3",
         editor: CardEditorFactory(
             Champion3,
@@ -91,7 +92,7 @@ const types = [
         ),
     },
     {
-        component: Spell, 
+        component: Spell,
         labelKey: "spell",
         editor: CardEditorFactory(
             Spell,
@@ -110,7 +111,7 @@ const types = [
         ),
     },
     {
-        component: Follower, 
+        component: Follower,
         labelKey: "follower",
         editor: CardEditorFactory(
             Follower,
@@ -126,7 +127,7 @@ const types = [
         ),
     },
     {
-        component: Landmark, 
+        component: Landmark,
         labelKey: "landmark",
         editor: CardEditorFactory(
             Landmark,
@@ -141,7 +142,7 @@ const types = [
         ),
     },
     {
-        component: Keyword, 
+        component: Keyword,
         labelKey: "keyword",
         beta: true,
         editor: CardEditorFactory(
@@ -169,7 +170,7 @@ export function typeToComponent(type){
         case "follower": return Follower
         case "spell": return Spell
         case "keyword": return Keyword
-        default: return 
+        default: return
     }
 }
 
@@ -196,8 +197,8 @@ function ListComponent(){
             listLimit(
                 types.map((type)=>{
                     return div(
-                        { 
-                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
+                        {
+                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
                             key: type.labelKey,
                             onClick: ()=>{
                                 globalState.setView(type.editor)
@@ -208,19 +209,29 @@ function ListComponent(){
                         })
                     )
                 }),
-    
+
+				div(
+					{
+						className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
+						onClick: ()=>{
+							globalState.setView(DeckBuilder)
+						},
+					},
+					"Deck Builder"
+				),
+
                 savedCards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)
                     if (!renderingComponent){
                         return div({key: cardData.id})
                     }
                     return div(
-                        { 
-                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter", 
+                        {
+                            className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
                             key: cardData.id,
                             onClick: ()=>{
                                 const editor = types.find(type=>type.component === renderingComponent)
-                                
+
                                 globalState.setView(editor.editor)
                                 globalState.patchState({cardId: cardData.id})
                             }

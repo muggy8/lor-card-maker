@@ -109,8 +109,8 @@ const ritoDataLocation = "rito-data"
 const cardListPath = "pseudo-api/card-list/"
 const cardDataPath = "pseudo-api/card/"
 const settingsPath = "pseudo-api/settings/"
-const gameDataPath = "pseudo-api/game-data/"
 const gameDataListPath = "pseudo-api/game-data/card-list/"
+const ritoUrl = "pvp.net"
 
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
@@ -137,10 +137,6 @@ self.addEventListener("fetch", function(ev){
 					ev.respondWith(saveRitoCardList(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
-				else if (filePathRelativeToURLRoot.includes(gameDataPath)){
-					ev.respondWith(saveRitoCard(ev.request, filePathRelativeToURLRoot))
-					responded = true
-				}
 			}
 			else if (ev.request.method === "GET"){
 				if (filePathRelativeToURLRoot.includes(cardListPath)){
@@ -157,10 +153,6 @@ self.addEventListener("fetch", function(ev){
 				}
 				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
 					ev.respondWith(getRitoCardList(ev.request, filePathRelativeToURLRoot))
-					responded = true
-				}
-				else if (filePathRelativeToURLRoot.includes(gameDataPath)){
-					ev.respondWith(getRitoCard(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -187,6 +179,11 @@ self.addEventListener("fetch", function(ev){
 
 		}
     }
+	else if (ev.request.url.includes(ritoUrl)){
+		ev.respondWith(fetch(ev.request))
+		// dont cache rito api calls because we use this to check for updates.
+		// The files are also really big so they eat up alot of storage too so even if it's worth caching because rito updates their etags or whatever, it's still not worth caching.
+	}
     else{
 		ev.respondWith(intelegentFetch(ev.request))
     }
@@ -199,7 +196,7 @@ async function getRitoCardList(req, path){
 	if (cachedResponse){
 		return cachedResponse
 	}
-	return new Response("[]", {
+	return new Response("{}", {
 		'Content-Type': 'application/json',
 		"status" : 200
 	})
@@ -211,32 +208,6 @@ async function saveRitoCardList(req, path){
 
 	let dataResponse = new Response(data, {
 		'Content-Type': 'application/json',
-		"status" : 200
-	})
-	await cache.put(path, dataResponse.clone())
-  	return dataResponse
-}
-
-async function getRitoCard(req, path){
-	let cache = await caches.open(ritoDataLocation)
-	let cachedResponse = await cache.match(path)
-
-	if (cachedResponse){
-		return cachedResponse
-	}
-	return new Response("not found", {
-		'Content-Type': 'text/plain',
-		"status" : 404
-	})
-}
-
-async function saveRitoCard(req, path){
-	let data = await req.blob()
-	let cache = await caches.open(ritoDataLocation)
-	let headers = req.headers
-
-	let dataResponse = new Response(data, {
-		'Content-Type': headers.get('Content-Type'),
 		"status" : 200
 	})
 	await cache.put(path, dataResponse.clone())
