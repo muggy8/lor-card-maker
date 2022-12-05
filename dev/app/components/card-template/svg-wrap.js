@@ -143,19 +143,25 @@ function SvgWrapComponent(props){
 						)
 					)
 					: undefined,
+				div({
+					ref: gestureReceiver,
+					className: "ios-gesture-receiver"
+				})
 			),
-			rect({
-				x: 0,
-				y: 0,
-				width: props.width || "680",
-				height: props.height || "1024",
-				opacity: 0,
-				ref: gestureReceiver,
-				style: {
-					touchAction: "manipulation",
-					cursor
-				}
-			})
+			!isSafari && !isIOS
+				? rect({
+					x: 0,
+					y: 0,
+					width: props.width || "680",
+					height: props.height || "1024",
+					opacity: 0,
+					ref: gestureReceiver,
+					style: {
+						touchAction: "manipulation",
+						cursor
+					}
+				})
+				: undefined
 		)
     )
 }
