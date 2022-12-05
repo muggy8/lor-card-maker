@@ -20,26 +20,6 @@ function getDimensions(url){
     })
 }
 
-const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, {type: contentType});
-    return blob;
-}
-
 function blobToBase64(blob) {
     return new Promise((resolve, _) => {
         const reader = new FileReader();
@@ -55,8 +35,6 @@ function getReplicateImage(url){
         return replicationCache[url]
     }
 
-    //~ const replicationCalculationWorker = new Worker("/Components/card-template/image-render-worker.js");
-
     let replicationCalculationWorker
 
     return replicationCache[url] = workerContentsPromise.then(codeText=>{
@@ -65,11 +43,13 @@ function getReplicateImage(url){
 			replicationCalculationWorker = new Worker(codeB64)
 		})
 		.then(()=>getDimensions(url))
-        .then((results)=>{
+        .then(async (results)=>{
+			const assetBlob = await fetch(url).then(res=>res.blob())
+			const assetBitmap = await createImageBitmap(assetBlob)
             return new Promise((accept, reject)=>{
-                const commaIndex = url.indexOf(",")
-                const b64 = url.substring(commaIndex + 1)
-                const dataType = url.substring(0, commaIndex)
+                //~ const commaIndex = url.indexOf(",")
+                //~ const b64 = url.substring(commaIndex + 1)
+                //~ const dataType = url.substring(0, commaIndex)
 
                 replicationCalculationWorker.onmessage = ev=>{
                     replicationCalculationWorker.terminate()
@@ -78,13 +58,13 @@ function getReplicateImage(url){
 
                 replicationCalculationWorker.onerror = ev=>{
                     replicationCalculationWorker.terminate()
-                    reject(ev)
+                    accept({...results, blob: assetBlob})
                 }
 
-                const imgBlob = b64toBlob(b64, dataType.replace("data:", "").replace(";base64", ""))
                 replicationCalculationWorker.postMessage({
                     ...results,
-                    image: imgBlob,
+                    image: assetBitmap,
+                    b64: url,
                 })
             })
         })
