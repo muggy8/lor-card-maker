@@ -4,8 +4,6 @@ import { getRitoCards, patchRitoCards, getLatestRitoData } from "/Utils/service.
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 
-const lorDataCoreUrl = "https://dd.b.pvp.net/latest/core-en_us.zip"
-
 function deckBuilderComponenet(props){
 
 	const [ritoCards, updateRitoCards] = useState()

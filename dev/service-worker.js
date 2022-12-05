@@ -175,11 +175,6 @@ self.addEventListener("fetch", function(ev){
 
 		}
     }
-	else if (ev.request.url.includes(ritoUrl)){
-		ev.respondWith(fetch(ev.request))
-		// dont cache rito api calls because we use this to check for updates.
-		// The files are also really big so they eat up alot of storage too so even if it's worth caching because rito updates their etags or whatever, it's still not worth caching.
-	}
     else{
 		ev.respondWith(intelegentFetch(ev.request))
     }
