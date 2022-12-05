@@ -1,9 +1,10 @@
-import factory, { div, h1, a, svg, path, style, header } from "/Utils/elements.js"
-import { useLayoutEffect, useContext, useRef, useCallback, useEffect, useState } from "/cdn/react" 
+import factory, { div, h1, a, svg, path, style, header, button } from "/Utils/elements.js"
+import { useLayoutEffect, useContext, useRef, useCallback, useEffect, useState } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import { Globals } from "/Views/index.js"
 import debounceFunction from "/Utils/debounce-function.js"
+import { isSafari, isIOS } from '/cdn/react-device-detect'
 
 const cssLoaded = loadCss("/Components/banner-bar.css")
 
@@ -24,7 +25,7 @@ function BannarBarComponent(props){
 
             globalState.patchState({
                 bannerHeight: bannerElement.current.clientHeight
-            })           
+            })
         }, 350)
 
         window.addEventListener('resize', reportBannerWidth)
@@ -34,6 +35,9 @@ function BannarBarComponent(props){
             window.removeEventListener('resize', reportBannerWidth)
         }
     }, [globalState.patchState])
+
+    const [showIosWarning, updateShowIosWarning] = useState(isSafari || isIOS)
+    const turnOffIosWarning = useCallback(()=>updateShowIosWarning(false), [])
 
     return header(
         {className: "banner fixed flex hcenter gutter-rl-3 gutter-tb-.5 card-text-bold", ref: setBannerElement},
@@ -78,6 +82,19 @@ function BannarBarComponent(props){
                 ),
             ),
         ),
+		showIosWarning
+			? div(
+				{ className: "ios-ouf flex no-wrap vhcenter gutter-trbl-1 card-text-universe" },
+				div(
+					{ className: "box" },
+					translate("warn_ios")
+				),
+				button(
+					{ className: "gutter-trbl-1 ok-btn", onClick: turnOffIosWarning },
+					translate("ok") + " 😢"
+				)
+			)
+			: undefined
     )
 
 }

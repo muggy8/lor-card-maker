@@ -12,3 +12,29 @@
 .banner h1 {
 	margin: 0
 }
+
+.banner .ios-ouf {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0;
+	color: var(--color-text);
+	border-bottom: solid 0.125rem var(--color-border);
+}
+
+.banner .ios-ouf::before {
+    position: absolute;
+    display: block;
+    content: " ";
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: var(--color-bg);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.banner .ios-ouf .ok-btn {
+	font-size: 1.25rem;
+}
