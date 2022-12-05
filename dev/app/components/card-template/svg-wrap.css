@@ -33,6 +33,6 @@ html .loading-shade {
     right: 0;
 }
 
-.fix-safari > ios-gesture-receiver {
+.fix-safari > .ios-gesture-receiver {
 	transform: none;
 }
