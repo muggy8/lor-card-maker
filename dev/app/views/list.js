@@ -210,15 +210,15 @@ function ListComponent(){
                     )
                 }),
 
-				//~ div(
-					//~ {
-						//~ className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
-						//~ onClick: ()=>{
-							//~ globalState.setView(DeckBuilder)
-						//~ },
-					//~ },
-					//~ "Deck Builder"
-				//~ ),
+				div(
+					{
+						className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
+						onClick: ()=>{
+							globalState.setView(DeckBuilder)
+						},
+					},
+					"Deck Builder"
+				),
 
                 savedCards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)
