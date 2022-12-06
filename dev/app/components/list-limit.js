@@ -4,7 +4,13 @@ import debounceFunction from "/Utils/debounce-function.js"
 
 function ListLimitComponent(props){
     const children = props.children.flat()
-    const [limit, updateLimit] = useState(12)
+    const [limit, updateLimit] = useState(props.defaultSize || 12)
+
+    useEffect(()=>{
+        if (props.defaultSize && props.defaultSize > limit){
+            updateLimit(props.defaultSize)
+        }
+    }, [props.defaultSize, limit])
 
     const loadMoreWhenCloserThanThisToTheBottomOfPage = useRef()
     loadMoreWhenCloserThanThisToTheBottomOfPage.current = props.bottomOffset || 200
@@ -26,7 +32,7 @@ function ListLimitComponent(props){
 
             if ((loadMoreWhenCloserThanThisToTheBottomOfPage.current + bottomOfWindow) >= heightOfPage){
                 if (currentLimit.current < currentListLength.current){
-                    const newLimit = Math.min(currentLimit.current + 8, currentListLength.current)
+                    const newLimit = Math.min(currentLimit.current + (props.defaultSize || 8), currentListLength.current)
                     updateLimit(newLimit)
                 }
             }

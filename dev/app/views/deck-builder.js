@@ -1,8 +1,9 @@
 import factory, { div, button, strong, section } from "/Utils/elements.js"
 import { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
-import { getRitoCards, patchRitoCards, getLatestRitoData } from "/Utils/service.js"
+import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
+import listLimit from "/Components/list-limit.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -48,7 +49,7 @@ function deckBuilderComponenet(){
 		getCardList().then(updateCustomcards)
 	}, [])
 
-	const [ritoCards, updateRitoCards] = useState()
+	const [ritoCards, updateRitoCards] = useState([])
 	useEffect(()=>{
 		getRitoCards().then(ritoData=>{
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
@@ -69,7 +70,29 @@ function deckBuilderComponenet(){
 		),
 		div(
 			{ className: "card-finder gutter-t-2 box-xs-12 box-s-10 box-m-4 box-l-3 box-xl-2" },
-			button({onClick: loadRitoData}, "Update LoR Game Data")
+			div(
+				{ className: "gutter-rl" },
+				listLimit(
+					{ defaultSize: 24 },
+					ritoCards.map(card=>card 
+						? div(
+							{ className: "flex gutter-b", key: card.cardCode },
+							div(
+								{ className: "box-8 flex vcenter" },
+								card.name
+							),
+							div(
+								{ className: "box-4 flex no-wrap" },
+								button({ className: "grow gutter-trbl-.5" }, "+"),
+								div({ className: "gutter-rl-.25" }),
+								button({ className: "grow gutter-trbl-.5" }, "-"),
+							),
+						)
+						:undefined
+					)
+				)
+			),
+			div(),
 		)
 	)
 }
