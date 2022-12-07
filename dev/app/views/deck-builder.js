@@ -4,6 +4,7 @@ import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/U
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import listLimit from "/Components/list-limit.js"
+import cardName from "/Components/deck/card-name.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -66,10 +67,10 @@ function deckBuilderComponenet(){
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
 		div(
-			{ className: "deck-preview gutter-t-2 box-xs-12 box-s-10 box-m-8 box-l-9 box-xl-10" }
+			{ className: "deck-preview gutter-t-2 box-xs-12 box-s-10 box-m-7 box-l-8" }
 		),
 		div(
-			{ className: "card-finder gutter-t-2 box-xs-12 box-s-10 box-m-4 box-l-3 box-xl-2" },
+			{ className: "card-finder gutter-t-2 box-xs-12 box-s-10 box-m-5 box-l-4" },
 			div(
 				{ className: "gutter-rl" },
 				listLimit(
@@ -77,12 +78,11 @@ function deckBuilderComponenet(){
 					ritoCards.map(card=>card 
 						? div(
 							{ className: "flex gutter-b", key: card.cardCode },
+
+							cardName({ card, className: "box-9" }, card.name),
+
 							div(
-								{ className: "box-8 flex vcenter" },
-								card.name
-							),
-							div(
-								{ className: "box-4 flex no-wrap" },
+								{ className: "box-3 flex no-wrap" },
 								button({ className: "grow gutter-trbl-.5" }, "+"),
 								div({ className: "gutter-rl-.25" }),
 								button({ className: "grow gutter-trbl-.5" }, "-"),

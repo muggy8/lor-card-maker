@@ -27,7 +27,7 @@ const pathMap = {
 				deps: "react@18.2.0"
 			},
 		},
-		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@f1c7d23fad7ece8fc7538b152ac393a29b65669b",
+		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@d8439c58f20597e4fe891d01d6853bdcc78e82be",
 		"mmc-3": "https://cdn.jsdelivr.net/gh/muggy8/mmc-3@374aa14106e6133f758cf68f2cb9e35b5392cfe5",
 		fitty: {
 			url: "https://esm.sh/fitty@2.3.6",
