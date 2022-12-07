@@ -167,7 +167,15 @@ self.addEventListener("fetch", function(ev){
 		}
 		else {
 			if (fetchUrl === filePathRelativeToURLRoot){
-				ev.respondWith(intelegentFetch(filePathRelativeToInstallPath))
+				if (fetchUrl.includes("LoR_DD")){
+					ev.respondWith(fetch(fetchUrl))
+				}
+				else{
+					ev.respondWith(intelegentFetch(filePathRelativeToInstallPath))
+				}
+			}
+			else if (fetchUrl.includes("LoR_DD")){
+				ev.respondWith(fetch(fetchUrl))
 			}
 			else{
 				ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))

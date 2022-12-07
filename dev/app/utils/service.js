@@ -65,7 +65,7 @@ export function patchRitoCards(updatedData){
 }
 
 export async function getLatestRitoData(){
-	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json"
+	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json?t=" + Date.now()
 
 	const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
@@ -74,7 +74,7 @@ export async function getLatestRitoData(){
 	const fetchJobs = coreData.sets.map(expantion=>{
 		const setNameLowerCase = expantion.nameRef.toLowerCase()
 
-		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json`
+		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json?t=${Date.now()}`
 
 		return fetch(expantionDataUrl)
 			.then(res=>res.json())
