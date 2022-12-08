@@ -3,6 +3,7 @@ import { useState, useCallback, useContext, createContext, useRef, useLayoutEffe
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
+import useFilter from "/Utils/use-filter.js"
 import listLimit from "/Components/list-limit.js"
 import cardName from "/Components/deck/card-name.js"
 
@@ -22,7 +23,7 @@ function getRitoCardsFromDataDump({sets}){
 			return 1
 		}
 
-		const costDiff = a.cost - b.cost 
+		const costDiff = a.cost - b.cost
 		if (costDiff){
 			return costDiff
 		}
@@ -64,6 +65,17 @@ function deckBuilderComponenet(){
 		})
 	}, [])
 
+	const [displayedRitoCards, updateRitoCardSource, currentFilters, updateFilters] = useFilter()
+
+	useEffect(()=>{
+		updateRitoCardSource(ritoCards)
+		updateFilters({
+			collectible: {
+				match: true
+			}
+		})
+	}, [ritoCards])
+
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
 		div(
@@ -76,7 +88,7 @@ function deckBuilderComponenet(){
 				button({ onClick: loadRitoData }, "update"),
 				listLimit(
 					{ defaultSize: 24 },
-					(ritoCards || []).map(card=>card 
+					(displayedRitoCards || []).map(card=>card
 						? div(
 							{ className: "flex gutter-b", key: card.cardCode },
 
