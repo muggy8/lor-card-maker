@@ -65,15 +65,51 @@ function deckBuilderComponenet(){
 		})
 	}, [])
 
-	const [displayedRitoCards, updateRitoCardSource, currentFilters, updateFilters] = useFilter()
+	const [displayedRitoCards, updateRitoCardSource, currentFilters, updateFilters] = useFilter({
+		collectible: {
+			match: true
+		}
+	})
+
+	const patchFilters = useCallback((patch)=>{
+		const newState = {
+			...currentFilters,
+			...patch,
+		}
+
+		updateFilters(newState)
+	}, [currentFilters])
+
+	const [filterOptions, updateFilterOptions] = useState({})
 
 	useEffect(()=>{
 		updateRitoCardSource(ritoCards)
-		updateFilters({
-			collectible: {
-				match: true
+
+		const options = ritoCards.reduce((variationCollector, card)=>{
+			if (!card){
+				return variationCollector
 			}
+
+			Object.keys(card).forEach(property=>{
+				variationCollector[property] = variationCollector[property] || new Map()
+
+				const value = card[property]
+				variationCollector[property].set(value, true)
+			})
+
+			return variationCollector
+		}, {})
+
+
+		Object.keys(options).forEach(property=>{
+			const valueMap = options[property]
+			options[property] = []
+			valueMap.forEach((value, key)=>{
+				options[property].push(key)
+			})
 		})
+
+		updateFilterOptions(options)
 	}, [ritoCards])
 
 	return section(

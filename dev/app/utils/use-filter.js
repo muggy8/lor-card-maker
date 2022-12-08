@@ -1,10 +1,10 @@
 import { useEffect, useState } from "/cdn/react"
 
 
-export default function useFilter(){
+export default function useFilter(defaultFilters){
 	const [sourceData, updateSourceData] = useState([])
 	const [filteredData, updateFilteredData] = useState([])
-	const [filters, updateFilters] = useState({})
+	const [filters, updateFilters] = useState(defaultFilters || {})
 
 	useEffect(()=>{
 		// actually perform the filtering logic in here
