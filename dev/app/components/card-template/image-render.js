@@ -1,6 +1,7 @@
 import factory, { div } from "/Utils/elements.js"
 import { useEffect, useState } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
+import setImmediateBatch from "/Utils/set-immediate-batch.js"
 
 const cssLoaded = loadCss("/Components/card-template/image-render.css")
 
@@ -28,6 +29,81 @@ function blobToBase64(blob) {
     });
 }
 
+function asyncWait (ms = 0){
+    if (!ms){
+        return new Promise(accept=>{
+            setImmediateBatch(accept)
+        })
+    }
+
+    return new Promise(accept=>{
+        setTimeout(accept, ms)
+    })
+}
+async function replicateArtFallback({ image, width, height }){
+    const canvas = document.createElement('canvas');
+
+    canvas.width = width * 2
+    canvas.height = height * 2
+
+    const context = canvas.getContext("2d")
+
+    typeof context.mozImageSmoothingEnabled !== "undefined" && (context.mozImageSmoothingEnabled = false)
+    typeof context.oImageSmoothingEnabled !== "undefined" && (context.oImageSmoothingEnabled = false)
+    typeof CanvasRenderingContext2D.webkitImageSmoothingEnabled !== "undefined" && (CanvasRenderingContext2D.webkitImageSmoothingEnabled = false)
+    typeof context.imageSmoothingEnabled !== "undefined" && (context.imageSmoothingEnabled = false)
+    context.clearRect(0,0,canvas.width,canvas.height)
+
+    // Since this function will be running on the main thread, it would be best to avoid blocking the main thread for too long. hence, we stop the execution of this function every now and then so the main thread can go handle other things.
+
+    // draw the initial image that's the right way around
+    await asyncWait()
+    context.drawImage(
+        image, 
+        0, 0, width, height, // location of source
+        0, 0, width, height, // location to render
+    )
+
+    // draw the mirrored image to the right
+    await asyncWait(50)
+    context.scale(-1, 1)
+    await asyncWait()
+    context.drawImage(
+        image, 
+        0, 0, width, height, // location of source
+        -canvas.width, 0, width, height, // location to render
+    )
+    await asyncWait()
+    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
+
+    // draw the mirrored image to the bottom
+    await asyncWait(50)
+    context.scale(1, -1)
+    await asyncWait()
+    context.drawImage(
+        image, 
+        0, 0, width, height, // location of source
+        0, -canvas.height, width, height, // location to render
+    )
+    await asyncWait()
+    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
+
+    // draw the mirrored image to the bottom
+    await asyncWait(50)
+    context.scale(-1, -1)
+    await asyncWait()
+    context.drawImage(
+        image, 
+        0, 0, width, height, // location of source
+        -canvas.width, -canvas.height, width, height, // location to render
+    )
+    await asyncWait()
+    context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
+
+    await asyncWait()
+    return canvas.toBlob()
+}
+
 let replicationCache = {}
 const workerContentsPromise = fetch("/Components/card-template/image-render-worker.js").then(res=>res.text())
 function getReplicateImage(url){
@@ -47,10 +123,6 @@ function getReplicateImage(url){
 			const assetBlob = await fetch(url).then(res=>res.blob())
 			const assetBitmap = await createImageBitmap(assetBlob)
             return new Promise((accept, reject)=>{
-                //~ const commaIndex = url.indexOf(",")
-                //~ const b64 = url.substring(commaIndex + 1)
-                //~ const dataType = url.substring(0, commaIndex)
-
                 replicationCalculationWorker.onmessage = ev=>{
                     replicationCalculationWorker.terminate()
                     accept({...results, blob: ev.data})
@@ -58,7 +130,12 @@ function getReplicateImage(url){
 
                 replicationCalculationWorker.onerror = ev=>{
                     replicationCalculationWorker.terminate()
-                    accept({...results, blob: assetBlob})
+                    console.warn(ev)
+                    replicateArtFallback({...results, image: assetBitmap})
+                        .then(
+                            blob=>accept({...results, blob}), 
+                            reject
+                        )
                 }
 
                 replicationCalculationWorker.postMessage({
