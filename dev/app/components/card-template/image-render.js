@@ -131,14 +131,18 @@ function getReplicateImage(url){
                 replicationCalculationWorker.onerror = ev=>{
                     replicationCalculationWorker.terminate()
                     console.warn(ev)
-                    replicateArtFallback({...results, image: assetBitmap})
+                    replicateArtFallback({
+                        width: results.width, 
+                        height: results.height, 
+                        image: assetBitmap
+                    })
                         .then(accept, reject)
                 }
-                
+
                 replicationCalculationWorker.postMessage({
-                    ...results,
+                    width: results.width, 
+                    height: results.height, 
                     image: assetBitmap,
-                    b64: url,
                 })
             })
             const b64 = await blobToBase64(blob)
