@@ -72,14 +72,25 @@ function deckBuilderComponenet(){
 		}
 	})
 
+	let unpatchedUpdates = {}
 	const patchFilters = useCallback((patch)=>{
+		unpatchedUpdates = {
+			...unpatchedUpdates,
+			...patch,
+		}
 		const newState = {
 			...currentFilters,
-			...patch,
+			...unpatchedUpdates,
 		}
 
 		updateFilters(newState)
 	}, [currentFilters])
+
+	const patchFilter = useCallback((filterToPatch, patchSettings)=>{
+		const patch = {}
+		patch[filterToPatch] = patchSettings
+		patchFilters(patch)
+	}, [patchFilters])
 
 	const [filterOptions, updateFilterOptions] = useState({})
 
@@ -124,7 +135,13 @@ function deckBuilderComponenet(){
 				{ className: "gutter-rl" },
 				// button({ onClick: loadRitoData }, "update"),
 
-				filterSlider(),
+				filterSlider({
+					refreshRitoData: loadRitoData,
+					filterOptions,
+					updateSelectedFilters: patchFilters,
+					updateSelectedFilter: patchFilter,
+					selectedFilters: currentFilters
+				}),
 
 				listLimit(
 					{ defaultSize: 24 },

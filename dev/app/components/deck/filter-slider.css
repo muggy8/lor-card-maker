@@ -11,10 +11,11 @@
     overflow: auto;
     max-height: 0;
     transition: max-height 0.5s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-out;
     background-color: rgba(var(--rgb-bg), 70%);
 }
 
 .filter-slider.expanded .options {
     max-height: calc( calc(100vh - var(--banner-height)) - calc(var(--flex-box-gutter) * 2));
+    transition-timing-function: ease-in;
 }
