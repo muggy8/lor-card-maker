@@ -166,6 +166,7 @@ const lang = {
         "cancel": "Cancel",
         "warn_ios": "It looks like you're using an iOS device, browsing with Safari, or both. iOS and Safari are not fully supported.",
         "ok": "Ok",
-        "filter": "Filter"
+        "filter": "Filter",
+        "card_text": "Card Text"
     }
 }

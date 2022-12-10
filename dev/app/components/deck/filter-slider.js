@@ -4,6 +4,7 @@ import factory, { div, strong } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
+import searchText from "/Components/deck/search-text.js";
 
 const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
 
@@ -23,10 +24,17 @@ function filterCardListConfigurationComponent (props){
         ),
         div({ className: "options" },
             div({ className: "gutter-rbl-.5" },
-                div("placeholder"),
-                div("placeholder"),
-                div("placeholder"),
-                div("placeholder"),
+                searchText({
+                    label: translate("name"),
+                    value: props.selectedFilters.name? props.selectedFilters.name.include : "",
+                    onChange: value=>props.updateSelectedFilter("name", { include: value })
+                }),
+                
+                searchText({
+                    label: translate("card_text"),
+                    value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
+                    onChange: value=>props.updateSelectedFilter("descriptionRaw", { include: value })
+                }),
             )
         )
     )

@@ -153,9 +153,17 @@ function deckBuilderComponenet(){
 
 							div(
 								{ className: "box-3 flex no-wrap" },
-								button({ className: "grow gutter-trbl-.5" }, "+"),
+								button({ className: "grow gutter-trbl-.5" }, 
+									div({ className: "icon" },
+										div({ className: "add" }),
+									)
+								),
 								div({ className: "gutter-rl-.25" }),
-								button({ className: "grow gutter-trbl-.5" }, "-"),
+								button({ className: "grow gutter-trbl-.5" }, 
+									div({ className: "icon" },
+										div({ className: "minus" }),
+									)
+								),
 							),
 						)
 						:undefined

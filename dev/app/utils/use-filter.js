@@ -27,11 +27,13 @@ export default function useFilter(defaultFilters){
 					const filterToCheckAgainst = filters[prop]
 					const match = filterToCheckAgainst.match
 					const include = filterToCheckAgainst.include
+					const hasMatch = Object.hasOwnProperty.call(filterToCheckAgainst, "match")
+					const hasInclude = Object.hasOwnProperty.call(filterToCheckAgainst, "include")
 
-					if (match && include){
+					if (hasMatch && hasInclude){
 						throw new Error("Only 'match' or 'include' is allowed")
 					}
-					if (match){
+					if (hasMatch){
 						const matchMultiple = Array.isArray(match)
 
 						if (matchMultiple){
@@ -62,7 +64,7 @@ export default function useFilter(defaultFilters){
 							assumePassesFilter = assumePassesFilter && match === item[prop]
 						}
 					}
-					else if (include){
+					else if (hasInclude){
 						const matchMultiple = Array.isArray(include)
 
 						if (matchMultiple){
@@ -74,7 +76,7 @@ export default function useFilter(defaultFilters){
 							}
 
 							include.forEach(termToInclude=>{
-								if (canInclude){
+								if (canInclude || !termToInclude){
 									return
 								}
 

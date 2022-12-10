@@ -13,6 +13,7 @@
     transition: max-height 0.5s;
     transition-timing-function: ease-out;
     background-color: rgba(var(--rgb-bg), 70%);
+    z-index: 1;
 }
 
 .filter-slider.expanded .options {
