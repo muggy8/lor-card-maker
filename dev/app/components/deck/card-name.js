@@ -1,4 +1,5 @@
 import { useEffect, useState } from "/cdn/react";
+import datauri from "/Utils/datauri.js";
 import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 
@@ -45,6 +46,11 @@ export function isRitoCard(card){
     return (numberOfRitoPropertiesThatExistsOnCard / ritoCardDataProperties.length) > 0.85
 }
 
+const getManaballUnit = datauri("/Assets/deck/mana-ball-unit.png")
+const getManaballSlow = datauri("/Assets/deck/mana-ball-slow.png")
+const getManaballFast = datauri("/Assets/deck/mana-ball-unit.png")
+const getManaballChamp = datauri("/Assets/deck/mana-ball-champ.png")
+
 function cardNameComponent(props){
     const [isCustomCard, updateIsCustomCard] = useState()
     useEffect(()=>{
@@ -68,40 +74,40 @@ function cardNameComponent(props){
                     switch(card.speed){
                         case "slow":
                         case "equipment": 
-                            return updateManaBallPath("/Assets/deck/mana-ball-slow.png")
+                            return getManaballSlow.then(updateManaBallPath), undefined
                         default:
-                            return updateManaBallPath("/Assets/deck/mana-ball-fast.png")
+                            return getManaballFast.then(updateManaBallPath), undefined
                     }
                 case "champion1":
                 case "champion2":
                 case "champion3":
-                    return updateManaBallPath("/Assets/deck/mana-ball-champ.png")
+                    return getManaballChamp.then(updateManaBallPath), undefined
                 case "landmark":
                 case "follower":
                 default: 
-                    return updateManaBallPath("/Assets/deck/mana-ball-unit.png")
+                    return getManaballUnit.then(updateManaBallPath), undefined
 
             }
         }
         else{
             switch(card.type.toLowerCase()){
                 case "equipment":
-                    return updateManaBallPath("/Assets/deck/mana-ball-slow.png")
+                    return getManaballSlow.then(updateManaBallPath), undefined
                 case "spell":
                     switch(card.spellSpeed.toLowerCase()){
                         case "slow":
-                            return updateManaBallPath("/Assets/deck/mana-ball-slow.png")
+                            return getManaballSlow.then(updateManaBallPath), undefined
                         default:
-                            return updateManaBallPath("/Assets/deck/mana-ball-fast.png")
+                            return getManaballFast.then(updateManaBallPath), undefined
                     }
                 case "unit":
                 case "landmark":
                 default:
                     switch(card.supertype.toLowerCase()){
                         case "champion":
-                            return updateManaBallPath("/Assets/deck/mana-ball-champ.png")
+                            return getManaballChamp.then(updateManaBallPath), undefined
                         default: 
-                            return updateManaBallPath("/Assets/deck/mana-ball-unit.png")
+                            return getManaballUnit.then(updateManaBallPath), undefined
                     }
             }
         }
