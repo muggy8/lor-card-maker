@@ -101,7 +101,11 @@ async function replicateArtFallback({ image, width, height }){
     context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
 
     await asyncWait()
-    return canvas.toBlob()
+
+    return new Promise(accept=>{
+        canvas.toBlob(accept)
+    })
+    
 }
 
 let replicationCache = {}
