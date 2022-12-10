@@ -119,35 +119,35 @@ function getReplicateImage(url){
 			replicationCalculationWorker = new Worker(codeB64)
 		})
 		.then(()=>getDimensions(url))
-        .then(async (results)=>{
+        .then(async results=>{
 			const assetBlob = await fetch(url).then(res=>res.blob())
 			const assetBitmap = await createImageBitmap(assetBlob)
-            return new Promise((accept, reject)=>{
+            const blob = await new Promise((accept, reject)=>{
                 replicationCalculationWorker.onmessage = ev=>{
                     replicationCalculationWorker.terminate()
-                    accept({...results, blob: ev.data})
+                    accept(ev.data)
                 }
 
                 replicationCalculationWorker.onerror = ev=>{
                     replicationCalculationWorker.terminate()
                     console.warn(ev)
                     replicateArtFallback({...results, image: assetBitmap})
-                        .then(
-                            blob=>accept({...results, blob}), 
-                            reject
-                        )
+                        .then(accept, reject)
                 }
-
+                
                 replicationCalculationWorker.postMessage({
                     ...results,
                     image: assetBitmap,
                     b64: url,
                 })
             })
-        })
-        .then(async rawTransform=>{
-            rawTransform.b64 = await blobToBase64(rawTransform.blob)
-            return rawTransform
+            const b64 = await blobToBase64(blob)
+
+            return {
+                width: results.width, 
+                height: results.height, 
+                b64,
+            }
         })
 
 }
