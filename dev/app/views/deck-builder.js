@@ -6,6 +6,7 @@ import useLang from "/Utils/use-lang.js"
 import useFilter from "/Utils/use-filter.js"
 import listLimit from "/Components/list-limit.js"
 import cardName from "/Components/deck/card-name.js"
+import filterSlider from "/Components/deck/filter-slider.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -121,7 +122,10 @@ function deckBuilderComponenet(){
 			{ className: "card-finder gutter-t-2 box-xs-12 box-s-10 box-m-5 box-l-4" },
 			div(
 				{ className: "gutter-rl" },
-				button({ onClick: loadRitoData }, "update"),
+				// button({ onClick: loadRitoData }, "update"),
+
+				filterSlider(),
+
 				listLimit(
 					{ defaultSize: 24 },
 					(displayedRitoCards || []).map(card=>card

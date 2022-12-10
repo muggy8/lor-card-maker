@@ -1,5 +1,4 @@
-import { useEffect, useState, useRef } from "/cdn/react";
-import svgWrap from "../card-template/svg-wrap.js";
+import { useEffect, useState } from "/cdn/react";
 import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 

@@ -1,0 +1,20 @@
+.filter-slider {
+    position: relative;
+}
+
+.filter-slider .options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s;
+    transition-timing-function: linear;
+
+    background-color: rgba(var(--rgb-bg), 70%);
+}
+
+.filter-slider.expanded .options {
+    max-height: calc(calc(100vh - var(--banner-height)) - 2em);
+}
