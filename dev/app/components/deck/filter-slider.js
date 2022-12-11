@@ -5,6 +5,7 @@ import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
 import searchText from "/Components/deck/search-text.js";
+import checkbox from "./checkbox.js";
 
 const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
 
@@ -24,6 +25,21 @@ function filterCardListConfigurationComponent (props){
         ),
         div({ className: "options" },
             div({ className: "gutter-rbl-.5" },
+                
+                checkbox({
+                    label: translate("collectible"),
+                    value: props.selectedFilters.collectible && props.selectedFilters.collectible.match,
+                    onChange: selected=>{
+                        console.log(selected)
+                        props.updateSelectedFilter("collectible", { match: selected })
+                    },
+                    options: props.filterOptions.collectible,
+                    renderOption: (collectable)=>div(
+                        { className: "flex vhcenter clickable" },
+                        collectable ? "✔ " + translate("yes") : "✘ " + translate("no")
+                    )
+                }),
+
                 searchText({
                     label: translate("name"),
                     value: props.selectedFilters.name? props.selectedFilters.name.include : "",
@@ -32,6 +48,12 @@ function filterCardListConfigurationComponent (props){
                 
                 searchText({
                     label: translate("card_text"),
+                    value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
+                    onChange: value=>props.updateSelectedFilter("descriptionRaw", { include: value })
+                }),
+                
+                searchText({
+                    label: translate("clan"),
                     value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
                     onChange: value=>props.updateSelectedFilter("descriptionRaw", { include: value })
                 }),

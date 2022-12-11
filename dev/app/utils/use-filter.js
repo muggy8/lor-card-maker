@@ -57,7 +57,7 @@ export default function useFilter(defaultFilters){
 							assumePassesFilter = assumePassesFilter && canInclude
 						}
 						else{
-							if (typeof match === "undefined"){
+							if (typeof match === "undefined" || match === null){
 								return
 							}
 

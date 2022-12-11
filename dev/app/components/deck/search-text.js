@@ -1,5 +1,5 @@
 import factory, { div, label, input, button } from "/Utils/elements.js";
-import { useEffect, useCallback } from "/cdn/react";
+import { useCallback } from "/cdn/react";
 
 function searchTextComponent(props){
     const onChange = useCallback(ev=>{

@@ -30,23 +30,12 @@
 #card-editor .card-configs {
     z-index: 1;
     position: relative;
-
+    
+    background-color: rgba(var(--rgb-bg), 80%);
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2em);
     mask-image: linear-gradient(to bottom, transparent 0, black 2em);
 }
 
-#card-editor .card-configs::before {
-    position: absolute;
-    display: block;
-    content: " ";
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--color-bg);
-    opacity: 0.6;
-    z-index: -1;
-}
 #card-editor input,
 #card-editor textarea,
 #card-editor button {

@@ -127,10 +127,10 @@ function deckBuilderComponenet(){
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
 		div(
-			{ className: "deck-preview gutter-t-2 box-xs-12 box-s-10 box-m-7 box-l-8" }
+			{ className: "deck-preview box-xs-12 box-s-10 box-m-7 box-l-8" }
 		),
 		div(
-			{ className: "card-finder gutter-t-2 box-xs-12 box-s-10 box-m-5 box-l-4" },
+			{ className: "card-finder box-xs-12 box-s-10 box-m-5 box-l-4" },
 			div(
 				{ className: "gutter-rl" },
 				// button({ onClick: loadRitoData }, "update"),

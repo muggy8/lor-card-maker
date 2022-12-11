@@ -1,6 +1,10 @@
 .filter-slider {
-    position: relative;
+    position: sticky;
     font-size: 1.25rem;
+    top: var(--banner-height);
+    background-color: rgba(var(--rgb-bg), 80%);
+    padding-top: calc(var(--flex-box-gutter) * 3);
+    z-index: 1;
 }
 
 .filter-slider .options {
@@ -12,11 +16,17 @@
     max-height: 0;
     transition: max-height 0.5s;
     transition-timing-function: ease-out;
-    background-color: rgba(var(--rgb-bg), 70%);
-    z-index: 1;
+    background-color: rgba(var(--rgb-bg), 80%);
 }
 
 .filter-slider.expanded .options {
-    max-height: calc( calc(100vh - var(--banner-height)) - calc(var(--flex-box-gutter) * 2));
+    max-height: calc( calc(100vh - var(--banner-height)) - var(--flex-box-gutter));
     transition-timing-function: ease-in;
+}
+
+.filter-checkbox .ghost {
+    color: var(--color-dark);
+}
+.filter-checkbox .checked {
+    color: var(--color-primary);
 }
