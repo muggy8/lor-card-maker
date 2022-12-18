@@ -1,10 +1,16 @@
-import { useEffect, useState } from "/cdn/react"
-
+import { useEffect, useState, useCallback } from "/cdn/react"
 
 export default function useFilter(defaultFilters){
 	const [sourceData, updateSourceData] = useState([])
 	const [filteredData, updateFilteredData] = useState([])
 	const [filters, updateFilters] = useState(defaultFilters || {})
+
+	let unpatchedUpdates = {}
+	const patchFilters = useCallback((patch)=>{
+		unpatchedUpdates = mergeDeep(unpatchedUpdates, patch)
+		const newState = mergeDeep({}, filters, unpatchedUpdates )
+		updateFilters(newState)
+	}, [filters])
 
 	useEffect(()=>{
 		// actually perform the filtering logic in here
@@ -19,88 +25,19 @@ export default function useFilter(defaultFilters){
 					return false
 				}
 
+				// and across properties, or within properties
 				filteredProperties.forEach(prop=>{
 					if (!assumePassesFilter){
 						return
 					}
 
 					const filterToCheckAgainst = filters[prop]
-					const match = filterToCheckAgainst.match
-					const include = filterToCheckAgainst.include
-					const hasMatch = Object.hasOwnProperty.call(filterToCheckAgainst, "match")
-					const hasInclude = Object.hasOwnProperty.call(filterToCheckAgainst, "include")
 
-					if (hasMatch && hasInclude){
-						throw new Error("Only 'match' or 'include' is allowed")
+					if (!filterToCheckAgainst.filter || !filterToCheckAgainst.value){
+						return
 					}
-					if (hasMatch){
-						const matchMultiple = Array.isArray(match)
 
-						if (matchMultiple){
-							let canInclude = false
-
-							if (!match.length){
-								canInclude = true
-							}
-
-
-							match.forEach(termToMatch=>{
-								if (canInclude){
-									return
-								}
-
-								if (termToMatch === item[prop]){
-									canInclude = true
-								}
-							})
-
-							assumePassesFilter = assumePassesFilter && canInclude
-						}
-						else{
-							if (typeof match === "undefined" || match === null){
-								return
-							}
-
-							assumePassesFilter = assumePassesFilter && match === item[prop]
-						}
-					}
-					else if (hasInclude){
-						const matchMultiple = Array.isArray(include)
-
-						if (matchMultiple){
-							let canInclude = false
-
-
-							if (!include.length){
-								canInclude = true
-							}
-
-							include.forEach(termToInclude=>{
-								if (canInclude || !termToInclude){
-									return
-								}
-
-								if ( String.prototype.includes.call(
-									String.prototype.toLowerCase.call(item[prop]),
-									termToInclude
-								) ){
-									canInclude = true
-								}
-							})
-
-							assumePassesFilter = assumePassesFilter && canInclude
-						}
-						else{
-							if (typeof include === "undefined" || include === ""){
-								return
-							}
-
-							assumePassesFilter = assumePassesFilter && String.prototype.includes.call(
-								String.prototype.toLowerCase.call(item[prop]),
-								include
-							)
-						}
-					}
+					assumePassesFilter = assumePassesFilter && filterToCheckAgainst.filter(filterToCheckAgainst.value, item[prop])
 
 				})
 
@@ -116,6 +53,42 @@ export default function useFilter(defaultFilters){
 		filteredData,
 		updateSourceData,
 		filters,
-		updateFilters,
+		patchFilters,
 	]
+}
+
+
+// copy paste code from https://stackoverflow.com/questions/27936772/how-to-deep-merge-instead-of-shallow-merge
+// too lazy to actually do the coding
+
+/**
+ * Simple object check.
+ * @param item
+ * @returns {boolean}
+ */
+export function isObject(item) {
+	return (item && typeof item === 'object' && !Array.isArray(item));
+}
+  
+/**
+ * Deep merge two objects.
+ * @param target
+ * @param ...sources
+ */
+export function mergeDeep(target, ...sources) {
+	if (!sources.length) return target;
+	const source = sources.shift();
+
+	if (isObject(target) && isObject(source)) {
+		for (const key in source) {
+		if (isObject(source[key])) {
+			if (!target[key]) Object.assign(target, { [key]: {} });
+			mergeDeep(target[key], source[key]);
+		} else {
+			Object.assign(target, { [key]: source[key] });
+		}
+		}
+	}
+
+	return mergeDeep(target, ...sources);
 }

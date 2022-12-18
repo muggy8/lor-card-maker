@@ -66,25 +66,24 @@ function deckBuilderComponenet(){
 		})
 	}, [])
 
-	const [displayedRitoCards, updateRitoCardSource, currentFilters, updateFilters] = useFilter({
+	const [displayedRitoCards, updateRitoCardSource, currentFilters, patchFilters] = useFilter({
 		collectible: {
-			match: true
+			value: true,
+			filter: (userSelectedValue, filteredPropertyValue)=>{
+				return filteredPropertyValue === userSelectedValue
+			}
+		},
+		name: {
+			filter: (userSelectedValue, filteredPropertyValue)=>{
+				return filteredPropertyValue.toLowerCase().includes(userSelectedValue.toLowerCase())
+			}
+		},
+		descriptionRaw: {
+			filter: (userSelectedValue, filteredPropertyValue)=>{
+				return filteredPropertyValue.toLowerCase().includes(userSelectedValue.toLowerCase())
+			}
 		}
 	})
-
-	let unpatchedUpdates = {}
-	const patchFilters = useCallback((patch)=>{
-		unpatchedUpdates = {
-			...unpatchedUpdates,
-			...patch,
-		}
-		const newState = {
-			...currentFilters,
-			...unpatchedUpdates,
-		}
-
-		updateFilters(newState)
-	}, [currentFilters])
 
 	const patchFilter = useCallback((filterToPatch, patchSettings)=>{
 		const patch = {}

@@ -28,10 +28,9 @@ function filterCardListConfigurationComponent (props){
                 
                 checkbox({
                     label: translate("collectible"),
-                    value: props.selectedFilters.collectible && props.selectedFilters.collectible.match,
+                    value: props.selectedFilters.collectible && props.selectedFilters.collectible.value,
                     onChange: selected=>{
-                        console.log(selected)
-                        props.updateSelectedFilter("collectible", { match: selected })
+                        props.updateSelectedFilter("collectible", { value: selected })
                     },
                     options: props.filterOptions.collectible,
                     renderOption: (collectable)=>div(
@@ -42,21 +41,21 @@ function filterCardListConfigurationComponent (props){
 
                 searchText({
                     label: translate("name"),
-                    value: props.selectedFilters.name? props.selectedFilters.name.include : "",
-                    onChange: value=>props.updateSelectedFilter("name", { include: value })
+                    value: props.selectedFilters.name? props.selectedFilters.name.value : "",
+                    onChange: value=>props.updateSelectedFilter("name", { value })
                 }),
                 
                 searchText({
                     label: translate("card_text"),
-                    value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
-                    onChange: value=>props.updateSelectedFilter("descriptionRaw", { include: value })
+                    value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.value : "",
+                    onChange: value=>props.updateSelectedFilter("descriptionRaw", { value })
                 }),
                 
-                searchText({
-                    label: translate("clan"),
-                    value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
-                    onChange: value=>props.updateSelectedFilter("descriptionRaw", { include: value })
-                }),
+                // searchText({
+                //     label: translate("clan"),
+                //     value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
+                //     onChange: value=>props.updateSelectedFilter("descriptionRaw", { value })
+                // }),
             )
         )
     )
