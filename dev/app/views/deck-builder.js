@@ -97,6 +97,14 @@ function deckBuilderComponenet(){
 				}
 				return userSelectedTypes.includes(type)
 			}
+		},
+		keywords: {
+			filter: (userSelectedKeywords, keywords)=>{
+				if (!userSelectedKeywords.length){
+					return true
+				}
+				return keywords.some(keywordOnCard=>userSelectedKeywords.includes(keywordOnCard))
+			}
 		}
 	})
 

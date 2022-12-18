@@ -6,6 +6,7 @@ import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
 import searchText from "/Components/deck/search-text.js";
 import checkbox from "./checkbox.js";
+import { KeywordImageCheck } from "../card-config/edit-keywords.js";
 
 const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
 
@@ -67,6 +68,22 @@ function filterCardListConfigurationComponent (props){
                     renderOption: (type)=>div(
                         { className: "flex vhcenter clickable gutter-trbl-.5" },
                         type
+                    )
+                }),
+
+                checkbox({
+                    label: translate("keyword"),
+                    value: props.selectedFilters.keywords && props.selectedFilters.keywords.value || [],
+                    onChange: selected=>{
+                        props.updateSelectedFilter("keywords", { value: selected })
+                    },
+                    options: props.filterOptions.keywords,
+                    renderOption: (keyword, isChecked)=>div(
+                        { className: "flex vhcenter clickable gutter-trbl-.5" },
+                        KeywordImageCheck({
+                            isChecked,
+                            keywordName: keyword.toLowerCase(),
+                        })
                     )
                 }),
             )

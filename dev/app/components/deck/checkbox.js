@@ -50,7 +50,7 @@ function checkboxComponent(props){
                         onClick: ()=>toggle(value), 
                         key: value,
                     },
-                    props.renderOption(option)
+                    props.renderOption(option, checked)
                 )
             })
         ),
