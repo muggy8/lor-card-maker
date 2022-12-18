@@ -24,7 +24,7 @@ function filterCardListConfigurationComponent (props){
                 div({ className: expanded ? "minus" : "menu" })
             ),
         ),
-        div({ className: "options" },
+        div({ className: "options gutter-b-4" },
             div({ className: "gutter-rbl-.5" },
                 
                 checkbox({
@@ -79,7 +79,7 @@ function filterCardListConfigurationComponent (props){
                     },
                     options: props.filterOptions.keywords,
                     renderOption: (keyword, isChecked)=>div(
-                        { className: "flex vhcenter clickable gutter-trbl-.5" },
+                        { className: "keyword-icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
                         KeywordImageCheck({
                             isChecked,
                             keywordName: keyword.toLowerCase(),

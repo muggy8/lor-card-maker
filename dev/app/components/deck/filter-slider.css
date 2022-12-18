@@ -30,3 +30,7 @@
 .filter-checkbox .checked {
     color: var(--color-primary);
 }
+.filter-checkbox .keyword-icon-checkbox svg {
+    width: auto;
+    height: 3em;
+}
