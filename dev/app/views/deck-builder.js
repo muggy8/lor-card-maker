@@ -69,25 +69,33 @@ function deckBuilderComponenet(){
 	const [displayedRitoCards, updateRitoCardSource, currentFilters, patchFilters] = useFilter({
 		collectible: {
 			value: true,
-			filter: (userSelectedValue, collectible)=>{
-				return collectible === userSelectedValue
+			filter: (userSelectedCollectable, collectible)=>{
+				return collectible === userSelectedCollectable
 			}
 		},
 		name: {
-			filter: (userSelectedValue, name)=>{
-				return name.toLowerCase().includes(userSelectedValue.toLowerCase())
+			filter: (userSelectedName, name)=>{
+				return name.toLowerCase().includes(userSelectedName.toLowerCase())
 			}
 		},
 		descriptionRaw: {
-			filter: (userSelectedValue, descriptionRaw)=>{
-				return descriptionRaw.toLowerCase().includes(userSelectedValue.toLowerCase())
+			filter: (userSelectedDescription, descriptionRaw)=>{
+				return descriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase())
 			}
 		},
 		subtypes: {
-			filter: (userSelectedValue, subtypes)=>{
+			filter: (userSelectedSubtype, subtypes)=>{
 				return Array.prototype.some.call(subtypes, subtypeName=>{
-					return subtypeName.toLowerCase().includes(userSelectedValue.toLowerCase())
+					return subtypeName.toLowerCase().includes(userSelectedSubtype.toLowerCase())
 				})
+			}
+		},
+		type: {
+			filter: (userSelectedTypes, type)=>{
+				if (!userSelectedTypes.length){
+					return true
+				}
+				return userSelectedTypes.includes(type)
 			}
 		}
 	})
@@ -101,6 +109,10 @@ function deckBuilderComponenet(){
 	const [filterOptions, updateFilterOptions] = useState({})
 
 	useEffect(()=>{
+		if (!ritoCards.length){
+			return
+		}
+
 		updateRitoCardSource(ritoCards)
 
 		const options = ritoCards.reduce((variationCollector, card)=>{
@@ -124,16 +136,16 @@ function deckBuilderComponenet(){
 			return variationCollector
 		}, {})
 
-
 		Object.keys(options).forEach(property=>{
 			const valueMap = options[property]
 			options[property] = []
-			valueMap.forEach((value, key)=>{
+			valueMap.forEach((_value, key)=>{
 				options[property].push(key)
 			})
 		})
 
 		updateFilterOptions(options)
+		console.log(options, ritoCards)
 	}, [ritoCards])
 
 	return section(

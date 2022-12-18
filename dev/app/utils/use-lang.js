@@ -171,5 +171,6 @@ const lang = {
         "collectible": "Collectible",
         "yes": "Yes",
         "no": "No",
+        "card_type": "Card Type",
     }
 }

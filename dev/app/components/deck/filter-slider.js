@@ -34,7 +34,7 @@ function filterCardListConfigurationComponent (props){
                     },
                     options: props.filterOptions.collectible,
                     renderOption: (collectable)=>div(
-                        { className: "flex vhcenter clickable" },
+                        { className: "flex vhcenter clickable gutter-trbl-.5" },
                         collectable ? "✔ " + translate("yes") : "✘ " + translate("no")
                     )
                 }),
@@ -55,6 +55,19 @@ function filterCardListConfigurationComponent (props){
                     label: translate("clan"),
                     value: props.selectedFilters.subtypes? props.selectedFilters.subtypes.value : "",
                     onChange: value=>props.updateSelectedFilter("subtypes", { value })
+                }),
+
+                checkbox({
+                    label: translate("card_type"),
+                    value: props.selectedFilters.type && props.selectedFilters.type.value || [],
+                    onChange: selected=>{
+                        props.updateSelectedFilter("type", { value: selected })
+                    },
+                    options: props.filterOptions.type,
+                    renderOption: (type)=>div(
+                        { className: "flex vhcenter clickable gutter-trbl-.5" },
+                        type
+                    )
                 }),
             )
         )

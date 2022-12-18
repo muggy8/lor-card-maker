@@ -38,7 +38,7 @@ function checkboxComponent(props){
                     : option
                 let checked = false
                 if (props.value && (Array.isArray(props.value) || Object.hasOwnProperty.call(props.value, "length"))){
-                    checked = Array.prototpye.includes.call(props.value, value)
+                    checked = Array.prototype.includes.call(props.value, value)
                 }
                 else{
                     checked = props.value === value
