@@ -51,11 +51,11 @@ function filterCardListConfigurationComponent (props){
                     onChange: value=>props.updateSelectedFilter("descriptionRaw", { value })
                 }),
                 
-                // searchText({
-                //     label: translate("clan"),
-                //     value: props.selectedFilters.descriptionRaw? props.selectedFilters.descriptionRaw.include : "",
-                //     onChange: value=>props.updateSelectedFilter("descriptionRaw", { value })
-                // }),
+                searchText({
+                    label: translate("clan"),
+                    value: props.selectedFilters.subtypes? props.selectedFilters.subtypes.value : "",
+                    onChange: value=>props.updateSelectedFilter("subtypes", { value })
+                }),
             )
         )
     )

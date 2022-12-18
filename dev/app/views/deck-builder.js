@@ -69,18 +69,25 @@ function deckBuilderComponenet(){
 	const [displayedRitoCards, updateRitoCardSource, currentFilters, patchFilters] = useFilter({
 		collectible: {
 			value: true,
-			filter: (userSelectedValue, filteredPropertyValue)=>{
-				return filteredPropertyValue === userSelectedValue
+			filter: (userSelectedValue, collectible)=>{
+				return collectible === userSelectedValue
 			}
 		},
 		name: {
-			filter: (userSelectedValue, filteredPropertyValue)=>{
-				return filteredPropertyValue.toLowerCase().includes(userSelectedValue.toLowerCase())
+			filter: (userSelectedValue, name)=>{
+				return name.toLowerCase().includes(userSelectedValue.toLowerCase())
 			}
 		},
 		descriptionRaw: {
-			filter: (userSelectedValue, filteredPropertyValue)=>{
-				return filteredPropertyValue.toLowerCase().includes(userSelectedValue.toLowerCase())
+			filter: (userSelectedValue, descriptionRaw)=>{
+				return descriptionRaw.toLowerCase().includes(userSelectedValue.toLowerCase())
+			}
+		},
+		subtypes: {
+			filter: (userSelectedValue, subtypes)=>{
+				return Array.prototype.some.call(subtypes, subtypeName=>{
+					return subtypeName.toLowerCase().includes(userSelectedValue.toLowerCase())
+				})
 			}
 		}
 	})
@@ -105,6 +112,12 @@ function deckBuilderComponenet(){
 				variationCollector[property] = variationCollector[property] || new Map()
 
 				const value = card[property]
+				if (Array.isArray(value)){
+					value.forEach(actualValue=>{
+						variationCollector[property].set(actualValue, true)
+					})
+					return
+				}
 				variationCollector[property].set(value, true)
 			})
 
