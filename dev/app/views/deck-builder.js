@@ -92,7 +92,7 @@ function deckBuilderComponenet(){
 		},
 		type: {
 			filter: (userSelectedTypes, type)=>{
-				if (!userSelectedTypes.length){
+				if (!userSelectedTypes || !userSelectedTypes.length){
 					return true
 				}
 				return userSelectedTypes.includes(type)
@@ -100,12 +100,20 @@ function deckBuilderComponenet(){
 		},
 		keywords: {
 			filter: (userSelectedKeywords, keywords)=>{
-				if (!userSelectedKeywords.length){
+				if (!userSelectedKeywords || !userSelectedKeywords.length){
 					return true
 				}
 				return keywords.some(keywordOnCard=>userSelectedKeywords.includes(keywordOnCard))
 			}
-		}
+		},
+		rarity: {
+			filter: (userSelectedRarities, rarity)=>{
+				if (!userSelectedRarities || !userSelectedRarities.length){
+					return true
+				}
+				return userSelectedRarities.includes(rarity)
+			}
+		},
 	})
 
 	const patchFilter = useCallback((filterToPatch, patchSettings)=>{

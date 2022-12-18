@@ -22,6 +22,8 @@
 .filter-slider.expanded .options {
     max-height: calc( calc(100vh - var(--banner-height)) - var(--flex-box-gutter));
     transition-timing-function: ease-in;
+
+    padding-bottom: calc( 6 * var(--flex-box-gutter) );
 }
 
 .filter-checkbox .ghost {
@@ -30,7 +32,8 @@
 .filter-checkbox .checked {
     color: var(--color-primary);
 }
-.filter-checkbox .keyword-icon-checkbox svg {
+.filter-checkbox .icon-checkbox svg, 
+.filter-checkbox .icon-checkbox img {
     width: auto;
     height: 3em;
 }

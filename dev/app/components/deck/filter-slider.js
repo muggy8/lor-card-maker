@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "/cdn/react";
 import svgWrap from "../card-template/svg-wrap.js";
-import factory, { div, strong } from "/Utils/elements.js";
+import factory, { div, strong, img } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
@@ -24,7 +24,7 @@ function filterCardListConfigurationComponent (props){
                 div({ className: expanded ? "minus" : "menu" })
             ),
         ),
-        div({ className: "options gutter-b-4" },
+        div({ className: "options" },
             div({ className: "gutter-rbl-.5" },
                 
                 checkbox({
@@ -72,6 +72,26 @@ function filterCardListConfigurationComponent (props){
                 }),
 
                 checkbox({
+                    label: translate("rarity"),
+                    value: props.selectedFilters.rarity && props.selectedFilters.rarity.value || [],
+                    onChange: selected=>{
+                        props.updateSelectedFilter("rarity", { value: selected })
+                    },
+                    options: props.filterOptions.rarity,
+                    renderOption: (rarity, isChecked)=>{
+                        if (rarity.toLowerCase() === "none"){
+                            return null
+                        }
+                        return div(
+                            { className: (isChecked ? "" : "ghost ") + "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                            img({
+                                src: `/Assets/shared/${rarity.toLowerCase()}.png`
+                            })
+                        )
+                    }
+                }),
+
+                checkbox({
                     label: translate("keyword"),
                     value: props.selectedFilters.keywords && props.selectedFilters.keywords.value || [],
                     onChange: selected=>{
@@ -79,7 +99,7 @@ function filterCardListConfigurationComponent (props){
                     },
                     options: props.filterOptions.keywords,
                     renderOption: (keyword, isChecked)=>div(
-                        { className: "keyword-icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                        { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
                         KeywordImageCheck({
                             isChecked,
                             keywordName: keyword.toLowerCase(),
