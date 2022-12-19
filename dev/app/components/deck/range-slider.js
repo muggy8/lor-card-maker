@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from "/cdn/react"
 
 function rangeSliderComponent(props){
 
-    const [min, updateMin] = useState(undefined)
-    const [max, updateMax] = useState(undefined)
+    const [min, updateMin] = useState(0)
+    const [max, updateMax] = useState(1)
 
     useEffect(()=>{
         const rangeClone = [...props.range]
