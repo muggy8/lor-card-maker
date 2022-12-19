@@ -47,6 +47,8 @@ function getRitoCardsFromDataDump({sets}){
 
 function deckBuilderComponenet(){
 
+	const translate = useLang()
+
 	const [customCards, updateCustomcards] = useState()
 	useEffect(()=>{
 		getCardList().then(updateCustomcards)
@@ -59,10 +61,13 @@ function deckBuilderComponenet(){
 		})
 	}, [])
 
+	const [ritoLoading, updateRitoLoading] = useState(false)
 	const loadRitoData = useCallback(()=>{
+		updateRitoLoading(true)
 		getLatestRitoData().then(async ritoData => {
 			await patchRitoCards(ritoData)
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
+			updateRitoLoading(false)
 		})
 	}, [])
 
@@ -125,7 +130,7 @@ function deckBuilderComponenet(){
 	const [filterOptions, updateFilterOptions] = useState({})
 
 	useEffect(()=>{
-		if (!ritoCards.length){
+		if (!ritoCards || !ritoCards.length){
 			return
 		}
 
@@ -173,10 +178,10 @@ function deckBuilderComponenet(){
 			{ className: "card-finder box-xs-12 box-s-10 box-m-5 box-l-4" },
 			div(
 				{ className: "gutter-rl" },
-				// button({ onClick: loadRitoData }, "update"),
 
 				filterSlider({
 					refreshRitoData: loadRitoData,
+					refreshRitoLoading: ritoLoading,
 					filterOptions,
 					updateSelectedFilters: patchFilters,
 					updateSelectedFilter: patchFilter,
@@ -208,7 +213,26 @@ function deckBuilderComponenet(){
 						)
 						:undefined
 					)
-				)
+				),
+
+				!ritoCards || !ritoCards.length 
+					? div(
+						{ className: "flex" },
+						button(
+							{ 
+								onClick: loadRitoData,
+								className: "gutter-trbl-.5 grow",
+							}, 
+							ritoLoading 
+								? div({ className: "icon" }, 
+									div({ className: "loading" })
+								)
+								: translate("load_rito_data")
+							,
+						)
+					)
+					: undefined 
+				, 
 			),
 			div(),
 		)
