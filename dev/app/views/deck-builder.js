@@ -113,16 +113,25 @@ function deckBuilderComponenet(){
 		},
 		name: {
 			filter: (userSelectedName, name)=>{
+				if (!userSelectedName){
+					return true
+				}
 				return name.toLowerCase().includes(userSelectedName.toLowerCase())
 			}
 		},
 		descriptionRaw: {
 			filter: (userSelectedDescription, descriptionRaw)=>{
-				return descriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase())
+				if (!userSelectedDescription){
+					return true
+				}
+				return descriptionRaw.toLowerCase().includes(userSelectedDescription .toLowerCase())
 			}
 		},
 		subtypes: {
 			filter: (userSelectedSubtype, subtypes)=>{
+				if (!userSelectedSubtype){
+					return true
+				}
 				return Array.prototype.some.call(subtypes, subtypeName=>{
 					return subtypeName.toLowerCase().includes(userSelectedSubtype.toLowerCase())
 				})

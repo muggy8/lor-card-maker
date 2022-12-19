@@ -174,5 +174,6 @@ const lang = {
         "card_type": "Card Type",
         "refresh_rito_data": "Refresh Riot Data",
         "load_rito_data": "Load Riot Data",
+        "clear_filters": "Clear Filteres",
     }
 }

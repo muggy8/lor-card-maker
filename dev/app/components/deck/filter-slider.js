@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "/cdn/react";
+import { useEffect, useState, useCallback } from "/cdn/react";
 import factory, { div, strong, img, button, } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
@@ -40,6 +40,28 @@ function filterCardListConfigurationComponent (props){
                             )
                             : translate("refresh_rito_data")
                         ,
+                    ),
+                    div({ className: "gutter-r-.5" }),
+                    button(
+                        { 
+                            onClick: ()=>{
+                                props.updateSelectedFilters({
+                                    collectible: { value: true },
+                                    name: { value: undefined },
+                                    descriptionRaw: { value: undefined },
+                                    subtypes: { value: undefined },
+                                    rarity: { value: undefined },
+                                    cost: { value: undefined },
+                                    type: { value: undefined },
+                                    health: { value: undefined },
+                                    attack: { value: undefined },
+                                    spellSpeed: { value: undefined },
+                                    keywords: { value: undefined },
+                                })
+                            },
+                            className: "gutter-trbl-.5 grow",
+                        }, 
+                        translate("clear_filters"),
                     )
                 ), 
                 
@@ -128,6 +150,9 @@ function filterCardListConfigurationComponent (props){
                             if (!selected.some(type=>type.toLowerCase() === "unit")){
                                 props.updateSelectedFilter("health", { value: undefined })
                                 props.updateSelectedFilter("attack", { value: undefined })
+                            }
+                            if (!selected.some(type=>type.toLowerCase() === "spell")){
+                                props.updateSelectedFilter("spellSpeed", { value: undefined })
                             }
                         },
                         options: props.filterOptions.type,
