@@ -44,13 +44,19 @@ function checkboxComponent(props){
                     checked = props.value === value
                 }
 
+                const renderedOption = props.renderOption(option, checked)
+
+                if (!renderedOption){
+                    return undefined
+                }
+
                 return div(
                     { 
                         className: `grow ${checked ? "checked" : "ghost" }`, 
                         onClick: ()=>toggle(value), 
                         key: value,
                     },
-                    props.renderOption(option, checked)
+                    renderedOption
                 )
             })
         ),

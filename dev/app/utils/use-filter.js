@@ -37,7 +37,7 @@ export default function useFilter(defaultFilters){
 						return
 					}
 
-					assumePassesFilter = assumePassesFilter && filterToCheckAgainst.filter(filterToCheckAgainst.value, item[prop])
+					assumePassesFilter = assumePassesFilter && filterToCheckAgainst.filter(filterToCheckAgainst.value, item[prop], item)
 
 				})
 

@@ -86,22 +86,6 @@ function filterCardListConfigurationComponent (props){
                     : undefined
                 ,
 
-                props.filterOptions.type && props.filterOptions.type.length
-                    ? checkbox({
-                        label: translate("card_type"),
-                        value: props.selectedFilters.type && props.selectedFilters.type.value || [],
-                        onChange: selected=>{
-                            props.updateSelectedFilter("type", { value: selected })
-                        },
-                        options: props.filterOptions.type,
-                        renderOption: (type)=>div(
-                            { className: "flex vhcenter clickable gutter-trbl-.5" },
-                            type
-                        )
-                    })
-                    : undefined
-                ,
-
                 props.filterOptions.rarity && props.filterOptions.rarity.length
                     ? checkbox({
                         label: translate("rarity"),
@@ -129,8 +113,48 @@ function filterCardListConfigurationComponent (props){
                     ? rangeSlider({
                         label: translate("mana_cost"),
                         range: props.filterOptions.cost,
-                        value: props.selectedFilters.cost ? props.selectedFilters.cost.value : [],
+                        value: props.selectedFilters.cost && props.selectedFilters.cost.value,
                         onChange: value=>props.updateSelectedFilter("cost", { value })
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.type && props.filterOptions.type.length
+                    ? checkbox({
+                        label: translate("card_type"),
+                        value: props.selectedFilters.type && props.selectedFilters.type.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("type", { value: selected })
+                            if (!selected.some(type=>type.toLowerCase() === "unit")){
+                                props.updateSelectedFilter("health", { value: undefined })
+                                props.updateSelectedFilter("attack", { value: undefined })
+                            }
+                        },
+                        options: props.filterOptions.type,
+                        renderOption: (type)=>div(
+                            { className: "flex vhcenter clickable gutter-trbl-.5" },
+                            type
+                        )
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.attack && props.filterOptions.attack.length && Array.prototype.some.call((props.selectedFilters.type || {}).value || [], type=>type.toLowerCase() === "unit")
+                    ? rangeSlider({
+                        label: translate("power"),
+                        range: props.filterOptions.attack,
+                        value: props.selectedFilters.attack && props.selectedFilters.attack.value,
+                        onChange: value=>props.updateSelectedFilter("attack", { value }),
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.health && props.filterOptions.health.length && Array.prototype.some.call((props.selectedFilters.type || {}).value || [], type=>type.toLowerCase() === "unit")
+                    ? rangeSlider({
+                        label: translate("health"),
+                        range: props.filterOptions.health,
+                        value: props.selectedFilters.health && props.selectedFilters.health.value,
+                        onChange: value=>props.updateSelectedFilter("health", { value })
                     })
                     : undefined
                 ,

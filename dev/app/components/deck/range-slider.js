@@ -20,7 +20,7 @@ function rangeSliderComponent(props){
         ])
     }, [props.onChange])
 
-    return div({ className: "slider-option gutter-b-.5" }, 
+    return div({ className: "slider-option gutter-b-1" }, 
         div({ className: "gutter-b-.5" }, props.label),
         div({ className: "flex gutter-rl-.5" },
             div({ className: "grow gutter-trb-1 flex gutter-l-.5" }, 

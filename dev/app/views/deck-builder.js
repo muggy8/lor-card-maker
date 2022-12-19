@@ -129,7 +129,37 @@ function deckBuilderComponenet(){
 
 				return cost <= max && cost >= min
 			}
-		}
+		},
+		attack: {
+			filter: (userSelectedAtttackRange, attack, card)=>{
+				if (!userSelectedAtttackRange || !userSelectedAtttackRange.length){
+					return true
+				}
+
+				if ((card.type || "").toLowerCase() !== "unit"){
+					return false
+				}
+
+				const [min, max] = userSelectedAtttackRange
+
+				return attack <= max && attack >= min
+			}
+		},
+		health: {
+			filter: (userSelectedHealthRange, health, card)=>{
+				if (!userSelectedHealthRange || !userSelectedHealthRange.length){
+					return true
+				}
+
+				if ((card.type || "").toLowerCase() !== "unit"){
+					return false
+				}
+
+				const [min, max] = userSelectedHealthRange
+
+				return health <= max && health >= min
+			}
+		},
 	})
 
 	const patchFilter = useCallback((filterToPatch, patchSettings)=>{
