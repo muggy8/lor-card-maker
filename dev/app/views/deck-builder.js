@@ -119,6 +119,17 @@ function deckBuilderComponenet(){
 				return userSelectedRarities.includes(rarity)
 			}
 		},
+		cost: {
+			filter: (userSelectedCostRange, cost)=>{
+				if (!userSelectedCostRange || !userSelectedCostRange.length){
+					return true
+				}
+
+				const [min, max] = userSelectedCostRange
+
+				return cost <= max && cost >= min
+			}
+		}
 	})
 
 	const patchFilter = useCallback((filterToPatch, patchSettings)=>{

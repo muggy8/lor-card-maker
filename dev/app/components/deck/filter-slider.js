@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "/cdn/react";
-import svgWrap from "../card-template/svg-wrap.js";
 import factory, { div, strong, img, button, } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
 import searchText from "/Components/deck/search-text.js";
 import checkbox from "./checkbox.js";
+import rangeSlider from "./range-slider.js";
 import { KeywordImageCheck } from "../card-config/edit-keywords.js";
 
 const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
@@ -121,6 +121,16 @@ function filterCardListConfigurationComponent (props){
                                 })
                             )
                         }
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.cost && props.filterOptions.cost.length
+                    ? rangeSlider({
+                        label: translate("mana_cost"),
+                        range: props.filterOptions.cost,
+                        value: props.selectedFilters.cost ? props.selectedFilters.cost.value : [],
+                        onChange: value=>props.updateSelectedFilter("cost", { value })
                     })
                     : undefined
                 ,
