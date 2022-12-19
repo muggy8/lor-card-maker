@@ -45,6 +45,39 @@ function getRitoCardsFromDataDump({sets}){
 	return cards
 }
 
+function getOptionsFromRitoCardsList(cardList){
+	const options = cardList.reduce((variationCollector, card)=>{
+		if (!card){
+			return variationCollector
+		}
+
+		Object.keys(card).forEach(property=>{
+			variationCollector[property] = variationCollector[property] || new Map()
+
+			const value = card[property]
+			if (Array.isArray(value)){
+				value.forEach(actualValue=>{
+					variationCollector[property].set(actualValue, true)
+				})
+				return
+			}
+			variationCollector[property].set(value, true)
+		})
+
+		return variationCollector
+	}, {})
+
+	Object.keys(options).forEach(property=>{
+		const valueMap = options[property]
+		options[property] = []
+		valueMap.forEach((_value, key)=>{
+			options[property].push(key)
+		})
+	})
+
+	return options
+}
+
 function deckBuilderComponenet(){
 
 	const translate = useLang()
@@ -185,38 +218,22 @@ function deckBuilderComponenet(){
 
 		updateRitoCardSource(ritoCards)
 
-		const options = ritoCards.reduce((variationCollector, card)=>{
-			if (!card){
-				return variationCollector
-			}
+		if (!displayedRitoCards || !displayedRitoCards.length){
+			return
+		}
 
-			Object.keys(card).forEach(property=>{
-				variationCollector[property] = variationCollector[property] || new Map()
+		const baseOptions = getOptionsFromRitoCardsList(ritoCards)
+		const filteredResultsOptions = getOptionsFromRitoCardsList(displayedRitoCards)
+		const trueOptions = {
+			...baseOptions,
+			keywords: filteredResultsOptions.keywords,
+			attack: filteredResultsOptions.attack,
+			health: filteredResultsOptions.health,
+		}
 
-				const value = card[property]
-				if (Array.isArray(value)){
-					value.forEach(actualValue=>{
-						variationCollector[property].set(actualValue, true)
-					})
-					return
-				}
-				variationCollector[property].set(value, true)
-			})
-
-			return variationCollector
-		}, {})
-
-		Object.keys(options).forEach(property=>{
-			const valueMap = options[property]
-			options[property] = []
-			valueMap.forEach((_value, key)=>{
-				options[property].push(key)
-			})
-		})
-
-		updateFilterOptions(options)
-		console.log(options, ritoCards)
-	}, [ritoCards])
+		updateFilterOptions(trueOptions)
+		// console.log(options, ritoCards)
+	}, [ritoCards, displayedRitoCards])
 
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
