@@ -227,8 +227,6 @@ function deckBuilderComponenet(){
 		const trueOptions = {
 			...baseOptions,
 			keywords: filteredResultsOptions.keywords,
-			attack: filteredResultsOptions.attack,
-			health: filteredResultsOptions.health,
 		}
 
 		updateFilterOptions(trueOptions)
