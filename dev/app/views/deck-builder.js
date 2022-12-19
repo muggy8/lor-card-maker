@@ -119,6 +119,14 @@ function deckBuilderComponenet(){
 				return userSelectedRarities.includes(rarity)
 			}
 		},
+		spellSpeed: {
+			filter: (userSelectedSpellSpeeds, spellSpeed)=>{
+				if (!userSelectedSpellSpeeds || !userSelectedSpellSpeeds.length){
+					return true
+				}
+				return userSelectedSpellSpeeds.includes(spellSpeed)
+			}
+		},
 		cost: {
 			filter: (userSelectedCostRange, cost)=>{
 				if (!userSelectedCostRange || !userSelectedCostRange.length){

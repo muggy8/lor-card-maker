@@ -139,6 +139,28 @@ function filterCardListConfigurationComponent (props){
                     : undefined
                 ,
 
+                props.filterOptions.spellSpeed && props.filterOptions.spellSpeed.length && Array.prototype.some.call((props.selectedFilters.type || {}).value || [], type=>type.toLowerCase() === "spell")
+                    ? checkbox({
+                        label: translate("speed"),
+                        value: props.selectedFilters.spellSpeed && props.selectedFilters.spellSpeed.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("spellSpeed", { value: selected })
+                        },
+                        options: props.filterOptions.spellSpeed,
+                        renderOption: (speed, isChecked)=>
+                            speed 
+                                ? div(
+                                    { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                                    KeywordImageCheck({
+                                        isChecked,
+                                        keywordName: speed.toLowerCase(),
+                                    })
+                                ) : undefined
+                        ,
+                    })
+                    : undefined
+                ,
+
                 props.filterOptions.attack && props.filterOptions.attack.length && Array.prototype.some.call((props.selectedFilters.type || {}).value || [], type=>type.toLowerCase() === "unit")
                     ? rangeSlider({
                         label: translate("power"),
