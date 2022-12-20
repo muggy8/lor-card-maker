@@ -317,24 +317,24 @@ function deckBuilderComponenet(){
 				{ className: "flex card-list-options" },
 				div(
 					{ 
-						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("rito"),
 					}, 
-					span(translate("official_cards"))
+					translate("official_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("custom"),
 					}, 
-					span(translate("custom_cards"))
+					translate("custom_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("inDeck"),
 					}, 
-					span(translate("currently_selected_cards"))
+					translate("currently_selected_cards")
 				),
 			),
 
