@@ -9,9 +9,9 @@ import { KeywordImageCheck } from "../card-config/edit-keywords.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import { getRitoSetIconData } from "/Utils/service.js";
 
-const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
+const cssLoaded = linkAsset("/Components/deck/rito-cards-filters-ui.css")
 
-function filterCardListConfigurationComponent (props){
+function filterRitoCardListConfigurationComponent (props){
     const [expanded, toggleExpanded] = useToggle(false)
     const translate = useLang()
 
@@ -266,5 +266,5 @@ function setIconCompoennt(props){
         : undefined
 }
 
-export default factory(filterCardListConfigurationComponent, cssLoaded)
+export default factory(filterRitoCardListConfigurationComponent, cssLoaded)
 export const SetIcon = factory(setIconCompoennt)

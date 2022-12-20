@@ -3,3 +3,17 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#deck-builder .card-list-options .tab-header {
+    border: solid 1px var(--color-clear);
+    border-bottom: solid 1px var(--color-border);
+}
+
+#deck-builder .card-list-options .tab-header.active {
+    border: solid 1px var(--color-border);
+    border-bottom: solid 1px var(--color-clear);
+}
+#deck-builder .tab-body {
+    border-left: solid 1px var(--color-border);
+    border-right: solid 1px var(--color-border);
+}

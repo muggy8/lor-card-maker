@@ -1,4 +1,4 @@
-import factory, { div, button, strong, section } from "/Utils/elements.js"
+import factory, { div, span, button, nav, section } from "/Utils/elements.js"
 import { useState, useCallback, useRef } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
@@ -6,7 +6,7 @@ import useLang from "/Utils/use-lang.js"
 import useFilter from "/Utils/use-filter.js"
 import listLimit from "/Components/list-limit.js"
 import cardName from "/Components/deck/card-name.js"
-import filterSlider from "/Components/deck/filter-slider.js"
+import ritoCardsFiltersUi from "/Components/deck/rito-cards-filters-ui.js"
 import deckView from "/Components/deck/deck-view.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 
@@ -83,6 +83,8 @@ function getOptionsFromRitoCardsList(cardList){
 function deckBuilderComponenet(){
 
 	const translate = useLang()
+
+	const [selectedTab, updateSelectedTab] = useState("rito")
 
 	const customCards = useAssetCache(updateCustomcards=>{
 		getCardList().then(updateCustomcards)
@@ -310,10 +312,36 @@ function deckBuilderComponenet(){
 		),
 		div(
 			{ className: "card-finder box-xs-12 box-s-10 box-m-5 box-l-4" },
-			div(
-				{ className: "gutter-rl" },
 
-				filterSlider({
+			nav(
+				{ className: "flex card-list-options" },
+				div(
+					{ 
+						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						onClick: ()=>updateSelectedTab("rito"),
+					}, 
+					span(translate("official_cards"))
+				),
+				div(
+					{ 
+						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						onClick: ()=>updateSelectedTab("custom"),
+					}, 
+					span(translate("custom_cards"))
+				),
+				div(
+					{ 
+						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter",
+						onClick: ()=>updateSelectedTab("inDeck"),
+					}, 
+					span(translate("currently_selected_cards"))
+				),
+			),
+
+			div(
+				{ className: "gutter-rl tab-body" },
+
+				ritoCardsFiltersUi({
 					refreshRitoData: loadRitoData,
 					refreshRitoLoading: ritoLoading,
 					filterOptions,

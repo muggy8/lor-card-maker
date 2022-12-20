@@ -175,5 +175,8 @@ const lang = {
         "load_rito_data": "Load Riot Data",
         "clear_filters": "Clear Filteres",
         "expantion": "Expantion",
+        "official_cards": "Official Cards",
+        "custom_cards": "Custom Cards",
+        "currently_selected_cards": "Currently Selected Cards",
     }
 }
