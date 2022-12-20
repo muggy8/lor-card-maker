@@ -1,6 +1,6 @@
 .card-shorthand {
     background-image: var(--mana-ball-type), url(/Assets/deck/background.png);
-    background-position-x: 0, -0.5em;
+    background-position-x: 0, 37.5%;
     background-position-y: center, center;
     background-size: auto 140%, 115% 140%;
     background-repeat: no-repeat, no-repeat;
@@ -13,6 +13,7 @@
 
 .card-shorthand .mana-cost {
     margin-left: .75em;
+    margin-right: 0.25em;
     width: 1.25em;
     display: flex;
     align-items: center;
