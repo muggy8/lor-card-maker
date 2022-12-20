@@ -338,65 +338,71 @@ function deckBuilderComponenet(){
 				),
 			),
 
+			
 			div(
-				{ className: "gutter-rl tab-body" },
-
-				ritoCardsFiltersUi({
-					refreshRitoData: loadRitoData,
-					refreshRitoLoading: ritoLoading,
-					filterOptions,
-					updateSelectedFilters: patchFilters,
-					updateSelectedFilter: patchFilter,
-					selectedFilters: currentFilters
-				}),
-
-				listLimit(
-					{ defaultSize: 24 },
-					(displayedRitoCards || []).map(card=>card
-						? div(
-							{ className: "flex gutter-b", key: card.cardCode },
-
-							cardName({ card, className: "box-9" }, card.name),
-
-							div(
-								{ className: "box-3 flex no-wrap" },
-								button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
-									div({ className: "icon" },
-										div({ className: "add" }),
-									)
-								),
-								div({ className: "gutter-rl-.25" }),
-								button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
-									div({ className: "icon" },
-										div({ className: "minus" }),
-									)
-								),
-							),
-						)
-						:undefined
-					)
-				),
-
-				!ritoCards || !ritoCards.length 
+				{ className: "tab-body" },
+				selectedTab === "rito" 
 					? div(
-						{ className: "flex" },
-						button(
-							{ 
-								onClick: loadRitoData,
-								className: "gutter-trbl-.5 grow",
-							}, 
-							ritoLoading 
-								? div({ className: "icon" }, 
-									div({ className: "loading" })
+						{ className: "gutter-rl" },
+
+						ritoCardsFiltersUi({
+							refreshRitoData: loadRitoData,
+							refreshRitoLoading: ritoLoading,
+							filterOptions,
+							updateSelectedFilters: patchFilters,
+							updateSelectedFilter: patchFilter,
+							selectedFilters: currentFilters
+						}),
+
+						listLimit(
+							{ defaultSize: 24 },
+							(displayedRitoCards || []).map(card=>card
+								? div(
+									{ className: "flex gutter-b", key: card.cardCode },
+
+									cardName({ card, className: "box-9" }, card.name),
+
+									div(
+										{ className: "box-3 flex no-wrap" },
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+											div({ className: "icon" },
+												div({ className: "add" }),
+											)
+										),
+										div({ className: "gutter-rl-.25" }),
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+											div({ className: "icon" },
+												div({ className: "minus" }),
+											)
+										),
+									),
 								)
-								: translate("load_rito_data")
-							,
-						)
-					)
-					: undefined 
-				, 
+								:undefined
+							)
+						),
+
+						!ritoCards || !ritoCards.length 
+							? div(
+								{ className: "flex" },
+								button(
+									{ 
+										onClick: loadRitoData,
+										className: "gutter-trbl-.5 grow",
+									}, 
+									ritoLoading 
+										? div({ className: "icon" }, 
+											div({ className: "loading" })
+										)
+										: translate("load_rito_data")
+									,
+								)
+							)
+							: undefined 
+						, 
+					) 
+					: undefined
+				,
 			),
-			div(),
 		)
 	)
 }
