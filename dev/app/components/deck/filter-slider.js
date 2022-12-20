@@ -1,4 +1,3 @@
-import { useEffect, useState, useCallback } from "/cdn/react";
 import factory, { div, strong, img, button, } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
@@ -7,6 +6,8 @@ import searchText from "/Components/deck/search-text.js";
 import checkbox from "./checkbox.js";
 import rangeSlider from "./range-slider.js";
 import { KeywordImageCheck } from "../card-config/edit-keywords.js";
+import useAssetCache from "/Utils/use-asset-cache.js";
+import { getRitoSetIconData } from "/Utils/service.js";
 
 const cssLoaded = linkAsset("/Components/deck/filter-slider.css")
 
@@ -206,6 +207,27 @@ function filterCardListConfigurationComponent (props){
                     : undefined
                 ,
 
+                props.filterOptions.set && props.filterOptions.set.length
+                    ? checkbox({
+                        label: translate("expantion"),
+                        value: props.selectedFilters.rarity && props.selectedFilters.set.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("set", { value: selected })
+                        },
+                        options: props.filterOptions.set,
+                        renderOption: (set, isChecked)=>{
+                            if (set.toLowerCase() === "none"){
+                                return null
+                            }
+                            return div(
+                                { className: (isChecked ? "" : "ghost ") + "icon-checkbox clickable gutter-trbl-.5" },
+                                SetIcon({ set })
+                            )
+                        }
+                    })
+                    : undefined
+                ,
+
                 props.filterOptions.keywords && props.filterOptions.keywords.length
                     ? checkbox({
                         label: translate("keyword"),
@@ -229,4 +251,20 @@ function filterCardListConfigurationComponent (props){
     )
 }
 
+function setIconCompoennt(props){
+    const iconData = useAssetCache(updateCache=>{
+        props.set && getRitoSetIconData(props.set).then(updateCache)
+    }, [props.set])
+
+    return !!iconData 
+        ? div( { className: "flex vcenter hstart no-wrap" },
+            img({src: iconData.url}),
+            div( { className: "gutter-l-.5" },
+                iconData.name
+            )
+        )
+        : undefined
+}
+
 export default factory(filterCardListConfigurationComponent, cssLoaded)
+export const SetIcon = factory(setIconCompoennt)

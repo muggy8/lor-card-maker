@@ -141,7 +141,6 @@ const lang = {
         "boon": "Boon",
         "silence": "Silence",
         "trigger": "Trigger",
-        // "impact": ["impactn.png"],
         "imbue": "Imbue",
 
         "oled": "Black",
@@ -175,5 +174,6 @@ const lang = {
         "refresh_rito_data": "Refresh Riot Data",
         "load_rito_data": "Load Riot Data",
         "clear_filters": "Clear Filteres",
+        "expantion": "Expantion",
     }
 }

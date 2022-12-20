@@ -146,6 +146,14 @@ function deckBuilderComponenet(){
 				return userSelectedTypes.includes(type)
 			}
 		},
+		set: {
+			filter: (userSelectedSets, set)=>{
+				if (!userSelectedSets || !userSelectedSets.length){
+					return true
+				}
+				return userSelectedSets.includes(set)
+			}
+		},
 		keywords: {
 			filter: (userSelectedKeywords, keywords)=>{
 				if (!userSelectedKeywords || !userSelectedKeywords.length){

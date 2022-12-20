@@ -111,3 +111,39 @@ export function getRitoCardImage(setCode, cardCode){
             })
         })
 }
+
+const ritoSetIconCache = {}
+const setPathDetectorRegex = /img\/sets\/([^\/\n]+)$/gmi
+export function getRitoSetIconData(setId){
+	if (ritoSetIconCache[setId]){
+		return ritoSetIconCache[setId]
+	}
+	// const url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/img/sets/${setId.toLowerCase()}.png`
+
+	return ritoSetIconCache[setId] = new Promise(async (accept, reject)=>{
+		const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json?t=" + Date.now()
+		const coreData = await fetch(coreDataUrl).then(res=>res.json())
+
+		const selectedSetMetadata = Array.prototype.find.call(coreData.sets, setMetaData=>{
+			return setMetaData.nameRef === setId
+		})
+
+		if (!selectedSetMetadata){
+			delete ritoSetIconCache[setId]
+			reject(new Error("Unknown Set"))
+		}
+
+		const pathMatch = /img\/sets\/([^\/\n]+)$/gmi.exec(selectedSetMetadata.iconAbsolutePath)
+		const iconUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/${pathMatch[0].replace("_crispmip", "")}`
+
+		const blob = await fetch(iconUrl).then(res=>res.blob())
+		const reader = new FileReader()
+		reader.addEventListener("load", () => {
+			accept({
+				url: reader.result,
+				name: selectedSetMetadata.name
+			})
+		}, false)
+		reader.readAsDataURL(blob)
+	})
+}
