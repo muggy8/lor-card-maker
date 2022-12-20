@@ -3,7 +3,7 @@
     font-size: 1.25rem;
     top: var(--banner-height);
     background-color: rgba(var(--rgb-bg), 80%);
-    padding-top: calc(var(--flex-box-gutter) * 3);
+    padding-top: var(--flex-box-gutter);
     z-index: 1;
 }
 

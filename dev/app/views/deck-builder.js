@@ -295,7 +295,7 @@ function deckBuilderComponenet(){
 	}, [])
 
 	return section(
-		{ id: "deck-builder", className: "flex hcenter" },
+		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
 		div(
 			{ className: "deck-preview box-xs-12 box-s-10 box-m-7 box-l-8" },
 			deckView({
