@@ -5,7 +5,8 @@ import deckCard from "./deck-card.js";
 function DeckViewComponent(props){
 
     return props.cards.map(deckCardProps=>{
-        return deckCard(deckCardProps)
+        const cardId = deckCardProps.card.id || deckCardProps.card.cardCode
+        return deckCard({...deckCardProps, key: cardId})
     })
 }
 

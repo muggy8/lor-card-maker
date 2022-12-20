@@ -4,6 +4,7 @@ import { isRitoCard } from "./card-name.js";
 import factory, { div } from "/Utils/elements.js";
 import { getRitoCardImage } from "/Utils/service.js";
 import linkAsset from "/Utils/load-css.js";
+import { typeToComponent } from "/Views/list.js";
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
@@ -40,7 +41,12 @@ function ritoCardRendererComponent(props){
 
 
 function customCardRendererComponent(props){
-    return null
+    const [renderingComponent, updateRenderingComponent] = useState()
+    useEffect(()=>{
+        updateRenderingComponent(typeToComponent(props.type))
+    }, [props.type])
+
+    return renderingComponent ? renderingComponent(props) : undefined
 }
 
 export default factory(deckCardComponent, cssLoaded)
