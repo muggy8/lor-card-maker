@@ -7,6 +7,7 @@ import useFilter from "/Utils/use-filter.js"
 import listLimit from "/Components/list-limit.js"
 import cardName from "/Components/deck/card-name.js"
 import filterSlider from "/Components/deck/filter-slider.js"
+import deckView from "/Components/deck/deck-view.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -247,6 +248,15 @@ function deckBuilderComponenet(){
 	const updateRenderedDeck = useCallback(()=>{
 		const renderedDeck = []
 		selectedCards.current.forEach((value)=>renderedDeck.push(value))
+		renderedDeck.sort((a,b)=>{
+			const aManaCost = a.card.mana || a.card.cost
+			const bManaCost = b.card.mana || b.card.cost
+
+			const aName = a.card.name.toLowerCase()
+			const bName = b.card.name.toLowerCase()
+
+			return aManaCost - bManaCost || aName.localeCompare(bName)
+		})
 		updateDeckCardsToRender(renderedDeck)
 	}, [])
 	const addCard = useCallback(card=>{
@@ -287,7 +297,10 @@ function deckBuilderComponenet(){
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
 		div(
-			{ className: "deck-preview box-xs-12 box-s-10 box-m-7 box-l-8" }
+			{ className: "deck-preview box-xs-12 box-s-10 box-m-7 box-l-8" },
+			deckView({
+				cards: deckCardsToRender
+			})
 		),
 		div(
 			{ className: "card-finder box-xs-12 box-s-10 box-m-5 box-l-4" },

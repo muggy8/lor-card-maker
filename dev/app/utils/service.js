@@ -69,8 +69,6 @@ export async function getLatestRitoData(){
 
 	const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
-	console.log(coreData)
-
 	const fetchJobs = coreData.sets.map(expantion=>{
 		const setNameLowerCase = expantion.nameRef.toLowerCase()
 
@@ -88,7 +86,28 @@ export async function getLatestRitoData(){
 
 	coreData.sets.filter(expantion=>expantion.data)
 
-	console.log(coreData)
-
 	return coreData
+}
+
+const ritoCardImageCache = {}
+export function getRitoCardImage(setCode, cardCode){
+	if (ritoCardImageCache[setCode] && ritoCardImageCache[setCode][cardCode]){
+		return ritoCardImageCache[setCode][cardCode]
+	}
+
+	ritoCardImageCache[setCode] = ritoCardImageCache[setCode] || {}
+
+	const setNameLowerCase = setCode.toLowerCase()
+
+	return ritoCardImageCache[setCode][cardCode] = fetch(`https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/img/cards/en_us/${cardCode}.png?t=${Date.now()}`)
+        .then(res=>res.blob())
+        .then(blob=>{
+            const reader = new FileReader()
+            return new Promise(accept=>{
+                reader.addEventListener("load", () => {
+                    accept(reader.result)
+                }, false)
+                reader.readAsDataURL(blob)
+            })
+        })
 }
