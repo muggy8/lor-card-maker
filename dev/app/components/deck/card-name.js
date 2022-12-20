@@ -2,6 +2,7 @@ import { useEffect, useState } from "/cdn/react";
 import datauri from "/Utils/datauri.js";
 import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
+import useAssetCache from "/Utils/use-asset-cache.js";
 
 const cssLoaded = linkAsset("/Components/deck/card-name.css")
 
@@ -52,16 +53,14 @@ const getManaballFast = datauri("/Assets/deck/mana-ball-unit.png")
 const getManaballChamp = datauri("/Assets/deck/mana-ball-champ.png")
 
 function cardNameComponent(props){
-    const [isCustomCard, updateIsCustomCard] = useState()
-    useEffect(()=>{
+    const isCustomCard = useAssetCache(updateIsCustomCard=>{
         updateIsCustomCard(
             !isRitoCard(props.card)
         )
     }, [props.card])
     
     
-    const [manaBallPath, updateManaBallPath] = useState("")
-    useEffect(()=>{
+    const manaBallPath = useAssetCache(updateManaBallPath=>{
         if (typeof isCustomCard === "undefined"){
             return
         }
@@ -117,7 +116,7 @@ function cardNameComponent(props){
         { 
             className: "card-shorthand " + props.className,
             style: {
-                "--mana-ball-type": `url(${manaBallPath})`
+                "--mana-ball-type": manaBallPath ? `url(${manaBallPath})` : "none"
             }
         },
 

@@ -8,6 +8,7 @@ import datauri from "/Utils/datauri.js"
 import useCallbackDebounce from "/Utils/use-debounce-callback.js"
 import { Globals } from "/Views/index.js"
 import {ContextMenu, ContextMenuItem, useContextMenu} from '/cdn/usecontextmenu-react'
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-config/edit-effect.css")
 const contextMenu = factory(ContextMenu)
@@ -266,23 +267,18 @@ function createKeywordHtmlElement(keywordName, iconList){
 }
 
 function KeywordIconComponent(props){
-    const [iconsUri, updateIconsUri] = useState([])
-	useEffect(()=>{
-		if (!props.name){
-			return
+	const iconsUri = useAssetCache(updateIconsUri=>{
+		// props.icons has priority and props.name is fallback as all icons are expected to have a name
+		if (props.icons){ 
+			const iconsFetch = props.icons.map(iconUrl=>datauri(iconUrl))
+			Promise.all(iconsFetch).then(updateIconsUri)
 		}
-		const icons = keywords[props.name]
-		const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
-        Promise.all(iconsFetch).then(updateIconsUri)
-	}, [props.name])
-
-	useEffect(()=>{
-		if (!props.icons){
-			return
+		else if (props.name){
+			const icons = keywords[props.name]
+			const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+			Promise.all(iconsFetch).then(updateIconsUri)
 		}
-		const iconsFetch = props.icons.map(iconUrl=>datauri(iconUrl))
-        Promise.all(iconsFetch).then(updateIconsUri)
-	}, [props.icons])
+	}, [props.name, props.icons], [])
 
 	return div(
 		{

@@ -12,7 +12,8 @@
             "/Assets/*": ["./app/assets/*"],
             "/App/*": ["./app/*"],
             "/cdn/*": ["../node_modules/*"],
-        }
+        },
+        "allowJs": true    
     },
     "exclude": [
         "node_modules",

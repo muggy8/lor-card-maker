@@ -1,11 +1,11 @@
 import factory, { div, span } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import React, { useContext, useState, useEffect } from "/cdn/react"
+import React, { useContext } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
 import datauri from "/Utils/datauri.js"
-import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import { Globals } from "/Views/index.js"
+import { useAssetCache, useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/effect-text.css")
 
@@ -264,38 +264,31 @@ function EffectTextComponent(props){
     const { customKeywords } = useContext(Globals)
 
     // cut up text with a 200ms debounce
-    const [effectTextArray, updateEffectTextArray] = useState([])
-    useEffectDebounce(()=>{
+    const effectTextArray = useAssetCacheDebounced(updateEffectTextArray=>{
         let blueWords = props.blueWords ? [...props.blueWords] : []
         let orangeWords = props.orangeWords ? [...props.orangeWords] : []
         blueWords.sort((a, b)=>b.length - a.length)
         orangeWords.sort((a, b)=>b.length - a.length)
         
         const contentArray = reactifyEffectText(effectText, blueWords, orangeWords, customKeywords)
-
         updateEffectTextArray(contentArray)
+    }, 200, [effectText, props.blueWords, props.orangeWords], [])
 
-    }, 200, [effectText, props.blueWords, props.orangeWords])
-
-    const [levelTextArray, updateLevelTextArray] = useState([])
-    useEffectDebounce(()=>{
+    const levelTextArray = useAssetCacheDebounced(updateLevelTextArray=>{
         let blueWords = props.blueWords ? [...props.blueWords] : []
         let orangeWords = props.orangeWords ? [...props.orangeWords] : []
         blueWords.sort((a, b)=>b.length - a.length)
         orangeWords.sort((a, b)=>b.length - a.length)
         
         const contentArray = reactifyEffectText(levelText, blueWords, orangeWords, customKeywords)
-
         updateLevelTextArray(contentArray)
-
-    }, 200, [levelText, props.blueWords, props.orangeWords])
+    }, 200, [levelText, props.blueWords, props.orangeWords], [])
 
 
     // get the art for the level up bar
-    const [levelupBarUri, updateLevelupBarUri] = useState("")
-    useEffect(()=>{
+    const levelupBarUri = useAssetCache(updateLevelupBarUri=>{
         datauri("/Assets/champion/levelupbar.png").then(updateLevelupBarUri)
-    })
+    }, [])
 
     // create text content elements
     const effectDiv = div.apply(factory, [{className: `effect-text ${props.className || ""}`}, ...effectTextArray])
@@ -333,11 +326,8 @@ function EffectTextComponent(props){
 
 function InlineIconComponent(props){
 
-    const [iconUri, updateIconUri] = useState('')
-
-    useEffect(()=>{
+    const iconUri = useAssetCache(updateIconUri=>{
         const url = props.url || `/Assets/keyword/${props.pngName}`
-
         datauri(url).then(updateIconUri)
     }, [props.pngName, props.url])
 

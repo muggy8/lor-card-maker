@@ -1,7 +1,7 @@
 import factory, { div } from "/Utils/elements.js"
-import { useEffect, useState } from "/cdn/react"
 import loadCss from "/Utils/load-css.js"
 import setImmediateBatch from "/Utils/set-immediate-batch.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/image-render.css")
 
@@ -163,14 +163,9 @@ function getReplicateImage(url){
 function ArtComponent(props){
     const { url } = props
 
-    const [replicatedArt, updateReplicatedArt] = useState({})
-    useEffect(()=>{
-        if (!url){
-            return
-        }
-
-        getReplicateImage(url).then(updateReplicatedArt)
-    }, [url])
+    const replicatedArt = useAssetCache(updateReplicatedArt=>{
+        url && getReplicateImage(url).then(updateReplicatedArt)
+    }, [url], {})
 
     return div(
         {

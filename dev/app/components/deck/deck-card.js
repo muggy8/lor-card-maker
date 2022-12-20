@@ -5,6 +5,7 @@ import factory, { div } from "/Utils/elements.js";
 import { getRitoCardImage } from "/Utils/service.js";
 import linkAsset from "/Utils/load-css.js";
 import { typeToComponent } from "/Views/list.js";
+import useAssetCache from "/Utils/use-asset-cache.js";
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
@@ -20,9 +21,7 @@ function ritoCardRendererComponent(props){
     const cardId = props.cardCode
     const cardSet = props.set
 
-    const [cardImage, updateCardImage] = useState("")
-
-    useEffect(()=>{
+    const cardImage = useAssetCache(updateCardImage=>{
         getRitoCardImage(cardSet, cardId).then(updateCardImage)
     }, [cardId, cardSet])
 
@@ -41,8 +40,7 @@ function ritoCardRendererComponent(props){
 
 
 function customCardRendererComponent(props){
-    const [renderingComponent, updateRenderingComponent] = useState()
-    useEffect(()=>{
+    const renderingComponent = useAssetCache(updateRenderingComponent=>{
         updateRenderingComponent(typeToComponent(props.type))
     }, [props.type])
 

@@ -18,9 +18,8 @@ function SvgWrapComponent(props){
     const transformCallback = useRef()
     transformCallback.current = props.onTransform
 
+	// logic to handle touch drag for card art repositioning
     const [cursor, updateCursor] = useState("inherit")
-
-	// logic to handle touch drag
     useEffect(()=>{
         if (!props.onTransform || !svgRef.current){
             return

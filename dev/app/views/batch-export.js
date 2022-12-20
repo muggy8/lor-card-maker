@@ -11,6 +11,7 @@ import saveSvgAsPng from "/cdn/save-svg-as-png"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
 import listLimit from "/Components/list-limit.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -40,16 +41,18 @@ function BatchExportComponent(){
         }
     }, [])
 
-    const [savedCards, updateSavedCards] = useState([])
-    const [savedCardsById, updateSavedCardsById] = useState({})
-    useEffect(()=>{
+    const savedCards = useAssetCache(updateSavedCards=>{
+        getCardList().then(updateSavedCards)
+    }, [], [])
+
+    savedCardsById = useAssetCache(updateSavedCardsById=>{
         const collectionById = savedCards.reduce((collection, cardData)=>{
             collection[cardData.id] = cardData
             return collection
         }, {})
 
         updateSavedCardsById(collectionById)
-    }, [savedCards])
+    }, [savedCards], {})
 
     const [reRenderKey, updateRerenderKey] = useState(false)
     const forceRerender = useCallback(()=>{
@@ -63,10 +66,6 @@ function BatchExportComponent(){
         const [id, included] = pair
         included && selectedCardsData.push(savedCardsById[id])
     }
-
-    useEffect(()=>{
-        getCardList().then(updateSavedCards)
-    }, [])
 
     const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)

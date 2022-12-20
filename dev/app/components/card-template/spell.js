@@ -12,6 +12,7 @@ import datauri from "/Utils/datauri.js"
 import { speedOptions } from "/Components/card-config/edit-speed.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
+import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -40,66 +41,66 @@ function generateCleanedKeywordSet(keywords, speed){
     return speedlessKeywords
 }
 
+const fac = new FastAverageColor()
 function SpellComponent(props){
     const globalState = useContext(Globals)
 
     // figure out the background and stuff so we can have a color for the card text back
-    const facref = useRef()
     const concurrencyManager = useRef()
     useEffect(()=>{
         concurrencyManager.current = concurrencyManagerFactory()
     }, [])
 
-    const [imageAvgColor, updateImageAvgColor] = useState("var(--color-dark, #777777)")
-    useEffectDebounce(()=>{
-        let fac = facref.current
-        if (!fac){
-            fac = facref.current = new FastAverageColor();
-        }
-
+    const imageAvgColor = useAssetCacheDebounced(updateImageAvgColor=>{
         const imageUrl = props.art || "/Assets/spell/backdrop.png"
 
         fac.getColorAsync(imageUrl)
             .then(color=>{
-                // console.log(color)
                 updateImageAvgColor(color.hex)
             })
             .catch(console.warn)
-    }, 200, [props.art])
+    }, 200, [props.art], "var(--color-dark, #777777)")
 
     // manage the assets and convert them from URL form to base 64 form to make exporting easier
-    const [backgroundUri, updateBackgroundUri] = useState("")
-    const [backdropUri, updateBackdropUri] = useState("")
-    const [frameUri, updateFrameUri] = useState("")
-    const [regionboxUri, updateRegionboxUri] = useState("")
-    const [typingUri, updateTypingUri] = useState("")
-    const [regionNameUri, updateRegionNameUri] = useState([])
-    const [rarityGemUri, updateRarityGemUriUri] = useState("")
-    useEffect(()=>{
+    const backgroundUri = useAssetCache(updateBackgroundUri=>{
         datauri("/Assets/spell/background.png").then(updateBackgroundUri)
+    }, [])
+
+    const backdropUri = useAssetCache(updateBackdropUri=>{
         datauri("/Assets/spell/backdrop.png").then(updateBackdropUri)
+    }, [])
+
+    const typingUri = useAssetCache(updateTypingUri=>{
         datauri("/Assets/landmark/typing.png").then(updateTypingUri)
     }, [])
-    useEffect(()=>{
+
+    const frameUri = useAssetCache(updateFrameUri=>{
         const frameUrl = `/Assets/spell/frame${props.speed || "trap"}.png`
         datauri(frameUrl).then(updateFrameUri)
     }, [props.speed])
-    useEffect(()=>{
+
+    const regionboxUri = useAssetCache(updateRegionboxUri=>{
         if (!props.faction || !props.faction.length){
             return
         }
 
         const regionBoxUrl = `/Assets/spell/regionbox${props.faction.length > 3 ? 3 : props.faction.length}.png`
         datauri(regionBoxUrl).then(updateRegionboxUri)
+    }, [props.faction && props.faction.length])
 
+    const regionNameUri = useAssetCache(updateRegionNameUri=>{
+        if (!props.faction || !props.faction.length){
+            return
+        }
         const fetchJob = props.faction.map(regionName=>{
             const regionIconUrl = `/Assets/region/${regionName}.png`
             return datauri(regionIconUrl)
         })
 
         Promise.all(fetchJob).then(updateRegionNameUri)
-    }, [props.faction && props.faction.length])
-    useEffect(()=>{
+    }, [props.faction && props.faction.length], [])
+
+    const rarityGemUri = useAssetCache(updateRarityGemUriUri=>{
         if (props.rarity && props.rarity !== "gemless" && props.rarity !== "none"){
             const rarityUrl = `/Assets/shared/gem${props.rarity}.png`
             datauri(rarityUrl).then(updateRarityGemUriUri)
@@ -200,7 +201,7 @@ function SpellComponent(props){
         concurrencyManager.current.sequential(()=>scaleFontSize(cardTextAreaRef.current))
     }, 300, [!!props.name, !!(props.keywords && props.keywords.length), props.effect, props.lvup, !!frameUri])
 
-    // here we automate the stuff with the frame and card type and stuff and keep them all in sync
+    // here we automate the stuff with the frame type and keep them in sync with wha the user has chosen in terms of speed
     const propsRef = useRef()
     propsRef.current = props
     useEffect(()=>{

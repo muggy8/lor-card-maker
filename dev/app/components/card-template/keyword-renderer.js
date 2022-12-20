@@ -4,6 +4,7 @@ import useLang from "/Utils/use-lang.js"
 import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react" 
 // import setImmediate from "/Utils/set-immediate-batch.js"
 import datauri from "/Utils/datauri.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/keyword-renderer.css")
 
@@ -63,28 +64,26 @@ function KeywordRendererComponent(props){
     const translate = useLang()
     const wrapperRef = useRef()
 
-    const [iconsUri, updateIconsUri] = useState([])
-    const [leftBumperUri, updateLeftBumperUri] = useState("")
-    const [rightBumperUri, updateRightBumperUri] = useState("")
-    const [centerBumperUri, centerRightBumperUri] = useState("")
-    useEffect(()=>{
+
+    const leftBumperUri = useAssetCache(updateLeftBumperUri=>{
         datauri("/Assets/keyword/keywordleft.png").then(updateLeftBumperUri)
+    }, [])
+    const rightBumperUri = useAssetCache(updateRightBumperUri=>{
         datauri("/Assets/keyword/keywordright.png").then(updateRightBumperUri)
+    }, [])
+    const centerBumperUri = useAssetCache(centerRightBumperUri=>{
         datauri("/Assets/keyword/keywordmiddle.png").then(centerRightBumperUri)
     }, [])
-    useEffect(()=>{
-        if (!icons || !icons.length || (props.icons && props.icons.length)){
-            return
-        }
-        const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
-        Promise.all(iconsFetch).then(updateIconsUri)
-    }, [icons, props.icons])
 
-    useEffect(()=>{
+    const iconsUri = useAssetCache(updateIconsUri=>{
         if (props.icons){
             updateIconsUri(props.icons)
         }
-    }, [props.icons])
+        else if (icons && icons.length){
+            const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
+            Promise.all(iconsFetch).then(updateIconsUri)
+        }
+    }, [props.icons], [])
 
     useLayoutEffect(()=>{
         props.onDimension && props.onDimension({

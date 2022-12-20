@@ -15,6 +15,7 @@ import Landmark from "/Components/card-template/landmark.js"
 import Keyword from "/Components/card-template/keyword.js"
 import CardEditorFactory from "/Views/card-editor.js"
 import DeckBuilder from "/Views/deck-builder.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const sharedDefaultCardData = {
     name: "",
@@ -181,11 +182,9 @@ function ListComponent(){
 
     const translate = useLang()
 
-    const [savedCards, updateSavedCards] = useState([])
-
-    useEffect(()=>{
+    const savedCards = useAssetCache(updateSavedCards=>{
         getCardList().then(updateSavedCards)
-    }, [])
+    }, [], [])
 
     return section(
         {

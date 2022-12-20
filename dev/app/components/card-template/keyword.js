@@ -8,16 +8,17 @@ import EffectText, { scaleFontSize } from "/Components/card-template/effect-text
 import ArtRenderer from "/Components/card-template/image-render.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/keyword.css")
 
 function KeywordComponent(props){
 
-    const [frameUri, updateFrameUri] = useState("")
-    const [divisionUri, updateDivisionUri] = useState("")
-    useEffect(()=>{
+    const frameUri = useAssetCache(updateFrameUri=>{
         datauri("/Assets/keyword/frame.png").then(updateFrameUri)
-        datauri("/Assets/keyword/division.png").then(updateDivisionUri)
+    }, [])
+    const divisionUri = useAssetCache(updateDivisionUri=>{
+        datauri("/Assets/keyword/frame.png").then(updateDivisionUri)
     }, [])
 
     const concurrencyManagerRef = useRef()

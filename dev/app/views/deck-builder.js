@@ -1,5 +1,5 @@
 import factory, { div, button, strong, section } from "/Utils/elements.js"
-import { useState, useCallback, useRef, useEffect } from "/cdn/react"
+import { useState, useCallback, useRef } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -8,6 +8,7 @@ import listLimit from "/Components/list-limit.js"
 import cardName from "/Components/deck/card-name.js"
 import filterSlider from "/Components/deck/filter-slider.js"
 import deckView from "/Components/deck/deck-view.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -83,13 +84,11 @@ function deckBuilderComponenet(){
 
 	const translate = useLang()
 
-	const [customCards, updateCustomcards] = useState()
-	useEffect(()=>{
+	const customCards = useAssetCache(updateCustomcards=>{
 		getCardList().then(updateCustomcards)
 	}, [])
 
-	const [ritoCards, updateRitoCards] = useState([])
-	useEffect(()=>{
+	const ritoCards = useAssetCache(updateRitoCards=>{
 		getRitoCards().then(ritoData=>{
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
 		})
@@ -227,9 +226,7 @@ function deckBuilderComponenet(){
 		patchFilters(patch)
 	}, [patchFilters])
 
-	const [filterOptions, updateFilterOptions] = useState({})
-
-	useEffect(()=>{
+	const filterOptions = useAssetCache(updateFilterOptions=>{
 		if (!ritoCards || !ritoCards.length){
 			return
 		}
@@ -250,7 +247,7 @@ function deckBuilderComponenet(){
 
 		updateFilterOptions(trueOptions)
 		// console.log(options, ritoCards)
-	}, [ritoCards, displayedRitoCards])
+	}, [ritoCards, displayedRitoCards], {})
 
 	const [deckCardsToRender, updateDeckCardsToRender] = useState([])
 	const selectedCards = useRef(new Map())

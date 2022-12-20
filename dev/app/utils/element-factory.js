@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "/cdn/react"
+import useAssetCache from "./use-asset-cache.js"
+import React from "/cdn/react"
 
 const debugRender = false
 
@@ -43,10 +44,9 @@ function factory(reactComponent, awaitThis){
 }
 
 function DeferRenderComponent(props){
-    const [waitDone, updateWaitDone] = useState(false)
-    useEffect(()=>{
+    const waitDone = useAssetCache(updateWaitDone=>{
         props.waitFor.then(()=>updateWaitDone(true))
-    }, [])
+    }, [], false)
 
     if (!waitDone){
         return null
