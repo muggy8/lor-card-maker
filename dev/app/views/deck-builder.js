@@ -1,5 +1,5 @@
 import factory, { div, button, strong, section } from "/Utils/elements.js"
-import { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
+import { useState, useCallback, useRef, useEffect } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -242,6 +242,48 @@ function deckBuilderComponenet(){
 		// console.log(options, ritoCards)
 	}, [ritoCards, displayedRitoCards])
 
+	const [deckCardsToRender, updateDeckCardsToRender] = useState([])
+	const selectedCards = useRef(new Map())
+	const updateRenderedDeck = useCallback(()=>{
+		const renderedDeck = []
+		selectedCards.current.forEach((value)=>renderedDeck.push(value))
+		updateDeckCardsToRender(renderedDeck)
+	}, [])
+	const addCard = useCallback(card=>{
+		const cardId = card.id || card.cardCode
+
+		let existingData = selectedCards.current.get(cardId)
+		if (!existingData){
+			existingData = {
+				count: 0,
+				card
+			}
+
+			selectedCards.current.set(cardId, existingData)
+		}
+
+		existingData.count ++ // we dont limit it at 3 because it's possible that somehow, the user wishes to put 4+ of the same card into the deck cuz PoC or some silly origin passive or something
+
+		updateRenderedDeck()
+	}, [])
+	const removeCard = useCallback(card=>{
+		const cardId = card.id || card.cardCode
+
+		let existingData = selectedCards.current.get(cardId)
+		if (!existingData){
+			return
+		}
+
+		if (existingData.count){
+			existingData.count--
+		}
+
+		if (existingData.count < 1){
+			selectedCards.current.delete(cardId)
+		}
+		updateRenderedDeck()
+	}, [])
+
 	return section(
 		{ id: "deck-builder", className: "flex hcenter" },
 		div(
@@ -271,13 +313,13 @@ function deckBuilderComponenet(){
 
 							div(
 								{ className: "box-3 flex no-wrap" },
-								button({ className: "grow gutter-trbl-.5" }, 
+								button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
 									div({ className: "icon" },
 										div({ className: "add" }),
 									)
 								),
 								div({ className: "gutter-rl-.25" }),
-								button({ className: "grow gutter-trbl-.5" }, 
+								button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
 									div({ className: "icon" },
 										div({ className: "minus" }),
 									)
