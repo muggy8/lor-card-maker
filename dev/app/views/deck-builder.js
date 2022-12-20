@@ -241,6 +241,7 @@ function deckBuilderComponenet(){
 		}
 
 		const baseOptions = getOptionsFromRitoCardsList(ritoCards)
+		baseOptions.set.sort((a,b)=>a.localeCompare(b))
 		const filteredResultsOptions = getOptionsFromRitoCardsList(displayedRitoCards)
 		const trueOptions = {
 			...baseOptions,
