@@ -52,6 +52,7 @@ function filterRitoCardListConfigurationComponent (props){
                                     descriptionRaw: { value: undefined },
                                     subtypes: { value: undefined },
                                     rarity: { value: undefined },
+                                    regionRefs: { value: undefined },
                                     cost: { value: undefined },
                                     type: { value: undefined },
                                     health: { value: undefined },
@@ -105,6 +106,30 @@ function filterRitoCardListConfigurationComponent (props){
                         label: translate("clan"),
                         value: props.selectedFilters.subtypes? props.selectedFilters.subtypes.value : "",
                         onChange: value=>props.updateSelectedFilter("subtypes", { value })
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.regionRefs && props.filterOptions.regionRefs.length
+                    ? checkbox({
+                        label: translate("region"),
+                        value: props.selectedFilters.regionRefs && props.selectedFilters.regionRefs.value || [],
+                        onChange: selected=>{
+                            console.log(selected)
+                            props.updateSelectedFilter("regionRefs", { value: selected })
+                        },
+                        options: props.filterOptions.regionRefs,
+                        renderOption: (region, isChecked)=>{
+                            if (region.toLowerCase() === "none"){
+                                return null
+                            }
+                            return div(
+                                { className: (isChecked ? "" : "ghost ") + "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                                img({
+                                    src: `/Assets/region/${region.toLowerCase()}.png`
+                                })
+                            )
+                        }
                     })
                     : undefined
                 ,

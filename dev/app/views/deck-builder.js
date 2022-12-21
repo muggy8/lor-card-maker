@@ -1,5 +1,5 @@
 import factory, { div, span, button, nav, section } from "/Utils/elements.js"
-import { useState, useCallback, useRef } from "/cdn/react"
+import { useState, useCallback, useRef, useEffect } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -231,11 +231,12 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		console.log(trueOptions, ritoCards)
+		// console.log(trueOptions, customCards)
 	}, [customCards, displayedCustomCards], {})
 
 	// rito cards shinanagas because shinangas
-	const ritoCards = useAssetCache(updateRitoCards=>{
+	const [ritoCards, updateRitoCards] = useState()
+	useEffect(()=>{
 		getRitoCards().then(ritoData=>{
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
 		})
@@ -316,6 +317,14 @@ function deckBuilderComponenet(){
 				return userSelectedRarities.includes(rarity)
 			}
 		},
+		regionRefs: {
+			filter: (userSelectedRegions, cardRegions)=>{
+				if (!userSelectedRegions || !userSelectedRegions.length){
+					return true
+				}
+				return userSelectedRegions.some(userSelectedRegion=>cardRegions.includes(userSelectedRegion))
+			}
+		},
 		spellSpeed: {
 			filter: (userSelectedSpellSpeeds, spellSpeed)=>{
 				if (!userSelectedSpellSpeeds || !userSelectedSpellSpeeds.length){
@@ -393,7 +402,7 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		// console.log(trueOptions, ritoCards)
+		console.log(trueOptions, ritoCards)
 	}, [ritoCards, displayedRitoCards], {})
 
 	// whatever data that's needed for the cards to be rendered in a pretty UI
