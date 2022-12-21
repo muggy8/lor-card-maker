@@ -467,12 +467,12 @@ function deckBuilderComponenet(){
 		renderedDeck.sort((a,b)=>{
 			
 			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
-			const bManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? b.card.mana : b.card.cost
+			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
 
 			const aName = a.card.name.toLowerCase()
 			const bName = b.card.name.toLowerCase()
 
-			return b.count - a.count || aManaCost - bManaCost || aName.localeCompare(bName)
+			return (b.count - a.count) || (aManaCost - bManaCost) || aName.localeCompare(bName)
 		})
 		patchDeck({cards: renderedDeck})
 	}, [])
