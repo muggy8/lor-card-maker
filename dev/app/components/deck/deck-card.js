@@ -48,14 +48,21 @@ function deckCardComponent(props){
             }, 
             className: "in-deck-card-stack"
         },
-        shadowList.map((_, index)=>div(
-            { 
-                key: index,
-                className: "shadow-card"
-            }, 
-            cardShadow
-        )),
-        div({ className: "real-card" }, cardSvg),
+        div(
+            { className: "in-deck-card-stack-sizer" },
+            shadowList.map((_, index)=>div(
+                { 
+                    key: index,
+                    className: "shadow-card",
+                    style: {
+                        top: -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1),
+                        left: -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1),
+                    }
+                }, 
+                cardShadow
+            )).reverse(),
+            div({ className: "real-card" }, cardSvg),
+        ),
     )
 
     return cardSvg // dev related code for testing and debugging

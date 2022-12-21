@@ -13,3 +13,24 @@
     padding-left: 100px;
     padding-top: 100px;
 }
+
+.in-deck-card-stack-sizer {
+    position: relative;
+    width: 100%;
+}
+
+.real-card {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+.shadow-card {
+    z-index: 0;
+    width: 100%;
+    position: absolute;
+}
+
+.shadow-card .loading-shade {
+    color: var(--color-clear);
+}
