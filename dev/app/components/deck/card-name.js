@@ -126,7 +126,7 @@ function cardNameComponent(props){
         ),
         
         div(
-            { className: "shorthand-text" },
+            { className: "shorthand-text capitalize" },
             props.children,
         )
     )

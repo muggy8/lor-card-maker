@@ -150,6 +150,14 @@ function deckBuilderComponenet(){
 				return userSelectedRarities.includes(rarity)
 			}
 		},
+		type: {
+			filter: (userSelectedCardTypes, cardType)=>{
+				if (!userSelectedCardTypes || !userSelectedCardTypes.length){
+					return true
+				}
+				return userSelectedCardTypes.includes(cardType)
+			}
+		},
 		faction: {
 			filter: (userSelectedFactions, cardFactions)=>{
 				if (!userSelectedFactions || !userSelectedFactions.length){
@@ -209,6 +217,19 @@ function deckBuilderComponenet(){
 		},
 	})
 
+	// update custom card card source when needed
+	useEffect(()=>{
+		if (!customCards || !customCards.length){
+			return updateCustomCardSource([])
+		}
+
+		const customActualCards = customCards.filter(card=>{
+			return Object.prototype.hasOwnProperty.call(card, "mana")
+		})
+		updateCustomCardSource(customActualCards)
+
+	}, [customCards])
+
 	const patchCustomcardsFilter = useCallback((filterToPatch, patchSettings)=>{
 		const patch = {}
 		patch[filterToPatch] = patchSettings
@@ -216,24 +237,17 @@ function deckBuilderComponenet(){
 	}, [patchCustomCardsFilters])
 
 	const customCardsFilterOptions = useAssetCache(updateFilterOptions=>{
-		if (!customCards || !customCards.length){
-			return
-		}
-
-		const acceptableCards = customCards.filter(card=>{
-			return Object.prototype.hasOwnProperty.call(card, "mana")
-		})
-		if (!arrayEquals(acceptableCards, displayedCustomCards)){
-			updateCustomCardSource(acceptableCards)
-		}
-
-		if (!displayedCustomCards || !displayedCustomCards.length){
+		if (!customCards || !customCards.length || !displayedCustomCards || !displayedCustomCards.length){
 			return
 		}
 
 		const baseOptions = getOptionsFromCardsList(customCards)
 		baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null)
 		baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null)
+		const originalTypesList = baseOptions.type
+		baseOptions.type = baseOptions.type.filter(type=>!type.toLowerCase().includes("champion")) // filter out all champion types so we can replace it with a genaric champion type for easier filtering
+		originalTypesList.length !== baseOptions.type.length && baseOptions.type.push("champion") // add a genaric champion type back in if we sliced out something with the above logic
+
 		const filteredResultsOptions = getOptionsFromCardsList(displayedCustomCards)
 		const trueOptions = {
 			...baseOptions,
@@ -241,7 +255,7 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		console.log(trueOptions, customCards)
+		console.log(trueOptions, displayedCustomCards)
 	}, [customCards, displayedCustomCards], {})
 
 	// rito cards shinanagas because shinangas
@@ -389,6 +403,14 @@ function deckBuilderComponenet(){
 		},
 	})
 
+	useEffect(()=>{
+		if (!ritoCards || !ritoCards.length){
+			return updateRitoCardSource([])
+		}
+
+		updateRitoCardSource(ritoCards)
+	}, [ritoCards])
+
 	const patchRitocardsFilter = useCallback((filterToPatch, patchSettings)=>{
 		const patch = {}
 		patch[filterToPatch] = patchSettings
@@ -396,13 +418,7 @@ function deckBuilderComponenet(){
 	}, [patchRitoCardsFilters])
 
 	const ritoCardsFilterOptions = useAssetCache(updateFilterOptions=>{
-		if (!ritoCards || !ritoCards.length){
-			return
-		}
-
-		updateRitoCardSource(ritoCards)
-
-		if (!displayedRitoCards || !displayedRitoCards.length){
+		if (!ritoCards || !ritoCards.length || !displayedRitoCards || !displayedRitoCards.length){
 			return
 		}
 
@@ -573,7 +589,7 @@ function deckBuilderComponenet(){
 
 				selectedTab === "custom" 
 					? div(
-						{ className: "gutter-rl gutter-t" },
+						{ className: "gutter-rl" },
 
 						customCardsFiltersUi({
 							filterOptions: customCardsFilterOptions,

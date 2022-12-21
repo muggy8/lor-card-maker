@@ -3,9 +3,9 @@ import linkAsset from "/Utils/load-css.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
 import searchText from "/Components/deck/search-text.js";
-import checkbox from "./checkbox.js";
-import rangeSlider from "./range-slider.js";
-import { KeywordImageCheck } from "../card-config/edit-keywords.js";
+import checkbox from "/Components/deck/checkbox.js";
+import rangeSlider from "/Components/deck/range-slider.js";
+import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import { getRitoSetIconData } from "/Utils/service.js";
 

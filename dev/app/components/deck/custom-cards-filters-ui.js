@@ -1,7 +1,12 @@
 import factory, { div, strong, img, button, } from "/Utils/elements.js";
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
+import searchText from "/Components/deck/search-text.js";
+import checkbox from "/Components/deck/checkbox.js";
+import rangeSlider from "/Components/deck/range-slider.js";
+import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js";
 import linkAsset from "/Utils/load-css.js";
+
 
 const cssLoaded = linkAsset("/Components/deck/custom-cards-filters-ui.css")
 
@@ -9,7 +14,7 @@ function customCardsFiltersComponent(props){
     const [expanded, toggleExpanded] = useToggle(false)
     const translate = useLang()
 
-    div(
+    return div(
         { className: `filter-slider gutter-b-1 ${expanded ? "expanded" : ""}` },
         div({ className: "flex no-wrap vcenter" }, 
             div({ className: "grow clickable", onClick: toggleExpanded }, 
@@ -23,26 +28,178 @@ function customCardsFiltersComponent(props){
         div({ className: "options" },
             div({ className: "gutter-rbl-.5" },
 
-                button(
-                    { 
-                        onClick: ()=>{
-                            props.updateSelectedFilters({
-                                name: { value: undefined },
-                                descriptionRaw: { value: undefined },
-                                subtypes: { value: undefined },
-                                rarity: { value: undefined },
-                                cost: { value: undefined },
-                                type: { value: undefined },
-                                health: { value: undefined },
-                                attack: { value: undefined },
-                                spellSpeed: { value: undefined },
-                                keywords: { value: undefined },
-                            })
+                div(
+                    { className: "flex gutter-b" },
+                    button(
+                        { 
+                            onClick: ()=>{
+                                props.updateSelectedFilters({
+                                    name: { value: undefined },
+                                    effect: { value: undefined },
+                                    lvup: { value: undefined },
+                                    clan: { value: undefined },
+                                    keywords: { value: undefined },
+                                    rarity: { value: undefined },
+                                    type: { value: undefined },
+                                    faction: { value: undefined },
+                                    speed: { value: undefined },
+                                    mana: { value: undefined },
+                                    power: { value: undefined },
+                                    health: { value: undefined },
+                                })
+                            },
+                            className: "gutter-trbl-.5 grow",
+                        }, 
+                        translate("clear_filters"),
+                    )
+                ),
+                
+                props.filterOptions.name && props.filterOptions.name.length
+                    ? searchText({
+                        label: translate("name"),
+                        value: props.selectedFilters.name? props.selectedFilters.name.value : "",
+                        onChange: value=>props.updateSelectedFilter("name", { value })
+                    })
+                    : undefined 
+                ,
+                
+                props.filterOptions.effect && props.filterOptions.effect.length
+                    ? searchText({
+                        label: translate("card_text"),
+                        value: props.selectedFilters.effect? props.selectedFilters.effect.value : "",
+                        onChange: value=>props.updateSelectedFilter("effect", { value })
+                    })
+                    : undefined
+                ,
+                
+                props.filterOptions.lvup && props.filterOptions.lvup.length
+                    ? searchText({
+                        label: translate("lv_up"),
+                        value: props.selectedFilters.lvup? props.selectedFilters.lvup.value : "",
+                        onChange: value=>props.updateSelectedFilter("lvup", { value })
+                    })
+                    : undefined
+                ,
+                
+                props.filterOptions.clan && props.filterOptions.clan.length
+                    ? searchText({
+                        label: translate("clan"),
+                        value: props.selectedFilters.clan? props.selectedFilters.clan.value : "",
+                        onChange: value=>props.updateSelectedFilter("clan", { value })
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.faction && props.filterOptions.faction.length
+                    ? checkbox({
+                        label: translate("region"),
+                        value: props.selectedFilters.faction && props.selectedFilters.faction.value || [],
+                        onChange: selected=>{
+                            console.log(selected)
+                            props.updateSelectedFilter("faction", { value: selected })
                         },
-                        className: "gutter-trbl-.5 grow",
-                    }, 
-                    translate("clear_filters"),
-                )
+                        options: props.filterOptions.faction,
+                        renderOption: (faction, isChecked)=>{
+                            if (!faction || faction.toLowerCase() === "none"){
+                                return null
+                            }
+                            return div(
+                                { className: (isChecked ? "" : "ghost ") + "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                                img({
+                                    src: `/Assets/region/${faction.toLowerCase()}.png`
+                                })
+                            )
+                        }
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.rarity && props.filterOptions.rarity.length
+                    ? checkbox({
+                        label: translate("rarity"),
+                        value: props.selectedFilters.rarity && props.selectedFilters.rarity.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("rarity", { value: selected })
+                        },
+                        options: props.filterOptions.rarity,
+                        renderOption: (rarity, isChecked)=>{
+                            if (rarity.toLowerCase() === "none"){
+                                return null
+                            }
+                            return div(
+                                { className: (isChecked ? "" : "ghost ") + "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                                img({
+                                    src: `/Assets/shared/${rarity.toLowerCase()}.png`
+                                })
+                            )
+                        }
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.mana && props.filterOptions.mana.length
+                    ? rangeSlider({
+                        label: translate("mana_cost"),
+                        range: props.filterOptions.mana,
+                        value: props.selectedFilters.mana && props.selectedFilters.mana.value,
+                        onChange: value=>props.updateSelectedFilter("mana", { value })
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.type && props.filterOptions.type.length
+                    ? checkbox({
+                        label: translate("card_type"),
+                        value: props.selectedFilters.type && props.selectedFilters.type.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("type", { value: selected })
+                            if ( 
+                                !selected.some(type=>type.toLowerCase() === "champion") ||
+                                !selected.some(type=>type.toLowerCase() === "follower") ||
+                                !selected.some(type=>type.toLowerCase() === "spell") 
+                            ){
+                                props.updateSelectedFilter("health", { value: undefined })
+                                props.updateSelectedFilter("power", { value: undefined })
+                            }
+                            if (!selected.some(type=>type.toLowerCase() === "spell")){
+                                props.updateSelectedFilter("speed", { value: undefined })
+                            }
+                        },
+                        options: props.filterOptions.type,
+                        renderOption: (type)=>div(
+                            { className: "flex vhcenter clickable gutter-trbl-.5 capitalize" },
+                            type
+                        )
+                    })
+                    : undefined
+                ,
+
+                props.filterOptions.speed && props.filterOptions.speed.length && 
+                    Array.prototype.some.call(
+                        ( props.selectedFilters.type||{} ).value || [], 
+                        type=>type.toLowerCase() === "spell"
+                    )
+                        ? checkbox({
+                            label: translate("speed"),
+                            value: props.selectedFilters.speed && props.selectedFilters.speed.value || [],
+                            onChange: selected=>{
+                                props.updateSelectedFilter("speed", { value: selected })
+                            },
+                            options: props.filterOptions.speed,
+                            renderOption: (speed, isChecked)=>
+                                speed 
+                                    ? div(
+                                        { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                                        KeywordImageCheck({
+                                            isChecked,
+                                            keywordName: speed.toLowerCase(),
+                                        })
+                                    ) : undefined
+                            ,
+                        })
+                        : undefined
+                ,
+
             )
         )
     )
