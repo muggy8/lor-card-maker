@@ -122,7 +122,7 @@ function customCardsFiltersComponent(props){
                         },
                         options: props.filterOptions.rarity,
                         renderOption: (rarity, isChecked)=>{
-                            if (rarity.toLowerCase() === "none"){
+                            if (!rarity || rarity.toLowerCase() === "none"){
                                 return null
                             }
                             return div(
