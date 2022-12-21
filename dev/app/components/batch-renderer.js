@@ -65,6 +65,8 @@ export function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols 
         })
 
     const sigleItemAspectRatio = largestResolution.width / largestResolution.height
+    const aspectRatioMaxedOutWidth = ((largestResolution.width + 1) * 3) / largestResolution.height
+    const aspectRatioMaxedOutHeight = largestResolution.width / (largestResolution.height - 1)
 
     const collectiveAspectRatio = (largestResolution.width * cols) / (largestResolution.height * rows)
 
@@ -87,12 +89,12 @@ export function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols 
 
     // console.log({collectiveAspectRatio, sigleItemAspectRatio, upperbound: sigleItemAspectRatio * 2, lowerBound: sigleItemAspectRatio * 0.75})
 
-    if (collectiveAspectRatio > sigleItemAspectRatio * 2){
+    if (collectiveAspectRatio > aspectRatioMaxedOutWidth){
         if (cols > 1){
             calculationCache.pairs[cols] = calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols - 1)
         }
     }
-    else if (collectiveAspectRatio < sigleItemAspectRatio * 0.75){
+    else if (collectiveAspectRatio < aspectRatioMaxedOutHeight){
         calculationCache.pairs[cols] = calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols + 1)
     }
 
