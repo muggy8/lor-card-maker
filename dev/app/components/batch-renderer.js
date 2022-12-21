@@ -9,7 +9,7 @@ import SvgWrap from "/Components/card-template/svg-wrap.js"
 
 const cssLoaded = loadCss("/Components/batch-renderer.css")
 
-function getResolutionFor(type){
+export function getResolutionFor(type){
     if (type === "keyword"){
         return {
             width: 512,
@@ -27,7 +27,8 @@ const calculationCache = {
     list: undefined,
     pairs: {},
 }
-function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
+
+export function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
 
     if (calculationCache.list === cards){
         // the cache we have is valid for the current collection
@@ -67,7 +68,12 @@ function calculateRowsAndColsForCardsRecursivelyWithCacheUse(cards, cols = 1){
 
     const collectiveAspectRatio = (largestResolution.width * cols) / (largestResolution.height * rows)
 
-    calculationCache.pairs[cols] = {cols, rows, width: largestResolution.width * cols, height: largestResolution.height * rows, resolution: largestResolution} // fallback in case nothing gets found
+    calculationCache.pairs[cols] = {
+        cols, rows, 
+        width: largestResolution.width * cols, 
+        height: largestResolution.height * rows, 
+        resolution: largestResolution
+    } // fallback in case nothing gets found
 
     if (numberOfCards === 3){
 		// special case for 3 cards.

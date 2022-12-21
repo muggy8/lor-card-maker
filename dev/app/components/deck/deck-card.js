@@ -9,12 +9,56 @@ import useAssetCache from "/Utils/use-asset-cache.js";
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
-function deckCardComponent(props){
-    const cardSvg = isRitoCard(props.card) 
-        ? InDeckRitoCard(props.card)
-        : InDeckCustomCard(props.card)
+const emptyArray = []
 
-    return cardSvg // do this for testing but we can stack them later
+function deckCardComponent(props){
+
+    const [cardSvg, cardShadow, shadowList] = useAssetCache(setCache=>{
+        const currentCardIsRitoCard = isRitoCard(props.card) 
+
+        const cardSvg = currentCardIsRitoCard
+            ? InDeckRitoCard(props.card)
+            : InDeckCustomCard(props.card)
+    
+        const cardShadow = currentCardIsRitoCard 
+            ? cardSvg
+            : InDeckCustomCard({
+                ...props.card,
+                name: undefined,
+                blueWords: emptyArray,
+                orangeWords: emptyArray,
+                effectText: "",
+                levelText: "",
+                keywords: emptyArray,
+            })
+        
+        const shadowList = []
+
+        // i starts at 1 because we dont want any shadows if there's only 1 card
+        for (let i = 1; i < (props.count || 1); shadowList.push(undefined), i++);
+
+        setCache([cardSvg, cardShadow, shadowList])
+    }, [props.card, props.count], [undefined, undefined, []])
+
+    return div(
+        { 
+            style: { 
+                width: (props.cardSize || {}).width, 
+                height: (props.cardSize || {}).height 
+            }, 
+            className: "in-deck-card-stack"
+        },
+        shadowList.map((_, index)=>div(
+            { 
+                key: index,
+                className: "shadow-card"
+            }, 
+            cardShadow
+        )),
+        div({ className: "real-card" }, cardSvg),
+    )
+
+    return cardSvg // dev related code for testing and debugging
 }
 
 function ritoCardRendererComponent(props){

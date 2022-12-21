@@ -8,3 +8,8 @@
     bottom: 0;
     right: 0;
 }
+
+.in-deck-card-stack {
+    padding-left: 100px;
+    padding-top: 100px;
+}

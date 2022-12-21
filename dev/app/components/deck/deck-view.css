@@ -1,0 +1,4 @@
+.svg-deck {
+    display: flex;
+    flex-wrap: wrap;
+}
