@@ -458,7 +458,7 @@ function deckBuilderComponenet(){
 			const aName = a.card.name.toLowerCase()
 			const bName = b.card.name.toLowerCase()
 
-			return aManaCost - bManaCost || aName.localeCompare(bName)
+			return b.count - a.count || aManaCost - bManaCost || aName.localeCompare(bName)
 		})
 		updateDeckCardsToRender(renderedDeck)
 	}, [])
@@ -497,6 +497,7 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [])
 
+	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
     const [previewHeight, updatePreviewHeight] = useState(0)
