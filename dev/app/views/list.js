@@ -145,7 +145,7 @@ const types = [
     {
         component: Keyword,
         labelKey: "keyword",
-        beta: true,
+        // beta: true,
         editor: CardEditorFactory(
             Keyword,
             {
