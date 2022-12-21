@@ -264,7 +264,7 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		console.log(trueOptions, displayedCustomCards)
+		// console.log(trueOptions, displayedCustomCards)
 	}, [customCards, displayedCustomCards], {})
 
 	// rito cards shinanagas because shinangas

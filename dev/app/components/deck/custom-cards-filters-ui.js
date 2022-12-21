@@ -95,7 +95,6 @@ function customCardsFiltersComponent(props){
                         label: translate("region"),
                         value: props.selectedFilters.faction && props.selectedFilters.faction.value || [],
                         onChange: selected=>{
-                            console.log(selected)
                             props.updateSelectedFilter("faction", { value: selected })
                         },
                         options: props.filterOptions.faction,
@@ -243,15 +242,16 @@ function customCardsFiltersComponent(props){
                         renderOption: (keyword, isChecked)=>div(
                             { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
                             keyword.toLowerCase 
-                            ? KeywordImageCheck({
-                                isChecked,
-                                keywordName:  keyword.toLowerCase(),
-                            })
-                            : KeywordImageCheck({
-                                isChecked,
-                                keywordName:  keyword.name,
-                                icons: keyword.icons,
-                            })
+                                ? KeywordImageCheck({
+                                    isChecked,
+                                    keywordName:  keyword.toLowerCase(),
+                                })
+                                : KeywordImageCheck({
+                                    isChecked,
+                                    keywordName:  keyword.name,
+                                    icons: keyword.icons,
+                                })
+                            ,
                         )
                     })
                     : undefined
