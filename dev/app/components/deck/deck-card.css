@@ -19,16 +19,11 @@
     width: 100%;
 }
 
-.real-card {
-    position: absolute;
+.shadow-card, .real-card  {
     width: 100%;
+    position: absolute;
     top: 0;
-    z-index: 1;
-}
-.shadow-card {
-    z-index: 0;
-    width: 100%;
-    position: absolute;
+    left: 0;
 }
 
 .shadow-card .loading-shade {

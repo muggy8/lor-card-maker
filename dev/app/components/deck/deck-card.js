@@ -55,8 +55,11 @@ function deckCardComponent(props){
                     key: index,
                     className: "shadow-card",
                     style: {
-                        top: -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1),
-                        left: -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1),
+                        transform: `translate(${
+                            -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                        }px, ${
+                            -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                        }px)`,
                     }
                 }, 
                 cardShadow

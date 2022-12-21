@@ -4,6 +4,17 @@
     margin-right: auto;
 }
 
+#deck-builder .deck-preview {
+    will-change: padding-bottom;
+    transition: padding-bottom 1s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.5s;
+}
+
+#deck-builder .card-list-options, #deck-builder .card-name-list  {
+    background-color: rgba(var(--rgb-bg), 80%);
+}
+
 #deck-builder .card-list-options .tab-header {
     border: solid 1px var(--color-clear);
     border-bottom: solid 1px var(--color-border);
@@ -21,4 +32,22 @@
     border-bottom: solid 1px var(--color-border);
 
     min-height: calc( var(--flex-box-gutter) * 6 );
+    margin-bottom: calc( var(--flex-box-gutter) * 2 );
+}
+
+#deck-builder .export-preview {
+    will-change: padding-bottom;
+    transition: padding-bottom 1s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.5s;
+}
+
+#deck-builder .preview-content {
+    position: fixed;
+    overflow-y: auto;
+    will-change: width;
+}
+
+#deck-builder .card-finder {
+    z-index: 1;
 }

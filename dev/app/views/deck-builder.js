@@ -1,5 +1,5 @@
 import factory, { div, span, button, nav, section } from "/Utils/elements.js"
-import { useState, useCallback, useRef, useEffect } from "/cdn/react"
+import { useState, useCallback, useRef, useEffect, useLayoutEffect } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -10,6 +10,7 @@ import ritoCardsFiltersUi from "/Components/deck/rito-cards-filters-ui.js"
 import deckView from "/Components/deck/deck-view.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import customCardsFiltersUi from "/Components/deck/custom-cards-filters-ui.js"
+import debounceFunction from "/Utils/debounce-function.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -495,19 +496,59 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [])
 
+	const fixedDisplayRef = useRef()
+    const [useableWidth, updateUseableWidth] = useState(0)
+    const [previewHeight, updatePreviewHeight] = useState(0)
+    useLayoutEffect(()=>{        
+        const setFixedDisplayDimentions = debounceFunction(function(){
+            let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
+            const computedStyle = getComputedStyle(fixedDisplayRef.current.parentNode)
+
+            useableWidth = useableWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight)
+
+            updateUseableWidth(useableWidth)
+            updatePreviewHeight(fixedDisplayRef.current.offsetHeight)
+        }, 250)
+        requestAnimationFrame(setFixedDisplayDimentions)
+
+        const observer = new MutationObserver(setFixedDisplayDimentions)
+
+        window.addEventListener("resize", setFixedDisplayDimentions)
+        observer.observe(fixedDisplayRef.current, {
+            childList: true,
+            subtree: true,
+            attributes: ["style"]
+        })
+
+        return function(){
+            window.removeEventListener("resize", setFixedDisplayDimentions)
+            observer.disconnect()
+        }
+    }, [])
+
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
 		div(
-			{ className: "deck-preview box-xs-12 box-s-10 box-m-7 box-l-8" },
-			deckView({
-				cards: deckCardsToRender
-			})
+			{ 
+				className: "deck-preview box-xs-12 box-s-10 box-m-6",
+				style: { paddingBottom: previewHeight + "px"}
+			},
+			div(
+				{ 
+					className: "preview-content gutter-rl-2", 
+					ref: fixedDisplayRef, 
+					style: {
+						width: useableWidth + "px"
+					} 
+				},
+				deckView({ cards: deckCardsToRender })
+			),
 		),
 		div(
-			{ className: "card-finder box-xs-12 box-s-10 box-m-5 box-l-4" },
+			{ className: "card-finder box-xs-12 box-s-10 box-m-6" },
 
 			nav(
-				{ className: "flex card-list-options" },
+				{ className: "flex card-list-options gutter-t-.5" },
 				div(
 					{ 
 						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
@@ -547,51 +588,57 @@ function deckBuilderComponenet(){
 							selectedFilters: currentRitoCardsFilters
 						}),
 
-						listLimit(
-							{ defaultSize: 24 },
-							(displayedRitoCards || []).map(card=>card
-								? div(
-									{ className: "flex gutter-b", key: card.cardCode },
+						div(
+							{ className: "card-name-list" },
 
-									cardName({ card, className: "box-9" }, card.name),
-
-									div(
-										{ className: "box-3 flex no-wrap" },
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
-											div({ className: "icon" },
-												div({ className: "add" }),
-											)
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedRitoCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.cardCode },
+	
+										cardName({ card, className: "box-9" }, card.name),
+	
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+												div({ className: "icon" },
+													div({ className: "add" }),
+												)
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+												div({ className: "icon" },
+													div({ className: "minus" }),
+												)
+											),
 										),
-										div({ className: "gutter-rl-.25" }),
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
-											div({ className: "icon" },
-												div({ className: "minus" }),
-											)
-										),
-									),
+									)
+									:undefined
 								)
-								:undefined
-							)
+							),
+	
+							!ritoCards || !ritoCards.length 
+								? div(
+									{ className: "flex" },
+									button(
+										{ 
+											onClick: loadRitoData,
+											className: "gutter-trbl-.5 grow",
+										}, 
+										ritoLoading 
+											? div({ className: "icon" }, 
+												div({ className: "loading" })
+											)
+											: translate("load_rito_data")
+										,
+									)
+								)
+								: undefined 
+							, 
+
 						),
 
-						!ritoCards || !ritoCards.length 
-							? div(
-								{ className: "flex" },
-								button(
-									{ 
-										onClick: loadRitoData,
-										className: "gutter-trbl-.5 grow",
-									}, 
-									ritoLoading 
-										? div({ className: "icon" }, 
-											div({ className: "loading" })
-										)
-										: translate("load_rito_data")
-									,
-								)
-							)
-							: undefined 
-						, 
 					) 
 					: undefined
 				,
@@ -607,66 +654,72 @@ function deckBuilderComponenet(){
 							selectedFilters: currentCustomCardsFilters,
 						}),
 
-						listLimit(
-							{ defaultSize: 24 },
-							(displayedCustomCards || []).map(card=>card
-								? div(
-									{ className: "flex gutter-b", key: card.id },
+						div(
+							{ className: "card-name-list" },
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedCustomCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.id },
 
-									cardName({ card, className: "box-9" }, card.name),
+										cardName({ card, className: "box-9" }, card.name),
 
-									div(
-										{ className: "box-3 flex no-wrap" },
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
-											div({ className: "icon" },
-												div({ className: "add" }),
-											)
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+												div({ className: "icon" },
+													div({ className: "add" }),
+												)
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+												div({ className: "icon" },
+													div({ className: "minus" }),
+												)
+											),
 										),
-										div({ className: "gutter-rl-.25" }),
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
-											div({ className: "icon" },
-												div({ className: "minus" }),
-											)
-										),
-									),
+									)
+									:undefined
 								)
-								:undefined
 							)
-						)
+						),
 					)
 					: undefined
 				,
 
 				selectedTab === "inDeck" 
 					? div(
-						{ className: "gutter-rl gutter-t" },
+						{ className: "gutter-rl" },
 
-						listLimit(
-							{ defaultSize: 24 },
-							(deckCardsToRender || []).map(cardMeta=>cardMeta
-								? div(
-									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
-
-									cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
-
-									div(
-										{ className: "box-3 flex no-wrap" },
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
-											div({ className: "icon" },
-												div({ className: "add" }),
-											)
+						div(
+							{ className: "card-name-list gutter-t" },
+							listLimit(
+								{ defaultSize: 24 },
+								(deckCardsToRender || []).map(cardMeta=>cardMeta
+									? div(
+										{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
+	
+										cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
+	
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
+												div({ className: "icon" },
+													div({ className: "add" }),
+												)
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
+												div({ className: "icon" },
+													div({ className: "minus" }),
+												)
+											),
 										),
-										div({ className: "gutter-rl-.25" }),
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
-											div({ className: "icon" },
-												div({ className: "minus" }),
-											)
-										),
-									),
+									)
+									:undefined
 								)
-								:undefined
 							)
-						)
+						),
 					)
 					: undefined
 				,

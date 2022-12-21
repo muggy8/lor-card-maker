@@ -177,6 +177,6 @@ const lang = {
         "expantion": "Expantion",
         "official_cards": "Official Cards",
         "custom_cards": "Custom Cards",
-        "currently_selected_cards": "Currently Selected Cards",
+        "currently_selected_cards": "Cards In Deck",
     }
 }

@@ -45,7 +45,7 @@ function BatchExportComponent(){
         getCardList().then(updateSavedCards)
     }, [], [])
 
-    savedCardsById = useAssetCache(updateSavedCardsById=>{
+    const savedCardsById = useAssetCache(updateSavedCardsById=>{
         const collectionById = savedCards.reduce((collection, cardData)=>{
             collection[cardData.id] = cardData
             return collection
