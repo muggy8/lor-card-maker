@@ -150,6 +150,14 @@ function deckBuilderComponenet(){
 				return userSelectedRarities.includes(rarity)
 			}
 		},
+		faction: {
+			filter: (userSelectedFactions, cardFactions)=>{
+				if (!userSelectedFactions || !userSelectedFactions.length){
+					return true
+				}
+				return userSelectedFactions.some(userSelectedRegion=>cardFactions.includes(userSelectedRegion))
+			}
+		},
 		speed: {
 			filter: (userSelectedSpeeds, speed)=>{
 				if (!userSelectedSpeeds || !userSelectedSpeeds.length){
@@ -231,7 +239,7 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		// console.log(trueOptions, customCards)
+		console.log(trueOptions, customCards)
 	}, [customCards, displayedCustomCards], {})
 
 	// rito cards shinanagas because shinangas
@@ -268,11 +276,14 @@ function deckBuilderComponenet(){
 			}
 		},
 		descriptionRaw: {
-			filter: (userSelectedDescription, descriptionRaw)=>{
+			filter: (userSelectedDescription, descriptionRaw, cardData)=>{
 				if (!userSelectedDescription){
 					return true
 				}
-				return descriptionRaw.toLowerCase().includes(userSelectedDescription .toLowerCase())
+				return descriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
+					|| cardData.levelupDescriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
+					|| cardData.description.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
+					|| cardData.levelupDescription.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
 			}
 		},
 		subtypes: {
@@ -402,7 +413,7 @@ function deckBuilderComponenet(){
 		}
 
 		updateFilterOptions(trueOptions)
-		console.log(trueOptions, ritoCards)
+		// console.log(trueOptions, displayedRitoCards)
 	}, [ritoCards, displayedRitoCards], {})
 
 	// whatever data that's needed for the cards to be rendered in a pretty UI
