@@ -541,7 +541,14 @@ function deckBuilderComponenet(){
 						width: useableWidth + "px"
 					} 
 				},
-				deckView({ cards: deckCardsToRender })
+				deckView({ cards: deckCardsToRender }),
+				div({ className: "flex vhcenter" }, 
+					div({ className: "gutter-rbl" },
+						translate("deck_size"),
+						": ",
+						deckCardsToRender.reduce((sum, cardMetaData)=>sum+cardMetaData.count, 0)
+					)	
+				)
 			),
 		),
 		div(

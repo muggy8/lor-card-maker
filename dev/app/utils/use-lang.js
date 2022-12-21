@@ -178,5 +178,6 @@ const lang = {
         "official_cards": "Official Cards",
         "custom_cards": "Custom Cards",
         "currently_selected_cards": "Cards In Deck",
+        "deck_size": "Deck Size",
     }
 }
