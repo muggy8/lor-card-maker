@@ -122,7 +122,7 @@ function cardNameComponent(props){
 
         div(
             { className: "mana-cost" },
-            props.card.cost
+            props.card.cost || props.card.mana
         ),
         
         div(
