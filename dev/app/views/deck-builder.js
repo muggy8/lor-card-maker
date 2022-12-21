@@ -139,7 +139,16 @@ function deckBuilderComponenet(){
 				if (!userSelectedKeywords || !userSelectedKeywords.length){
 					return true
 				}
-				return keywords.some(keywordOnCard=>userSelectedKeywords.includes(keywordOnCard))
+				return keywords.some(keywordOnCard=>
+					userSelectedKeywords.includes(keywordOnCard) ||
+					userSelectedKeywords.some(keywordStringOrObject=>{
+						if (typeof keywordStringOrObject === "string" || typeof keywordOnCard === "string"){
+							return false
+						}
+
+						return keywordStringOrObject.id === keywordOnCard.id
+					})
+				)
 			}
 		},
 		rarity: {

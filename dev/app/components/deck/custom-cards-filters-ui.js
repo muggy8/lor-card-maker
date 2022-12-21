@@ -200,6 +200,63 @@ function customCardsFiltersComponent(props){
                         : undefined
                 ,
 
+                props.filterOptions.power && props.filterOptions.power.length && 
+                    Array.prototype.some.call(
+                        ( props.selectedFilters.type||{} ).value || [], 
+                        type=>type.toLowerCase() === "champion" || 
+                            type.toLowerCase() === "follower" || 
+                            type.toLowerCase() === "spell" 
+                    )
+                        ? rangeSlider({
+                            label: translate("power"),
+                            range: props.filterOptions.power,
+                            value: props.selectedFilters.power && props.selectedFilters.power.value,
+                            onChange: value=>props.updateSelectedFilter("power", { value }),
+                        })
+                        : undefined
+                ,
+
+                props.filterOptions.health && props.filterOptions.health.length && 
+                    Array.prototype.some.call(
+                        ( props.selectedFilters.type||{} ).value || [], 
+                        type=>type.toLowerCase() === "champion" || 
+                            type.toLowerCase() === "follower" || 
+                            type.toLowerCase() === "spell" 
+                    )
+                        ? rangeSlider({
+                            label: translate("health"),
+                            range: props.filterOptions.health,
+                            value: props.selectedFilters.health && props.selectedFilters.health.value,
+                            onChange: value=>props.updateSelectedFilter("health", { value })
+                        })
+                        : undefined
+                ,
+
+                props.filterOptions.keywords && props.filterOptions.keywords.length
+                    ? checkbox({
+                        label: translate("keyword"),
+                        value: props.selectedFilters.keywords && props.selectedFilters.keywords.value || [],
+                        onChange: selected=>{
+                            props.updateSelectedFilter("keywords", { value: selected })
+                        },
+                        options: props.filterOptions.keywords,
+                        renderOption: (keyword, isChecked)=>div(
+                            { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                            keyword.toLowerCase 
+                            ? KeywordImageCheck({
+                                isChecked,
+                                keywordName:  keyword.toLowerCase(),
+                            })
+                            : KeywordImageCheck({
+                                isChecked,
+                                keywordName:  keyword.name,
+                                icons: keyword.icons,
+                            })
+                        )
+                    })
+                    : undefined
+                ,
+
             )
         )
     )
