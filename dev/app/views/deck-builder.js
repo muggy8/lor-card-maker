@@ -341,6 +341,7 @@ function deckBuilderComponenet(){
 			
 			div(
 				{ className: "tab-body" },
+
 				selectedTab === "rito" 
 					? div(
 						{ className: "gutter-rl" },
@@ -400,6 +401,74 @@ function deckBuilderComponenet(){
 							: undefined 
 						, 
 					) 
+					: undefined
+				,
+
+				selectedTab === "custom" 
+					? div(
+						{ className: "gutter-rl gutter-t" },
+
+						listLimit(
+							{ defaultSize: 24 },
+							(customCards || []).map(card=>card
+								? div(
+									{ className: "flex gutter-b", key: card.id },
+
+									cardName({ card, className: "box-9" }, card.name),
+
+									div(
+										{ className: "box-3 flex no-wrap" },
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+											div({ className: "icon" },
+												div({ className: "add" }),
+											)
+										),
+										div({ className: "gutter-rl-.25" }),
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+											div({ className: "icon" },
+												div({ className: "minus" }),
+											)
+										),
+									),
+								)
+								:undefined
+							)
+						)
+					)
+					: undefined
+				,
+
+				selectedTab === "inDeck" 
+					? div(
+						{ className: "gutter-rl gutter-t" },
+
+						listLimit(
+							{ defaultSize: 24 },
+							(deckCardsToRender || []).map(cardMeta=>cardMeta
+								? div(
+									{ "data-output": console.log(cardMeta), className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
+
+									cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
+
+									div(
+										{ className: "box-3 flex no-wrap" },
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
+											div({ className: "icon" },
+												div({ className: "add" }),
+											)
+										),
+										div({ className: "gutter-rl-.25" }),
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
+											div({ className: "icon" },
+												div({ className: "minus" }),
+											)
+										),
+									),
+								)
+								:undefined
+							)
+						)
+					)
 					: undefined
 				,
 			),

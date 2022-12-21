@@ -1,5 +1,5 @@
 import svgWrap from "/Components/card-template/svg-wrap.js";
-import { useEffect, useState, useCallback} from "/cdn/react"
+import { createElement } from "/cdn/react"
 import { isRitoCard } from "./card-name.js";
 import factory, { div } from "/Utils/elements.js";
 import { getRitoCardImage } from "/Utils/service.js";
@@ -40,11 +40,12 @@ function ritoCardRendererComponent(props){
 
 
 function customCardRendererComponent(props){
-    const renderingComponent = useAssetCache(updateRenderingComponent=>{
-        updateRenderingComponent(typeToComponent(props.type))
-    }, [props.type])
+    const cachedCard = useAssetCache(updateCachedCard=>{
+        const renderingComponent = typeToComponent(props.type)
+        updateCachedCard(renderingComponent(props))
+    }, Object.keys(props).map(prop=>props[prop]))
 
-    return renderingComponent ? renderingComponent(props) : undefined
+    return cachedCard
 }
 
 export default factory(deckCardComponent, cssLoaded)
