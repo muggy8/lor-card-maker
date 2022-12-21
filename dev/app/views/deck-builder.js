@@ -232,6 +232,8 @@ function deckBuilderComponenet(){
 		}
 
 		const baseOptions = getOptionsFromCardsList(customCards)
+		baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null)
+		baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null)
 		const filteredResultsOptions = getOptionsFromCardsList(displayedCustomCards)
 		const trueOptions = {
 			...baseOptions,
