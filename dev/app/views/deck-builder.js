@@ -1,4 +1,4 @@
-import factory, { div, span, button, nav, section } from "/Utils/elements.js"
+import factory, { div, strong, button, nav, section } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useLayoutEffect } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
@@ -445,7 +445,21 @@ function deckBuilderComponenet(){
 	}, [ritoCards, displayedRitoCards], {})
 
 	// whatever data that's needed for the cards to be rendered in a pretty UI
-	const [deckCardsToRender, updateDeckCardsToRender] = useState([])
+	const [deck, updateDeck] = useState({
+		id: undefined,
+		cards: []
+	})
+
+	let unPatchedChanged = {}
+	const patchDeck = useCallback((update)=>{
+		unPatchedChanged = {...unPatchedChanged, ...update}
+
+		updateDeck({
+			...deck,
+			...unPatchedChanged,
+		})
+	}, [deck])
+
 	const selectedCards = useRef(new Map())
 	const updateRenderedDeck = useCallback(()=>{
 		const renderedDeck = []
@@ -460,7 +474,7 @@ function deckBuilderComponenet(){
 
 			return b.count - a.count || aManaCost - bManaCost || aName.localeCompare(bName)
 		})
-		updateDeckCardsToRender(renderedDeck)
+		patchDeck({cards: renderedDeck})
 	}, [])
 	const addCard = useCallback(card=>{
 		const cardId = card.id || card.cardCode
@@ -496,6 +510,7 @@ function deckBuilderComponenet(){
 		}
 		updateRenderedDeck()
 	}, [])
+	const deckCardsToRender = deck.cards
 
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
@@ -543,13 +558,44 @@ function deckBuilderComponenet(){
 						width: useableWidth + "px"
 					} 
 				},
-				deckView({ cards: deckCardsToRender }),
 				div({ className: "flex vhcenter" }, 
-					div({ className: "gutter-rbl" },
+					div({ className: "gutter-rl" },
 						translate("deck_size"),
 						": ",
 						deckCardsToRender.reduce((sum, cardMetaData)=>sum+cardMetaData.count, 0)
-					)	
+					),
+				),
+				deckView({ cards: deckCardsToRender }),
+				div({ className: "flex vhcenter gutter-b" }, 
+					div(
+						{ className: "gutter-rl-.5" },
+						button(
+							{
+								className: `gutter-trbl-.5 ${deck.id ? "" : "hide"}`,
+							},
+							strong(translate("delete_deck"))
+						)
+					),
+					div(
+						{ className: "gutter-rl-.5" },
+						button(
+							{
+								className: "gutter-trbl-.5",
+								// [(canSave || !setisSaving ? "data-foo" : "disabled")]: true
+							},
+							strong(translate("save_deck"))
+						)
+					),
+					div(
+						{ className: "gutter-rl-.5" },
+						button(
+							{
+								className: "gutter-trbl-.5",
+								// [(isExporting ? "disabled" : "data-foo")]: true
+							},
+							strong(translate("export"))
+						)
+					),
 				)
 			),
 		),
