@@ -147,7 +147,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
-        const [canSave, _toggleCanSave, setCanSave] = useToggle(!!card.id)
+        const [canSave, _toggleCanSave, setCanSave] = useToggle(true)
         const [isSaving, _toggleIsSaving, setisSaving] = useToggle(false)
         useEffect(()=>{
             setCanSave(true)

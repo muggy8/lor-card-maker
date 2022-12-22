@@ -462,6 +462,7 @@ function deckBuilderComponenet(){
 		id: undefined,
 		cards: []
 	})
+	const deckCardsToRender = deck.cards
 
 	let unPatchedChanged = {}
 	const patchDeck = useCallback((update)=>{
@@ -473,6 +474,25 @@ function deckBuilderComponenet(){
 		})
 	}, [deck])
 
+	const deckCardsListOrder = useAssetCache(updateList=>{
+		const listOrder = [
+			...deckCardsToRender
+		]
+
+		listOrder.sort((a,b)=>{
+			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
+			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
+
+			const aName = a.card.name.toLowerCase()
+			const bName = b.card.name.toLowerCase()
+
+			return (aManaCost - bManaCost) || aName.localeCompare(bName)
+		})
+
+		updateList(listOrder)
+	}, [deckCardsToRender], [])
+
+	// functionality for management of the decklist
 	const selectedCards = useRef(new Map())
 	const updateRenderedDeck = useCallback(()=>{
 		const renderedDeck = []
@@ -523,25 +543,6 @@ function deckBuilderComponenet(){
 		}
 		updateRenderedDeck()
 	}, [])
-	const deckCardsToRender = deck.cards
-
-	const deckCardsToList = useAssetCache(updateList=>{
-		const listOrder = [
-			...deckCardsToRender
-		]
-
-		listOrder.sort((a,b)=>{
-			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
-			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
-
-			const aName = a.card.name.toLowerCase()
-			const bName = b.card.name.toLowerCase()
-
-			return (aManaCost - bManaCost) || aName.localeCompare(bName)
-		})
-
-		updateList(listOrder)
-	}, [deckCardsToRender], [])
 
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
@@ -596,6 +597,29 @@ function deckBuilderComponenet(){
 		)
 	}, [svgRef, isExporting])
 
+	// logic to do with saving
+	const [canSave, setCanSave] = useState(!deck.id)
+	const [isSaving, setisSaving] = useState(false)
+	useEffect(()=>{
+		setCanSave(true)
+	}, Object.keys(deck).map(prop=>deck[prop]))
+	const saveDeck = useCallback(()=>{
+		if (!canSave || isSaving){
+			return
+		}
+		setisSaving(true)
+		function doneSaving(){
+			setCanSave(false)
+			setisSaving(false)
+		}
+		if (deck.id){
+			return saveCard(deck.id, deck).then(doneSaving, doneSaving)
+		}
+		const newId = Date.now().toString()
+		saveCard(newId, deck).then(doneSaving, doneSaving)
+		patchDeck({id: newId})
+	}, [!canSave || isSaving, deck, patchDeck])
+
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
 		div(
@@ -632,6 +656,11 @@ function deckBuilderComponenet(){
 						button(
 							{
 								className: `gutter-trbl-.5 ${deck.id ? "" : "hide"}`,
+								onClick: ()=>{
+									deleteCard(deck.id).then(()=>{
+										document.location.reload()
+									})
+								}
 							},
 							strong(translate("delete_deck"))
 						)
@@ -641,7 +670,8 @@ function deckBuilderComponenet(){
 						button(
 							{
 								className: "gutter-trbl-.5",
-								// [(canSave || !setisSaving ? "data-foo" : "disabled")]: true
+								[(canSave || !setisSaving ? "data-foo" : "disabled")]: true,
+								onClick: saveDeck
 							},
 							strong(translate("save_deck"))
 						)
@@ -651,7 +681,7 @@ function deckBuilderComponenet(){
 						button(
 							{
 								className: "gutter-trbl-.5",
-								// [(isExporting ? "disabled" : "data-foo")]: true
+								[(isExporting ? "disabled" : "data-foo")]: true,
 								onClick: exportCard
 							},
 							strong(translate("export"))
@@ -811,7 +841,7 @@ function deckBuilderComponenet(){
 							{ className: "card-name-list gutter-t" },
 							listLimit(
 								{ defaultSize: 24 },
-								(deckCardsToList || []).map(cardMeta=>cardMeta
+								(deckCardsListOrder || []).map(cardMeta=>cardMeta
 									? div(
 										{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
 	
