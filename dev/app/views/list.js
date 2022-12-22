@@ -5,6 +5,7 @@ import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
 import listLimit from "/Components/list-limit.js"
+import deckBuilder from "/Views/deck-builder.js"
 
 import Spell from "/Components/card-template/spell.js"
 import Champion1 from "/Components/card-template/champion1.js"
@@ -16,6 +17,7 @@ import Keyword from "/Components/card-template/keyword.js"
 import CardEditorFactory from "/Views/card-editor.js"
 import DeckBuilder from "/Views/deck-builder.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
+import deckIcon from "/Components/deck/deck-icon.js"
 
 const sharedDefaultCardData = {
     name: "",
@@ -160,6 +162,12 @@ const types = [
             }
         ),
     },
+    {
+        component: deckIcon,
+        labelKey: "deck",
+        beta: true,
+        editor: deckBuilder
+    }
 ]
 
 export function typeToComponent(type){
@@ -208,16 +216,6 @@ function ListComponent(){
                         })
                     )
                 }),
-
-				div(
-					{
-						className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
-						onClick: ()=>{
-							globalState.setView(DeckBuilder)
-						},
-					},
-					"Deck Builder"
-				),
 
                 savedCards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)

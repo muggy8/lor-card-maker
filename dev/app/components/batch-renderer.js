@@ -10,6 +10,13 @@ import SvgWrap from "/Components/card-template/svg-wrap.js"
 const cssLoaded = loadCss("/Components/batch-renderer.css")
 
 export function getResolutionFor(type){
+    if (type === "deck"){
+        return {
+            width: 256,
+            height: 256,
+        }
+    }
+
     if (type === "keyword"){
         return {
             width: 512,
