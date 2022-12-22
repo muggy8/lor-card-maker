@@ -183,7 +183,7 @@ function ListComponent(){
     const translate = useLang()
 
     const savedCards = useAssetCache(updateSavedCards=>{
-        getCardList().then(updateSavedCards)
+        getCardList({include: "deck"}).then(updateSavedCards)
     }, [], [])
 
     return section(

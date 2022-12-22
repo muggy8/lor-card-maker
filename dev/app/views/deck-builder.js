@@ -227,15 +227,12 @@ function deckBuilderComponenet(){
 		},
 	})
 
-	// update custom card card source when needed
+	// update custom card source data when needed
 	useEffect(()=>{
 		if (!customCards || !customCards.length){
 			return updateCustomCardSource([])
 		}
 
-		// const customActualCards = customCards.filter(card=>{
-		// 	return Object.prototype.hasOwnProperty.call(card, "mana")
-		// })
 		updateCustomCardSource(customActualCards)
 
 	}, [customCards])

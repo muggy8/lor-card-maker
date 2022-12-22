@@ -20,8 +20,8 @@ export function getCardList(query = {}){
     return fetch("/pseudo-api/card-list/" + createQueryString(query)).then(res=>res.json())
 }
 
-export function getCard(id){
-    return fetch("/pseudo-api/card/" + id).then(res=>res.json())
+export function getCard(id, query = {}){
+    return fetch("/pseudo-api/card/" + id  + createQueryString(query)).then(res=>res.json())
 }
 
 export function saveCard(id, data){
@@ -41,8 +41,8 @@ export function deleteCard(id){
 }
 
 
-export function getSettings(){
-    return fetch("/pseudo-api/settings/").then(res=>res.json())
+export function getSettings(query = {}){
+    return fetch("/pseudo-api/settings/" + createQueryString(query)).then(res=>res.json())
 }
 
 export function saveSettings(data){
@@ -55,8 +55,8 @@ export function saveSettings(data){
     })
 }
 
-export function getRitoCards(){
-	return fetch("/pseudo-api/game-data/card-list/").then(res=>res.json())
+export function getRitoCards(query = {}){
+	return fetch("/pseudo-api/game-data/card-list/" + createQueryString(query)).then(res=>res.json())
 }
 
 const patchManager = concurrencyManagerFactory()
@@ -80,15 +80,17 @@ export function patchRitoCards(updatedData){
 	})
 }
 
-export async function getLatestRitoData(){
-	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json?t=" + Date.now()
+export async function getLatestRitoData(query = {}){
+	query.t = Date.now()
+	const queryString = createQueryString(query)
+	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json" + queryString
 
 	const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
 	const fetchJobs = coreData.sets.map(expantion=>{
 		const setNameLowerCase = expantion.nameRef.toLowerCase()
 
-		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json?t=${Date.now()}`
+		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json${queryString}`
 
 		return fetch(expantionDataUrl)
 			.then(res=>res.json())
@@ -106,7 +108,7 @@ export async function getLatestRitoData(){
 }
 
 const ritoCardImageCache = {}
-export function getRitoCardImage(setCode, cardCode){
+export function getRitoCardImage(setCode, cardCode, query = {}){
 	if (ritoCardImageCache[setCode] && ritoCardImageCache[setCode][cardCode]){
 		return ritoCardImageCache[setCode][cardCode]
 	}
@@ -114,8 +116,9 @@ export function getRitoCardImage(setCode, cardCode){
 	ritoCardImageCache[setCode] = ritoCardImageCache[setCode] || {}
 
 	const setNameLowerCase = setCode.toLowerCase()
+	query.t = Date.now()
 
-	return ritoCardImageCache[setCode][cardCode] = fetch(`https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/img/cards/en_us/${cardCode}.png?t=${Date.now()}`)
+	return ritoCardImageCache[setCode][cardCode] = fetch(`https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/img/cards/en_us/${cardCode}.png?${createQueryString(query)}`)
         .then(res=>res.blob())
         .then(blob=>{
             const reader = new FileReader()
@@ -129,15 +132,15 @@ export function getRitoCardImage(setCode, cardCode){
 }
 
 const ritoSetIconCache = {}
-const setPathDetectorRegex = /img\/sets\/([^\/\n]+)$/gmi
-export function getRitoSetIconData(setId){
+export function getRitoSetIconData(setId, query = {}){
 	if (ritoSetIconCache[setId]){
 		return ritoSetIconCache[setId]
 	}
 	// const url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/img/sets/${setId.toLowerCase()}.png`
+	query.t = Date.now()
 
 	return ritoSetIconCache[setId] = new Promise(async (accept, reject)=>{
-		const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json?t=" + Date.now()
+		const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json" + createQueryString(query)
 		const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
 		const selectedSetMetadata = Array.prototype.find.call(coreData.sets, setMetaData=>{
