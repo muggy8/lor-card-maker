@@ -512,6 +512,24 @@ function deckBuilderComponenet(){
 	}, [])
 	const deckCardsToRender = deck.cards
 
+	const deckCardsToList = useAssetCache(updateList=>{
+		const listOrder = [
+			...deckCardsToRender
+		]
+
+		listOrder.sort((a,b)=>{
+			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
+			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
+
+			const aName = a.card.name.toLowerCase()
+			const bName = b.card.name.toLowerCase()
+
+			return (aManaCost - bManaCost) || aName.localeCompare(bName)
+		})
+
+		updateList(listOrder)
+	}, [deckCardsToRender], [])
+
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
@@ -750,7 +768,7 @@ function deckBuilderComponenet(){
 							{ className: "card-name-list gutter-t" },
 							listLimit(
 								{ defaultSize: 24 },
-								(deckCardsToRender || []).map(cardMeta=>cardMeta
+								(deckCardsToList || []).map(cardMeta=>cardMeta
 									? div(
 										{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
 	
