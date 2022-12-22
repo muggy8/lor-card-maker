@@ -239,6 +239,9 @@ function customCardsFiltersComponent(props){
                             props.updateSelectedFilter("keywords", { value: selected })
                         },
                         options: props.filterOptions.keywords,
+                        optionKey: value=>{
+                            return value.id || value
+                        },
                         renderOption: (keyword, isChecked)=>div(
                             { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
                             keyword.toLowerCase 

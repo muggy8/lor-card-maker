@@ -54,7 +54,7 @@ function checkboxComponent(props){
                     { 
                         className: `grow ${checked ? "checked" : "ghost" }`, 
                         onClick: ()=>toggle(value), 
-                        key: value,
+                        key: props.optionKey ? props.optionKey(value) : value,
                     },
                     renderedOption
                 )

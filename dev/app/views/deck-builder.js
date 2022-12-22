@@ -1,6 +1,6 @@
 import factory, { div, strong, button, nav, section } from "/Utils/elements.js"
-import { useState, useCallback, useRef, useEffect, useLayoutEffect } from "/cdn/react"
-import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList } from "/Utils/service.js"
+import { useState, useCallback, useRef, useEffect, useLayoutEffect, createElement } from "/cdn/react"
+import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import useFilter from "/Utils/use-filter.js"
@@ -11,6 +11,10 @@ import deckView from "/Components/deck/deck-view.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import customCardsFiltersUi from "/Components/deck/custom-cards-filters-ui.js"
 import debounceFunction from "/Utils/debounce-function.js"
+import saveSvgAsPng from "/cdn/save-svg-as-png"
+import { svgRefference } from "/Views/card-editor.js"
+import { openUri } from "/Views/card-editor.js"
+import { Globals } from "/Views/index.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -233,7 +237,7 @@ function deckBuilderComponenet(){
 			return updateCustomCardSource([])
 		}
 
-		updateCustomCardSource(customActualCards)
+		updateCustomCardSource(customCards)
 
 	}, [customCards])
 
@@ -248,6 +252,7 @@ function deckBuilderComponenet(){
 			return
 		}
 
+		// who would have thought that there'd be a shit load of garbage data in user generated content ._.
 		const baseOptions = getOptionsFromCardsList(customCards)
 		baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null)
 		baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null)
@@ -256,6 +261,17 @@ function deckBuilderComponenet(){
 		originalTypesList.length !== baseOptions.type.length && baseOptions.type.push("champion") // add a genaric champion type back in if we sliced out something with the above logic
 
 		const filteredResultsOptions = getOptionsFromCardsList(displayedCustomCards)
+		const keywordsAlreadyAccountedFor = []
+		filteredResultsOptions.keywords = filteredResultsOptions.keywords.filter(keyword=>{
+			const keywordIdentifyer = keyword.id || keyword // if it's custom it'll have an id, otherwise it's just a string
+			if (keywordsAlreadyAccountedFor.includes(keywordIdentifyer)){
+				return false
+			}
+
+			keywordsAlreadyAccountedFor.push(keywordIdentifyer)
+			return true
+		})
+
 		const trueOptions = {
 			...baseOptions,
 			keywords: filteredResultsOptions.keywords,
@@ -558,6 +574,28 @@ function deckBuilderComponenet(){
         }
     }, [])
 
+	// logic to do with exporting 
+	const [svgRef, updateSvgRef] = useState(null)
+	const [isExporting, setExporting] = useState(false)
+	const exportCard = useCallback(()=>{
+		if (isExporting){
+			return
+		}
+
+		setExporting(true)
+		saveSvgAsPng.svgAsPngUri(svgRef, {
+			excludeUnusedCss: true,
+			width: svgRef.width.baseVal.value,
+			height: svgRef.height.baseVal.value,
+		}).then(
+			uri=>{
+				openUri(uri, `${(deck.name || "export").toUpperCase()}.png`)
+				setExporting(false)
+			},
+			()=>setExporting(false)
+		)
+	}, [svgRef, isExporting])
+
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
 		div(
@@ -580,7 +618,14 @@ function deckBuilderComponenet(){
 						deckCardsToRender.reduce((sum, cardMetaData)=>sum+cardMetaData.count, 0)
 					),
 				),
-				deckView({ cards: deckCardsToRender }),
+				createElement(
+					svgRefference.Provider,
+					{ value: {
+						current: svgRef,
+						setRef: updateSvgRef,
+					} },
+					deckView({ cards: deckCardsToRender, loading: isExporting }),
+				),
 				div({ className: "flex vhcenter gutter-b" }, 
 					div(
 						{ className: "gutter-rl-.5" },
@@ -607,6 +652,7 @@ function deckBuilderComponenet(){
 							{
 								className: "gutter-trbl-.5",
 								// [(isExporting ? "disabled" : "data-foo")]: true
+								onClick: exportCard
 							},
 							strong(translate("export"))
 						)

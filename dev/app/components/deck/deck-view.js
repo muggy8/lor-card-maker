@@ -21,7 +21,7 @@ function DeckViewComponent(props){
     const doNothing = useCallback(()=>{}, [])
 
     return svgWrap(
-        { width: gridResolution.width, height: gridResolution.height, },
+        { width: gridResolution.width, height: gridResolution.height, loading: props.loading },
         div(
             { className: "svg-deck" },
             createElement(
