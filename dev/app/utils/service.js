@@ -1,10 +1,23 @@
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
-export function getCardList({include = [], exclude = []} = {}){
+function createQueryString (query){
+	const queryProps = Object.keys(query)
+	if (!queryProps.length){
+		return ""
+	}
+
 	const queryParamPairs = []
-	include.length && queryParamPairs.push(`include=${include.join(",")}`)
-	exclude.length && queryParamPairs.push(`exclude=${exclude.join(",")}`)
-    return fetch("/pseudo-api/card-list/" + (queryParamPairs.length ? `?${queryParamPairs.join("&")}` : "")).then(res=>res.json())
+	queryProps.forEach(queryProp=>{
+		let queryValue = query[queryProp]
+		Array.isArray(queryValue) && (queryValue = queryValue.join(","))
+		queryParamPairs.push([queryProp, queryValue].join("="))
+	})
+
+	return "?" + queryParamPairs.join("&")
+}
+
+export function getCardList(query = {}){
+    return fetch("/pseudo-api/card-list/" + createQueryString(query)).then(res=>res.json())
 }
 
 export function getCard(id){

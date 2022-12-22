@@ -52,7 +52,7 @@ function App (props) {
 
     const [customKeywords, updateCustomKeywords] = useState([])
     const refreshCustomKeywords = useCallback(()=>{
-        return getCardList().then(list=>list.filter(card=>card.type === "keyword")).then(updateCustomKeywords)
+        return getCardList({only: "keyword"}).then(updateCustomKeywords)
     }, [])
     useEffect(()=>{
         refreshCustomKeywords()

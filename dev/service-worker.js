@@ -344,10 +344,18 @@ async function getSavedCardList(req, path){
 
 	// step 2: get the data that those cards are associated with.
 	const queryParams = parseQueryParamsFromUrl(req.url)
-	const addToIncludedTypes = queryParams.include || []
-	const dropFromIncludedTypes = queryParams.exclude || []
-	const typesToInclude = defaultIncludedTypes.filter(type=>!dropFromIncludedTypes.includes(type))
-	typesToInclude.push(...addToIncludedTypes)
+	const typesToInclude = []
+	
+	if (queryParams.only){
+		typesToInclude.push(queryParams.only)
+		typesToInclude.flat()
+	}
+	else {
+		const addToIncludedTypes = queryParams.include || []
+		const dropFromIncludedTypes = queryParams.exclude || []
+		typesToInclude.push(...defaultIncludedTypes.filter(type=>!dropFromIncludedTypes.includes(type)))
+		typesToInclude.push(...addToIncludedTypes)
+	}
 
 	let idListToDataListTasks = idList.map(async id=>{
 		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
