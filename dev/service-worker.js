@@ -108,6 +108,51 @@ const settingsPath = "pseudo-api/settings/"
 const gameDataListPath = "pseudo-api/game-data/card-list/"
 const ritoUrl = "pvp.net"
 
+function parseValue(val){
+	if (val.includes(",")){
+		return val.split(",").map(parseValue)
+	}
+
+	if (val === "true"){
+		return true
+	}
+
+	if (val === "false"){
+		return false
+	}
+
+	if (val === "null"){
+		return null
+	}
+	
+	const valueAsNumber = parseFloat(val)
+	if (!isNaN(valueAsNumber)){
+		return valueAsNumber
+	}
+
+	return val
+}
+
+function parseQueryParamsFromUrl(url){
+	const queryExtractorRegex = /\?.*?(.(?=\#)|.$)/
+	const queryPairExtractorRegex = /([^\&\?\=]+)(\=([^\&\?\=]+))?/g
+	const [queryString] = (queryExtractorRegex.exec(url) || [])
+
+	if (!queryString){
+		return {}
+	}
+
+	const results = {}
+
+	for(
+		let extractedPair, key, val, _; 
+		extractedPair = queryPairExtractorRegex.exec(queryString);
+		[_, key, _, val] = extractedPair, results[key] = parseValue(val)
+	);
+
+	return results
+}
+
 self.addEventListener("fetch", function(ev){
     const filePathRelativeToURLRoot = ev.request.url.replace(urlRoot, "")
 	const filePathRelativeToInstallPath = ev.request.url.replace(indexUrl, "") || indexUrl
@@ -272,33 +317,58 @@ async function getSavedCard(req, path){
 }
 
 const cardIdFinderRegex = /\/([^\/]+)\/?$/
+const defaultIncludedTypes = [
+	"champion1",
+	"champion2",
+	"champion3",
+	"landmark",
+	"follower",
+	"spell",
+	"keyword",
+]
+Object.freeze(defaultIncludedTypes)
 async function getSavedCardList(req, path){
+
+	// step 1: get the list of cards that are currently saved in the system
 	let cache = await caches.open(cacheLocation)
 	let cachedRequests = await cache.keys()
 	let idList = cachedRequests.filter(req=>{
 		return req.url.includes(cardDataPath)
 	})
 	.map(req=>{
-		let [matched, id] = req.url.match(cardIdFinderRegex)
+		let [_, id] = req.url.match(cardIdFinderRegex)
 
 		return id
 	})
-
 	idList.reverse()
+
+	// step 2: get the data that those cards are associated with.
+	const queryParams = parseQueryParamsFromUrl(req.url)
+	const addToIncludedTypes = queryParams.include || []
+	const dropFromIncludedTypes = queryParams.exclude || []
+	const typesToInclude = defaultIncludedTypes.filter(type=>!dropFromIncludedTypes.includes(type))
+	typesToInclude.push(...addToIncludedTypes)
 
 	let idListToDataListTasks = idList.map(async id=>{
 		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
 		cardData.id = id
 
-		return cardData
+		if (typesToInclude.includes(cardData.type)){
+			return cardData
+		}
 	})
 
+	// step 3: dump the data back out to the requester
 	let dataList = await Promise.all(idListToDataListTasks)
-
-	return new Response(JSON.stringify(dataList), {
-		'Content-Type': 'application/json',
-		"status" : 200
-	})
+	return new Response(
+		JSON.stringify(
+			dataList.filter(val=>!!val)
+		), 
+		{
+			'Content-Type': 'application/json',
+			"status" : 200
+		}
+	)
 }
 
 async function deleteSavedCard(req, path){

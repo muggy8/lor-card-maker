@@ -97,7 +97,7 @@ function deckBuilderComponenet(){
 
 	// stuff we'll need for custom cards
 	const customCards = useAssetCache(updateCustomcards=>{
-		getCardList().then(updateCustomcards)
+		getCardList({exclude: ["keyword", "deck"]}).then(updateCustomcards)
 	}, [])
 
 	const [displayedCustomCards, updateCustomCardSource, currentCustomCardsFilters, patchCustomCardsFilters] = useFilter({
@@ -233,9 +233,9 @@ function deckBuilderComponenet(){
 			return updateCustomCardSource([])
 		}
 
-		const customActualCards = customCards.filter(card=>{
-			return Object.prototype.hasOwnProperty.call(card, "mana")
-		})
+		// const customActualCards = customCards.filter(card=>{
+		// 	return Object.prototype.hasOwnProperty.call(card, "mana")
+		// })
 		updateCustomCardSource(customActualCards)
 
 	}, [customCards])
