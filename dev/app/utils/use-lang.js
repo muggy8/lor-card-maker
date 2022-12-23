@@ -182,6 +182,7 @@ const lang = {
         "currently_selected_cards": "Current Deck",
         "deck_size": "Deck Size",
         "deck": "Deck",
-        "deck_name": "Deck Name"
+        "deck_name": "Deck Name",
+        "about": "About"
     }
 }

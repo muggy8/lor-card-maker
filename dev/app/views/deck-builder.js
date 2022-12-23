@@ -743,24 +743,31 @@ function deckBuilderComponenet(){
 				{ className: "flex card-list-options gutter-t-.5" },
 				div(
 					{ 
-						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("rito"),
 					}, 
 					translate("official_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("custom"),
 					}, 
 					translate("custom_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-4 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("inDeck"),
 					}, 
 					translate("currently_selected_cards")
+				),
+				div(
+					{ 
+						className: (selectedTab === "about" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
+						onClick: ()=>updateSelectedTab("about"),
+					}, 
+					translate("about")
 				),
 			),
 			
