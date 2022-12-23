@@ -1,0 +1,1 @@
+import e from"./use-debounce-effect.js";import{useEffect as t,useState as o}from"/cdn/react";export function useAssetCache(e,s,c){const[r,n]=o(c);return t((()=>e(n)),s),r}export function useAssetCacheDebounced(t,s,c,r){const[n,u]=o(r);return e((()=>t(u)),s,c),n}export default useAssetCache;
