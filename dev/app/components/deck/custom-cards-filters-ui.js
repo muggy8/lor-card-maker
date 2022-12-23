@@ -17,7 +17,7 @@ function customCardsFiltersComponent(props){
     return div(
         { className: `filter-slider gutter-b-1 ${expanded ? "expanded" : ""}` },
         div({ className: "flex no-wrap vcenter" }, 
-            div({ className: "grow clickable", onClick: toggleExpanded }, 
+            div({ className: "grow clickable gutter-rl-.5", onClick: toggleExpanded }, 
                 strong(translate("filter"))
             ),
             div({className: "icon clickable animate", onClick: toggleExpanded }, 

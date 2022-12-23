@@ -179,8 +179,9 @@ const lang = {
         "expantion": "Expantion",
         "official_cards": "Official Cards",
         "custom_cards": "Custom Cards",
-        "currently_selected_cards": "Cards In Deck",
+        "currently_selected_cards": "Current Deck",
         "deck_size": "Deck Size",
-        "deck": "Deck"
+        "deck": "Deck",
+        "deck_name": "Deck Name"
     }
 }

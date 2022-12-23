@@ -1,4 +1,4 @@
-import factory, { div, strong, button, nav, section } from "/Utils/elements.js"
+import factory, { div, strong, button, nav, section, label } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
@@ -15,6 +15,7 @@ import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { svgRefference } from "/Views/card-editor.js"
 import { openUri } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
+import editName from "/Components/card-config/edit-name.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -108,14 +109,15 @@ function deckBuilderComponenet(){
 	const patchDeck = useCallback((update)=>{
 		unPatchedChanged = {...unPatchedChanged, ...update}
 
-		let updated
-
-		updateDeck(updated = {
+		updateDeck({
 			...deck,
 			...unPatchedChanged,
 		})
 	}, [deck])
-	console.log(deck)
+	
+	const updateDeckName = useCallback(name=>{
+		patchDeck({ name })
+	}, [patchDeck])
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -875,31 +877,38 @@ function deckBuilderComponenet(){
 
 						div(
 							{ className: "card-name-list gutter-t" },
-							listLimit(
-								{ defaultSize: 24 },
-								(deckCardsListOrder || []).map(cardMeta=>cardMeta
-									? div(
-										{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
-	
-										cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
-	
-										div(
-											{ className: "box-3 flex no-wrap" },
-											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
-												div({ className: "icon" },
-													div({ className: "add" }),
-												)
-											),
-											div({ className: "gutter-rl-.25" }),
-											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
-												div({ className: "icon" },
-													div({ className: "minus" }),
-												)
-											),
+
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+								editName({
+									label: translate("deck_name"),
+									value: deck.name,
+									updateValue: updateDeckName,
+								}),
+							),
+							
+							(deckCardsListOrder || []).map(cardMeta=>cardMeta
+								? div(
+									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
+
+									cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
+
+									div(
+										{ className: "box-3 flex no-wrap" },
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
+											div({ className: "icon" },
+												div({ className: "add" }),
+											)
 										),
-									)
-									:undefined
+										div({ className: "gutter-rl-.25" }),
+										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
+											div({ className: "icon" },
+												div({ className: "minus" }),
+											)
+										),
+									),
 								)
+								:undefined
 							)
 						),
 					)
