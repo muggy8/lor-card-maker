@@ -182,9 +182,12 @@ function filterRitoCardListConfigurationComponent (props){
                             }
                         },
                         options: props.filterOptions.type,
-                        renderOption: (type)=>div(
-                            { className: "flex vhcenter clickable gutter-trbl-.5" },
-                            type
+                        renderOption: (type, isChecked)=>div(
+                            { className: "icon-checkbox flex vhcenter clickable gutter-trbl-.5" },
+                            KeywordImageCheck({
+                                isChecked,
+                                keywordName: type.toLowerCase()
+                            })
                         )
                     })
                     : undefined
