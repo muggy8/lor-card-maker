@@ -12,6 +12,8 @@ import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
 import listLimit from "/Components/list-limit.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
+import { isMobile } from '/cdn/react-device-detect'
+
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -27,8 +29,12 @@ function BatchExportComponent(){
         const storedCallback = globalState.getAllowBack()
 
         globalStateRef.current.setAllowBack(()=>{
-            if (document.documentElement.scrollTop){
-                setImmediate(()=>window.scrollTo(0, 0))
+            if (document.documentElement.scrollTop > 100){
+                setImmediate(()=>window.scroll({
+                    top: -document.documentElement.scrollTop,
+                    left: 0,
+                    behavior: "smooth",
+                }))
                 return false
             }
             else{

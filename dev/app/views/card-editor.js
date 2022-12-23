@@ -6,6 +6,7 @@ import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { Globals } from "/Views/index.js"
 import { getCard, saveCard, deleteCard } from "/Utils/service.js"
 import setImmediate from "/Utils/set-immediate-batch.js"
+import { isMobile } from '/cdn/react-device-detect'
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
@@ -48,8 +49,12 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             const storedCallback = globalState.getAllowBack()
 
             globalStateRef.current.setAllowBack(()=>{
-                if (document.documentElement.scrollTop){
-                    setImmediate(()=>window.scrollTo(0,0))
+                if (document.documentElement.scrollTop > 100){
+                    setImmediate(()=>window.scroll({
+                        top: -document.documentElement.scrollTop,
+                        left: 0,
+                        behavior: "smooth",
+                    }))
                     return false
                 }
                 else{

@@ -1,6 +1,8 @@
 import factory, { div, strong, button, nav, section, label } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
+import { isMobile } from '/cdn/react-device-detect'
+
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import useFilter from "/Utils/use-filter.js"
@@ -147,8 +149,12 @@ function deckBuilderComponenet(){
 		}
 
 		function checkAllowGoBack(){
-			if (document.documentElement.scrollTop){
-				setImmediate(()=>window.scrollTo(0,0))
+			if (document.documentElement.scrollTop > 100){
+				setImmediate(()=>window.scroll({
+					top: -document.documentElement.scrollTop,
+					left: 0,
+					behavior: "smooth",
+				}))
 				return false
 			}
 			else{

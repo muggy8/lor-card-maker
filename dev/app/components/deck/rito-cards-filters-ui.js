@@ -43,7 +43,6 @@ function filterRitoCardListConfigurationComponent (props){
 				return false
 			}
 			else{
-                console.log(checkAllowGoBackAtStartup)
 				return checkAllowGoBackAtStartup()
 			}
 		}

@@ -41,7 +41,6 @@ function customCardsFiltersComponent(props){
 				return false
 			}
 			else{
-                console.log(checkAllowGoBackAtStartup)
 				return checkAllowGoBackAtStartup()
 			}
 		}
