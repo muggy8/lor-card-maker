@@ -100,7 +100,6 @@ function deckBuilderComponenet(){
 	const globalStateRef = useRef()
 	globalStateRef.current = globalState
 
-
 	// data that's needed for the cards to be rendered in a pretty UI
 	const [deck, updateDeck] = useState(defaultDeck)
 	const deckCardsToRender = deck.cards
@@ -109,11 +108,14 @@ function deckBuilderComponenet(){
 	const patchDeck = useCallback((update)=>{
 		unPatchedChanged = {...unPatchedChanged, ...update}
 
-		updateDeck({
+		let updated
+
+		updateDeck(updated = {
 			...deck,
 			...unPatchedChanged,
 		})
 	}, [deck])
+	console.log(deck)
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -152,12 +154,19 @@ function deckBuilderComponenet(){
 	}, [])
 
 	useEffect(()=>{
-		globalState.state.cardId && getCard(globalState.state.cardId).then(updateDeck)
+		globalState.state.cardId && getCard(globalState.state.cardId)
+			.then(deckData=>{
+				updateDeck(deckData)
+				deckData.cards.forEach(cardData=>{
+					const cardId = cardData.card.id || cardData.card.cardCode
+
+					selectedCards.current.set(cardId, cardData)
+				})
+			})
 		return ()=>{
 			globalStateRef.current.patchState({cardId: ""})
 		}
-	}, [])
-
+	}, [globalState.state.cardId])
 
 	const [selectedTab, updateSelectedTab] = useState("rito")
 
@@ -535,7 +544,7 @@ function deckBuilderComponenet(){
 			return (b.count - a.count) || (aManaCost - bManaCost) || aName.localeCompare(bName)
 		})
 		patchDeck({cards: renderedDeck})
-	}, [])
+	}, [patchDeck])
 	const addCard = useCallback(card=>{
 		const cardId = card.id || card.cardCode
 
@@ -552,7 +561,7 @@ function deckBuilderComponenet(){
 		existingData.count ++ // we dont limit it at 3 because it's possible that somehow, the user wishes to put 4+ of the same card into the deck cuz PoC or some silly origin passive or something
 
 		updateRenderedDeck()
-	}, [])
+	}, [updateRenderedDeck])
 	const removeCard = useCallback(card=>{
 		const cardId = card.id || card.cardCode
 
@@ -569,7 +578,7 @@ function deckBuilderComponenet(){
 			selectedCards.current.delete(cardId)
 		}
 		updateRenderedDeck()
-	}, [])
+	}, [updateRenderedDeck])
 
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()

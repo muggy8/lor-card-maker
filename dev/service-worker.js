@@ -356,8 +356,6 @@ async function getSavedCardList(req, path){
 		typesToInclude.push(...addToIncludedTypes)
 	}
 
-	console.log(queryParams, typesToInclude)
-
 	let idListToDataListTasks = idList.map(async id=>{
 		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
 		cardData.id = id

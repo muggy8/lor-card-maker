@@ -1,4 +1,5 @@
-import { useRef, useEffect } from "/cdn/react"
+import deckView from "/Components/deck/deck-view.js";
+import { useRef, useState } from "/cdn/react"
 import { scaleFontSize } from "/Components/card-template/effect-text.js";
 import svgWrap from "/Components/card-template/svg-wrap.js";
 import datauri from "/Utils/datauri.js";
@@ -15,8 +16,12 @@ function deckIconComponent(props){
     }, [props.region])
 
     const deckNameRef = useRef()
+    const [nameFontSize, updateNameFontsize] = useState(56)
     useEffectDebounce(()=>{
-        scaleFontSize(deckNameRef.current, 32, 24)
+        scaleFontSize(deckNameRef.current, 32, 24).then(()=>{
+            
+            updateNameFontsize(deckNameRef.current.offsetHeight)
+        })
     }, 150, [props.name])
 
     return svgWrap(
@@ -25,9 +30,17 @@ function deckIconComponent(props){
             { 
                 className: "deck-frame", 
                 style: {
-                    backgroundImage: frameUri ? `url(${frameUri})` : undefined
+                    backgroundImage: frameUri ? `url(${frameUri})` : undefined,
+                    "--name-height": nameFontSize + "px"
                 } 
             },
+
+            props.cards 
+                ? div(
+                    { className: "deck-contents-preview" },
+                    deckView({cards: props.cards})
+                )
+                : undefined
         ),
 
         div(
