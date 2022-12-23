@@ -1,5 +1,5 @@
 import useAssetCache from "./use-asset-cache.js"
-import React from "/cdn/react"
+import React, { createElement } from "/cdn/react"
 
 const debugRender = false
 
@@ -33,13 +33,13 @@ function factory(reactComponent, awaitThis){
                 delete props.key
             }
 
-            return React.createElement(DeferRenderComponent, deferRenderProps)
+            return createElement(DeferRenderComponent, deferRenderProps)
         }
 
         if (debugRender && typeof reactComponent !== "string" ){
             console.log("Rendering", reactComponent.name)
         }
-        return React.createElement.apply(React, [reactComponent, props, ...children])
+        return createElement(reactComponent, props, ...[children].flat())
     }
 }
 
@@ -57,7 +57,7 @@ function DeferRenderComponent(props){
     if (debugRender && typeof component !== "string" ){
         console.log("Rendering", component.name)
     }
-    return React.createElement.apply(React, [component, componentProps, ...componentChildren])
+    return createElement(component, componentProps, ...[componentChildren].flat())
 }
 
 export const DeferRender = factory(DeferRenderComponent)
