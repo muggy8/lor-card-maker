@@ -1,9 +1,10 @@
-import React, { useContext, useRef, useEffect, useState } from "/cdn/react"
-import factory, { svg, rect, foreignObject, div } from "/Utils/elements.js"
-import { svgRefference } from "/Views/card-editor.js"
+import { useContext, useRef, useEffect, useState } from "/cdn/react"
+import { isSafari, isIOS } from '/cdn/react-device-detect'
 import Gesto from "/cdn/gesto"
+import factory, { svg, rect, foreignObject, div, fragment } from "/Utils/elements.js"
+import { svgRefference } from "/Views/card-editor.js"
 import loadCss from "/Utils/load-css.js"
-import rdd, { isSafari, isIOS } from '/cdn/react-device-detect'
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/svg-wrap.css")
 
@@ -83,8 +84,7 @@ function SvgWrapComponent(props){
 
 	// logic to fix safari because fuck you apple
 	const foreignObjectRef = useRef()
-	const [safariFixStyles, updateSafariFixStyles] = useState({})
-	useEffect(()=>{
+	const safariFixStyles = useAssetCache(updateSafariFixStyles=>{
 		if (!isSafari && !isIOS){
 			return
 		}
@@ -112,8 +112,8 @@ function SvgWrapComponent(props){
 		}
 	}, [props.loading])
 
-    return div(
-		{ style: safariFixStyles },
+    return (safariFixStyles ? div : fragment)(
+		safariFixStyles ? { style: safariFixStyles } : {},
 		svg(
 			{
 				width: props.width || "680",

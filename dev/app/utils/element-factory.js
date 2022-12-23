@@ -36,9 +36,13 @@ function factory(reactComponent, awaitThis){
             return createElement(DeferRenderComponent, deferRenderProps)
         }
 
-        if (debugRender && typeof reactComponent !== "string" ){
-            console.log("Rendering", reactComponent.name)
-        }
+        debugRender && typeof reactComponent !== "string" && console.log("Rendering", {
+            name: reactComponent.name,
+            component: reactComponent,
+            props,
+            children,
+        })
+
         return createElement(reactComponent, props, ...[children].flat())
     }
 }
@@ -54,9 +58,12 @@ function DeferRenderComponent(props){
 
     const { component, componentProps, componentChildren } = props
 
-    if (debugRender && typeof component !== "string" ){
-        console.log("Rendering", component.name)
-    }
+    debugRender && typeof component !== "string" && console.log("Deferd Rendering", {
+        name: component.name,
+        component,
+        props: componentProps,
+        children: componentChildren,
+    })
     return createElement(component, componentProps, ...[componentChildren].flat())
 }
 
