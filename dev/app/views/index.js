@@ -132,7 +132,7 @@ function App (props) {
                 patchState: patchGlboalState,
                 setView, 
                 patchSettings,
-                allowBack: allowBack.current,
+                getAllowBack: ()=>allowBack.current,
                 customKeywords,
                 setAllowBack: (callback)=>{
                     allowBack.current = callback

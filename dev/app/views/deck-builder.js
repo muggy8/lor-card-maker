@@ -138,20 +138,22 @@ function deckBuilderComponenet(){
 	}, [deckCardsToRender], [])
 
 	useEffect(()=>{
-		const storedCallback = globalState.allowBack
+		const checkAllowGoBackAtStartup = globalState.getAllowBack()
+		globalStateRef.current.setAllowBack(checkAllowGoBack)
 
-		globalStateRef.current.setAllowBack(()=>{
+		return function(){
+			// here we are greedy and will always rest the allow back callback to our cached state as this view is one of the top level views.
+			globalStateRef.current.setAllowBack(checkAllowGoBackAtStartup)
+		}
+
+		function checkAllowGoBack(){
 			if (document.documentElement.scrollTop){
 				setImmediate(()=>window.scrollTo(0,0))
 				return false
 			}
 			else{
-				return storedCallback()
+				return checkAllowGoBackAtStartup()
 			}
-		})
-
-		return function(){
-			globalStateRef.current.setAllowBack(storedCallback)
 		}
 	}, [])
 

@@ -1,4 +1,6 @@
+import { useEffect, useContext, useRef } from "/cdn/react"
 import factory, { div, strong, img, button, } from "/Utils/elements.js";
+import { Globals } from "/Views/index.js"
 import useToggle from "/Utils/use-toggle.js";
 import useLang from "/Utils/use-lang.js";
 import searchText from "/Components/deck/search-text.js";
@@ -7,12 +9,43 @@ import rangeSlider from "/Components/deck/range-slider.js";
 import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js";
 import linkAsset from "/Utils/load-css.js";
 
-
 const cssLoaded = linkAsset("/Components/deck/custom-cards-filters-ui.css")
 
 function customCardsFiltersComponent(props){
-    const [expanded, toggleExpanded] = useToggle(false)
     const translate = useLang()
+	const globalState = useContext(Globals)
+	const globalStateRef = useRef()
+	globalStateRef.current = globalState
+
+    const expandedState = useRef()
+    const [expanded, toggleExpanded] = expandedState.current = useToggle(false)
+
+    useEffect(()=>{
+        const checkAllowGoBackAtStartup = globalState.getAllowBack()
+		globalStateRef.current.setAllowBack(checkAllowGoBack)
+
+		return function(){
+            if (globalStateRef.current.getAllowBack() !== checkAllowGoBack){
+                return 
+                // this component isn't a top level component so there's no gaurentee of our release callbacks being called in order 
+                // so we just chill if the allow back has already been changed to something else during view unload and when a user
+                // initiated sub view change happenes, we can handle the allow go back callback management function.
+            }
+			globalStateRef.current.setAllowBack(checkAllowGoBackAtStartup)
+		}
+
+		function checkAllowGoBack(){
+            const [expanded, toggleExpanded] = expandedState.current
+			if (expanded){
+				toggleExpanded(false)
+				return false
+			}
+			else{
+                console.log(checkAllowGoBackAtStartup)
+				return checkAllowGoBackAtStartup()
+			}
+		}
+    }, [])
 
     return div(
         { className: `filter-slider gutter-b-1 ${expanded ? "expanded" : ""}` },

@@ -24,7 +24,7 @@ function BatchExportComponent(){
     globalStateRef.current = globalState
 
     useEffect(()=>{
-        const storedCallback = globalState.allowBack
+        const storedCallback = globalState.getAllowBack()
 
         globalStateRef.current.setAllowBack(()=>{
             if (document.documentElement.scrollTop){
