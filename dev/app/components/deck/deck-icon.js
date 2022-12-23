@@ -11,35 +11,23 @@ const cssLoaded = linkAsset("/Components/deck/deck-icon.css")
 
 function deckIconComponent(props){
     const frameUri = useAssetCache(updateFrame=>{
-        datauri(`/Assets/deck/frame-${Math.min((props.region || []).length, 3)}.png`).then(updateFrame)
+        datauri(`/Assets/deck/frame.png`).then(updateFrame)
     }, [props.region])
-
-    const backgroundUri = useAssetCache(updateBackground=>{
-        datauri("/Assets/keyword/frame.png").then(updateBackground)
-    }, [])
 
     const deckNameRef = useRef()
     useEffectDebounce(()=>{
-        scaleFontSize(deckNameRef.current, 24, 16)
+        scaleFontSize(deckNameRef.current, 32, 24)
     }, 150, [props.name])
 
     return svgWrap(
-        { width: 256, height: 256 },
+        { width: 336, height: 512 },
         div(
             { 
                 className: "deck-frame", 
                 style: {
-                    backgroundImage: backgroundUri ? `url(${backgroundUri})` : undefined
+                    backgroundImage: frameUri ? `url(${frameUri})` : undefined
                 } 
             },
-            div(
-                {
-                    className: "deck-frame", 
-                    style: {
-                        backgroundImage: frameUri ? `url(${frameUri})` : undefined
-                    } 
-                }
-            )
         ),
 
         div(

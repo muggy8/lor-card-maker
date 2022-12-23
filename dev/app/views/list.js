@@ -179,6 +179,7 @@ export function typeToComponent(type){
         case "follower": return Follower
         case "spell": return Spell
         case "keyword": return Keyword
+        case "deck": return deckIcon
         default: return
     }
 }

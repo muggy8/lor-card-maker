@@ -12,8 +12,8 @@ const cssLoaded = loadCss("/Components/batch-renderer.css")
 export function getResolutionFor(type){
     if (type === "deck"){
         return {
-            width: 256,
-            height: 256,
+            width: 336, 
+            height: 512,
         }
     }
 

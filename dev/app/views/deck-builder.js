@@ -98,7 +98,6 @@ const defaultDeck = {
 	cards: [],
 	type: "deck",
 	name: "",
-	region: [],
 }
 
 function deckBuilderComponenet(){

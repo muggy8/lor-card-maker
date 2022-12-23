@@ -347,14 +347,16 @@ async function getSavedCardList(req, path){
 	const typesToInclude = []
 	
 	if (queryParams.only){
-		typesToInclude.push(...queryParams.only)
+		typesToInclude.push([queryParams.only].flat())
 	}
 	else {
-		const addToIncludedTypes = queryParams.include || []
+		const addToIncludedTypes = queryParams.include ? [queryParams.include].flat() : []
 		const dropFromIncludedTypes = queryParams.exclude ? [queryParams.exclude].flat() : []
 		typesToInclude.push(...defaultIncludedTypes.filter(type=>!dropFromIncludedTypes.includes(type)))
 		typesToInclude.push(...addToIncludedTypes)
 	}
+
+	console.log(queryParams, typesToInclude)
 
 	let idListToDataListTasks = idList.map(async id=>{
 		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
