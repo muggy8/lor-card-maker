@@ -1,5 +1,5 @@
 import factory, { div, strong, button, nav, section } from "/Utils/elements.js"
-import { useState, useCallback, useRef, useEffect, useLayoutEffect, createElement } from "/cdn/react"
+import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -86,13 +86,6 @@ function getOptionsFromCardsList(cardList){
 	return options
 }
 
-function arrayEquals(a, b) {
-    return Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index]);
-}
-
 const defaultDeck = {
 	id: undefined,
 	cards: [],
@@ -103,6 +96,68 @@ const defaultDeck = {
 function deckBuilderComponenet(){
 
 	const translate = useLang()
+	const globalState = useContext(Globals)
+	const globalStateRef = useRef()
+	globalStateRef.current = globalState
+
+
+	// data that's needed for the cards to be rendered in a pretty UI
+	const [deck, updateDeck] = useState(defaultDeck)
+	const deckCardsToRender = deck.cards
+
+	let unPatchedChanged = {}
+	const patchDeck = useCallback((update)=>{
+		unPatchedChanged = {...unPatchedChanged, ...update}
+
+		updateDeck({
+			...deck,
+			...unPatchedChanged,
+		})
+	}, [deck])
+
+	const deckCardsListOrder = useAssetCache(updateList=>{
+		const listOrder = [
+			...deckCardsToRender
+		]
+
+		listOrder.sort((a,b)=>{
+			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
+			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
+
+			const aName = a.card.name.toLowerCase()
+			const bName = b.card.name.toLowerCase()
+
+			return (aManaCost - bManaCost) || aName.localeCompare(bName)
+		})
+
+		updateList(listOrder)
+	}, [deckCardsToRender], [])
+
+	useEffect(()=>{
+		const storedCallback = globalState.allowBack
+
+		globalStateRef.current.setAllowBack(()=>{
+			if (document.documentElement.scrollTop){
+				setImmediate(()=>window.scrollTo(0,0))
+				return false
+			}
+			else{
+				return storedCallback()
+			}
+		})
+
+		return function(){
+			globalStateRef.current.setAllowBack(storedCallback)
+		}
+	}, [])
+
+	useEffect(()=>{
+		globalState.state.cardId && getCard(globalState.state.cardId).then(updateDeck)
+		return ()=>{
+			globalStateRef.current.patchState({cardId: ""})
+		}
+	}, [])
+
 
 	const [selectedTab, updateSelectedTab] = useState("rito")
 
@@ -463,38 +518,6 @@ function deckBuilderComponenet(){
 		updateFilterOptions(trueOptions)
 		// console.log(trueOptions, displayedRitoCards)
 	}, [ritoCards, displayedRitoCards], {})
-
-	// whatever data that's needed for the cards to be rendered in a pretty UI
-	const [deck, updateDeck] = useState(defaultDeck)
-	const deckCardsToRender = deck.cards
-
-	let unPatchedChanged = {}
-	const patchDeck = useCallback((update)=>{
-		unPatchedChanged = {...unPatchedChanged, ...update}
-
-		updateDeck({
-			...deck,
-			...unPatchedChanged,
-		})
-	}, [deck])
-
-	const deckCardsListOrder = useAssetCache(updateList=>{
-		const listOrder = [
-			...deckCardsToRender
-		]
-
-		listOrder.sort((a,b)=>{
-			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
-			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
-
-			const aName = a.card.name.toLowerCase()
-			const bName = b.card.name.toLowerCase()
-
-			return (aManaCost - bManaCost) || aName.localeCompare(bName)
-		})
-
-		updateList(listOrder)
-	}, [deckCardsToRender], [])
 
 	// functionality for management of the decklist
 	const selectedCards = useRef(new Map())

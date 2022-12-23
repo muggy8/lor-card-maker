@@ -181,5 +181,6 @@ const lang = {
         "custom_cards": "Custom Cards",
         "currently_selected_cards": "Cards In Deck",
         "deck_size": "Deck Size",
+        "deck": "Deck"
     }
 }
