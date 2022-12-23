@@ -93,6 +93,14 @@ function arrayEquals(a, b) {
         a.every((val, index) => val === b[index]);
 }
 
+const defaultDeck = {
+	id: undefined,
+	cards: [],
+	type: "deck",
+	name: "",
+	region: [],
+}
+
 function deckBuilderComponenet(){
 
 	const translate = useLang()
@@ -458,10 +466,7 @@ function deckBuilderComponenet(){
 	}, [ritoCards, displayedRitoCards], {})
 
 	// whatever data that's needed for the cards to be rendered in a pretty UI
-	const [deck, updateDeck] = useState({
-		id: undefined,
-		cards: []
-	})
+	const [deck, updateDeck] = useState(defaultDeck)
 	const deckCardsToRender = deck.cards
 
 	let unPatchedChanged = {}
