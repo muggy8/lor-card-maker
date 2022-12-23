@@ -112,57 +112,56 @@ function SvgWrapComponent(props){
 		}
 	}, [props.loading])
 
-    return (safariFixStyles ? div : fragment)(
-		safariFixStyles ? { style: safariFixStyles } : {},
-		svg(
+	return svg(
+		{
+			width: props.width || "680",
+			height: props.height || "1024",
+			xmlns: "http://www.w3.org/2000/svg",
+			viewBox: `0 0 ${ props.width || "680" } ${ props.height || "1024" }`,
+			ref: (current)=>{
+				current && current !== svgRef.current && svgRef.setRef(current)
+			},
+		},
+		foreignObject(
 			{
 				width: props.width || "680",
 				height: props.height || "1024",
-				xmlns: "http://www.w3.org/2000/svg",
-				viewBox: `0 0 ${ props.width || "680" } ${ props.height || "1024" }`,
-				ref: (current)=>{
-					current && current !== svgRef.current && svgRef.setRef(current)
+				style: {
+					backgroundColor: "rgba(0,0,0,0)",
+					...safariFixStyles,
 				},
+				ref: foreignObjectRef,
+				className: isSafari || isIOS ? "fix-safari" : ""
 			},
-			foreignObject(
-				{
-					width: props.width || "680",
-					height: props.height || "1024",
-					style: {
-						backgroundColor: "rgba(0,0,0,0)",
-					},
-					ref: foreignObjectRef,
-					className: isSafari || isIOS ? "fix-safari" : ""
-				},
-				props.children,
-				props.loading
-					? div({ className: "loading-shade" },
-						div({ className: "icon" },
-							div({ className: "loading" })
-						)
+			props.children,
+			props.loading
+				? div({ className: "loading-shade" },
+					div({ className: "icon" },
+						div({ className: "loading" })
 					)
-					: undefined,
-				div({
-					ref: gestureReceiver,
-					className: "ios-gesture-receiver"
-				})
-			),
-			!isSafari && !isIOS
-				? rect({
-					x: 0,
-					y: 0,
-					width: props.width || "680",
-					height: props.height || "1024",
-					opacity: 0,
-					ref: gestureReceiver,
-					style: {
-						touchAction: "manipulation",
-						cursor
-					}
-				})
-				: undefined
-		)
-    )
+				)
+				: undefined,
+			div({
+				ref: gestureReceiver,
+				className: "ios-gesture-receiver"
+			})
+		),
+		!isSafari && !isIOS
+			? rect({
+				x: 0,
+				y: 0,
+				width: props.width || "680",
+				height: props.height || "1024",
+				opacity: 0,
+				ref: gestureReceiver,
+				style: {
+					touchAction: "manipulation",
+					cursor
+				}
+			})
+			: undefined
+	)
+
 }
 
 export default factory(SvgWrapComponent, cssLoaded)
