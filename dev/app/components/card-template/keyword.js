@@ -18,7 +18,7 @@ function KeywordComponent(props){
         datauri("/Assets/keyword/frame.png").then(updateFrameUri)
     }, [])
     const divisionUri = useAssetCache(updateDivisionUri=>{
-        datauri("/Assets/keyword/frame.png").then(updateDivisionUri)
+        datauri("/Assets/keyword/division.png").then(updateDivisionUri)
     }, [])
 
     const concurrencyManagerRef = useRef()
