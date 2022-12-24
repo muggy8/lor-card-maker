@@ -11,7 +11,7 @@
     transition-delay: 0.5s;
 }
 
-#deck-builder .card-list-options, #deck-builder .card-name-list  {
+#deck-builder .card-list-options, #deck-builder .card-name-list, #deck-builder .about-deck-uilder  {
     background-color: rgba(var(--rgb-bg), 80%);
 }
 

@@ -935,7 +935,7 @@ function deckBuilderComponenet(){
 						{ className: "gutter-rl" },
 
 						div(
-							{ className: "gutter-t" },
+							{ className: "about-deck-uilder gutter-t" },
 
 							div({ className: "about-info" }, translate("about_deck_builder_1", true)),
 
