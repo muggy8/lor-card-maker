@@ -19,7 +19,6 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 - toggle for "Made with LoRCaM"
 - better user feedback when error happens
 - improve code quality
-- iOS support?
 
 ## Running Locally
 The project is split into 2 version, the old version which we'll call Version Darius is located in the src/ folder and is no longer being maintained. The current version which we'll call Version Ezreal is located in the dev/ folder. Version Ezreal is the version that you'll see when you visit [https://muggy8.github.io/lor-card-maker/](https://muggy8.github.io/lor-card-maker/).
@@ -36,3 +35,26 @@ Alot of the logic of the retreaval of the files is handled in the service worker
 The card rendering is probably the most important part of the app and it is done using a mix of SVGs and standard HTML or more specifically, HTML wrapped inside an SVG which allow for word wrap and dynamic scailability. Theres 3 main type of cards that have their individual renders, units (including landmarks), spells and keywords. All unit based cards such as followers and landmarks are extensions of the base Unit class and just aguments it a bit.
 
 Keywords can be added by adjusting the keywords list in `/dev/app/components/card-template/keyword-renderer.js`. The list contains the name of the keyword and the image icon associated with it, (if any). I assume that this is the most likely reason for wanting to host your own version of this app or even running it locally (at least until that feature is added so there you go.)
+
+## FAQ
+
+### The website doesn't work (on my iPhone)
+Sorry, there's nothing I can do about this. Safari is basically the worst widely used web browser in the world and has many basic browser funtionality that's missing, horendiousely bugged, or behaves in a completely different way. This means that apps written for the avarage internet user using Chrome or Firefox will need extensive overhauling with the idiosyncracies in mind and as someone who doesn't own an iPhone, this isn't something I feel motivated to do.
+
+### The website doesn't work (on my iPhone, but I'm not using Safari)
+Unfortunately, Apple has basically made safari the only browser on the iPhone and forced all other browsers to be re-skins of safari. They claim that they did this in the name of "security" but in reality, it's to protect their monopolistic hold on the apple ecosystem as web apps like this can skirt around the appsstore and offer app like experiances to the user. 
+
+### The website doesn't work (on my android phone)
+This is likely because you're using an older version of your browser. If you tried again using an updated version of a Chromium based browser or Firefox, it should work.
+
+### The website crashed / crashes alot
+Sorry, this is probably my fault. There's alot of inefficencies all across the app and they add up. I'll have to slowly weed them out over time.
+
+### Is there an app version (for my android phone)?
+Yes. there's 2 ways to install it. The reccomended way is using the PWA feature of modern browsers. If you tap the menu button on your browser, you'll see the option to "Install This App" or "Add To Homescreen". This will effectively let you use the site as a standalone app. The other option is to install it from the [Google Play Store](https://play.google.com/store/apps/details?id=com.muggy8.lor_card_maker&hl=en&gl=US) but do know that this is basically the same as the PWA method but extra steps and more bugs because I'm not that farmiliar with android development.
+
+### Can I submit code changes?
+Yes please! I am just a single person. Feel free to change anything to fit your needs. I'd be happy to accept most change as long as they're made in good faith.
+
+### Can I request for a feature? 
+Please feel free to; but I cant promise I'll be able to get to it any time soon or at all (you see the todo list above right xP). But you know what'd get a feature added super fast with a 99.999% success rate? Submitting code for a feature ;)
