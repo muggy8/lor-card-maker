@@ -351,7 +351,7 @@ async function getSavedCardList(req, path){
 	const typesToInclude = []
 	
 	if (queryParams.only){
-		typesToInclude.push([queryParams.only].flat())
+		typesToInclude.push(...[queryParams.only].flat())
 	}
 	else {
 		const addToIncludedTypes = queryParams.include ? [queryParams.include].flat() : []
