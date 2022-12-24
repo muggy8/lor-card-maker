@@ -232,7 +232,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                     onClick: exportCard,
                                     [(isExporting ? "disabled" : "data-foo")]: true
                                 },
-                                strong(translate("export"))
+                                strong(translate("share"))
                             )
                         ),
                     )

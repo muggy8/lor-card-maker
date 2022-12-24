@@ -168,7 +168,7 @@ function BatchExportComponent(){
                                 onClick: exportCards,
                                 [(!Object.keys(selectedCardsData).length || exproting ? "disabled" : "data-foo")]: true
                             },
-                            strong(translate("export_selection"))
+                            strong(translate("share_selection"))
                         )
                         : undefined 
                     ,

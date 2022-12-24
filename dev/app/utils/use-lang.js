@@ -1,18 +1,36 @@
 import { Globals } from "/Views/index.js"
 import { useContext } from "/cdn/react"
-
+import { markdown } from "/Utils/elements.js"
 
 export default function useLang(){
     const globals = useContext(Globals)
-    return function(translationString){
+    return function(translationString, replacementsOrUseMarkdownToggle = false, useMarkdown = false){
+        // clean up our input variables since the second 2 variables are optional in the most destructive way.
+        let replacements = {}
+        if (typeof replacementsOrUseMarkdownToggle === "boolean"){
+            useMarkdown = replacementsOrUseMarkdownToggle
+        }
+        else if (typeof replacementsOrUseMarkdownToggle === "object" && replacementsOrUseMarkdownToggle !== null){
+            replacements = replacementsOrUseMarkdownToggle
+        }
+
+        // convert translation string into translated string
         const languageObject = lang[globals.state.lang || "en"]
-        if (!languageObject){
-            return translationString
+        let translatedText = translationString
+        languageObject && Object.prototype.hasOwnProperty.call(languageObject, translationString) && (translatedText = languageObject[translationString])
+
+        translatedText = translatedText.replace(/\:([^\s]+)/gm, (matched, replacementKey)=>{
+            if (Object.prototype.hasOwnProperty.call(replacements, replacementKey)){
+                return replacements[replacementKey]
+            }
+
+            return matched
+        })
+
+        if (useMarkdown){
+            return markdown(translatedText)
         }
-        const translatedText = languageObject[translationString]
-        if (!translatedText){
-            return translationString
-        }
+
         return translatedText
     }
 }
@@ -39,6 +57,7 @@ const lang = {
         "no_export_selected": "You haven't selected anything to export yet.",
         "scroll_down_for_selection": "Scroll Down to see selection.",
         "export_selection": "Export Selection",
+        "share_selection": "Share Selection",
         "delete_selected": "Delete Selected",
         "select_exports": "Select Exports",
         "include": "Include",
@@ -49,6 +68,7 @@ const lang = {
         "save_deck": "Save Deck",
         "save_keyword": "Save Keyword",
         "export": "Export",
+        "share": "Share",
         "card_configs": "Card Configs",
         "rarity": "Rarity",
         "mana_cost": "Mana Cost",
@@ -87,6 +107,7 @@ const lang = {
         "trigger": "Trigger",
         "imbue": "Imbue",
         "new": "New",
+        "new_label": "new :cardType :betaIf",
         "edit_shade": "Edit Card Art Shade",
         "min": "Min",
         "max": "Max",
@@ -182,6 +203,12 @@ const lang = {
         "currently_selected_cards": "Current Deck",
         "deck_size": "Deck Size",
         "deck": "Deck",
-        "deck_name": "Deck Name"
+        "deck_name": "Deck Name",
+        "about_deck_builder": "About Builder",
+        "about_deck_builder_1": "## About",
+        "about_deck_builder_2": "The Custom Card Deck Builder allows you to build any type of deck you want with custom cards and LoR's official cards. Many of the normal restrictions of deck building are also lifted such as region limit, deck size, no max copy of cards etc... This is to encourage non-standard deck building formats like PoC.",
+        "about_deck_builder_3": "The data for official Legends of Runeterra cards comes not directly from Riot but instead from the github user [InFinity54](https://github.com/InFinity54). Without [InFinity54](https://github.com/InFinity54)'s [LoR Data Dragon repositories](https://github.com/InFinity54/LoR_DDragon), this feature would be impossible.",
+        "about_deck_builder_4": "",
+        "about_deck_builder_5": "",
     }
 }
