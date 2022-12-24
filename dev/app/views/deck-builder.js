@@ -703,7 +703,7 @@ function deckBuilderComponenet(){
 						current: svgRef,
 						setRef: updateSvgRef,
 					} },
-					div({ className: "preview-height-limit", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
+					div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
 						deckView({ cards: deckCardsToRender, loading: isExporting }),
 					),
 				),

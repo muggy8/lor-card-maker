@@ -56,7 +56,7 @@
     font-size: 1.25em;
 }
 
-#deck-builder .preview-height-limit svg {
+#deck-builder .preview-height-limit > svg {
     max-height: calc(
         100vh 
         - var(--banner-height) 
@@ -64,4 +64,7 @@
         - 1.5em
         - var(--simple-stats-height)
     );
+
+    width: auto;
+    height: auto;
 }
