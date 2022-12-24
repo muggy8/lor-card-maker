@@ -180,6 +180,15 @@ function deckBuilderComponenet(){
 
 	const [selectedTab, updateSelectedTab] = useState("rito")
 
+	const simpleDeckStatsRef = useRef()
+	const simpleDeckStatHeight = useAssetCache(updateHeight=>{
+		const reCacheHeight = ()=>updateHeight(simpleDeckStatsRef.current.offsetHeight)
+		reCacheHeight()
+		
+		window.addEventListener("resize", reCacheHeight)
+		return ()=>window.removeEventListener("resize", reCacheHeight)
+	}, [])
+
 	// stuff we'll need for custom cards
 	const customCards = useAssetCache(updateCustomcards=>{
 		getCardList({exclude: ["keyword", "deck"]}).then(updateCustomcards)
@@ -681,7 +690,7 @@ function deckBuilderComponenet(){
 						width: useableWidth + "px"
 					} 
 				},
-				div({ className: "flex vhcenter" }, 
+				div({ className: "flex vhcenter", ref: simpleDeckStatsRef }, 
 					div({ className: "gutter-rl" },
 						translate("deck_size"),
 						": ",
@@ -694,7 +703,9 @@ function deckBuilderComponenet(){
 						current: svgRef,
 						setRef: updateSvgRef,
 					} },
-					deckView({ cards: deckCardsToRender, loading: isExporting }),
+					div({ className: "preview-height-limit", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
+						deckView({ cards: deckCardsToRender, loading: isExporting }),
+					),
 				),
 				div({ className: "flex vhcenter gutter-b" }, 
 					div(
