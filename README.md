@@ -19,6 +19,7 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 - toggle for "Made with LoRCaM"
 - better user feedback when error happens
 - improve code quality
+- custom regions
 
 ## Running Locally
 The project is split into 2 version, the old version which we'll call Version Darius is located in the src/ folder and is no longer being maintained. The current version which we'll call Version Ezreal is located in the dev/ folder. Version Ezreal is the version that you'll see when you visit [https://muggy8.github.io/lor-card-maker/](https://muggy8.github.io/lor-card-maker/).
