@@ -35,7 +35,7 @@ function SidebarComponent(){
     const installApp = usePWAInstall()
 
     const exportData = useCallback(async ()=>{
-        const cards = await getCardList()
+        const cards = await getCardList({ include: "deck" })
 
         cards.reverse()
 
