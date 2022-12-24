@@ -1,11 +1,12 @@
 .cards-grid {
-    position: relative
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .cards-grid .card {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    float: left;
 }
