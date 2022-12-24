@@ -1,6 +1,7 @@
 import factory from "/Utils/element-factory.js"
 import React from "/cdn/react"
 import InputRangeComponent from '/cdn/react-input-range';
+import ReactMarkdown from "/cdn/react-markdown"
 import loadCss from "/Utils/load-css.js"
 export default factory
 
@@ -40,3 +41,4 @@ export const header = factory("header")
 export const small = factory("small")
 export const fragment = factory(React.Fragment)
 export const InputRange = factory(InputRangeComponent, cssLoaded)
+export const markdown = factory(ReactMarkdown)

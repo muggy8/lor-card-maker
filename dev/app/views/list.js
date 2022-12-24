@@ -213,7 +213,10 @@ function ListComponent(){
                             }
                         },
                         type.component({
-                            name: `${translate("new")} ${translate(type.labelKey)}` + (type.beta ? " " + translate("beta") : "")
+                            name: translate("new_label", {
+                                cardType: translate(type.labelKey),
+                                betaIf: type.beta ? translate("beta") : ""
+                            }, false)
                         })
                     )
                 }),

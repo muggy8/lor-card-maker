@@ -73,6 +73,10 @@ const pathMap = {
 			url: "https://esm.sh/react-device-detect@2.2.2",
 			query: esmshQueryConfigs,
 		},
+		"react-markdown": {
+			url: "https://esm.sh/react-markdown@8.0.4",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

@@ -730,7 +730,7 @@ function deckBuilderComponenet(){
 								[(isExporting ? "disabled" : "data-foo")]: true,
 								onClick: exportCard
 							},
-							strong(translate("export"))
+							strong(translate("share"))
 						)
 					),
 				)
@@ -767,7 +767,7 @@ function deckBuilderComponenet(){
 						className: (selectedTab === "about" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("about"),
 					}, 
-					translate("about")
+					translate("about_deck_builder")
 				),
 			),
 			
@@ -925,6 +925,27 @@ function deckBuilderComponenet(){
 								)
 								:undefined
 							)
+						),
+					)
+					: undefined
+				,
+
+				selectedTab === "about" 
+					? div(
+						{ className: "gutter-rl" },
+
+						div(
+							{ className: "gutter-t" },
+
+							div({ className: "about-info" }, translate("about_deck_builder_1", true)),
+
+							div({ className: "about-info" }, translate("about_deck_builder_2", true)),
+
+							div({ className: "about-info" }, translate("about_deck_builder_3", true)),
+							
+							div({ className: "about-info" }, translate("about_deck_builder_4", true)),
+							
+							div({ className: "about-info" }, translate("about_deck_builder_5", true)),
 						),
 					)
 					: undefined
