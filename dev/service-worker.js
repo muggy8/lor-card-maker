@@ -148,6 +148,7 @@ function parseQueryParamsFromUrl(url){
 
 	const results = {}
 
+	// exec the query extractor regex on the query string repeatidly until all the key=val pairs are found.
 	for(
 		let extractedPair, key, val, _; 
 		extractedPair = queryPairExtractorRegex.exec(queryString);
