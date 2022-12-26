@@ -1,9 +1,11 @@
 import factory, { label, div, strong } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useEffect, useContext } from "/cdn/react"
+import { useCallback, useState, useRef, useContext } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
 import { Globals } from "/Views/index.js"
+import useToggle from "/Utils/use-toggle.js"
+import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 
 function EditKeywordComponent(props){
     const translate = useLang()
@@ -32,12 +34,19 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
+    const [expanded, toggleExpanded] = useToggle(false)
+
     return label(
         div(
-            strong(translate("keyword"))
+            { onClick: toggleExpanded, className: "flex" },
+            div(
+                { className: "grow" },
+                strong(translate("keyword"))
+            ),
+            div({ className: `icon animated ${expanded ? "multiply" : "chevron-down"}` })
         ),
         div(
-            { className: "flex gutter-b-2" },
+            { className: `flex gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
             Object.keys(keywords).map(keywordName=>{
                 const isChecked = props.value.some(checkedValue=>{
                     return checkedValue === keywordName
