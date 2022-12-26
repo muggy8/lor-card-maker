@@ -34,11 +34,11 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    const [expanded, toggleExpanded] = useToggle(false)
+    const [expanded, toggleExpanded] = useToggle(true)
 
     return label(
         div(
-            { onClick: toggleExpanded, className: "flex" },
+            { onClick: toggleExpanded, className: "flex clickable" },
             div(
                 { className: "grow" },
                 strong(translate("keyword"))
