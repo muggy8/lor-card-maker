@@ -136,9 +136,7 @@ function SvgWrapComponent(props){
 			props.children,
 			props.loading
 				? div({ className: "loading-shade" },
-					div({ className: "icon" },
-						div({ className: "loading" })
-					)
+					div({ className: "icon loading" })
 				)
 				: undefined,
 			div({

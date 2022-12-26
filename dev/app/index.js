@@ -8,7 +8,7 @@ loadCss("/App/under-ride.css").then(()=>{
 }).then(([ReactDOM, App])=>{
 
     Promise.all([
-        loadCss("/cdn/mmc-3/app/css/icons.css"),
+        loadCss("/cdn/css-icons/icons.min.css"),
         loadCss("/cdn/flex-box/flex-box.min.css"),
         loadCss("/cdn/flex-box/flex-box.gutters.min.css"),
         loadCss("/App/main.css"),

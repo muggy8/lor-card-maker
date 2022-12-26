@@ -52,9 +52,7 @@ function customCardsFiltersComponent(props){
             div({ className: "grow clickable gutter-rl-.5", onClick: toggleExpanded }, 
                 strong(translate("filter"))
             ),
-            div({className: "icon clickable animate", onClick: toggleExpanded }, 
-                div({ className: expanded ? "minus" : "menu" })
-            ),
+            div({className: "icon clickable animated " + (expanded ? "minus" : "menu"), onClick: toggleExpanded }),
         ),
 
         div({ className: "options" },

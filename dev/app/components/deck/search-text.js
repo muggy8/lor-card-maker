@@ -12,9 +12,7 @@ function searchTextComponent(props){
             input({ className: "grow gutter-trbl-.5", type: "search", value: props.value || "", onChange }),
             div({ className: "gutter-r-.5" }),
             button({ className: "grow gutter-trbl-.5", onClick: ()=>props.onChange(undefined) }, 
-                div({ className: "icon" },
-                    div({ className: "delete" }),
-                )
+                div({ className: "icon multiply" })
             )
         ),
     )

@@ -35,9 +35,7 @@ function rangeSliderComponent(props){
                 })
             ),
             button({ className: "gutter-trbl-.5", onClick: ()=>props.onChange([min, max]) }, 
-                div({ className: "icon" },
-                    div({ className: "delete" }),
-                )
+                div({ className: "icon multiply" })
             )
         ),
     )

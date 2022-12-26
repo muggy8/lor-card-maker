@@ -139,9 +139,7 @@ function SidebarComponent(){
                 className: "menu-icon flex vhcenter",
                 onClick: toggleOpened
             },
-            div({className: "icon animate clickable" }, 
-                span({ className: opened ? "delete" : "menu" })
-            ),
+            div({className: "icon animated clickable " + (opened ? "multiply" : "menu") }),
         ),
         label(
             {
@@ -190,9 +188,7 @@ function SidebarComponent(){
                 onChange: importData,
             }),
             isImporting 
-                ? div({className: "icon"},
-                    div({className: "loading"})
-                ) 
+                ? div({className: "icon loading"}) 
                 : undefined
             ,
         ),

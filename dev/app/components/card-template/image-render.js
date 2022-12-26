@@ -177,9 +177,7 @@ function ArtComponent(props){
             },
         },
         url && !replicatedArt.b64
-            ? div({ className: "icon" },
-                div({ className: "loading" })
-            )
+            ? div({ className: "icon loading" })
             : undefined
     )
 }

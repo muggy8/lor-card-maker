@@ -54,9 +54,7 @@ function filterRitoCardListConfigurationComponent (props){
             div({ className: "grow clickable gutter-rl-.5", onClick: toggleExpanded }, 
                 strong(translate("filter"))
             ),
-            div({className: "icon clickable animate", onClick: toggleExpanded }, 
-                div({ className: expanded ? "minus" : "menu" })
-            ),
+            div({className: "icon clickable animated " + (expanded ? "minus" : "menu"), onClick: toggleExpanded }),
         ),
         div({ className: "options" },
             div({ className: "gutter-rbl-.5" },
@@ -69,9 +67,7 @@ function filterRitoCardListConfigurationComponent (props){
                             className: "gutter-trbl-.5 grow",
                         }, 
                         props.refreshRitoLoading 
-                            ? div({ className: "icon" }, 
-                                div({ className: "loading" })
-                            )
+                            ? div({ className: "icon loading" })
                             : translate("refresh_rito_data")
                         ,
                     ),

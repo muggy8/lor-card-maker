@@ -812,15 +812,11 @@ function deckBuilderComponenet(){
 										div(
 											{ className: "box-3 flex no-wrap" },
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
-												div({ className: "icon" },
-													div({ className: "add" }),
-												)
+												div({ className: "icon plus" })
 											),
 											div({ className: "gutter-rl-.25" }),
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
-												div({ className: "icon" },
-													div({ className: "minus" }),
-												)
+												div({ className: "icon minus" })
 											),
 										),
 									)
@@ -837,9 +833,7 @@ function deckBuilderComponenet(){
 											className: "gutter-trbl-.5 grow",
 										}, 
 										ritoLoading 
-											? div({ className: "icon" }, 
-												div({ className: "loading" })
-											)
+											? div({ className: "icon loading" })
 											: translate("load_rito_data")
 										,
 									)
@@ -877,15 +871,11 @@ function deckBuilderComponenet(){
 										div(
 											{ className: "box-3 flex no-wrap" },
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
-												div({ className: "icon" },
-													div({ className: "add" }),
-												)
+												div({ className: "icon plus" })
 											),
 											div({ className: "gutter-rl-.25" }),
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
-												div({ className: "icon" },
-													div({ className: "minus" }),
-												)
+												div({ className: "icon minus" })
 											),
 										),
 									)
@@ -922,15 +912,11 @@ function deckBuilderComponenet(){
 									div(
 										{ className: "box-3 flex no-wrap" },
 										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
-											div({ className: "icon" },
-												div({ className: "add" }),
-											)
+											div({ className: "icon plus" })
 										),
 										div({ className: "gutter-rl-.25" }),
 										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
-											div({ className: "icon" },
-												div({ className: "minus" }),
-											)
+											div({ className: "icon minus" })
 										),
 									),
 								)
