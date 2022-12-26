@@ -41,6 +41,15 @@ const dummyIcons = [
     "eevee.png",
     "ember.png",
     "healing.png",
+    "champ.png",
+    "chat.png",
+    "discovered.png",
+    "dislike.png",
+    "flag.png",
+    "hexigon.png",
+    "like.png",
+    "pray.png",
+    "sword.png",
 ]
 
 function iconEditorComponent(props){
