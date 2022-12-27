@@ -110,7 +110,7 @@ async function replicateArtFallback({ image, width, height }){
 
 let replicationCache = {}
 const workerContentsPromise = fetch("/Components/card-template/image-render-worker.js").then(res=>res.text())
-function getReplicateImage(url){
+export function getReplicateImage(url){
     if (replicationCache[url]){
         return replicationCache[url]
     }

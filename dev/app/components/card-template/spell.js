@@ -13,6 +13,7 @@ import { speedOptions } from "/Components/card-config/edit-speed.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
+import webglArt from "/Components/card-template/webgl-art.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -293,24 +294,29 @@ function SpellComponent(props){
                         }
                     },),
                 ),
-                div(
-                    {
-                        className: "art",
-                        style: {
-                            backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
-                                ? `url(${backdropUri})`
-                                : "none"
-                            ,
-                            "--scale": props.transform ? props.transform.scale : 1,
-                            "--left": props.transform ? props.transform.x : 0,
-                            "--top": props.transform ? props.transform.y : 0,
-                        },
-                    },
-                    div(
-                        {className: "scale-adjuster"},
-                        ArtRenderer({ url: props.art })
-                    )
-                ),
+                webglArt({
+                    className: "art",
+                    transform: props.transform,
+                    art: props.art,
+                }),
+                // div(
+                //     {
+                //         className: "art",
+                //         style: {
+                //             backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
+                //                 ? `url(${backdropUri})`
+                //                 : "none"
+                //             ,
+                //             "--scale": props.transform ? props.transform.scale : 1,
+                //             "--left": props.transform ? props.transform.x : 0,
+                //             "--top": props.transform ? props.transform.y : 0,
+                //         },
+                //     },
+                //     div(
+                //         {className: "scale-adjuster"},
+                //         ArtRenderer({ url: props.art })
+                //     )
+                // ),
                 div(
                     {
                         className: "frame",

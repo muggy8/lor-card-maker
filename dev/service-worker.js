@@ -4,7 +4,7 @@ const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	target: "es2018",
+	target: "es2022",
 	"no-dts": true,
 	pin: "v102",
 	// bundle: true,
@@ -76,6 +76,10 @@ const pathMap = {
 		},
 		"react-markdown": {
 			url: "https://esm.sh/react-markdown@8.0.4",
+			query: esmshQueryConfigs,
+		},
+		"pixi.js": {
+			url: "https://esm.sh/pixi.js@7.0.5",
 			query: esmshQueryConfigs,
 		},
 	},
