@@ -11,6 +11,7 @@ const cssLoaded = loadCss("/Components/card-template/keyword-renderer.css")
 export const keywords = {
     "attune": [ "attune.png" ],
     "attach": [ "attach.png" ],
+    "aura": [ "aura.png" ],
     "augment": [ "augment.png" ],
     "fleeting": [ "fleeting.png" ],
     "scout": [ "scout.png" ],
