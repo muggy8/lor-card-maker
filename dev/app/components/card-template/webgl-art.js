@@ -53,13 +53,26 @@ function webglArtComponent (props){
         // image has already been replicated so we dont need to double it here
         const trueWidth = artSprite.width
         const trueHeight = artSprite.height
-        const viewwidth = temp0.view.width
-        const viewHeight = temp0.view.height
+        const viewwidth = stage.stage.width
+        const viewHeight = stage.stage.height
         const scale = props.transform.scale
 
         const maxHeightScale = viewHeight/trueHeight
         const maxWidthScale = viewwidth/trueWidth
         const maxScale = Math.max(maxHeightScale, maxWidthScale)
+
+        const reneredScale = Math.max(scale, maxScale)
+        console.log({
+            reneredScale,
+            trueWidth,
+            trueHeight,
+            viewwidth,
+            viewHeight,
+            scale,
+            maxHeightScale,
+            maxWidthScale,
+            maxScale
+        })
         
         // const [
         //     topLeftX, topLeftY,
