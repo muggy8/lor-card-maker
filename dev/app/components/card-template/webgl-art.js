@@ -37,7 +37,7 @@ function webglArtComponent (props){
 
         udpateCache([pixiApp, sprite])
 
-        console.log(sprite)
+        console.log(sprite, pixiApp)
 
         return ()=>{
             pixiApp.stage.removeChild(sprite)
@@ -50,18 +50,24 @@ function webglArtComponent (props){
             return
         }
 
-        artSprite.x = clamp(
-            props.transform.x, 
-            0, 
-            (replicatedArt.width * 2) - stage.view.width
-        )
-        artSprite.y = clamp(
-            props.transform.y,
-            0,
-            (replicatedArt.height * 2) - stage.view.height
-        )
-        artSprite.scale.x = artSprite.scale.y = Math.max(props.transform.scale, 0.5)
+        // image has already been replicated so we dont need to double it here
+        const trueWidth = artSprite.width
+        const trueHeight = artSprite.height
+        const viewwidth = temp0.view.width
+        const viewHeight = temp0.view.height
+        const scale = props.transform.scale
+
+        const maxHeightScale = viewHeight/trueHeight
+        const maxWidthScale = viewwidth/trueWidth
+        const maxScale = Math.max(maxHeightScale, maxWidthScale)
         
+        // const [
+        //     topLeftX, topLeftY,
+        //     topRightX, topRightY,
+        //     bottomRightX, bottomRightY,
+        //     bottomLeftX, bottomLeftY,
+        // ] = artSprite.calculateVertices() 
+
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
