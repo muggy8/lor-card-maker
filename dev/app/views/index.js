@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect, useRef, createContext, createElement } from "/cdn/react" 
+import { useState, useCallback, useEffect, useRef, createContext, createElement, createRef } from "/cdn/react" 
 import factory from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
 import { getSettings, saveSettings, getCardList } from "/Utils/service.js"
+import UtilityComponent from "/Utils/utility-component.js"
 
 export const Globals = createContext({
     lang: "en",
@@ -143,6 +144,60 @@ function App (props) {
         SideBar(),
         globalState.view(),
     )
+}
+
+class AppComponent extends UtilityComponent {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            lang: "en",
+            view: List,
+            defaultBg: true,
+            settings: {},
+            customKeywords: [],
+        }
+
+        getSettings().then(settings=>this.patchSettings(settings))
+        this.refreshCustomKeywords()
+        this.allowBack = createRef();
+
+        this.allowBack.current = ()=>true
+    }
+
+    refreshCustomKeywords(){
+        getCardList({only: "keyword"}).then(customKeywords=>this.patchState({customKeywords}))
+    }
+
+    patchSettings(newSettings){
+        const newSettingsState = {...this.state.settings, ...newSettings}
+        this.patchState({settings: newSettingsState})
+        
+        saveSettings(newSettingsState)
+    }
+
+    render (){
+        return createElement(
+            Globals.Provider,
+            {
+                value: {
+                    state: globalState,
+                    setState: updateGlobalState,
+                    patchState: patchGlboalState,
+                    setView, 
+                    patchSettings,
+                    getAllowBack: ()=>allowBack.current,
+                    customKeywords,
+                    setAllowBack: (callback)=>{
+                        allowBack.current = callback
+                    }
+                }
+            },
+            BannerBar(),
+            SideBar(),
+            globalState.view(),
+        )
+    }
 }
 
 export default factory(App)
