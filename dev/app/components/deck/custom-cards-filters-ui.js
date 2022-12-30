@@ -9,7 +9,7 @@ import rangeSlider from "/Components/deck/range-slider.js";
 import { KeywordImageCheck } from "/Components/card-config/edit-keywords.js";
 import linkAsset from "/Utils/load-css.js";
 
-const cssLoaded = linkAsset("/Components/deck/custom-cards-filters-ui.css")
+// const cssLoaded = linkAsset("/Components/deck/custom-cards-filters-ui.css")
 
 function customCardsFiltersComponent(props){
     const translate = useLang()
@@ -298,4 +298,4 @@ function customCardsFiltersComponent(props){
     )
 }
 
-export default factory(customCardsFiltersComponent, cssLoaded)
+export default factory(customCardsFiltersComponent)
