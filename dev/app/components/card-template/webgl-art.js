@@ -11,7 +11,7 @@ export function clamp(number, min, max) {
 function webglArtComponent (props){
 
     const replicatedArt = useAssetCache(updateCache=>{
-        props.art 
+        props.art
             ? getReplicateImage(props.art).then(updateCache)
             : updateCache(undefined)
     }, [props.art])
@@ -20,7 +20,7 @@ function webglArtComponent (props){
         if (pixiApp){
             return
         }
-        const app = new Application({ 
+        const app = new Application({
             width: wrapperRef.current.clientWidth,
             height: wrapperRef.current.clientHeight,
             forceCanvas: true,
@@ -73,14 +73,14 @@ function webglArtComponent (props){
         const renderingScale = Math.max(tranformScale, minScale)
 
         let needToUpdateTransforms = renderingScale !== tranformScale
-        
+
         // positions are set up with their origin at the top left corner I think
-        let newPositionX = ( (artTransform.x * 2) * renderingScale ) || 0
-        let newPositionY = ( (artTransform.y * 2) * renderingScale ) || 0
+        let newPositionX = ( (artTransform.x * 2) * renderingScale )
         if (newPositionX > 0){
             newPositionX = 0
             needToUpdateTransforms = true
         }
+		let newPositionY = ( (artTransform.y * 2) * renderingScale )
         if (newPositionY > 0){
             newPositionY = 0
             needToUpdateTransforms = true
@@ -88,17 +88,17 @@ function webglArtComponent (props){
 
         const newWidth = spriteWidth * renderingScale
         const newHeight = spriteHeight * renderingScale
-        let newRightBoundry = newWidth + newPositionX
-        let newBottomBoundry = newHeight + newPositionY
+        const newRightBoundry = newWidth + newPositionX
         if (newRightBoundry < viewWidth){ // if the right edge of the art wont cover the art area, then move the art over to cover the right edge
             newPositionX += (viewWidth - newRightBoundry)
             needToUpdateTransforms = true
         }
-        if (newBottomBoundry < viewHeight){ // if the bottom edge of the art wont cover the art area, then move the art over to cover the bottom edge
+		const newBottomBoundry = newHeight + newPositionY
+		if (newBottomBoundry < viewHeight){ // if the bottom edge of the art wont cover the art area, then move the art over to cover the bottom edge
             newPositionY += (viewHeight - newBottomBoundry)
             needToUpdateTransforms = true
         }
-        
+
         artSprite.x = newPositionX
         artSprite.y = newPositionY
         artSprite.scale.x = artSprite.scale.y = renderingScale
@@ -111,19 +111,25 @@ function webglArtComponent (props){
             })
         }
 
-        // console.log({
-        //     minHeightScale, 
-        //     viewHeight,
-        //     spriteHeight,
+        console.log({
+            minHeightScale,
+            viewHeight,
+            spriteHeight,
 
-        //     minWidthScale, 
-        //     viewWidth,
-        //     spriteWidth,
+            minWidthScale,
+            viewWidth,
+            spriteWidth,
 
-        //     minScale,
-        //     renderingScale,
-        //     artSprite,
-        // })
+            minScale,
+            renderingScale,
+            artSprite,
+
+			newWidth,
+			newHeight,
+            newPositionX,
+            newPositionY,
+            artTransform,
+        })
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
