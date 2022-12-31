@@ -152,11 +152,11 @@ export function getReplicateImage(url){
             const b64 = await blobToBase64(blob)
 
             return {
-                width: results.width * 2,
-                height: results.height * 2,
+                width: results.width * 3,
+                height: results.height * 3,
                 replicationCount: {
-                    x: 2,
-                    y: 2,
+                    x: 3,
+                    y: 3,
                 },
                 b64,
             }
