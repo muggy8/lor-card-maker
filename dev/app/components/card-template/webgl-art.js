@@ -49,6 +49,7 @@ function webglArtComponent (props){
         }
     }, [pixiApp, replicatedArt && replicatedArt.b64])
 
+    // update the sprite to our desired location
     useEffect(()=>{
         const artTransform = props.transform || {
             x: 0,
@@ -75,12 +76,12 @@ function webglArtComponent (props){
         let needToUpdateTransforms = renderingScale !== tranformScale
 
         // positions are set up with their origin at the top left corner I think
-        let newPositionX = ( (artTransform.x * 2) * renderingScale )
+        let newPositionX = ( (artTransform.x * replicatedArt.replicationCount.x) * renderingScale )
         if (newPositionX > 0){
             newPositionX = 0
             needToUpdateTransforms = true
         }
-		let newPositionY = ( (artTransform.y * 2) * renderingScale )
+		let newPositionY = ( (artTransform.y * replicatedArt.replicationCount.y) * renderingScale )
         if (newPositionY > 0){
             newPositionY = 0
             needToUpdateTransforms = true
@@ -106,30 +107,30 @@ function webglArtComponent (props){
         if (needToUpdateTransforms){
             props.updateTransform && props.updateTransform({
                 scale: renderingScale,
-                x: (newPositionX / renderingScale) / 2,
-                y: (newPositionY / renderingScale) / 2,
+                x: (newPositionX / renderingScale) / replicatedArt.replicationCount.x,
+                y: (newPositionY / renderingScale) / replicatedArt.replicationCount.y,
             })
         }
 
-        console.log({
-            minHeightScale,
-            viewHeight,
-            spriteHeight,
+        // console.log({
+        //     minHeightScale,
+        //     viewHeight,
+        //     spriteHeight,
 
-            minWidthScale,
-            viewWidth,
-            spriteWidth,
+        //     minWidthScale,
+        //     viewWidth,
+        //     spriteWidth,
 
-            minScale,
-            renderingScale,
-            artSprite,
+        //     minScale,
+        //     renderingScale,
+        //     artSprite,
 
-			newWidth,
-			newHeight,
-            newPositionX,
-            newPositionY,
-            artTransform,
-        })
+		// 	newWidth,
+		// 	newHeight,
+        //     newPositionX,
+        //     newPositionY,
+        //     artTransform,
+        // })
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({

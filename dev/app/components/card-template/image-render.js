@@ -154,6 +154,10 @@ export function getReplicateImage(url){
             return {
                 width: results.width * 2,
                 height: results.height * 2,
+                replicationCount: {
+                    x: 2,
+                    y: 2,
+                },
                 b64,
             }
         })

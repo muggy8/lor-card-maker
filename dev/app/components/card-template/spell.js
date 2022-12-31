@@ -298,7 +298,7 @@ function SpellComponent(props){
                 webglArt({
                     className: "art",
                     transform: props.transform,
-                    art: props.art || globalState.state.defaultBg ? backdropUri : undefined ,
+                    art: props.art || (globalState.state.defaultBg ? backdropUri : undefined),
                     updateTransform: props.updateTransform,
                 }),
                 div(
