@@ -76,12 +76,12 @@ function webglArtComponent (props){
         let needToUpdateTransforms = renderingScale !== tranformScale
 
         // positions are set up with their origin at the top left corner I think
-        let newPositionX = ( (artTransform.x * replicatedArt.replicationCount.x) * renderingScale )
+        let newPositionX = ( (artTransform.x * 2) * renderingScale )
         if (newPositionX > 0){
             newPositionX = 0
             needToUpdateTransforms = true
         }
-		let newPositionY = ( (artTransform.y * replicatedArt.replicationCount.y) * renderingScale )
+		let newPositionY = ( (artTransform.y * 2) * renderingScale )
         if (newPositionY > 0){
             newPositionY = 0
             needToUpdateTransforms = true
@@ -107,8 +107,8 @@ function webglArtComponent (props){
         if (needToUpdateTransforms){
             props.updateTransform && props.updateTransform({
                 scale: renderingScale,
-                x: (newPositionX / renderingScale) / replicatedArt.replicationCount.x,
-                y: (newPositionY / renderingScale) / replicatedArt.replicationCount.y,
+                x: (newPositionX / renderingScale) / 2,
+                y: (newPositionY / renderingScale) / 2,
             })
         }
 
