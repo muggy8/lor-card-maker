@@ -235,20 +235,19 @@ export class UnitRendererComponent extends Component {
                         updateTransform: this.props.updateTransform,
                     }),
                     
-                    // webglArt({
-                    //     className: "art blur",
-                    //     style: {
-                    //         clipPath: `polygon(${
-                    //             this.clipPathPolygon.map((coordPair)=>{
-                    //                 return coordPair.map(coord=>coord+"px")
-                    //                     .join(" ")
-                    //             }).join(",")
-                    //         })`,
-                    //     },
-                    //     transform: this.props.transform,
-                    //     art: this.props.art,
-                    //     updateTransform: this.props.updateTransform,
-                    // }),
+                    webglArt({
+                        className: "art blur",
+                        style: {
+                            clipPath: `polygon(${
+                                this.clipPathPolygon.map((coordPair)=>{
+                                    return coordPair.map(coord=>coord+"px")
+                                        .join(" ")
+                                }).join(",")
+                            })`,
+                        },
+                        transform: this.props.transform,
+                        art: this.props.art || (this.context.state.defaultBg ? this.state.backdropUri : undefined),
+                    }),
                     
                     // div(
                     //     {
