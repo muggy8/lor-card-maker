@@ -298,25 +298,8 @@ function SpellComponent(props){
                     className: "art",
                     transform: props.transform,
                     art: props.art,
+                    updateTransform: props.updateTransform,
                 }),
-                // div(
-                //     {
-                //         className: "art",
-                //         style: {
-                //             backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
-                //                 ? `url(${backdropUri})`
-                //                 : "none"
-                //             ,
-                //             "--scale": props.transform ? props.transform.scale : 1,
-                //             "--left": props.transform ? props.transform.x : 0,
-                //             "--top": props.transform ? props.transform.y : 0,
-                //         },
-                //     },
-                //     div(
-                //         {className: "scale-adjuster"},
-                //         ArtRenderer({ url: props.art })
-                //     )
-                // ),
                 div(
                     {
                         className: "frame",

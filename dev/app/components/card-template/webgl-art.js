@@ -30,6 +30,7 @@ function webglArtComponent (props){
             })
 
             wrapperRef.current.appendChild(pixiApp.view)
+
         }
 
         const sprite = Sprite.from(replicatedArt.b64)
@@ -51,35 +52,56 @@ function webglArtComponent (props){
         }
 
         // image has already been replicated so we dont need to double it here
-        const trueWidth = artSprite.width
-        const trueHeight = artSprite.height
-        const viewwidth = stage.stage.width
-        const viewHeight = stage.stage.height
-        const scale = props.transform.scale
+        const spriteWidth = artSprite.width
+        const spriteHeight = artSprite.height
+        const viewWidth = wrapperRef.current.clientWidth
+        const viewHeight = wrapperRef.current.clientHeight
+        const tranformScale = props.transform.scale
 
-        const maxHeightScale = viewHeight/trueHeight
-        const maxWidthScale = viewwidth/trueWidth
-        const maxScale = Math.max(maxHeightScale, maxWidthScale)
+        const minHeightScale = viewHeight/spriteHeight
+        const minWidthScale = viewWidth/spriteWidth
+        const minScale = Math.max(minHeightScale, minWidthScale)
 
-        const reneredScale = Math.max(scale, maxScale)
-        console.log({
-            reneredScale,
-            trueWidth,
-            trueHeight,
-            viewwidth,
-            viewHeight,
-            scale,
-            maxHeightScale,
-            maxWidthScale,
-            maxScale
-        })
+        const renderingScale = Math.max(tranformScale, minScale)
+
+        let needToUpdateTransforms = renderingScale !== tranformScale
         
-        // const [
-        //     topLeftX, topLeftY,
-        //     topRightX, topRightY,
-        //     bottomRightX, bottomRightY,
-        //     bottomLeftX, bottomLeftY,
-        // ] = artSprite.calculateVertices() 
+        // positions are set up with their origin at the top left corner I think
+        let newPositionX = (props.transform.x * 2) * renderingScale
+        let newPositionY = (props.transform.y * 2) * renderingScale
+        if (newPositionX > 0){
+            newPositionX = 0
+            needToUpdateTransforms = true
+        }
+        if (newPositionY > 0){
+            newPositionY = 0
+            needToUpdateTransforms = true
+        }
+
+        const newWidth = spriteWidth * renderingScale
+        const newHeight = spriteHeight * renderingScale
+        let newRightBoundry = newWidth + newPositionX
+        let newBottomBoundry = newHeight + newPositionY
+        if (newRightBoundry < viewWidth){ // if the right edge of the art wont cover the art area, then move the art over to cover the right edge
+            newPositionX += (viewWidth - newRightBoundry)
+            needToUpdateTransforms = true
+        }
+        if (newBottomBoundry < viewHeight){ // if the bottom edge of the art wont cover the art area, then move the art over to cover the bottom edge
+            newPositionY += (viewHeight - newBottomBoundry)
+            needToUpdateTransforms = true
+        }
+        
+        artSprite.x = newPositionX
+        artSprite.y = newPositionY
+        artSprite.scale.x = artSprite.scale.y = renderingScale
+
+        if (needToUpdateTransforms){
+            props.updateTransform && props.updateTransform({
+                scale: renderingScale,
+                x: (newPositionX / renderingScale) / 2,
+                y: (newPositionY / renderingScale) / 2,
+            })
+        }
 
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
