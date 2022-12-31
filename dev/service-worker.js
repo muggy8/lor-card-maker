@@ -79,7 +79,7 @@ const pathMap = {
 			query: esmshQueryConfigs,
 		},
 		"pixi.js": {
-			url: "https://esm.sh/pixi.js@7.0.5",
+			url: "https://esm.sh/pixi.js-legacy@7.0.5",
 			query: esmshQueryConfigs,
 		},
 	},

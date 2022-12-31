@@ -15,9 +15,9 @@
     left: 0;
 }
 
-.unit .art {
+/* .unit .art {
     background-image: var(--background-image);
-}
+} */
 
 .unit .art.blur {
     filter: blur(var(--blur, 15px)) brightness( calc( 1.0 - var(--darkness, 0.25) ) );
@@ -25,16 +25,6 @@
     mask-image: linear-gradient(to bottom, transparent var(--transparent-percent, 50%), black var(--solid-percent, 75%));
 
     will-change: filter, -webkit-mask-image, mask-image;
-}
-
-.unit .art .scale-adjuster {
-    position: absolute;
-    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
-    transform: scale(var(--scale));
-    will-change: transform, top, bottom, left, right;
 }
 
 .debug {

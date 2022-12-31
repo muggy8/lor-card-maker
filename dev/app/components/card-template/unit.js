@@ -11,6 +11,8 @@ import datauri from "/Utils/datauri.js"
 import { defaultShade } from "/Views/list.js"
 import debounce from "/Utils/debounce-function.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
+import webglArt from "/Components/card-template/webgl-art.js"
+
 
 const cssLoaded = loadCss("/Components/card-template/unit.css")
 
@@ -209,13 +211,6 @@ export class UnitRendererComponent extends Component {
                 ? div(
                     {
                         style: {
-                            "--background-image": !this.props.art && this.state.backdropUri && this.context.state.defaultBg
-                                ? `url(${this.state.backdropUri || ""})`
-                                : `none`
-                            ,
-                            "--scale": this.props.transform ? this.props.transform.scale : 1,
-                            "--left": this.props.transform ? this.props.transform.x : 0,
-                            "--top": this.props.transform ? this.props.transform.y : 0,
                             "--blur": `${shade.blur}px`,
                             "--darkness": shade.darkness,
                             "--transparent-percent": trasnparentPercent + "%",
@@ -225,45 +220,75 @@ export class UnitRendererComponent extends Component {
                         id: this.props.id
                     },
 
-                    div(
-                        {
-                            className: "art",
-                            style: {
-                                clipPath: `polygon(${
-                                    this.clipPathPolygon.map((coordPair)=>{
-                                        return coordPair.map(coord=>coord+"px")
-                                            .join(" ")
-                                    }).join(",")
-                                })`,
-                            }
+                    webglArt({
+                        className: "art",
+                        style: {
+                            clipPath: `polygon(${
+                                this.clipPathPolygon.map((coordPair)=>{
+                                    return coordPair.map(coord=>coord+"px")
+                                        .join(" ")
+                                }).join(",")
+                            })`,
                         },
-                        div(
-                            {className: "scale-adjuster"},
-                            ArtRenderer({
-                                url: this.props.art
-                            })
-                        ),
-                    ),
+                        transform: this.props.transform,
+                        art: this.props.art || (this.context.state.defaultBg ? this.state.backdropUri : undefined),
+                        updateTransform: this.props.updateTransform,
+                    }),
+                    
+                    // webglArt({
+                    //     className: "art blur",
+                    //     style: {
+                    //         clipPath: `polygon(${
+                    //             this.clipPathPolygon.map((coordPair)=>{
+                    //                 return coordPair.map(coord=>coord+"px")
+                    //                     .join(" ")
+                    //             }).join(",")
+                    //         })`,
+                    //     },
+                    //     transform: this.props.transform,
+                    //     art: this.props.art,
+                    //     updateTransform: this.props.updateTransform,
+                    // }),
+                    
+                    // div(
+                    //     {
+                    //         className: "art",
+                    //         style: {
+                    //             clipPath: `polygon(${
+                    //                 this.clipPathPolygon.map((coordPair)=>{
+                    //                     return coordPair.map(coord=>coord+"px")
+                    //                         .join(" ")
+                    //                 }).join(",")
+                    //             })`,
+                    //         }
+                    //     },
+                    //     div(
+                    //         {className: "scale-adjuster"},
+                    //         ArtRenderer({
+                    //             url: this.props.art
+                    //         })
+                    //     ),
+                    // ),
 
-                    div(
-                        {
-                            className: "art blur",
-                            style: {
-                                clipPath: `polygon(${
-                                    this.clipPathPolygon.map((coordPair)=>{
-                                        return coordPair.map(coord=>coord+"px")
-                                            .join(" ")
-                                    }).join(",")
-                                })`,
-                            }
-                        },
-                        div(
-                            {className: "scale-adjuster"},
-                            ArtRenderer({
-                                url: this.props.art
-                            })
-                        ),
-                    ),
+                    // div(
+                    //     {
+                    //         className: "art blur",
+                    //         style: {
+                    //             clipPath: `polygon(${
+                    //                 this.clipPathPolygon.map((coordPair)=>{
+                    //                     return coordPair.map(coord=>coord+"px")
+                    //                         .join(" ")
+                    //                 }).join(",")
+                    //             })`,
+                    //         }
+                    //     },
+                    //     div(
+                    //         {className: "scale-adjuster"},
+                    //         ArtRenderer({
+                    //             url: this.props.art
+                    //         })
+                    //     ),
+                    // ),
 
                     div(
                         {

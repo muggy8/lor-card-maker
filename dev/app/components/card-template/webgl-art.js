@@ -13,38 +13,45 @@ export function clamp(number, min, max) {
 function webglArtComponent (props){
 
     const replicatedArt = useAssetCache(updateCache=>{
-        props.art && getReplicateImage(props.art).then(updateCache)
+        props.art 
+            ? getReplicateImage(props.art).then(updateCache)
+            : updateCache(undefined)
     }, [props.art])
 
-    const wrapperRef = useRef()
-    const [stage, artSprite] = useAssetCache(udpateCache=>{
-        if (!replicatedArt){
+    const pixiApp = useAssetCache(udpateCache=>{
+        if (pixiApp){
             return
         }
+        const app = new Application({ 
+            width: wrapperRef.current.clientWidth,
+            height: wrapperRef.current.clientHeight,
+            forceCanvas: true,
+        })
 
-        let pixiApp = stage 
-        if (!pixiApp){
-            pixiApp = new Application({ 
-                width: wrapperRef.current.clientWidth,
-                height: wrapperRef.current.clientWidth,
-            })
+        wrapperRef.current.appendChild(app.view)
 
-            wrapperRef.current.appendChild(pixiApp.view)
+        udpateCache(app)
 
+        return ()=>{
+            app.destroy(true, true)
+        }
+    }, [])
+
+    const wrapperRef = useRef()
+    const artSprite = useAssetCache(udpateCache=>{
+        if (!pixiApp || !replicatedArt || !replicatedArt.b64){
+            return
         }
 
         const sprite = Sprite.from(replicatedArt.b64)
         pixiApp.stage.addChild(sprite)
 
-        udpateCache([pixiApp, sprite])
-
-        console.log(sprite, pixiApp)
+        udpateCache(sprite)
 
         return ()=>{
             pixiApp.stage.removeChild(sprite)
         }
-
-    }, [replicatedArt], [])
+    }, [pixiApp, replicatedArt && replicatedArt.b64])
 
     useEffect(()=>{
         if (!artSprite || !props.transform){
@@ -102,11 +109,11 @@ function webglArtComponent (props){
                 y: (newPositionY / renderingScale) / 2,
             })
         }
-
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
         className: props.className + " art-wrapper",
+        style: props.style,
         ref: wrapperRef,
     })
 }

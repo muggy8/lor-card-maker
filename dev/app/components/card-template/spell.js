@@ -45,6 +45,7 @@ function generateCleanedKeywordSet(keywords, speed){
 const fac = new FastAverageColor()
 function SpellComponent(props){
     const globalState = useContext(Globals)
+    // console.log(globalState)
 
     // figure out the background and stuff so we can have a color for the card text back
     const concurrencyManager = useRef()
@@ -297,7 +298,7 @@ function SpellComponent(props){
                 webglArt({
                     className: "art",
                     transform: props.transform,
-                    art: props.art,
+                    art: props.art || globalState.state.defaultBg ? backdropUri : undefined ,
                     updateTransform: props.updateTransform,
                 }),
                 div(
