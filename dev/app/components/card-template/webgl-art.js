@@ -1,8 +1,6 @@
 import { Application, Assets, Sprite } from '/cdn/pixi.js';
 import { useRef, useEffect } from '/cdn/react';
 import factory, { div } from "/Utils/elements.js"
-import loadCss from "/Utils/load-css.js"
-import setImmediateBatch from "/Utils/set-immediate-batch.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { getReplicateImage } from './image-render.js';
 
@@ -42,28 +40,31 @@ function webglArtComponent (props){
         if (!pixiApp || !replicatedArt || !replicatedArt.b64){
             return
         }
-
         const sprite = Sprite.from(replicatedArt.b64)
         pixiApp.stage.addChild(sprite)
-
         udpateCache(sprite)
 
         return ()=>{
-            pixiApp.stage.removeChild(sprite)
+            pixiApp.stage && pixiApp.stage.removeChild(sprite)
         }
     }, [pixiApp, replicatedArt && replicatedArt.b64])
 
     useEffect(()=>{
-        if (!artSprite || !props.transform){
+        const artTransform = props.transform || {
+            x: 0,
+            y: 0,
+            scale: 1,
+        }
+        if (!artSprite){
             return
         }
 
         // image has already been replicated so we dont need to double it here
-        const spriteWidth = artSprite.width
-        const spriteHeight = artSprite.height
+        const spriteWidth = replicatedArt.width
+        const spriteHeight = replicatedArt.height
         const viewWidth = wrapperRef.current.clientWidth
         const viewHeight = wrapperRef.current.clientHeight
-        const tranformScale = props.transform.scale
+        const tranformScale = artTransform.scale
 
         const minHeightScale = viewHeight/spriteHeight
         const minWidthScale = viewWidth/spriteWidth
@@ -74,8 +75,8 @@ function webglArtComponent (props){
         let needToUpdateTransforms = renderingScale !== tranformScale
         
         // positions are set up with their origin at the top left corner I think
-        let newPositionX = (props.transform.x * 2) * renderingScale
-        let newPositionY = (props.transform.y * 2) * renderingScale
+        let newPositionX = ( (artTransform.x * 2) * renderingScale ) || 0
+        let newPositionY = ( (artTransform.y * 2) * renderingScale ) || 0
         if (newPositionX > 0){
             newPositionX = 0
             needToUpdateTransforms = true
@@ -109,6 +110,20 @@ function webglArtComponent (props){
                 y: (newPositionY / renderingScale) / 2,
             })
         }
+
+        // console.log({
+        //     minHeightScale, 
+        //     viewHeight,
+        //     spriteHeight,
+
+        //     minWidthScale, 
+        //     viewWidth,
+        //     spriteWidth,
+
+        //     minScale,
+        //     renderingScale,
+        //     artSprite,
+        // })
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
