@@ -8,5 +8,23 @@
 /* when rendering in preview mode */
 body .canvas-art-wrapper {
     background-image: none;
+    position: relative;
+    font-size: 16em;
 }
 
+.canvas-art-wrapper:empty::after {
+
+    display: block;
+    width: 1em;
+    height: 1em;
+    content: " ";
+    border: solid var(--color-clear) 0.2em;
+    border-radius: 1em;
+    border-left-color: currentColor;
+    border-right-color: currentColor;
+
+    animation-name: spin;
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}

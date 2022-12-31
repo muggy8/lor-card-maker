@@ -20,7 +20,7 @@ function webglArtComponent (props){
     }, [props.art])
 
     const pixiApp = useAssetCache(udpateCache=>{
-        if (pixiApp){
+        if (pixiApp || !replicatedArt || !replicatedArt.b64){
             return
         }
         const app = new Application({
@@ -36,7 +36,7 @@ function webglArtComponent (props){
         return ()=>{
             app.destroy(true, true)
         }
-    }, [])
+    }, [replicatedArt])
 
     const wrapperRef = useRef()
     const artSprite = useAssetCache(udpateCache=>{
@@ -137,7 +137,7 @@ function webglArtComponent (props){
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
-        className: props.className + " canvas-art-wrapper",
+        className: props.className + " canvas-art-wrapper flex vhcenter",
         style: props.style,
         ref: wrapperRef,
     })
