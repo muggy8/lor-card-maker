@@ -22,6 +22,7 @@ import EditIcon from "/Components/card-config/edit-icon.js"
 import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
+import { setupCanvasForExport } from "/Components/card-template/webgl-art.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -107,6 +108,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
 
             setExporting(true)
+            setupCanvasForExport(svgRef)
             saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
                 width: svgRef.width.baseVal.value,

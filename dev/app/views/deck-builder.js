@@ -18,6 +18,7 @@ import { svgRefference } from "/Views/card-editor.js"
 import { openUri } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
 import editName from "/Components/card-config/edit-name.js"
+import { setupCanvasForExport } from "/Components/card-template/webgl-art.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -639,6 +640,7 @@ function deckBuilderComponenet(){
 		}
 
 		setExporting(true)
+		setupCanvasForExport(svgRef)
 		saveSvgAsPng.svgAsPngUri(svgRef, {
 			excludeUnusedCss: true,
 			width: svgRef.width.baseVal.value,

@@ -1,0 +1,12 @@
+/* when rendering via export */
+.canvas-art-wrapper {
+    background-image: var(--background-image);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/* when rendering in preview mode */
+body .canvas-art-wrapper {
+    background-image: none;
+}
+

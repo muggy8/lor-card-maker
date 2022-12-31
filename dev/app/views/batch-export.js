@@ -13,6 +13,7 @@ import debounceFunction from "/Utils/debounce-function.js"
 import listLimit from "/Components/list-limit.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { isMobile } from '/cdn/react-device-detect'
+import { setupCanvasForExport } from "/Components/card-template/webgl-art.js"
 
 
 const cssLoaded = loadCss("/Views/batch-export.css")
@@ -113,6 +114,7 @@ function BatchExportComponent(){
         }
         setExporting(true)
         requestAnimationFrame(() => {
+            setupCanvasForExport(svgRef)
             saveSvgAsPng.svgAsPngUri(svgRef, {
                 excludeUnusedCss: true,
                 width: svgRef.width.baseVal.value,

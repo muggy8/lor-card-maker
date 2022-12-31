@@ -3,6 +3,9 @@ import { useRef, useEffect } from '/cdn/react';
 import factory, { div } from "/Utils/elements.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { getReplicateImage } from './image-render.js';
+import loadCss from '/Utils/load-css.js';
+
+const cssLoaded = loadCss("/Components/card-template/webgl-art.css")
 
 export function clamp(number, min, max) {
     return Math.max(min, Math.min(number, max));
@@ -134,10 +137,33 @@ function webglArtComponent (props){
     }, [artSprite, (props.transform || {}).x, (props.transform || {}).y, (props.transform || {}).scale])
 
     return div({
-        className: props.className + " art-wrapper",
+        className: props.className + " canvas-art-wrapper",
         style: props.style,
         ref: wrapperRef,
     })
 }
 
-export default factory(webglArtComponent)
+
+export function setupCanvasForExport(svgEle){
+    const wrappers = svgEle.querySelectorAll(".canvas-art-wrapper")
+
+    Array.prototype.forEach.call(wrappers, wrapper=>{
+        const canvas = wrapper.querySelector("canvas")
+        if (!canvas){
+            return
+        }
+        const artDataUri = canvas.toDataURL()
+        const existingStyles = wrapper.getAttribute("style")
+        const inlineStylesArray = existingStyles 
+            ? existingStyles.split(";")
+            : []
+        inlineStylesArray.push(`--background-image:url(${artDataUri})`)
+
+        wrapper.setAttribute(
+            "style", 
+            inlineStylesArray.join(";")
+        )
+    })
+}
+
+export default factory(webglArtComponent, cssLoaded)
