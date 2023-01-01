@@ -99,7 +99,7 @@
 				color: var(--color-link);
 			}
 
-			body.loading::before, body.loading::after {
+			body.loading::before, body.loading::after, body.error::before, body.error::after {
 				display: block;
 				content: " ";
 				position: absolute;
@@ -124,6 +124,18 @@
 				animation-duration: 1.5s;
 				animation-timing-function: linear;
 				animation-iteration-count: infinite;
+			}
+
+			body.error::before {
+				font-size: 10vw;
+				content: "😔";
+			}
+
+			body.error::after {
+				font-size: 3em;
+				text-align: center;
+				content: "An Error Occured";
+				text-shadow: 2px 2px var(--color-bg);
 			}
 
 			@keyframes spin {
@@ -192,11 +204,15 @@
 						}
 						// window.document.location.reload()
 					})
-					.then((url)=>{
-						return import(url)
+					.then(async (url)=>{
+						const module = await import(url)
+						// console.log(module.default)
+						return module.default
 					})
 					.catch(function(error) {
 						console.log('Service worker registration failed, error:', error);
+						document.body.classList.remove("loading")
+						document.body.classList.add("error")
 					});
 			}
 		</script>

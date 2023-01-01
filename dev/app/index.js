@@ -1,6 +1,6 @@
 import loadCss from "/Utils/load-css.js"
 
-loadCss("/App/under-ride.css").then(()=>{
+export default loadCss("/App/under-ride.css").then(()=>{
     return Promise.all([
         import("/cdn/react-dom/client"),
         import("/Views/index.js"),
