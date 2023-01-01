@@ -127,15 +127,12 @@
 			}
 
 			body.error::before {
-				font-size: 10vw;
-				content: "😔";
-			}
-
-			body.error::after {
 				font-size: 3em;
 				text-align: center;
-				content: "An Error Occured";
+				content: "😥 \A An Error Occured";
 				text-shadow: 2px 2px var(--color-bg);
+				white-space: pre-wrap;
+
 			}
 
 			@keyframes spin {
