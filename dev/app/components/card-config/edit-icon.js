@@ -105,6 +105,9 @@ function iconEditorComponent(props){
         setExportingPremade(false)
     }, [])
 
+    const [uploadReady, updateUploadReady] = useState(false)
+    const uploadIsNowReady = useCallback(()=>updateUploadReady(true))
+    const uploadIsNotReady = useCallback(()=>updateUploadReady(false))
 
     const [uploadedIcon, updateUploadedIcon] = useState("")
     const [uploadTransform, updateUploadTransform] = useState({
@@ -120,6 +123,7 @@ function iconEditorComponent(props){
             y: 0,
             scale: 1,
         })
+        uploadIsNotReady()
     }, [uploadedIcon])
 
     const cancelUpload = useCallback(()=>{
@@ -127,7 +131,7 @@ function iconEditorComponent(props){
     }, [])
 
     const useUploadedIcon = useCallback(()=>{
-        if (exportingUpload){
+        if (exportingUpload || !uploadReady){
             return
         }
 
@@ -140,10 +144,11 @@ function iconEditorComponent(props){
             props.updateValue([...(props.value || []), uri])
             updateUploadedIcon("")
             setExportingUpload(false)
+            uploadIsNotReady()
         }, ()=>setExportingUpload(false))
 
-    }, [uploadedSvgRef, exportingUpload, props.value])
-    
+    }, [uploadedSvgRef, exportingUpload, props.value, uploadReady])
+
     return div(
         { className: "edit-icon box" },
 
@@ -162,13 +167,13 @@ function iconEditorComponent(props){
 
                 props.value.map((uri, index)=>{
                     return div(
-                        { 
+                        {
                             className: "flex gutter-b-.5",
                             key: uri,
                         },
                         div(
                             { className: "box gutter-trbl-.5 existing-icon-bg" },
-                            div({ 
+                            div({
                                 className: "existing-icon-preview",
                                 style: {
                                     backgroundImage: `url(${uri})`
@@ -177,7 +182,7 @@ function iconEditorComponent(props){
                         ),
 
                         button(
-                            { 
+                            {
                                 className: "gutter-trbl-1",
                                 onClick: ()=>{
                                     const newValueSet = [...props.value]
@@ -193,14 +198,14 @@ function iconEditorComponent(props){
             : undefined
         ,
 
-        !selected 
+        !selected
             ? div(
                 div(
                     { className: "gutter-trl-.5" },
                     translate("upload_icon")
                 ),
                 EditArt({
-                    value: uploadedIcon, 
+                    value: uploadedIcon,
                     updateValue: updateUploadedIcon,
                     moveable: false,
                 }),
@@ -217,9 +222,9 @@ function iconEditorComponent(props){
                                 } },
 
                                 svgWrap(
-                                    { 
-                                        width: 128, 
-                                        height: 128, 
+                                    {
+                                        width: 128,
+                                        height: 128,
                                         loading: exportingUpload,
                                         onTransform: updateUploadTransform,
                                         ...uploadTransform,
@@ -235,7 +240,7 @@ function iconEditorComponent(props){
                                         },
                                         div(
                                             {className: "scale-adjuster"},
-                                            ArtRenderer({ url: uploadedIcon })
+                                            ArtRenderer({ url: uploadedIcon, onImageChanged:uploadIsNowReady })
                                         )
                                     )
                                 )
@@ -245,8 +250,8 @@ function iconEditorComponent(props){
                         div(
                             { className: "flex gutter-t-.5" },
                             button(
-                                { className: "box gutter-trbl-1", onClick: useUploadedIcon },
-                                translate("use_icon")
+                                { className: "box gutter-trbl-1", onClick: useUploadedIcon, [uploadReady ? "" : "disabled" ]: true },
+                                uploadReady ? translate("use_icon") : div({className: "icon loading"})
                             ),
                             div({ className: "gutter-r-.5" }),
                             button(
@@ -258,12 +263,12 @@ function iconEditorComponent(props){
                     : undefined
                 ,
             )
-            : undefined 
+            : undefined
         ,
 
-        !uploadedIcon 
+        !uploadedIcon
             ? div(
-                !selected 
+                !selected
                     ? div({ className: "box gutter-rl-.5 gutter-t-.75" }, strong(translate("or")))
                     : undefined
                 ,

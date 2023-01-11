@@ -2,6 +2,7 @@ import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import setImmediateBatch from "/Utils/set-immediate-batch.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
+import { useEffect } from "/cdn/react"
 
 const cssLoaded = loadCss("/Components/card-template/image-render.css")
 
@@ -59,7 +60,7 @@ async function replicateArtFallback({ image, width, height }){
     // draw the initial image that's the right way around
     await asyncWait()
     context.drawImage(
-        image, 
+        image,
         0, 0, width, height, // location of source
         0, 0, width, height, // location to render
     )
@@ -69,7 +70,7 @@ async function replicateArtFallback({ image, width, height }){
     context.scale(-1, 1)
     await asyncWait()
     context.drawImage(
-        image, 
+        image,
         0, 0, width, height, // location of source
         -canvas.width, 0, width, height, // location to render
     )
@@ -81,7 +82,7 @@ async function replicateArtFallback({ image, width, height }){
     context.scale(1, -1)
     await asyncWait()
     context.drawImage(
-        image, 
+        image,
         0, 0, width, height, // location of source
         0, -canvas.height, width, height, // location to render
     )
@@ -93,7 +94,7 @@ async function replicateArtFallback({ image, width, height }){
     context.scale(-1, -1)
     await asyncWait()
     context.drawImage(
-        image, 
+        image,
         0, 0, width, height, // location of source
         -canvas.width, -canvas.height, width, height, // location to render
     )
@@ -105,7 +106,7 @@ async function replicateArtFallback({ image, width, height }){
     return new Promise(accept=>{
         canvas.toBlob(accept)
     })
-    
+
 }
 
 let replicationCache = {}
@@ -136,24 +137,24 @@ function getReplicateImage(url){
                     replicationCalculationWorker.terminate()
                     console.warn(ev)
                     replicateArtFallback({
-                        width: results.width, 
-                        height: results.height, 
+                        width: results.width,
+                        height: results.height,
                         image: assetBitmap
                     })
                         .then(accept, reject)
                 }
 
                 replicationCalculationWorker.postMessage({
-                    width: results.width, 
-                    height: results.height, 
+                    width: results.width,
+                    height: results.height,
                     image: assetBitmap,
                 })
             })
             const b64 = await blobToBase64(blob)
 
             return {
-                width: results.width, 
-                height: results.height, 
+                width: results.width,
+                height: results.height,
                 b64,
             }
         })
@@ -166,6 +167,10 @@ function ArtComponent(props){
     const replicatedArt = useAssetCache(updateReplicatedArt=>{
         url && getReplicateImage(url).then(updateReplicatedArt)
     }, [url], {})
+
+    useEffect(()=>{
+		replicatedArt.b64 && props.onImageChanged && props.onImageChanged()
+	}, [props.onImageChanged, replicatedArt])
 
     return div(
         {
