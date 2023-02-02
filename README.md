@@ -16,6 +16,9 @@ Hi there, this is a LoR card maker mainly designed for Mobile devices. The live 
 - custom card stats "card" in the export
 - Exported image compression to reduce file size
 - Import External custom cards
+- Add search for created library
+- Add data export
+- Save batches
 - toggle for "Made with LoRCaM"
 - better user feedback when error happens
 - improve code quality
