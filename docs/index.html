@@ -59,7 +59,7 @@
 						return module.default
 					})
 					.catch(function(error) {
-						console.log('Service worker registration failed, error:', error);
+						console.error('Service worker registration failed, error:', error);
 						document.body.classList.remove("loading")
 						document.body.classList.add("error")
 					});
