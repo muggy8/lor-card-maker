@@ -1,11 +1,10 @@
 import svgWrap from "/Components/card-template/svg-wrap.js";
-import { createElement } from "/cdn/react"
 import { isRitoCard } from "./card-name.js";
-import factory, { div, img } from "/Utils/elements.js";
-import { getRitoCardImage, getCard } from "/Utils/service.js";
+import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
-import { typeToComponent } from "/Views/list.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
+import datauri from "/Utils/datauri.js"
+
 
 const cssLoaded = linkAsset("/Components/deck/deck-stats-card.css")
 
@@ -74,6 +73,14 @@ function deckStatsCard(props){
         updateCache(stats)
     }, [props.cards])
 
+    const cardIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/card-icon.png").then(updateCache) })
+    const unitIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/unit-icon.png").then(updateCache) })
+    const champIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/champ-icon.png").then(updateCache) })
+    const followerIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/follower-icon.png").then(updateCache) })
+    const spellIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/spell-icon.png").then(updateCache)})
+    const landmarkIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/landmark-icon.png").then(updateCache) })
+    const equipmentIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/equipment-icon.png").then(updateCache) })
+
     if (!deckStats || !deckStats.cards){
         return null
     }
@@ -82,50 +89,78 @@ function deckStatsCard(props){
             { className: "gutter-t flex column hsend vcenter gutter-b-3 deck-stats-card" },
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/card-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${cardIcon})`
+                    }
                 }),
                 deckStats.cards
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/unit-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${unitIcon})`
+                    }
                 }),
                 deckStats.units
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/champ-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${champIcon})`
+                    }
                 }),
                 deckStats.champions
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/follower-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${followerIcon})`
+                    }
                 }),
                 deckStats.followers
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/spell-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${spellIcon})`
+                    }
                 }),
                 deckStats.spells
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/landmark-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${landmarkIcon})`
+                    }
                 }),
                 deckStats.landmarks
             ),
             div(
                 { className: "flex vhcenter" },
-                img({
-                    src: "Assets/deck/equipment-icon.png"
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${equipmentIcon})`
+                    }
                 }),
                 deckStats.equipments
             ),
