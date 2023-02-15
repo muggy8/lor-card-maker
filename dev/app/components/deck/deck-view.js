@@ -6,6 +6,7 @@ import { calculateRowsAndColsForCardsRecursivelyWithCacheUse } from "/Components
 import svgWrap from "/Components/card-template/svg-wrap.js";
 import { svgRefference } from "/Views/card-editor.js";
 import linkAsset from "/Utils/load-css.js";
+import deckStatsCard from "./deck-stats-card.js";
 
 const cssLoaded = linkAsset("/Components/deck/deck-view.css")
 
@@ -13,7 +14,12 @@ function DeckViewComponent(props){
 
     const gridResolution = useAssetCache(updateGrid=>{
         const grid = calculateRowsAndColsForCardsRecursivelyWithCacheUse(
-            props.cards.map(cardMetadata=>cardMetadata.card)
+            props.cards.length 
+            ? [
+                ...props.cards.map(cardMetadata=>cardMetadata.card),
+                {}
+            ] 
+            : []
         )
         updateGrid(grid)
     }, [props.cards], {})
@@ -40,6 +46,9 @@ function DeckViewComponent(props){
                         cardSize: gridResolution.resolution
                     })
                 }),
+                deckStatsCard({
+                    cards: props.cards
+                })
             )
         )
     )
