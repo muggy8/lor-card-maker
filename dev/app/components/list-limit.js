@@ -1,16 +1,20 @@
 import factory, { fragment } from "/Utils/elements.js"
 import { useState, useEffect, useRef } from "/cdn/react" 
 import debounceFunction from "/Utils/debounce-function.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
 
 function ListLimitComponent(props){
-    const children = props.children.flat()
     const [limit, updateLimit] = useState(props.defaultSize || 12)
-
     useEffect(()=>{
         if (props.defaultSize && props.defaultSize > limit){
             updateLimit(props.defaultSize)
         }
     }, [props.defaultSize, limit])
+
+    const children = useAssetCache(updateCache=>{
+        updateCache(props.children.flat())
+        updateLimit(props.defaultSize || 12)
+    }, [props.children], [])
 
     const loadMoreWhenCloserThanThisToTheBottomOfPage = useRef()
     loadMoreWhenCloserThanThisToTheBottomOfPage.current = props.bottomOffset || 200

@@ -1,5 +1,5 @@
-import factory, { div, section } from "/Utils/elements.js"
-import { useContext, useEffect, useState } from "/cdn/react"
+import factory, { button, div, input, label, section } from "/Utils/elements.js"
+import { useContext, useState } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -195,15 +195,45 @@ function ListComponent(){
         getCardList({include: "deck"}).then(updateSavedCards)
     }, [], [])
 
+    const [searchTerm, updateSearchTerm] = useState("")
+
     return section(
         {
             id: "card-type-list",
             className: "gutter-t-2",
         },
         div(
+            { className: "flex gutter-rbl" },
+            div(
+                { className: "flex grow gutter-r" },
+                input({ 
+                    className: "grow gutter-trbl-.5",
+                    value: searchTerm,
+                    placeholder: translate("search"),
+                    type: "search",
+                    onChange: (ev)=>{
+                        updateSearchTerm((ev.target.value || "").toLowerCase())
+                    },
+                }),
+            ),
+            button(
+                { className: "gutter-trbl-0.5 flex vhcenter", onClick: ()=>updateSearchTerm("") }, 
+                div({ className: "icon multiply" }),
+            )
+        ),
+        div(
             { className: "gutter-trbl-.5 flex",},
             listLimit(
                 types.map((type)=>{
+                    const labelName = translate("new_label", {
+                        cardType: translate(type.labelKey),
+                        betaIf: type.beta ? translate("beta") : ""
+                    }, false)
+
+                    if (searchTerm && !labelName.toLowerCase().includes(searchTerm)){
+                        return null
+                    }
+
                     return div(
                         {
                             className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
@@ -213,19 +243,21 @@ function ListComponent(){
                             }
                         },
                         type.component({
-                            name: translate("new_label", {
-                                cardType: translate(type.labelKey),
-                                betaIf: type.beta ? translate("beta") : ""
-                            }, false)
+                            name: labelName
                         })
                     )
-                }),
+                }).filter(item=>!!item),
 
                 savedCards.map((cardData)=>{
                     const renderingComponent = typeToComponent(cardData.type)
                     if (!renderingComponent){
-                        return div({key: cardData.id})
+                        return null
                     }
+
+                    if (searchTerm && cardData.name && !cardData.name.toLowerCase().includes(searchTerm)){
+                        return null
+                    }
+                    
                     return div(
                         {
                             className: "clickable gutter-trbl-.5 box-xs-6 box-m-3 flex column vhcenter",
@@ -239,7 +271,7 @@ function ListComponent(){
                         },
                         renderingComponent(cardData)
                     )
-                }),
+                }).filter(item=>!!item),
             ),
         ),
     )

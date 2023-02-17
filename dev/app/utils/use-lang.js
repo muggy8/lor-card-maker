@@ -210,5 +210,6 @@ const lang = {
         "about_deck_builder_3": "The data for official Legends of Runeterra cards comes not directly from Riot but instead from the github user [InFinity54](https://github.com/InFinity54). Without [InFinity54](https://github.com/InFinity54)'s [LoR Data Dragon repositories](https://github.com/InFinity54/LoR_DDragon), this feature would be impossible.",
         "about_deck_builder_4": "",
         "about_deck_builder_5": "",
+        "search": "Search",
     }
 }
