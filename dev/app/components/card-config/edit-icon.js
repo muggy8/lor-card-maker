@@ -223,8 +223,8 @@ function iconEditorComponent(props){
 
                                 svgWrap(
                                     {
-                                        width: 128,
-                                        height: 128,
+                                        width: 256,
+                                        height: 256,
                                         loading: exportingUpload,
                                         onTransform: updateUploadTransform,
                                         ...uploadTransform,
