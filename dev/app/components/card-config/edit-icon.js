@@ -1,4 +1,4 @@
-import factory, { div, label, strong, button, InputRange } from "/Utils/elements.js"
+import factory, { div, label, strong, button, InputRange, fragment } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useEffect, useContext, createElement } from "/cdn/react"
@@ -13,6 +13,9 @@ import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
 import { openUri } from "/Views/card-editor.js"
+import useToggle from "/Utils/use-toggle.js";
+import useAssetCache from "/Utils/use-asset-cache.js";
+import editRarity from "./edit-rarity.js";
 
 loadCss("/Components/card-config/edit-icon.css")
 
@@ -124,6 +127,7 @@ function iconEditorComponent(props){
             scale: 1,
         })
         uploadIsNotReady()
+        setPocMode(false)
     }, [uploadedIcon])
 
     const cancelUpload = useCallback(()=>{
@@ -148,6 +152,30 @@ function iconEditorComponent(props){
         }, ()=>setExportingUpload(false))
 
     }, [uploadedSvgRef, exportingUpload, props.value, uploadReady])
+
+    // logic to do with the PoC icons 
+    const [pocMode, togglePocMode, setPocMode] = useToggle(false)
+    const [
+        pocFrame, pocFrameCover, 
+        pocCommonRing, pocRareRing, pocEpicRing, pocLegendaryRing,
+        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem,
+    ] = useAssetCache(updateCache=>{
+        Promise.all([
+            datauri("/Assets/keyword/poc-frame-overlay.png"),
+            datauri("/Assets/keyword/poc-frame-overlay-cover.png"),
+
+            datauri("/Assets/keyword/poc-frame-overlay-common.png"),
+            datauri("/Assets/keyword/poc-frame-overlay-rare.png"),
+            datauri("/Assets/keyword/poc-frame-overlay-epic.png"),
+            datauri("/Assets/keyword/poc-frame-overlay-legendary.png"),
+            
+            datauri("/Assets/keyword/poc-common.png"),
+            datauri("/Assets/keyword/poc-rare.png"),
+            datauri("/Assets/keyword/poc-epic.png"),
+            datauri("/Assets/keyword/poc-legendary.png"),
+        ]).then(updateCache)
+    }, [], [])
+    const [pocRarity, updatePocRarity] = useState("")
 
     return div(
         { className: "edit-icon box" },
@@ -231,7 +259,7 @@ function iconEditorComponent(props){
                                     },
                                     div(
                                         {
-                                            className: "icon-svg-content",
+                                            className: `icon-svg-content ${ pocMode ? "poc-icon crop" : "" }`,
                                             style: {
                                                 "--scale": uploadTransform.scale,
                                                 "--left": uploadTransform.x,
@@ -242,7 +270,54 @@ function iconEditorComponent(props){
                                             {className: "scale-adjuster"},
                                             ArtRenderer({ url: uploadedIcon, onImageChanged:uploadIsNowReady })
                                         )
-                                    )
+                                    ),
+
+                                    pocMode 
+                                        ? fragment(
+                                            div({ 
+                                                className: "poc-icon poc-frame",
+                                                style: {
+                                                    backgroundImage: `url(${pocFrame})`
+                                                }
+                                            }),
+                                            div({ 
+                                                className: "poc-icon poc-frame",
+                                                style: {
+                                                    backgroundImage: `url(${pocFrameCover})`
+                                                }
+                                            }),
+                                            pocRarity 
+                                                ? fragment(
+                                                    div({ 
+                                                        className: "poc-icon poc-frame",
+                                                        style: {
+                                                            backgroundImage: `url(${
+                                                                (pocRarity === "common" && pocCommonRing) ||
+                                                                (pocRarity === "rare" && pocRareRing) ||
+                                                                (pocRarity === "epic" && pocEpicRing) ||
+                                                                (pocRarity === "champion" && pocLegendaryRing) ||
+                                                                ""
+                                                            })`
+                                                        }
+                                                    }),
+                                                    div({
+                                                        className: "poc-icon poc-gem",
+                                                        style: {
+                                                            backgroundImage: `url(${
+                                                                (pocRarity === "common" && pocCommonGem) ||
+                                                                (pocRarity === "rare" && pocRareGem) ||
+                                                                (pocRarity === "epic" && pocEpicGem) ||
+                                                                (pocRarity === "champion" && pocLegendaryGem) ||
+                                                                ""
+                                                            })`
+                                                        },
+                                                    })
+                                                )
+                                                : undefined
+                                            ,
+                                        )
+                                        : undefined
+                                    ,
                                 )
                             ),
                         ),
@@ -259,6 +334,27 @@ function iconEditorComponent(props){
                                 translate("cancel")
                             )
                         ),
+
+                        pocFrame 
+                            ? div(
+                                { className: "flex gutter-t" },
+                                button(
+                                    { className: "gutter-trbl-1 grow", onClick: togglePocMode },
+                                    pocMode ? translate("turn_poc_off") : translate("turn_poc_on")
+                                )
+                            )
+                            : undefined 
+                        ,
+
+                        pocMode 
+                            ? fragment(
+                                editRarity({
+                                    value: pocRarity,
+                                    updateValue: updatePocRarity,
+                                })
+                            ) 
+                            : undefined 
+                        ,
                     )
                     : undefined
                 ,

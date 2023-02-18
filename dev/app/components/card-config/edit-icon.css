@@ -46,3 +46,43 @@
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
+
+.poc-icon {
+    width: 256px;
+    height: 256px;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+
+.poc-frame {
+    background-repeat: no-repeat;
+    background-size: 256px 256px;
+}
+
+.poc-icon.crop {
+    clip-path: polygon(
+        9.765625% 26.953125%, 
+        21.484375% 21.484375%, 
+        26.953125% 9.765625%, 
+
+        73.046875% 9.765625%, 
+        78.515625% 21.484375%, 
+        90.234375% 26.953125%, 
+        
+        90.234375% 73.046875%, 
+        78.515625% 78.515625%,
+        73.046875% 90.234375%,  
+
+        26.953125% 90.234375%,
+        21.484375% 78.515625%, 
+        9.765625% 73.046875%
+    );
+}
+.poc-icon.poc-gem {
+    background-size: 64px 64px;
+    background-position-x: 50%;
+    background-position-y: 100%;
+    background-repeat: no-repeat;
+}

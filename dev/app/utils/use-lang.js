@@ -212,5 +212,7 @@ const lang = {
         "about_deck_builder_5": "",
         "search": "Search",
         "other_custom_card": "External Custom Card (or any image really)",
+        "turn_poc_on": "Turn On PoC Icon Mode",
+        "turn_poc_off": "Turn Off PoC Icon Mode",
     }
 }
