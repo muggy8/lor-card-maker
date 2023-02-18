@@ -10,4 +10,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    color: var(--effect-orange-text);
+    text-shadow: 
+        -1px -1px 0 var(--effect-white-text), 
+         0px -1px 0 var(--effect-white-text), 
+         1px -1px 0 var(--effect-white-text), 
+         1px  0px 0 var(--effect-white-text), 
+         1px  1px 0 var(--effect-white-text),
+         0px  1px 0 var(--effect-white-text),
+        -1px  1px 0 var(--effect-white-text),
+        -1px  0px 0 var(--effect-white-text) ;
 }
