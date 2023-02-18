@@ -23,7 +23,6 @@ function deckStatsCard(props){
         }
 
         ;(props.cards || []).forEach(cardData => {
-            stats.cards += cardData.count
             const { card }  = cardData
             const currentCardIsRitoCard = isRitoCard(card) 
             const currentCardIsExternalCard = isExternalImage(card)
@@ -70,7 +69,12 @@ function deckStatsCard(props){
                         stats.spells += cardData.count
                     }
                 }
+                else if (card.type === "keyword"){
+                    return // skip the incriment of cards counter if it's a custom keyword
+                }
             }
+
+            stats.cards += cardData.count
         });
 
         updateCache(stats)
