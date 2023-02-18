@@ -44,8 +44,8 @@ async function calculateReplication(imageConfig){
     context.setTransform(1, 0, 0, 1, 0, 0) // Reset current transformation matrix to the identity matrix
 
     return canvas.convertToBlob({
-        type: "image/png",
-        quality: 1,
+        type: "image/webp",
+        quality: 0.80,
     })
 }
 
