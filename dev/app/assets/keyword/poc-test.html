@@ -18,11 +18,31 @@
             .poc-frame-common {
                 filter: hue-rotate(105deg);
             }
+            .crop {
+                clip-path: polygon(
+                    calc(25 / 256 * 100%) calc(69 / 256 * 100%), 
+                    calc(55 / 256 * 100%) calc(55 / 256 * 100%), 
+                    calc(69 / 256 * 100%) calc(25 / 256 * 100%), 
+
+                    calc(187 / 256 * 100%) calc(25 / 256 * 100%), 
+                    calc(201 / 256 * 100%) calc(55 / 256 * 100%), 
+                    calc(231 / 256 * 100%) calc(69 / 256 * 100%), 
+                    
+                    calc(231 / 256 * 100%) calc(187 / 256 * 100%), 
+                    calc(201 / 256 * 100%) calc(201 / 256 * 100%),
+                    calc(187 / 256 * 100%) calc(231 / 256 * 100%),  
+
+                    calc(69 / 256 * 100%) calc(231 / 256 * 100%),
+                    calc(55 / 256 * 100%) calc(201 / 256 * 100%), 
+                    calc(25 / 256 * 100%) calc(187 / 256 * 100%)
+                );
+            }
         </style>
     </head>
     <body>
 
-        <img src="./poc-frame-overlay.png" class="poc-frame poc-rarity-color"/>
+        <img src="./frame.png" class="poc-frame crop"/>
+        <img src="./poc-frame-overlay.png" class="poc-frame"/>
         <img src="./poc-frame-overlay-cover.png" class="poc-frame"/>
         <img src="./poc-frame-overlay-legendary.png" class="poc-frame"/>
     </body>
