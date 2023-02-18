@@ -55,6 +55,8 @@ function deckCardComponent(props){
         
     }, [props.card, props.count], [undefined, undefined, []])
 
+    const isCustomKeyword = props.card.type === "keyword"
+
     return div(
         { 
             style: { 
@@ -65,20 +67,23 @@ function deckCardComponent(props){
         },
         div(
             { className: "in-deck-card-stack-sizer" },
-            shadowList.map((_, index)=>div(
-                { 
-                    key: index,
-                    className: "shadow-card",
-                    style: {
-                        transform: `translate(${
-                            -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
-                        }px, ${
-                            -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
-                        }px)`,
-                    }
-                }, 
-                cardShadow
-            )).reverse(),
+            !isCustomKeyword 
+                ? shadowList.map((_, index)=>div(
+                    { 
+                        key: index,
+                        className: "shadow-card",
+                        style: {
+                            transform: `translate(${
+                                -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                            }px, ${
+                                -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                            }px)`,
+                        }
+                    }, 
+                    cardShadow
+                )).reverse() 
+                : undefined
+            ,
             div({ className: "real-card" }, cardSvg),
         ),
     )
