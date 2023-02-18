@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <style>
+            body,  html {
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                padding: 0;
+                margin: 0;
+            }
+            .poc-frame {
+                position: absolute;
+                width: 256px;
+                height: 256px;
+                top: calc(50% - 128px);
+                left: calc(50% - 128px);
+            }
+            .poc-frame-common {
+                filter: hue-rotate(105deg);
+            }
+        </style>
+    </head>
+    <body>
+
+        <img src="./poc-frame-overlay.png" class="poc-frame poc-rarity-color"/>
+        <img src="./poc-frame-overlay-cover.png" class="poc-frame"/>
+        <img src="./poc-frame-overlay-legendary.png" class="poc-frame"/>
+    </body>
+</html>
