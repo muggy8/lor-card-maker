@@ -4,6 +4,7 @@ import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import datauri from "/Utils/datauri.js"
+import { isExternalImage } from "./deck-card.js";
 
 
 const cssLoaded = linkAsset("/Components/deck/deck-stats-card.css")
@@ -18,13 +19,14 @@ function deckStatsCard(props){
             spells: 0,
             equipments: 0,
             landmarks: 0,
+            externals: 0,
         }
 
         ;(props.cards || []).forEach(cardData => {
             stats.cards += cardData.count
             const { card }  = cardData
             const currentCardIsRitoCard = isRitoCard(card) 
-
+            const currentCardIsExternalCard = isExternalImage(card)
 
             if (currentCardIsRitoCard){
                 if (card.type === "Unit"){
@@ -45,6 +47,9 @@ function deckStatsCard(props){
                 if (card.supertype === "Champion"){
                     stats.champions += cardData.count
                 }
+            }
+            else if (currentCardIsExternalCard){
+                stats.externals += cardData.count
             }
             else{
                 if (card.type === "champion1" || card.type === "champion2" || card.type === "champion3"){
@@ -80,15 +85,16 @@ function deckStatsCard(props){
     const spellIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/spell-icon.png").then(updateCache)})
     const landmarkIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/landmark-icon.png").then(updateCache) })
     const equipmentIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/equipment-icon.png").then(updateCache) })
+    const externalIcon = useAssetCache(updateCache=>{ datauri("/Assets/deck/external-icon.png").then(updateCache) })
 
     if (!deckStats || !deckStats.cards){
         return null
     }
     return svgWrap(
         div(
-            { className: "gutter-t flex column hsend vcenter gutter-b-3 deck-stats-card" },
+            { className: "deck-stats-card" },
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -99,7 +105,7 @@ function deckStatsCard(props){
                 deckStats.cards
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -110,7 +116,7 @@ function deckStatsCard(props){
                 deckStats.units
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -121,7 +127,7 @@ function deckStatsCard(props){
                 deckStats.champions
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -132,7 +138,7 @@ function deckStatsCard(props){
                 deckStats.followers
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -143,7 +149,7 @@ function deckStatsCard(props){
                 deckStats.spells
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -154,7 +160,7 @@ function deckStatsCard(props){
                 deckStats.landmarks
             ),
             div(
-                { className: "flex vhcenter" },
+                { className: "deck-stat" },
                 div({
                     style: {
                         width: 128,
@@ -163,6 +169,17 @@ function deckStatsCard(props){
                     }
                 }),
                 deckStats.equipments
+            ),
+            div(
+                { className: "deck-stat" },
+                div({
+                    style: {
+                        width: 128,
+                        height: 128,
+                        backgroundImage: `url(${externalIcon})`
+                    }
+                }),
+                deckStats.externals
             ),
         ),
     )
