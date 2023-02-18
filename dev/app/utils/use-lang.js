@@ -211,5 +211,6 @@ const lang = {
         "about_deck_builder_4": "",
         "about_deck_builder_5": "",
         "search": "Search",
+        "other_custom_card": "External Custom Card (or any image really)",
     }
 }

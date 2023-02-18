@@ -18,6 +18,8 @@ import { svgRefference } from "/Views/card-editor.js"
 import { openUri } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
 import editName from "/Components/card-config/edit-name.js"
+import editArt from "/Components/card-config/edit-art.js"
+import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -127,11 +129,11 @@ function deckBuilderComponenet(){
 		]
 
 		listOrder.sort((a,b)=>{
-			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
-			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
+			const aManaCost = (Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost) || Infinity
+			const bManaCost = (Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost) || Infinity
 
-			const aName = a.card.name.toLowerCase()
-			const bName = b.card.name.toLowerCase()
+			const aName = (a.card.name || "").toLowerCase()
+			const bName = (b.card.name || "").toLowerCase()
 
 			return (aManaCost - bManaCost) || aName.localeCompare(bName)
 		})
@@ -554,18 +556,18 @@ function deckBuilderComponenet(){
 		selectedCards.current.forEach((value)=>renderedDeck.push(value))
 		renderedDeck.sort((a,b)=>{
 			
-			const aManaCost = Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost
-			const bManaCost = Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost
+			const aManaCost = (Object.prototype.hasOwnProperty.call(a.card, "mana") ? a.card.mana : a.card.cost) || Infinity
+			const bManaCost = (Object.prototype.hasOwnProperty.call(b.card, "mana") ? b.card.mana : b.card.cost) || Infinity
 
-			const aName = a.card.name.toLowerCase()
-			const bName = b.card.name.toLowerCase()
+			const aName = (a.card.name || "").toLowerCase()
+			const bName = (b.card.name || "").toLowerCase()
 
 			return (b.count - a.count) || (aManaCost - bManaCost) || aName.localeCompare(bName)
 		})
 		patchDeck({cards: renderedDeck})
 	}, [patchDeck])
 	const addCard = useCallback(card=>{
-		const cardId = card.id || card.cardCode
+		const cardId = card.id || card.cardCode || card.url
 
 		let existingData = selectedCards.current.get(cardId)
 		if (!existingData){
@@ -582,7 +584,7 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
 	const removeCard = useCallback(card=>{
-		const cardId = card.id || card.cardCode
+		const cardId = card.id || card.cardCode || card.url
 
 		let existingData = selectedCards.current.get(cardId)
 		if (!existingData){
@@ -751,31 +753,31 @@ function deckBuilderComponenet(){
 			{ className: "card-finder box-xs-12 box-s-10 box-m-6" },
 
 			nav(
-				{ className: "flex card-list-options gutter-t-.5" },
+				{ className: "flex no-wrap card-list-options gutter-t-.5" },
 				div(
 					{ 
-						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("rito"),
 					}, 
 					translate("official_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("custom"),
 					}, 
 					translate("custom_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "inDeck" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("inDeck"),
 					}, 
 					translate("currently_selected_cards")
 				),
 				div(
 					{ 
-						className: (selectedTab === "about" ? "active " : "" ) + "tab-header box-3 gutter-trbl-.5 clickable flex vhcenter text-center",
+						className: (selectedTab === "about" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
 						onClick: ()=>updateSelectedTab("about"),
 					}, 
 					translate("about_deck_builder")
@@ -902,12 +904,29 @@ function deckBuilderComponenet(){
 									updateValue: updateDeckName,
 								}),
 							),
+
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+								editArt({
+									label: translate("other_custom_card"),
+									moveable: false,
+									updateValue: url=>{
+										addCard({ url })
+									}
+								})
+							),
 							
 							(deckCardsListOrder || []).map(cardMeta=>cardMeta
 								? div(
-									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode },
+									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode || cardMeta.card.url },
 
-									cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name),
+									isExternalImage(cardMeta.card) 
+										? div(
+											{ className: "box-9 gutter-rl" },
+											ExternalCustomCard(cardMeta.card)
+										)
+										: cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name)
+									,
 
 									div(
 										{ className: "box-3 flex no-wrap" },

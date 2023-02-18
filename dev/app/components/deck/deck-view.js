@@ -37,7 +37,7 @@ function DeckViewComponent(props){
                     setRef: doNothing,
                 } },
                 props.cards.map(deckCardProps=>{
-                    const cardId = deckCardProps.card.id || deckCardProps.card.cardCode
+                    const cardId = deckCardProps.card.id || deckCardProps.card.cardCode || deckCardProps.card.url
                     return deckCard({
                         key: cardId,
                         ...deckCardProps,

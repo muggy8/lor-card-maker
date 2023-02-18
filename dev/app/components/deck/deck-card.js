@@ -6,10 +6,15 @@ import { getRitoCardImage, getCard } from "/Utils/service.js";
 import linkAsset from "/Utils/load-css.js";
 import { typeToComponent } from "/Views/list.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
+import datauri from "/Utils/datauri.js"
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
 const emptyArray = []
+
+export function isExternalImage(card){
+    return Object.keys(card).length === 1 && card.url
+}
 
 function deckCardComponent(props){
 
@@ -24,6 +29,11 @@ function deckCardComponent(props){
 
         if (currentCardIsRitoCard){
             const cardSvg = InDeckRitoCard(props.card)
+            const cardShadow = cardSvg
+            setCache([cardSvg, cardShadow, shadowList])
+        }
+        else if (isExternalImage(props.card)){
+            const cardSvg = ExternalCustomCard(props.card)
             const cardShadow = cardSvg
             setCache([cardSvg, cardShadow, shadowList])
         }
@@ -97,6 +107,25 @@ function ritoCardRendererComponent(props){
     )
 }
 
+function externalCustomCardComponent(props){
+
+    const cardImage = useAssetCache(updateCardImage=>{
+        datauri(props.url).then(updateCardImage)
+    }, [props.url])
+
+    return svgWrap(
+        { loading: !cardImage },
+        !!cardImage 
+            ? div({
+                className: "in-deck-rito-card",
+                style: {
+                    backgroundImage: `url(${cardImage})`
+                }
+            })
+            : undefined
+    )
+}
+
 
 function customCardRendererComponent(props){
     const cachedCard = useAssetCache(updateCachedCard=>{
@@ -110,3 +139,4 @@ function customCardRendererComponent(props){
 export default factory(deckCardComponent, cssLoaded)
 export const InDeckRitoCard = factory(ritoCardRendererComponent, cssLoaded)
 export const InDeckCustomCard = factory(customCardRendererComponent, cssLoaded)
+export const ExternalCustomCard = factory(externalCustomCardComponent, cssLoaded)
