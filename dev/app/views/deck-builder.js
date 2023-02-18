@@ -193,7 +193,7 @@ function deckBuilderComponenet(){
 
 	// stuff we'll need for custom cards
 	const customCards = useAssetCache(updateCustomcards=>{
-		getCardList({exclude: ["keyword", "deck"]}).then(updateCustomcards)
+		getCardList({exclude: ["deck"]}).then(updateCustomcards)
 	}, [])
 
 	const [displayedCustomCards, updateCustomCardSource, currentCustomCardsFilters, patchCustomCardsFilters] = useFilter({
@@ -348,6 +348,7 @@ function deckBuilderComponenet(){
 		const baseOptions = getOptionsFromCardsList(customCards)
 		baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null)
 		baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null)
+		baseOptions.mana = baseOptions.mana.filter(value=>typeof value !== "undefined" && value !== null)
 		const originalTypesList = baseOptions.type
 		baseOptions.type = baseOptions.type.filter(type=>!type.toLowerCase().includes("champion")) // filter out all champion types so we can replace it with a genaric champion type for easier filtering
 		originalTypesList.length !== baseOptions.type.length && baseOptions.type.push("champion") // add a genaric champion type back in if we sliced out something with the above logic

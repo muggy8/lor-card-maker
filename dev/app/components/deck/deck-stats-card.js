@@ -73,8 +73,6 @@ function deckStatsCard(props){
             }
         });
 
-        console.log(stats, props.cards)
-
         updateCache(stats)
     }, [props.cards])
 
