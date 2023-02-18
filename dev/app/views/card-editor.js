@@ -22,6 +22,7 @@ import EditIcon from "/Components/card-config/edit-icon.js"
 import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
+import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -257,6 +258,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         EditIcon({
                             value: card.icons,
                             updateValue: cardDataUpdaters.icons,
+                        })
+                    )
+                    : undefined
+                ,
+                canShow("largerIcon", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditCheckbox({
+                            label: translate("larger_icon"),
+                            value: card.largerIcon,
+                            updateValue: cardDataUpdaters.largerIcon
                         })
                     )
                     : undefined

@@ -69,7 +69,7 @@ function KeywordComponent(props){
                         props.icons && props.icons.length
                             ? props.icons.map(iconUri=>{
                                 return  div({
-                                    className: "keyword-icon",
+                                    className: `keyword-icon ${props.largerIcon ? "larger-icon" : ""}`,
                                     style: {
                                         backgroundImage: `url(${iconUri})`,
                                     },

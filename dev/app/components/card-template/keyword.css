@@ -18,6 +18,10 @@
     background-size: contain;
 }
 
+.keyword .keyword-icon.larger-icon {
+    width: 128px;
+	height: 128px;
+}
 
 .keyword .blue-word {
     color: var(--effect-blue-text);

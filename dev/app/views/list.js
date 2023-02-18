@@ -159,6 +159,7 @@ const types = [
                 orangeWords: [],
                 dataVersion: 2,
                 icons: [],
+                largerIcon: false,
             }
         ),
     },
