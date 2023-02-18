@@ -929,7 +929,7 @@ function deckBuilderComponenet(){
 									,
 
 									div(
-										{ className: "box-3 flex no-wrap" },
+										{ className: `box-3 flex no-wrap ${ isExternalImage(cardMeta.card) ? "vcenter" : "" }` },
 										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
 											div({ className: "icon plus" })
 										),
