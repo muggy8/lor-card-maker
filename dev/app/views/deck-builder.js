@@ -97,6 +97,7 @@ const defaultDeck = {
 	cards: [],
 	type: "deck",
 	name: "",
+	showDeckStats: true,
 }
 
 function deckBuilderComponenet(){
@@ -123,6 +124,10 @@ function deckBuilderComponenet(){
 	const updateDeckName = useCallback(name=>{
 		patchDeck({ name })
 	}, [patchDeck])
+
+	const toggleDeckDeets = useCallback(()=>{
+		patchDeck({ showDeckStats: !deck.showDeckStats })
+	}, [patchDeck, deck.showDeckStats])
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -607,7 +612,6 @@ function deckBuilderComponenet(){
 	const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
     const [previewHeight, updatePreviewHeight] = useState(0)
-	const [showDeckStats, updateShowDeckStats] = useState(true)
     useLayoutEffect(()=>{        
         const setFixedDisplayDimentions = debounceFunction(function(){
             let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
@@ -709,7 +713,7 @@ function deckBuilderComponenet(){
 						setRef: updateSvgRef,
 					} },
 					div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
-						deckView({ cards: deckCardsToRender, loading: isExporting, cardStats: showDeckStats }),
+						deckView({ cards: deckCardsToRender, loading: isExporting, cardStats: deck.showDeckStats }),
 					),
 				),
 				div({ className: "flex vhcenter gutter-b" }, 
@@ -923,8 +927,8 @@ function deckBuilderComponenet(){
 								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
 									EditCheckbox({
 									label: translate("show_deck_stats"),
-									value: showDeckStats, 
-									updateValue: updateShowDeckStats
+									value: deck.showDeckStats, 
+									updateValue: toggleDeckDeets
 								}),
 							),
 
