@@ -174,7 +174,7 @@ function deckBuilderComponenet(){
 	useEffect(()=>{
 		globalState.state.cardId && getCard(globalState.state.cardId)
 			.then(deckData=>{
-				updateDeck(deckData)
+				updateDeck({...defaultDeck, ...deckData})
 				deckData.cards.forEach(cardData=>{
 					const cardId = cardData.card.id || cardData.card.cardCode
 
