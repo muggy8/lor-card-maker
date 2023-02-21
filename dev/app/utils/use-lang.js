@@ -215,5 +215,6 @@ const lang = {
         "turn_poc_on": "Turn On PoC Icon Mode",
         "turn_poc_off": "Turn Off PoC Icon Mode",
         "larger_icon": "Increase Icon Size",
+        "show_deck_stats": "Show Deck Stats",
     }
 }

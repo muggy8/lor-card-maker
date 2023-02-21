@@ -15,14 +15,18 @@ function DeckViewComponent(props){
     const gridResolution = useAssetCache(updateGrid=>{
         const grid = calculateRowsAndColsForCardsRecursivelyWithCacheUse(
             props.cards.length 
-            ? [
-                ...props.cards.map(cardMetadata=>cardMetadata.card),
-                {}
-            ] 
+            ? (
+                props.cardStats 
+                    ? [
+                        ...props.cards.map(cardMetadata=>cardMetadata.card),
+                        {}
+                    ]
+                    : props.cards.map(cardMetadata=>cardMetadata.card)
+            )
             : []
         )
         updateGrid(grid)
-    }, [props.cards], {})
+    }, [props.cards, props.cardStats], {})
 
     const doNothing = useCallback(()=>{}, [])
 
@@ -46,9 +50,12 @@ function DeckViewComponent(props){
                         cardSize: gridResolution.resolution
                     })
                 }),
-                deckStatsCard({
-                    cards: props.cards
-                })
+                props.cardStats 
+                    ? deckStatsCard({
+                        cards: props.cards
+                    })
+                    : undefined
+                ,
             )
         )
     )

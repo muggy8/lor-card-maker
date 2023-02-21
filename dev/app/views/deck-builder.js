@@ -20,6 +20,7 @@ import { Globals } from "/Views/index.js"
 import editName from "/Components/card-config/edit-name.js"
 import editArt from "/Components/card-config/edit-art.js"
 import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.js"
+import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -606,6 +607,7 @@ function deckBuilderComponenet(){
 	const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
     const [previewHeight, updatePreviewHeight] = useState(0)
+	const [showDeckStats, updateShowDeckStats] = useState(true)
     useLayoutEffect(()=>{        
         const setFixedDisplayDimentions = debounceFunction(function(){
             let useableWidth = fixedDisplayRef.current.parentNode.clientWidth
@@ -917,6 +919,15 @@ function deckBuilderComponenet(){
 								})
 							),
 							
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+									EditCheckbox({
+									label: translate("show_deck_stats"),
+									value: showDeckStats, 
+									updateValue: updateShowDeckStats
+								}),
+							),
+
 							(deckCardsListOrder || []).map(cardMeta=>cardMeta
 								? div(
 									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode || cardMeta.card.url },
