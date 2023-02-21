@@ -709,7 +709,7 @@ function deckBuilderComponenet(){
 						setRef: updateSvgRef,
 					} },
 					div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
-						deckView({ cards: deckCardsToRender, loading: isExporting }),
+						deckView({ cards: deckCardsToRender, loading: isExporting, cardStats: showDeckStats }),
 					),
 				),
 				div({ className: "flex vhcenter gutter-b" }, 
