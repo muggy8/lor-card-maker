@@ -7,7 +7,7 @@ function EditCheckboxComponent(props){
     }, [props.updateValue, props.value])
 
     return label(
-        { className: "flex box", onClick: toggleCheckbox },
+        { className: "flex box clickable", onClick: toggleCheckbox },
         div(
             {className: `animated icon checkbox ${props.value ? "checked" : "" }`},
         ),

@@ -107,7 +107,7 @@ const lang = {
         "trigger": "Trigger",
         "imbue": "Imbue",
         "new": "New",
-        "new_label": "new :cardType :betaIf",
+        "new_label": "New :cardType :betaIf",
         "edit_shade": "Edit Card Art Shade",
         "min": "Min",
         "max": "Max",
@@ -224,5 +224,6 @@ const lang = {
         "svg": "SVG",
         "new_tab": "New Tab",
         "download": "Download",
+        "show_deck_stats": "Show Deck Stats",
     }
 }

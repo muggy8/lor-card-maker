@@ -21,7 +21,7 @@ import editName from "/Components/card-config/edit-name.js"
 import editArt from "/Components/card-config/edit-art.js"
 import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.js"
 import exportFromApp from "/Components/export.js"
-
+import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -98,6 +98,7 @@ const defaultDeck = {
 	cards: [],
 	type: "deck",
 	name: "",
+	showDeckStats: true,
 }
 
 function deckBuilderComponenet(){
@@ -124,6 +125,10 @@ function deckBuilderComponenet(){
 	const updateDeckName = useCallback(name=>{
 		patchDeck({ name })
 	}, [patchDeck])
+
+	const toggleDeckDeets = useCallback(()=>{
+		patchDeck({ showDeckStats: !deck.showDeckStats })
+	}, [patchDeck, deck.showDeckStats])
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -170,7 +175,7 @@ function deckBuilderComponenet(){
 	useEffect(()=>{
 		globalState.state.cardId && getCard(globalState.state.cardId)
 			.then(deckData=>{
-				updateDeck(deckData)
+				updateDeck({...defaultDeck, ...deckData})
 				deckData.cards.forEach(cardData=>{
 					const cardId = cardData.card.id || cardData.card.cardCode
 
@@ -348,16 +353,17 @@ function deckBuilderComponenet(){
 
 		// who would have thought that there'd be a shit load of garbage data in user generated content ._.
 		const baseOptions = getOptionsFromCardsList(customCards)
-		baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null)
-		baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null)
-		baseOptions.mana = baseOptions.mana.filter(value=>typeof value !== "undefined" && value !== null)
+		baseOptions.health && (baseOptions.health = baseOptions.health.filter(value=>typeof value !== "undefined" && value !== null))
+		baseOptions.power && (baseOptions.power = baseOptions.power.filter(value=>typeof value !== "undefined" && value !== null))
+		baseOptions.mana && (baseOptions.mana = baseOptions.mana.filter(value=>typeof value !== "undefined" && value !== null))
 		const originalTypesList = baseOptions.type
-		baseOptions.type = baseOptions.type.filter(type=>!type.toLowerCase().includes("champion")) // filter out all champion types so we can replace it with a genaric champion type for easier filtering
-		originalTypesList.length !== baseOptions.type.length && baseOptions.type.push("champion") // add a genaric champion type back in if we sliced out something with the above logic
-
+		if (originalTypesList){
+			baseOptions.type = baseOptions.type.filter(type=>!type.toLowerCase().includes("champion")) // filter out all champion types so we can replace it with a genaric champion type for easier filtering
+			originalTypesList.length !== baseOptions.type.length && baseOptions.type.push("champion") // add a genaric champion type back in if we sliced out something with the above logic
+		}
 		const filteredResultsOptions = getOptionsFromCardsList(displayedCustomCards)
 		const keywordsAlreadyAccountedFor = []
-		filteredResultsOptions.keywords = filteredResultsOptions.keywords.filter(keyword=>{
+		filteredResultsOptions.keywords && (filteredResultsOptions.keywords = filteredResultsOptions.keywords.filter(keyword=>{
 			const keywordIdentifyer = keyword.id || keyword // if it's custom it'll have an id, otherwise it's just a string
 			if (keywordsAlreadyAccountedFor.includes(keywordIdentifyer)){
 				return false
@@ -365,7 +371,7 @@ function deckBuilderComponenet(){
 
 			keywordsAlreadyAccountedFor.push(keywordIdentifyer)
 			return true
-		})
+		}))
 
 		const trueOptions = {
 			...baseOptions,
@@ -700,7 +706,7 @@ function deckBuilderComponenet(){
 						setRef: updateSvgRef,
 					} },
 					div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
-						deckView({ cards: deckCardsToRender, loading: isExporting }),
+						deckView({ cards: deckCardsToRender, loading: isExporting, cardStats: deck.showDeckStats }),
 					),
 				),
 				div({ className: "flex vhcenter gutter-b" }, 
@@ -910,6 +916,15 @@ function deckBuilderComponenet(){
 								})
 							),
 							
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+									EditCheckbox({
+									label: translate("show_deck_stats"),
+									value: deck.showDeckStats, 
+									updateValue: toggleDeckDeets
+								}),
+							),
+
 							(deckCardsListOrder || []).map(cardMeta=>cardMeta
 								? div(
 									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode || cardMeta.card.url },
