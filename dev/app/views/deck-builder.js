@@ -20,6 +20,8 @@ import { Globals } from "/Views/index.js"
 import editName from "/Components/card-config/edit-name.js"
 import editArt from "/Components/card-config/edit-art.js"
 import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.js"
+import exportFromApp from "/Components/export.js"
+
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -643,17 +645,7 @@ function deckBuilderComponenet(){
 
 		setExporting(true)
 
-		saveSvgAsPng.svgAsPngUri(svgRef, {
-			excludeUnusedCss: true,
-			width: svgRef.width.baseVal.value,
-			height: svgRef.height.baseVal.value,
-		}).then(
-			uri=>{
-				openUri(uri, `${(deck.name || "export").toUpperCase()}.png`)
-				setExporting(false)
-			},
-			()=>setExporting(false)
-		)
+		exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
 	}, [svgRef, isExporting])
 
 	// logic to do with saving
