@@ -24,7 +24,7 @@ export default async function(card, svgRef, globalState){
             height,
         })
 
-        if (globalState.state.settings.exportFormat === "png"){
+        if (!globalState.state.settings.exportFormat || globalState.state.settings.exportFormat === "png"){
             return  openUri(uri, `${(card.name || "export").toUpperCase()}.png}`)
         }
 
