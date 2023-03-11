@@ -642,6 +642,7 @@ function deckBuilderComponenet(){
 		}
 
 		setExporting(true)
+
 		saveSvgAsPng.svgAsPngUri(svgRef, {
 			excludeUnusedCss: true,
 			width: svgRef.width.baseVal.value,

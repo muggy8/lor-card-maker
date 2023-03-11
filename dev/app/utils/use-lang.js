@@ -215,5 +215,14 @@ const lang = {
         "turn_poc_on": "Turn On PoC Icon Mode",
         "turn_poc_off": "Turn Off PoC Icon Mode",
         "larger_icon": "Increase Icon Size",
+        "export_mode": "Export Mode",
+        "export_format": "Export Format",
+        "webp": "WebP",
+        "png": "PNG",
+        "jpeg": "Jpeg",
+        "json": "JSON",
+        "svg": "SVG",
+        "new_tab": "New Tab",
+        "download": "Download",
     }
 }

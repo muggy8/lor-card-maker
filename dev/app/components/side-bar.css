@@ -12,6 +12,11 @@
     
     will-change: transform;
     transition: transform 0.5s;
+    /* overflow-y: auto; */
+}
+
+.side-bar .menu-contents {
+    overflow-y: auto;
 }
 
 .side-bar.open {

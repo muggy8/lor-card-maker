@@ -15,6 +15,14 @@ const themeClassNames = [
     "oled", "dark", "light", "flash-bomb"
 ]
 
+const exportFormat = [
+    "png",
+    "webp",
+    "jpeg",
+    "json",
+    "svg",
+]
+
 function SidebarComponent(){
     const translate = useLang()
 
@@ -141,67 +149,92 @@ function SidebarComponent(){
             },
             div({className: "icon animated clickable " + (opened ? "multiply" : "menu") }),
         ),
-        label(
-            {
-                className: "menu-option clickable gutter-tb",
-            },
-            div({ className: "flex vhcenter" }, translate("theme")),
-            select(
+        div(
+            { className: "menu-contents gutter-tb-2" },
+            label(
                 {
-                    value: globalState.state.settings.theme || "oled",
-                    onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
-                    className: "select-theme gutter-rl-1 gutter-tb-.5"
+                    className: "menu-option clickable gutter-tb",
                 },
-                themeClassNames.map(className=>{
-                    return option(
-                        {
-                            key: className,
-                            value: className
-                        },
-                        translate(className)
-                    )
-                })
+                div( translate("theme") ),
+                select(
+                    {
+                        value: globalState.state.settings.theme || "oled",
+                        onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
+                        className: "select-theme gutter-rl-1 gutter-tb-.5"
+                    },
+                    themeClassNames.map(className=>{
+                        return option(
+                            {
+                                key: className,
+                                value: className
+                            },
+                            translate(className)
+                        )
+                    })
+                ),
             ),
-        ),
-        div(
-            { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
-            translate("batch_export")
-        ),
-        installApp 
-            ? div(
-                { className: "menu-option clickable gutter-tb", onClick: installApp },
-                translate("install_app")
-            )
-            : undefined
-        ,
-        div(
-            { className: "menu-option clickable gutter-tb", onClick: exportData },
-            translate("export_save")
-        ),
-        label(
-            { className: "menu-option clickable gutter-tb" },
-            isImporting ? undefined : translate("import_save"),
-            isImporting ? undefined : input({
-                className: "hide",
-                accept: "application/json",
-                type: "file",
-                onChange: importData,
-            }),
-            isImporting 
-                ? div({className: "icon loading"}) 
+            label(
+                {
+                    className: "menu-option clickable gutter-tb",
+                },
+                div( translate("export_format") ),
+                select(
+                    {
+                        value: globalState.state.settings.exportFormat || "png",
+                        onChange: ev=>globalState.patchSettings({exportFormat: ev.target.value}),
+                        className: "select-theme gutter-rl-1 gutter-tb-.5"
+                    },
+                    exportFormat.map(mode=>{
+                        return option(
+                            {
+                                key: mode,
+                                value: mode
+                            },
+                            translate(mode)
+                        )
+                    })
+                ),
+            ),
+            div(
+                { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
+                translate("batch_export")
+            ),
+            installApp 
+                ? div(
+                    { className: "menu-option clickable gutter-tb", onClick: installApp },
+                    translate("install_app")
+                )
                 : undefined
             ,
-        ),
-        label(
-            { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
-            translate("report_bug"),
-            a({
-                ref: bugReportlink,
-                href: "https://github.com/muggy8/lor-card-maker/issues",
-                className: "hide",
-                target: "_blank"
-            })
-        ),
+            div(
+                { className: "menu-option clickable gutter-tb", onClick: exportData },
+                translate("export_save")
+            ),
+            label(
+                { className: "menu-option clickable gutter-tb" },
+                isImporting ? undefined : translate("import_save"),
+                isImporting ? undefined : input({
+                    className: "hide",
+                    accept: "application/json",
+                    type: "file",
+                    onChange: importData,
+                }),
+                isImporting 
+                    ? div({className: "icon loading"}) 
+                    : undefined
+                ,
+            ),
+            label(
+                { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
+                translate("report_bug"),
+                a({
+                    ref: bugReportlink,
+                    href: "https://github.com/muggy8/lor-card-maker/issues",
+                    className: "hide",
+                    target: "_blank"
+                })
+            ),
+        )
     )
 
 }

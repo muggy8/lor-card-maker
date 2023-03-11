@@ -2,11 +2,9 @@ import factory, { div, button, strong, section } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import React, { useState, useCallback, useContext, createContext, useRef, useLayoutEffect, useEffect } from "/cdn/react"
-import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { Globals } from "/Views/index.js"
 import { getCard, saveCard, deleteCard } from "/Utils/service.js"
 import setImmediate from "/Utils/set-immediate-batch.js"
-import { isMobile } from '/cdn/react-device-detect'
 
 import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
@@ -23,6 +21,7 @@ import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
 import EditCheckbox from "/Components/card-config/edit-checkbox.js"
+import exportFromApp from "/Components/export.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -108,18 +107,9 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
 
             setExporting(true)
-            saveSvgAsPng.svgAsPngUri(svgRef, {
-                excludeUnusedCss: true,
-                width: svgRef.width.baseVal.value,
-                height: svgRef.height.baseVal.value,
-            }).then(
-                uri=>{
-                    openUri(uri, `${(card.name || "export").toUpperCase()}.png`)
-                    setExporting(false)
-                },
-                ()=>setExporting(false)
-            )
-        }, [svgRef, isExporting])
+
+            exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
+        }, [svgRef, isExporting, globalState])
 
         const fixedDisplayRef = useRef()
         const [useableWidth, updateUseableWidth] = useState(0)
@@ -456,7 +446,6 @@ export function openUri(base64ImageData, fileName = "export.png") {
     else if(window.AndroidNativeInterface){
 		const message = JSON.stringify({
 			image: base64ImageData.substr(`data:${contentType};base64,`.length),
-			//~ image: base64ImageData,
 			fileName
 		})
 		window.AndroidNativeInterface.postMessage(message)
