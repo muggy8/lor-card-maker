@@ -651,8 +651,8 @@ function deckBuilderComponenet(){
 
 		setExporting(true)
 
-		exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
-	}, [svgRef, isExporting])
+		exportFromApp(deck, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
+	}, [svgRef, isExporting, deck, globalState])
 
 	// logic to do with saving
 	const [canSave, setCanSave] = useState(!deck.id)

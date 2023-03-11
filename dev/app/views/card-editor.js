@@ -109,7 +109,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             setExporting(true)
 
             exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
-        }, [svgRef, isExporting, globalState])
+        }, [svgRef, isExporting, globalState, card])
 
         const fixedDisplayRef = useRef()
         const [useableWidth, updateUseableWidth] = useState(0)
