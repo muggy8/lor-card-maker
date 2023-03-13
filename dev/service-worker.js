@@ -29,7 +29,7 @@ const pathMap = {
 		},
 		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@d8439c58f20597e4fe891d01d6853bdcc78e82be",
 		"mmc-3": "https://cdn.jsdelivr.net/gh/muggy8/mmc-3@374aa14106e6133f758cf68f2cb9e35b5392cfe5",
-		"css-icons": "https://cdn.jsdelivr.net/gh/muggy8/css-icons@2ec21e3e4d65730f48b7390aeca69e14202e16fc",
+		"css-icons": "https://cdn.jsdelivr.net/gh/muggy8/css-icons@b112049269ca0f191b5100c8c5bb84e392f1a7fc",
 		fitty: {
 			url: "https://esm.sh/fitty@2.3.6",
 			query: esmshQueryConfigs,

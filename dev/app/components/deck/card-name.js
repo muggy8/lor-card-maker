@@ -3,6 +3,7 @@ import datauri from "/Utils/datauri.js";
 import factory, { div } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
+import useToggle from "/Utils/use-toggle.js";
 
 const cssLoaded = linkAsset("/Components/deck/card-name.css")
 
@@ -112,12 +113,15 @@ function cardNameComponent(props){
         }
     }, [isCustomCard]) // dont need to watch card since isCustomCard will change as a result of card getting changed
 
+    const [showPreview, toggleShowPreview] = useToggle(false)
+
     return div(
         { 
-            className: "card-shorthand " + props.className,
+            className: "card-shorthand clickable " + props.className,
             style: {
                 "--mana-ball-type": manaBallPath ? `url(${manaBallPath})` : "none"
-            }
+            },
+            onClick: toggleShowPreview,
         },
 
         div(
@@ -130,6 +134,15 @@ function cardNameComponent(props){
         div(
             { className: "shorthand-text capitalize" },
             props.children,
+        ),
+
+        div( { className: "grow" } ),
+
+        div(
+            { className: "gutter-r-2" },
+            div(
+                { className: `icon ${ showPreview ? "eye" : "no-eye" }` }
+            )
         )
     )
 }
