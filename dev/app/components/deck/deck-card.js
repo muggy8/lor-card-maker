@@ -57,38 +57,41 @@ function deckCardComponent(props){
 
     const isCustomKeyword = props.card.type === "keyword"
 
-    return div(
-        { 
-            style: { 
-                width: (props.cardSize || {}).width, 
-                height: (props.cardSize || {}).height 
-            }, 
-            className: "in-deck-card-stack"
-        },
-        div(
-            { className: "in-deck-card-stack-sizer" },
-            !isCustomKeyword 
-                ? shadowList.map((_, index)=>div(
-                    { 
-                        key: index,
-                        className: "shadow-card",
-                        style: {
-                            transform: `translate(${
-                                -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
-                            }px, ${
-                                -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
-                            }px)`,
-                        }
-                    }, 
-                    cardShadow
-                )).reverse() 
-                : undefined
-            ,
-            div({ className: "real-card" }, cardSvg),
-        ),
-    )
+    const isSingularMode = isCustomKeyword || props.single  
 
-    return cardSvg // dev related code for testing and debugging
+    return isSingularMode
+        ? cardSvg
+        : div(
+            { 
+                style: { 
+                    width: (props.cardSize || {}).width, 
+                    height: (props.cardSize || {}).height 
+                }, 
+                className: "in-deck-card-stack"
+            },
+            div(
+                { className: "in-deck-card-stack-sizer" },
+                !isCustomKeyword 
+                    ? shadowList.map((_, index)=>div(
+                        { 
+                            key: index,
+                            className: "shadow-card",
+                            style: {
+                                transform: `translate(${
+                                    -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                                }px, ${
+                                    -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                                }px)`,
+                            }
+                        }, 
+                        cardShadow
+                    )).reverse() 
+                    : undefined
+                ,
+                div({ className: "real-card" }, cardSvg),
+            ),
+        )
+
 }
 
 function ritoCardRendererComponent(props){

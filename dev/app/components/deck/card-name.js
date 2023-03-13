@@ -1,9 +1,11 @@
+import deckCard from "./deck-card.js";
 import { useEffect, useState } from "/cdn/react";
 import datauri from "/Utils/datauri.js";
-import factory, { div } from "/Utils/elements.js";
+import factory, { div, fragment } from "/Utils/elements.js";
 import linkAsset from "/Utils/load-css.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import useToggle from "/Utils/use-toggle.js";
+
 
 const cssLoaded = linkAsset("/Components/deck/card-name.css")
 
@@ -116,34 +118,44 @@ function cardNameComponent(props){
     const [showPreview, toggleShowPreview] = useToggle(false)
 
     return div(
-        { 
-            className: "card-shorthand clickable " + props.className,
-            style: {
-                "--mana-ball-type": manaBallPath ? `url(${manaBallPath})` : "none"
+        { className: props.className },
+        div(
+            { 
+                className: "card-shorthand clickable gutter-tb-.5",
+                style: {
+                    "--mana-ball-type": manaBallPath ? `url(${manaBallPath})` : "none"
+                },
+                onClick: toggleShowPreview,
             },
-            onClick: toggleShowPreview,
-        },
 
-        div(
-            { className: "mana-cost" },
-            Object.prototype.hasOwnProperty.call(props.card, "cost")
-                ? props.card.cost 
-                : props.card.mana
-        ),
-        
-        div(
-            { className: "shorthand-text capitalize" },
-            props.children,
-        ),
-
-        div( { className: "grow" } ),
-
-        div(
-            { className: "gutter-r-2" },
             div(
-                { className: `icon ${ showPreview ? "eye" : "no-eye" }` }
+                { className: "mana-cost" },
+                Object.prototype.hasOwnProperty.call(props.card, "cost")
+                    ? props.card.cost 
+                    : props.card.mana
+            ),
+            
+            div(
+                { className: "shorthand-text capitalize" },
+                props.children,
+            ),
+
+            div( { className: "grow" } ),
+
+            div(
+                { className: "gutter-r-2" },
+                div(
+                    { className: `icon ${ showPreview ? "eye" : "no-eye" }` }
+                )
             )
-        )
+        ),
+        showPreview 
+            ? deckCard({
+                card: props.card,
+                single: true,
+            })
+            : undefined
+        ,
     )
 }
 
