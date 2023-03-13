@@ -225,5 +225,6 @@ const lang = {
         "new_tab": "New Tab",
         "download": "Download",
         "show_deck_stats": "Show Deck Stats",
+        "associated_cards": "Associated Cards",
     }
 }

@@ -17,10 +17,11 @@ import EditColorText from "/Components/card-config/edit-colored-text.js"
 import EditArt from "/Components/card-config/edit-art.js"
 import EditShade from "/Components/card-config/edit-shade.js"
 import EditIcon from "/Components/card-config/edit-icon.js"
+import EditCheckbox from "/Components/card-config/edit-checkbox.js"
+import EditAssociatedCards from "/Components/card-config/edit-associated-cards.js"
 import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
-import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 import exportFromApp from "/Components/export.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
@@ -386,6 +387,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             label: translate("clan"),
                             value: card.clan,
                             updateValue: cardDataUpdaters.clan
+                        })
+                    )
+                    : undefined
+                ,
+                canShow("associatedCards", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditAssociatedCards({
+                            value: card.associatedCards,
+                            updateValue: cardDataUpdaters.associatedCards
                         })
                     )
                     : undefined
