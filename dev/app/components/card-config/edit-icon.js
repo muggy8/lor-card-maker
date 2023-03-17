@@ -12,7 +12,6 @@ import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
-import { openUri } from "/Views/card-editor.js"
 import useToggle from "/Utils/use-toggle.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import editRarity from "./edit-rarity.js";

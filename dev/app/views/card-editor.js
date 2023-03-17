@@ -398,28 +398,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
     return factory(component, cssLoaded)
 }
 
-export function openUri(base64ImageData, fileName = "export.png") {
-    const typeRegex = /data:([^;]+);base64,/
+export async function openUri(base64ImageData, fileName = "export.png") {
+    const typeRegex = /data:([^;]+);(([^;]+);)*base64,/
+    console.log(base64ImageData)
     const matched = typeRegex.exec(base64ImageData)
+    console.log(matched)
 
-    const contentType = matched[1]
 
-    const byteCharacters = atob(base64ImageData.substr(`data:${contentType};base64,`.length))
-    const byteArrays = []
-
-    for (let offset = 0; offset < byteCharacters.length; offset += 1024) {
-        const slice = byteCharacters.slice(offset, offset + 1024)
-
-        const byteNumbers = new Array(slice.length)
-        for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i)
-        }
-
-        const byteArray = new Uint8Array(byteNumbers)
-
-        byteArrays.push(byteArray)
-    }
-    const blob = new Blob(byteArrays, {type: contentType})
+    const [dataUriHeader, contentType] = matched
+    const blob = await fetch(base64ImageData).then(res=>res.blob())
+   
     const shareFile = new File([
             blob
         ],
@@ -445,7 +433,7 @@ export function openUri(base64ImageData, fileName = "export.png") {
     }
     else if(window.AndroidNativeInterface){
 		const message = JSON.stringify({
-			image: base64ImageData.substr(`data:${contentType};base64,`.length),
+			image: base64ImageData.substr(dataUriHeader.length),
 			fileName
 		})
 		window.AndroidNativeInterface.postMessage(message)

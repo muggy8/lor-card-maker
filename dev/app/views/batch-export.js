@@ -5,7 +5,7 @@ import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getCardList } from "/Utils/service.js"
 import { typeToComponent } from "/Views/list.js"
-import { svgRefference, openUri } from "/Views/card-editor.js"
+import { svgRefference } from "/Views/card-editor.js"
 import BatchRenderer from "/Components/batch-renderer.js"
 import saveSvgAsPng from "/cdn/save-svg-as-png"
 import useToggle from "/Utils/use-toggle.js"
@@ -14,8 +14,6 @@ import listLimit from "/Components/list-limit.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { isMobile } from '/cdn/react-device-detect'
 import exportFromApp from "/Components/export.js"
-
-
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 

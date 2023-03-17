@@ -6,7 +6,16 @@ export default async function(card, svgRef, globalState){
         height= svgRef.height.baseVal.value
     if (globalState.state.settings.exportFormat === "json"){
         // just dump out the value
-        return openUri(`data:application/json;base64,${btoa(JSON.stringify(card, null, "\t"))}`, `${(card.name || "export").toUpperCase()}.json`)
+        const json = JSON.stringify(card, null, "\t")
+        const jsonBlob = stringToBlob(json)
+        const b64 = await new Promise(accept=>{
+            var reader = new FileReader();
+            reader.readAsDataURL(jsonBlob); 
+            reader.onloadend = function() {
+                accept(reader.result);       
+            }
+        })        
+        return openUri(b64, `${(card.name || "export").toUpperCase()}.json`)
     }
     else if (globalState.state.settings.exportFormat === "svg") {
         const uri = await saveSvgAsPng.svgAsDataUri(svgRef, {
@@ -14,7 +23,7 @@ export default async function(card, svgRef, globalState){
             width,
             height,
         })
-        openUri(uri, `${(card.name || "export").toUpperCase()}.svg}`)
+        return openUri(uri, `${(card.name || "export").toUpperCase()}.svg}`)
     }
     else {
         // convert the value to the right format
@@ -46,7 +55,16 @@ export default async function(card, svgRef, globalState){
         reader.readAsDataURL(imgBlob); 
         reader.onloadend = function() {
             var base64data = reader.result;                
-            openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}}`)
+            return openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}}`)
         }
     }
+}
+
+export function stringToBlob(str){
+    const bytes = new TextEncoder().encode(str);
+    const blob = new Blob([bytes], {
+        type: "application/json;charset=utf-8"
+    });
+
+    return blob
 }
