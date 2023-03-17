@@ -17,16 +17,21 @@ function EditArtComponent(props){
             return
         }
 
-        let reader = new FileReader()
-
-        reader.addEventListener("load", function(){
-            props.updateValue(reader.result)
+        const batchParse = Array.prototype.map.call(ev.target.files, file=>new Promise(accept=>{
+            let reader = new FileReader()
+            reader.addEventListener("load", function(){
+                accept(reader.result)
+            })
+            reader.readAsDataURL(file)
+        }))
+        Promise.all(batchParse).then(images=>{
+            props.multiple 
+                ? props.updateValue(images) 
+                : props.updateValue(images[0])
             globalsRef.current.patchState({moveableArt: true})
+            ev.target.value = null
         })
-        reader.readAsDataURL(file)
-
-
-    }, [props.updateValue])
+    }, [props.updateValue, props.multiple])
 
     const upladerInputRef = useRef()
     const clickInput = useCallback(()=>{
@@ -56,7 +61,8 @@ function EditArtComponent(props){
                 className: "hide",
                 type: "file",
                 accept: "image/*",
-                onChange: uploadArt
+                onChange: uploadArt,
+                ...(props.multiple ? {multiple: true} : {})
             })
         ),
         

@@ -909,8 +909,9 @@ function deckBuilderComponenet(){
 								editArt({
 									label: translate("other_custom_card"),
 									moveable: false,
-									updateValue: url=>{
-										addCard({ url })
+									multiple: true,
+									updateValue: urls=>{
+										urls.forEach(url=>addCard({ url }))
 									}
 								})
 							),
