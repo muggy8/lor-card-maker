@@ -78,6 +78,10 @@ const pathMap = {
 			url: "https://esm.sh/react-markdown@8.0.4",
 			query: esmshQueryConfigs,
 		},
+		"object-hash": {
+			url: "https://esm.sh/object-hash@3.0.0",
+			query: esmshQueryConfigs,
+		},
 	},
 	App: indexUrl + "app",
 	Views: indexUrl + "app/views",

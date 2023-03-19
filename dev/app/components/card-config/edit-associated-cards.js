@@ -1,9 +1,14 @@
-import factory, { div, label, strong, input } from "/Utils/elements.js"
-import { useCallback } from "/cdn/react"
+import factory, { div, label, strong, input, nav, button } from "/Utils/elements.js"
+import { useCallback, useState, useEffect } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import useToggle from "/Utils/use-toggle.js"
 import listLimit from "/Components/list-limit.js"
+import { getRitoCardsFromDataDump } from "/Views/deck-builder.js"
+import useAssetCache from "/Utils/use-asset-cache.js"
+import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
+import cardName from "/Components/deck/card-name.js"
+import objectHash from "/cdn/object-hash"
 
 const cssLoaded = loadCss("/Components/card-config/edit-associated-cards.css")
 
@@ -13,23 +18,214 @@ function editAssociatedCardsComponent(props){
 
     const [expanded, toggleExpanded] = useToggle(false)
 
+    const [selectedTab, updateSelectedTab] = useState("custom")
+
+    // data related to rito's official cards
+    const [ritoCards, updateRitoCards] = useState()
+	useEffect(()=>{
+		getRitoCards().then(ritoData=>{
+			updateRitoCards(getRitoCardsFromDataDump(ritoData))
+		})
+	}, [])
+
+    const [ritoLoading, updateRitoLoading] = useState(false)
+	const loadRitoData = useCallback(()=>{
+        if (ritoLoading){
+            return
+        }
+		updateRitoLoading(true)
+		getLatestRitoData().then(async ritoData => {
+			await patchRitoCards(ritoData)
+			updateRitoCards(getRitoCardsFromDataDump(ritoData))
+			updateRitoLoading(false)
+		})
+	}, [ritoLoading])
+
+    const [displayedRitoCards, updateDisplayedRitoCards] = useState([])
+    const [searchRitoTerm, updateSearchRitoTerm] = useState("")
+    useEffect(()=>{
+        if (!Array.isArray(ritoCards)){
+            return
+        }
+
+        const displayedCards = ritoCards.filter(card=>{
+            return card && card.name.toLowerCase().includes(searchRitoTerm)
+        })
+
+        updateDisplayedRitoCards(displayedCards)
+    }, [searchRitoTerm, ritoCards])
+
+    // data related to custom cards
+    const customCards = useAssetCache(updateCustomcards=>{
+		getCardList({exclude: ["deck"]}).then(updateCustomcards)
+	}, [])
+
+    const [displayedCustomCards, updateDisplayedCustomCards] = useState([])
+    const [searchCustomTerm, updateSearchCustomTerm] = useState("")    
+    useEffect(()=>{
+        if (!Array.isArray(customCards)){
+            return
+        }
+
+        const displayedCards = customCards.filter(card=>{
+            return card && card.name && card.name.toLowerCase().includes(searchRitoTerm)
+        })
+
+
+        updateDisplayedCustomCards(displayedCards)
+    }, [searchCustomTerm, customCards])
+
+    // stuff related to managing the associated cards
+    const associatedCard = useCallback((card)=>{
+        const storedData = {
+            id: card.id,
+            cardCode: card.cardCode,
+            artUrl: card.url,
+        }
+
+        const hashData = storedData // for now, we just use this set of data as the source of the hash, but in the future, if we need to change anything, we'll extract this part out and make sure we're hashing only the right parts.
+        const hash = objectHash(hashData) // the reason we're using a hash is because potentially we'll be compairing this value to tons of items, so this value should be as small as possiable to reduce computation time.
+
+        storedData.key = hash
+
+        let currentValue = props.value || []
+        if (!Array.isArray(currentValue)){
+            currentValue = []
+        }
+        const alreadylinked = currentValue.some(linkedCard => linkedCard.key === hash)
+        if (alreadylinked){
+            return
+        }
+        const updatedData = [
+            storedData,
+            ...currentValue
+        ]
+
+        props.updateValue(updatedData)
+    }, [props.value, props.updateValue])
+
     return div(
+        { className: "associated-cards" },
         label(
             { onClick: toggleExpanded, className: "flex clickable" },
             div(
                 { className: "grow" },
-                strong(translate("associated_cards"))
+                strong(props.label)
             ),
             div({ className: `icon animated ${expanded ? "multiply" : "chevron-down"}` })
         ),
         div(
-            { className: `flex gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
-            listLimit(
-                { defaultSize: 24 },
+            { className: `gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
+            nav(
+                { className: "flex no-wrap tabs gutter-t-.5" },
+                
+                div(
+					{ 
+						className: (selectedTab === "custom" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
+						onClick: ()=>updateSelectedTab("custom"),
+					}, 
+					translate("custom_cards")
+				),
+                
+                div(
+					{ 
+						className: (selectedTab === "rito" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
+						onClick: ()=>updateSelectedTab("rito"),
+					}, 
+					translate("official_cards")
+				),
+                
+                div(
+					{ 
+						className: (selectedTab === "associated" ? "active " : "" ) + "tab-header grow gutter-trbl-.5 clickable flex vhcenter text-center",
+						onClick: ()=>updateSelectedTab("associated"),
+					}, 
+					props.label
+				),
 
-            )
+            ),
+            div(
+                { className: "tab-body gutter-t" },
+
+                selectedTab === "custom" 
+					? div(
+						{ className: "gutter-rl" },
+
+						div(
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedCustomCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.id },
+
+										cardName({ card, className: "box-9" }, card.name),
+
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
+												"plaeholder"
+											),
+										),
+									)
+									:undefined
+								)
+							)
+						),
+					)
+					: undefined
+				,
+
+                selectedTab === "rito" 
+                    ? div(
+                        { className: "gutter-rl" },
+
+                        div(
+
+                            listLimit(
+                                { defaultSize: 24 },
+                                (displayedRitoCards || []).map(card=>card
+                                    ? div(
+                                        { className: "flex gutter-b", key: card.cardCode },
+
+                                        cardName({ card, className: "box-9" }, card.name),
+
+                                        div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
+												"plaeholder"
+											),
+										),
+                                    )
+                                    :undefined
+                                )
+                            ),
+
+                            !ritoCards || !ritoCards.length 
+                                ? div(
+                                    { className: "flex" },
+                                    button(
+                                        { 
+                                            onClick: loadRitoData,
+                                            className: "gutter-trbl-.5 grow",
+                                        }, 
+                                        ritoLoading 
+                                            ? div({ className: "icon loading" })
+                                            : translate("load_rito_data")
+                                        ,
+                                    )
+                                )
+                                : undefined 
+                            , 
+
+                        ),
+
+                    ) 
+                    : undefined
+                ,
+
+            ),
         )
     )
 }
 
-export default factory(editAssociatedCardsComponent)
+export default factory(editAssociatedCardsComponent, cssLoaded)

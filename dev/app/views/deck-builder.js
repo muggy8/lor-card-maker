@@ -24,7 +24,7 @@ import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
-function getRitoCardsFromDataDump({sets}){
+export function getRitoCardsFromDataDump({sets}){
 	if (!sets){
 		return
 	}
@@ -391,13 +391,16 @@ function deckBuilderComponenet(){
 
 	const [ritoLoading, updateRitoLoading] = useState(false)
 	const loadRitoData = useCallback(()=>{
+		if (ritoLoading){
+            return
+        }
 		updateRitoLoading(true)
 		getLatestRitoData().then(async ritoData => {
 			await patchRitoCards(ritoData)
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
 			updateRitoLoading(false)
 		})
-	}, [])
+	}, [ritoLoading])
 
 	const [displayedRitoCards, updateRitoCardSource, currentRitoCardsFilters, patchRitoCardsFilters] = useFilter({
 		collectible: {

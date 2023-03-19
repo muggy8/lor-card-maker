@@ -395,6 +395,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? div(
                         {className: "gutter-b-2"},
                         EditAssociatedCards({
+                            label: translate("associated_cards"),
                             value: card.associatedCards,
                             updateValue: cardDataUpdaters.associatedCards
                         })
