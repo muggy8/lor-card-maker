@@ -145,7 +145,7 @@ function cardNameComponent(props){
             div(
                 { className: "gutter-r-2" },
                 div(
-                    { className: `icon ${ showPreview ? "eye" : "no-eye" }` }
+                    { className: `icon ${ showPreview ? "no-eye" : "eye" }` }
                 )
             )
         ),

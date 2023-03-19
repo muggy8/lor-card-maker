@@ -1,5 +1,5 @@
 import factory, { div, label, strong, input, nav, button } from "/Utils/elements.js"
-import { useCallback, useState, useEffect } from "/cdn/react"
+import { useCallback, useState, useEffect, useRef } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import useToggle from "/Utils/use-toggle.js"
@@ -20,11 +20,20 @@ function editAssociatedCardsComponent(props){
 
     const [selectedTab, updateSelectedTab] = useState("custom")
 
+    const knownCards = useRef({})
+
     // data related to rito's official cards
     const [ritoCards, updateRitoCards] = useState()
 	useEffect(()=>{
 		getRitoCards().then(ritoData=>{
-			updateRitoCards(getRitoCardsFromDataDump(ritoData))
+            let ritoCards
+			updateRitoCards(ritoCards = getRitoCardsFromDataDump(ritoData))
+            Array.prototype.forEach.call(ritoCards, card=>{
+                if (!card){
+                    return
+                }
+                knownCards.current[card.cardCode] = card
+            })
 		})
 	}, [])
 
@@ -57,7 +66,12 @@ function editAssociatedCardsComponent(props){
 
     // data related to custom cards
     const customCards = useAssetCache(updateCustomcards=>{
-		getCardList({exclude: ["deck"]}).then(updateCustomcards)
+		getCardList({exclude: ["deck"]}).then(customCards=>{
+            updateCustomcards(customCards)
+            Array.prototype.forEach.call(customCards, card=>{
+                knownCards.current[card.id] = card
+            })
+        })
 	}, [])
 
     const [displayedCustomCards, updateDisplayedCustomCards] = useState([])
@@ -103,6 +117,15 @@ function editAssociatedCardsComponent(props){
 
         props.updateValue(updatedData)
     }, [props.value, props.updateValue])
+
+    // stuff related to displaying the associated cards
+    const associatedCardsData = useAssetCache(updateAssociatedCardsData=>{
+        const displayData = (props.value || []).map(cardKeys=>{
+            return knownCards.current[cardKeys.id] || knownCards.current[cardKeys.cardCode] || cardKeys
+        })
+
+        updateAssociatedCardsData(displayData)
+    }, [props.value, customCards, ritoCards], [])
 
     return div(
         { className: "associated-cards" },
@@ -163,7 +186,7 @@ function editAssociatedCardsComponent(props){
 										div(
 											{ className: "box-3 flex no-wrap" },
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
-												"plaeholder"
+                                                div({ className: "icon link" })
 											),
 										),
 									)
@@ -192,7 +215,7 @@ function editAssociatedCardsComponent(props){
                                         div(
 											{ className: "box-3 flex no-wrap" },
 											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
-												"plaeholder"
+												div({ className: "icon link" })
 											),
 										),
                                     )
@@ -222,6 +245,29 @@ function editAssociatedCardsComponent(props){
                     ) 
                     : undefined
                 ,
+
+                selectedTab === "associated" 
+					? div(
+						{ className: "gutter-rl" },
+
+						(associatedCardsData || []).map(card=>card
+                            ? div(
+                                { className: "flex gutter-b", key: card.id || card.cardCode || card.url },
+
+                                cardName({ card, className: "box-9" }, card.name),
+
+                                div(
+                                    { className: "box-3 flex no-wrap" },
+                                    button({ className: "grow gutter-trbl-.5" }, 
+                                        div({ className: "icon multiply" })
+                                    ),
+                                ),
+                            )
+                            :undefined
+                        )
+					)
+					: undefined
+				,
 
             ),
         )
