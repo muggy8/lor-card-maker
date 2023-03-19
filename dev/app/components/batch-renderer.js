@@ -5,6 +5,7 @@ import { typeToComponent } from "/Views/list.js"
 import { svgRefference } from "/Views/card-editor.js"
 
 import SvgWrap from "/Components/card-template/svg-wrap.js"
+import deckCard from "./deck/deck-card.js"
 
 
 const cssLoaded = loadCss("/Components/batch-renderer.css")
@@ -153,21 +154,11 @@ function BatchRendererComponent(props){
                 { className: "cards-grid" },
 
                 props.cards.map((cardData)=>{
-                    const renderingComponent = typeToComponent(cardData.type)
-                    if (!renderingComponent){
-                        return div({key: cardData.id})
-                    }
-                    return div(
-                        {
-                            className: "card",
-                            key: cardData.id,
-                            style: {
-                                width: `${resolution.width}px`,
-                                height: `${resolution.height}px`,
-                            }
-                        },
-                        renderingComponent(cardData)
-                    )
+                    return deckCard({
+                        key: cardData.id || cardData.cardCode || cardData.url,
+                        single: true,
+                        card: cardData
+                    })
                 }),
             ),
         ),
