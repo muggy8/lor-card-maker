@@ -412,10 +412,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 
 export async function openUri(base64ImageData, fileName = "export.png") {
     const typeRegex = /data:([^;]+);(([^;]+);)*base64,/
-    console.log(base64ImageData)
     const matched = typeRegex.exec(base64ImageData)
-    console.log(matched)
-
 
     const [dataUriHeader, contentType] = matched
     const blob = await fetch(base64ImageData).then(res=>res.blob())

@@ -98,6 +98,7 @@ const defaultDeck = {
 	type: "deck",
 	name: "",
 	showDeckStats: true,
+	includeAssociated: false,
 }
 
 function deckBuilderComponenet(){
@@ -128,6 +129,10 @@ function deckBuilderComponenet(){
 	const toggleDeckDeets = useCallback(()=>{
 		patchDeck({ showDeckStats: !deck.showDeckStats })
 	}, [patchDeck, deck.showDeckStats])
+
+	const toggleIncludeAssociatedCards = useCallback(()=>{
+		patchDeck({ includeAssociated: !deck.includeAssociated })
+	}, [patchDeck, deck.includeAssociated])
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -199,7 +204,16 @@ function deckBuilderComponenet(){
 
 	// stuff we'll need for custom cards
 	const customCards = useAssetCache(updateCustomcards=>{
-		getCardList({exclude: ["deck"]}).then(updateCustomcards)
+		getCardList({exclude: ["deck"]}).then(customCards=>{
+			updateCustomcards(customCards)
+			customCards.forEach(card=>{
+				if (!card || !card.id){
+					return
+				}
+
+				knownCards.current[card.id] = card
+			})
+		})
 	}, [])
 
 	const [displayedCustomCards, updateCustomCardSource, currentCustomCardsFilters, patchCustomCardsFilters] = useFilter({
@@ -381,11 +395,22 @@ function deckBuilderComponenet(){
 		// console.log(trueOptions, displayedCustomCards)
 	}, [customCards, displayedCustomCards], {})
 
+	// some data for the future
+	const knownCards = useRef({})
+
 	// rito cards shinanagas because shinangas
 	const [ritoCards, updateRitoCards] = useState()
 	useEffect(()=>{
 		getRitoCards().then(ritoData=>{
-			updateRitoCards(getRitoCardsFromDataDump(ritoData))
+			let ritoCards
+			updateRitoCards(ritoCards = getRitoCardsFromDataDump(ritoData))
+			ritoCards.forEach(card=>{
+				if (!card){
+					return
+				}
+
+				knownCards.current[card.cardCode] = card
+			})
 		})
 	}, [])
 
@@ -653,7 +678,28 @@ function deckBuilderComponenet(){
 
 		setExporting(true)
 
-		exportFromApp(deck, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
+		const exportData = {...deck}
+		if (deck.includeAssociated){
+			const associatedCardsData = []
+			deck.cards.forEach(cardMeta=>{
+				const cardData = cardMeta.card
+
+				const associatedCardsKeys = cardData.associatedCardRefs || cardData.associatedCards
+
+				if (!associatedCardsKeys){
+					return
+				}
+
+				associatedCardsKeys.forEach(associatedKey=>{
+					const associatedData = knownCards.current[associatedKey] || knownCards.current[associatedKey.id] || knownCards.current[associatedKey.cardCode] || associatedKey
+					associatedCardsData.push(associatedData)
+				})
+			})
+
+			exportData.associatedCardsData = associatedCardsData
+		}
+
+		exportFromApp(exportData, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
 	}, [svgRef, isExporting, deck, globalState])
 
 	// logic to do with saving
@@ -921,10 +967,19 @@ function deckBuilderComponenet(){
 							
 							div(
 								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
-									EditCheckbox({
+								EditCheckbox({
 									label: translate("show_deck_stats"),
 									value: deck.showDeckStats, 
 									updateValue: toggleDeckDeets
+								}),
+							),
+							
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+								EditCheckbox({
+									label: translate("include_associated_cards"),
+									value: deck.includeAssociated, 
+									updateValue: toggleIncludeAssociatedCards
 								}),
 							),
 
