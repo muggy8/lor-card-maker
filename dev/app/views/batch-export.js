@@ -113,7 +113,7 @@ function BatchExportComponent(){
         }
         setExporting(true)
         requestAnimationFrame(() => {
-            exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
+            exportFromApp(selectedCardsData, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
         })        
     }
 
