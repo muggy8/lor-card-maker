@@ -56,6 +56,7 @@ export const keywords = {
     "trigger": ["trigger.png"],
     // "impact": ["impactn.png"],
     "imbue": ["imbue.png"],
+    "brash": ["brash.png"],
 }
 
 function KeywordRendererComponent(props){
