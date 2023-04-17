@@ -227,5 +227,8 @@ const lang = {
         "show_deck_stats": "Show Deck Stats",
         "associated_cards": "Associated Cards",
         "include_associated_cards": "Include Associated Cards In JSON Output",
+        "relic": "Relic",
+        "item": "Item",
+        "power": "Power",
     }
 }

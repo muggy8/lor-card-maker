@@ -1,4 +1,4 @@
-import factory, { div, label, strong, button, InputRange, fragment } from "/Utils/elements.js"
+import factory, { div, label, strong, button, InputRange, fragment, select as normalSelect, option as normalOption } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useEffect, useContext, createElement } from "/cdn/react"
@@ -18,7 +18,7 @@ import editRarity from "./edit-rarity.js";
 
 loadCss("/Components/card-config/edit-icon.css")
 
-const select = factory(reactSelect)
+const customSelect = factory(reactSelect)
 const option = factory( components.Option )
 const singleValue = factory( components.SingleValue )
 const placeholder = factory( components.Placeholder )
@@ -52,6 +52,13 @@ const dummyIcons = [
     "like.png",
     "pray.png",
     "sword.png",
+]
+
+const pocModeOptions = [
+    "none",
+    "power",
+    "relic", 
+    "item",
 ]
 
 function iconEditorComponent(props){
@@ -126,7 +133,7 @@ function iconEditorComponent(props){
             scale: 1,
         })
         uploadIsNotReady()
-        setPocMode(false)
+        updatePocMode(false)
     }, [uploadedIcon])
 
     const cancelUpload = useCallback(()=>{
@@ -153,11 +160,28 @@ function iconEditorComponent(props){
     }, [uploadedSvgRef, exportingUpload, props.value, uploadReady])
 
     // logic to do with the PoC icons 
-    const [pocMode, togglePocMode, setPocMode] = useToggle(false)
+    const [pocMode, updatePocMode] = useState(false)
+    const selectPocMode = useCallback(ev=>{
+        const target = ev.target
+        const selectedOption = target[target.selectedIndex] 
+
+        if (selectedOption.value === "none"){
+            updatePocMode(false)
+        }
+        else{
+            updatePocMode(selectedOption.value)
+        }
+    }, [])
     const [
-        pocFrame, pocFrameCover, 
-        pocCommonRing, pocRareRing, pocEpicRing, pocLegendaryRing,
-        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem,
+        pocPowerFrame, pocPowerFrameCover, 
+        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing,
+        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
+
+        pocRelicFrame,
+        pocRelicCommonRing, pocRelicRareRing, pocRelicEpicRing, pocRelicLegendaryRing, pocRelicSpecialRing,
+
+        pocItemFrame,
+        pocItemCommonRing, pocItemRareRing, pocItemEpicRing, pocItemLegendaryRing, pocItemSpecialRing,
     ] = useAssetCache(updateCache=>{
         Promise.all([
             datauri("/Assets/keyword/poc-frame-overlay.png"),
@@ -172,6 +196,21 @@ function iconEditorComponent(props){
             datauri("/Assets/keyword/poc-rare.png"),
             datauri("/Assets/keyword/poc-epic.png"),
             datauri("/Assets/keyword/poc-legendary.png"),
+            datauri("/Assets/keyword/poc-special.png"),
+
+            datauri("/Assets/keyword/poc-relic-frame.png"),
+            datauri("/Assets/keyword/poc-relic-frame-overlay-common.png"),
+            datauri("/Assets/keyword/poc-relic-frame-overlay-rare.png"),
+            datauri("/Assets/keyword/poc-relic-frame-overlay-epic.png"),
+            datauri("/Assets/keyword/poc-relic-frame-overlay-legendary.png"),
+            datauri("/Assets/keyword/poc-relic-frame-overlay-special.png"),
+
+            datauri("/Assets/keyword/poc-item-frame.png"),
+            datauri("/Assets/keyword/poc-item-frame-overlay-common.png"),
+            datauri("/Assets/keyword/poc-item-frame-overlay-rare.png"),
+            datauri("/Assets/keyword/poc-item-frame-overlay-epic.png"),
+            datauri("/Assets/keyword/poc-item-frame-overlay-legendary.png"),
+            datauri("/Assets/keyword/poc-item-frame-overlay-special.png"),
         ]).then(updateCache)
     }, [], [])
     const [pocRarity, updatePocRarity] = useState("")
@@ -276,13 +315,13 @@ function iconEditorComponent(props){
                                             div({ 
                                                 className: "poc-icon poc-frame",
                                                 style: {
-                                                    backgroundImage: `url(${pocFrame})`
+                                                    backgroundImage: `url(${pocPowerFrame})`
                                                 }
                                             }),
                                             div({ 
                                                 className: "poc-icon poc-frame",
                                                 style: {
-                                                    backgroundImage: `url(${pocFrameCover})`
+                                                    backgroundImage: `url(${pocPowerFrameCover})`
                                                 }
                                             }),
                                             pocRarity 
@@ -291,10 +330,10 @@ function iconEditorComponent(props){
                                                         className: "poc-icon poc-frame",
                                                         style: {
                                                             backgroundImage: `url(${
-                                                                (pocRarity === "common" && pocCommonRing) ||
-                                                                (pocRarity === "rare" && pocRareRing) ||
-                                                                (pocRarity === "epic" && pocEpicRing) ||
-                                                                (pocRarity === "champion" && pocLegendaryRing) ||
+                                                                (pocRarity === "common" && pocPowerCommonRing) ||
+                                                                (pocRarity === "rare" && pocPowerRareRing) ||
+                                                                (pocRarity === "epic" && pocPowerEpicRing) ||
+                                                                (pocRarity === "champion" && pocPowerLegendaryRing) ||
                                                                 ""
                                                             })`
                                                         }
@@ -334,13 +373,23 @@ function iconEditorComponent(props){
                             )
                         ),
 
-                        pocFrame 
+                        pocPowerFrame 
                             ? div(
                                 { className: "flex gutter-t" },
-                                button(
-                                    { className: "gutter-trbl-1 grow", onClick: togglePocMode },
-                                    pocMode ? translate("turn_poc_off") : translate("turn_poc_on")
-                                )
+                                normalSelect({
+                                    onChange: selectPocMode,
+                                    className: "grow gutter",
+                                    value: pocMode ? pocMode : "none" 
+                                }, pocModeOptions.map(key=>{
+                                    const optionProps = {
+                                        key,
+                                        value:key, 
+                                    }
+                                    return normalOption(
+                                        optionProps,
+                                        translate(key)
+                                    )
+                                }))
                             )
                             : undefined 
                         ,
@@ -373,7 +422,7 @@ function iconEditorComponent(props){
                     translate("create_icon"),
                     div(
                         { className: "gutter-t-.5" },
-                        select({
+                        customSelect({
                             options: dummyIcons.map(iconName=>{
                                 return {
                                     value: iconName,
