@@ -61,7 +61,7 @@
     background-size: 256px 256px;
 }
 
-.poc-icon.crop {
+.poc-icon.crop-power {
     clip-path: polygon(
         9.765625% 26.953125%, 
         21.484375% 21.484375%, 
@@ -80,9 +80,35 @@
         9.765625% 73.046875%
     );
 }
+.poc-icon.crop-relic {
+    clip-path: polygon(
+        50% 5%,
+        88.5% 28%,
+        88.5% 72%,
+        50% 95%,
+        11.5% 72%,
+        11.5% 28%
+    );
+}
+.poc-icon.crop-item {
+    clip-path: polygon(
+        50% 5%,
+        88.5% 28%,
+        88.5% 72%,
+        50% 95%,
+        11.5% 72%,
+        11.5% 28%
+    );
+}
 .poc-icon.poc-gem {
     background-size: 64px 64px;
     background-position-x: 50%;
     background-position-y: 100%;
     background-repeat: no-repeat;
+}
+.poc-icon.poc-gem.relic {
+    background-position-y: 96%;
+}
+.poc-icon.poc-gem.item {
+    background-position-y: 102%;
 }
