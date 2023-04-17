@@ -38,7 +38,8 @@
 
 #card-editor input,
 #card-editor textarea,
-#card-editor button {
+#card-editor button, 
+#card-editor select {
     font-size: 1rem;
 }
 

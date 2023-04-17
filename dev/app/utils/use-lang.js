@@ -214,6 +214,7 @@ const lang = {
         "other_custom_card": "External Custom Card (or any image really)",
         "turn_poc_on": "Turn On PoC Icon Mode",
         "turn_poc_off": "Turn Off PoC Icon Mode",
+        "poc_mode": "Path of Champions Mode",
         "larger_icon": "Increase Icon Size",
         "export_mode": "Share Mode",
         "export_format": "Share Format",

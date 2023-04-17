@@ -375,21 +375,29 @@ function iconEditorComponent(props){
 
                         pocPowerFrame 
                             ? div(
-                                { className: "flex gutter-t" },
-                                normalSelect({
-                                    onChange: selectPocMode,
-                                    className: "grow gutter",
-                                    value: pocMode ? pocMode : "none" 
-                                }, pocModeOptions.map(key=>{
-                                    const optionProps = {
-                                        key,
-                                        value:key, 
-                                    }
-                                    return normalOption(
-                                        optionProps,
-                                        translate(key)
-                                    )
-                                }))
+                                { className: "gutter-t" },
+                                label(
+                                    translate("poc_mode")
+                                ),
+                                div(
+                                    {
+                                        className: "gutter-t-.5 flex"
+                                    },
+                                    normalSelect({
+                                        onChange: selectPocMode,
+                                        className: "grow gutter-trbl",
+                                        value: pocMode ? pocMode : "none" 
+                                    }, pocModeOptions.map(key=>{
+                                        const optionProps = {
+                                            key,
+                                            value:key, 
+                                        }
+                                        return normalOption(
+                                            optionProps,
+                                            translate(key)
+                                        )
+                                    }))
+                                )
                             )
                             : undefined 
                         ,
