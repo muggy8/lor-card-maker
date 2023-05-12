@@ -20,6 +20,10 @@ export function getCardList(query = {}){
     return fetch("/pseudo-api/card-list/" + createQueryString(query)).then(res=>res.json())
 }
 
+export function getBackup(query = {}){
+    return fetch("/pseudo-api/backup/" + createQueryString(query)).then(res=>res.json())
+}
+
 export function getCard(id, query = {}){
     return fetch("/pseudo-api/card/" + id  + createQueryString(query)).then(res=>res.json())
 }

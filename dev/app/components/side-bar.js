@@ -3,7 +3,7 @@ import { useCallback, useState, useRef, useContext, useEffect } from "/cdn/react
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
-import { getCardList, saveCard } from "/Utils/service.js"
+import { getBackup, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
 import { usePWAInstall } from '/cdn/react-use-pwa-install'
 import useToggle from "/Utils/use-toggle.js"
@@ -43,11 +43,9 @@ function SidebarComponent(){
     const installApp = usePWAInstall()
 
     const exportData = useCallback(async ()=>{
-        const cards = await getCardList({ include: "deck" })
+        const backup = await getBackup()
 
-        cards.reverse()
-
-        const output = JSON.stringify({cards})
+        const output = JSON.stringify(backup)
 
         downloadFile(output, "card-data.json", "application/json")
     }, [])

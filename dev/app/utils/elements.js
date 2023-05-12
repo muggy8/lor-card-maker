@@ -10,7 +10,6 @@ const cssLoaded = Promise.all([
     loadCss("/Utils/elements.css"),
 ])
 
-
 export const div = factory("div")
 export const a = factory("a")
 export const span = factory("span")

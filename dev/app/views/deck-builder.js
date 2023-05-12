@@ -99,6 +99,7 @@ const defaultDeck = {
 	name: "",
 	showDeckStats: true,
 	includeAssociated: false,
+	dataVersion: 2,
 }
 
 function deckBuilderComponenet(){
