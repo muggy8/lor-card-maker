@@ -4,9 +4,9 @@ const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	target: "es2018",
+	target: "es2015",
 	"no-dts": true,
-	pin: "v102",
+	pin: "v119",
 	// bundle: true,
 }
 
@@ -114,6 +114,7 @@ const ritoDataLocation = "rito-data"
 const cardListPath = "pseudo-api/card-list/"
 const cardDataPath = "pseudo-api/card/"
 const settingsPath = "pseudo-api/settings/"
+const backupPath = "pseudo-api/backup/"
 const gameDataListPath = "pseudo-api/game-data/card-list/"
 const ritoUrl = "pvp.net"
 
@@ -204,6 +205,10 @@ self.addEventListener("fetch", function(ev){
 				}
 				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
 					ev.respondWith(getRitoCardList(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(backupPath)){
+					ev.respondWith(getBackupData(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -380,6 +385,41 @@ async function getSavedCardList(req, path){
 	return new Response(
 		JSON.stringify(
 			dataList.filter(val=>!!val)
+		), 
+		{
+			'Content-Type': 'application/json',
+			"status" : 200
+		}
+	)
+}
+
+async function getBackupData(req, path){
+	// step 1: get the list of cards that are currently saved in the system
+	let cache = await caches.open(cacheLocation)
+	let cachedRequests = await cache.keys()
+	let idList = cachedRequests.filter(req=>{
+		return req.url.includes(cardDataPath)
+	})
+	.map(req=>{
+		let [_, id] = req.url.match(cardIdFinderRegex)
+
+		return id
+	})
+
+	// step 2: get the data that those cards are associated with.
+	let idListToDataListTasks = idList.map(async id=>{
+		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
+		cardData.id = id
+		if (cardData.type === "deck" && !cardData.dataVersion){
+			cardData.dataVersion = 2
+		}
+		return cardData
+	})
+
+	let dataList = await Promise.all(idListToDataListTasks)
+	return new Response(
+		JSON.stringify(
+			{cards: dataList.filter(val=>!!val)}
 		), 
 		{
 			'Content-Type': 'application/json',
