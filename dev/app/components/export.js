@@ -55,7 +55,7 @@ export default async function(card, svgRef, globalState){
         reader.readAsDataURL(imgBlob); 
         reader.onloadend = function() {
             var base64data = reader.result;                
-            return openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}}`)
+            return openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
         }
     }
 }
