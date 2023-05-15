@@ -23,7 +23,7 @@ export default async function(card, svgRef, globalState){
             width,
             height,
         })
-        return openUri(uri, `${(card.name || "export").toUpperCase()}.svg}`)
+        return openUri(uri, `${(card.name || "export").toUpperCase()}.svg`)
     }
     else {
         // convert the value to the right format
@@ -34,7 +34,7 @@ export default async function(card, svgRef, globalState){
         })
 
         if (!globalState.state.settings.exportFormat || globalState.state.settings.exportFormat === "png"){
-            return  openUri(uri, `${(card.name || "export").toUpperCase()}.png}`)
+            return  openUri(uri, `${(card.name || "export").toUpperCase()}.png`)
         }
 
         const offscreen = new OffscreenCanvas(width, height);
