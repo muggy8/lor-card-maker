@@ -6,7 +6,7 @@ const CACHE_NAME = "react-cache"
 const esmshQueryConfigs = {
 	target: "es2015",
 	"no-dts": true,
-	pin: "v121",
+	pin: "v120",
 	// bundle: true,
 }
 
