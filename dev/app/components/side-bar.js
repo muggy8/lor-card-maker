@@ -7,6 +7,7 @@ import { getBackup, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
 import { usePWAInstall } from '/cdn/react-use-pwa-install'
 import useToggle from "/Utils/use-toggle.js"
+import { stringToBlob } from "/Components/export.js"
 
 
 const cssLoaded = loadCss("/Components/side-bar.css")
@@ -47,7 +48,7 @@ function SidebarComponent(){
 
         const output = JSON.stringify(backup)
 
-        downloadFile(output, "card-data.json", "application/json")
+        downloadFile(stringToBlob(output), "card-data.json")
     }, [])
 
     const [isImporting, _toggleIsImporting, setIsImporting] = useToggle(false)
@@ -237,12 +238,30 @@ function SidebarComponent(){
 
 }
 
-function downloadFile(content, fileName, contentType) {
-    var a = document.createElement("a");
-    var file = new Blob([content], {type: contentType});
-    a.href = URL.createObjectURL(file);
-    a.download = fileName;
-    a.click();
+async function downloadFile(contentBlob, fileName) {
+    if (window.AndroidNativeInterface){
+        const b64 = await new Promise(accept=>{
+            var reader = new FileReader();
+            reader.readAsDataURL(contentBlob); 
+            reader.onloadend = function() {
+                accept(reader.result);       
+            }
+        })
+        const typeRegex = /data:([^;]+);(([^;]+);)*base64,/
+        const [dataUriHeader, contentType] = typeRegex.exec(b64)
+
+        const message = JSON.stringify({
+			image: b64.substr(dataUriHeader.length),
+			fileName
+		})
+		window.AndroidNativeInterface.postMessage(message)
+    }
+    else{
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(contentBlob);
+        a.download = fileName;
+        a.click();
+    }
 }
 
 export default factory(SidebarComponent, cssLoaded)
