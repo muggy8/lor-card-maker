@@ -1,4 +1,4 @@
-import factory, { div, span, label, a, input, nav, select, option } from "/Utils/elements.js"
+import factory, { div, span, label, a, input, nav, select, option, fragment } from "/Utils/elements.js"
 import { useCallback, useState, useRef, useContext, useEffect } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
@@ -139,100 +139,106 @@ function SidebarComponent(){
         updateOpened(false)
     }, [globalState.setView])
 
-    return nav(
-        { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
-        div(
-            {
-                className: "menu-icon flex vhcenter",
-                onClick: toggleOpened
-            },
-            div({className: "icon animated clickable " + (opened ? "multiply" : "menu") }),
-        ),
-        div(
-            { className: "menu-contents gutter-tb-2" },
-            label(
+    return fragment(
+        div({ 
+            className: `side-bar-backdrop ${opened ? "open" : ""}`,
+            onClick: toggleOpened
+        }),
+        nav(
+            { className: `side-bar card-text-universe gutter-rl-3 flex column vhcenter ${opened ? "open" : ""}` },
+            div(
                 {
-                    className: "menu-option clickable gutter-tb",
+                    className: "menu-icon flex vhcenter",
+                    onClick: toggleOpened
                 },
-                div( translate("theme") ),
-                select(
-                    {
-                        value: globalState.state.settings.theme || "oled",
-                        onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
-                        className: "select-theme gutter-rl-1 gutter-tb-.5"
-                    },
-                    themeClassNames.map(className=>{
-                        return option(
-                            {
-                                key: className,
-                                value: className
-                            },
-                            translate(className)
-                        )
-                    })
-                ),
-            ),
-            label(
-                {
-                    className: "menu-option clickable gutter-tb",
-                },
-                div( translate("export_format") ),
-                select(
-                    {
-                        value: globalState.state.settings.exportFormat || "png",
-                        onChange: ev=>globalState.patchSettings({exportFormat: ev.target.value}),
-                        className: "select-theme gutter-rl-1 gutter-tb-.5"
-                    },
-                    exportFormat.map(mode=>{
-                        return option(
-                            {
-                                key: mode,
-                                value: mode
-                            },
-                            translate(mode)
-                        )
-                    })
-                ),
+                div({className: "icon animated clickable " + (opened ? "multiply" : "menu") }),
             ),
             div(
-                { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
-                translate("batch_export")
-            ),
-            installApp 
-                ? div(
-                    { className: "menu-option clickable gutter-tb", onClick: installApp },
-                    translate("install_app")
-                )
-                : undefined
-            ,
-            div(
-                { className: "menu-option clickable gutter-tb", onClick: exportData },
-                translate("export_save")
-            ),
-            label(
-                { className: "menu-option clickable gutter-tb" },
-                isImporting ? undefined : translate("import_save"),
-                isImporting ? undefined : input({
-                    className: "hide",
-                    accept: "application/json",
-                    type: "file",
-                    onChange: importData,
-                }),
-                isImporting 
-                    ? div({className: "icon loading"}) 
+                { className: "menu-contents gutter-tb-2" },
+                label(
+                    {
+                        className: "menu-option clickable gutter-tb",
+                    },
+                    div( translate("theme") ),
+                    select(
+                        {
+                            value: globalState.state.settings.theme || "oled",
+                            onChange: ev=>globalState.patchSettings({theme: ev.target.value}),
+                            className: "select-theme gutter-rl-1 gutter-tb-.5"
+                        },
+                        themeClassNames.map(className=>{
+                            return option(
+                                {
+                                    key: className,
+                                    value: className
+                                },
+                                translate(className)
+                            )
+                        })
+                    ),
+                ),
+                label(
+                    {
+                        className: "menu-option clickable gutter-tb",
+                    },
+                    div( translate("export_format") ),
+                    select(
+                        {
+                            value: globalState.state.settings.exportFormat || "png",
+                            onChange: ev=>globalState.patchSettings({exportFormat: ev.target.value}),
+                            className: "select-theme gutter-rl-1 gutter-tb-.5"
+                        },
+                        exportFormat.map(mode=>{
+                            return option(
+                                {
+                                    key: mode,
+                                    value: mode
+                                },
+                                translate(mode)
+                            )
+                        })
+                    ),
+                ),
+                div(
+                    { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
+                    translate("batch_export")
+                ),
+                installApp 
+                    ? div(
+                        { className: "menu-option clickable gutter-tb", onClick: installApp },
+                        translate("install_app")
+                    )
                     : undefined
                 ,
-            ),
-            label(
-                { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
-                translate("report_bug"),
-                a({
-                    ref: bugReportlink,
-                    href: "https://github.com/muggy8/lor-card-maker/issues",
-                    className: "hide",
-                    target: "_blank"
-                })
-            ),
+                div(
+                    { className: "menu-option clickable gutter-tb", onClick: exportData },
+                    translate("export_save")
+                ),
+                label(
+                    { className: "menu-option clickable gutter-tb" },
+                    isImporting ? undefined : translate("import_save"),
+                    isImporting ? undefined : input({
+                        className: "hide",
+                        accept: "application/json",
+                        type: "file",
+                        onChange: importData,
+                    }),
+                    isImporting 
+                        ? div({className: "icon loading"}) 
+                        : undefined
+                    ,
+                ),
+                label(
+                    { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
+                    translate("report_bug"),
+                    a({
+                        ref: bugReportlink,
+                        href: "https://github.com/muggy8/lor-card-maker/issues",
+                        className: "hide",
+                        target: "_blank"
+                    })
+                ),
+            )
         )
     )
 

@@ -1,3 +1,17 @@
+.side-bar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(var(--rgb-dark), 0.0);
+
+    transform: translate(-100%, 0);
+    will-change: background-color;
+    transition: background-color 0.5s;
+}
+
 .side-bar {
     position: fixed;
     top: 0;
@@ -20,6 +34,11 @@
 }
 
 .side-bar.open {
+    transform: translate(0, 0);
+}
+
+.side-bar-backdrop.open {
+    background-color: rgba(var(--rgb-light), 0.4);
     transform: translate(0, 0);
 }
 
