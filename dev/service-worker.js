@@ -4,9 +4,9 @@ const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	target: "es2020",
+	target: "es2015",
 	"no-dts": true,
-	pin: "v120",
+	pin: "v122",
 	// bundle: true,
 }
 

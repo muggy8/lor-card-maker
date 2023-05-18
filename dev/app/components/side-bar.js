@@ -8,6 +8,7 @@ import BatchExport from "/Views/batch-export.js"
 import { usePWAInstall } from '/cdn/react-use-pwa-install'
 import useToggle from "/Utils/use-toggle.js"
 import { stringToBlob } from "/Components/export.js"
+import BatchDelete from "/Views/batch-delete.js"
 
 
 const cssLoaded = loadCss("/Components/side-bar.css")
@@ -139,6 +140,12 @@ function SidebarComponent(){
         updateOpened(false)
     }, [globalState.setView])
 
+    const focusBatchDelete = useCallback(()=>{
+        globalState.setView(BatchDelete)
+        console.log("batch delete time")
+        updateOpened(false)
+    }, [globalState.setView])
+
     return fragment(
         div({ 
             className: `side-bar-backdrop ${opened ? "open" : ""}`,
@@ -202,6 +209,10 @@ function SidebarComponent(){
                 div(
                     { className: "menu-option clickable gutter-tb", onClick: focusBatchExport },
                     translate("batch_export")
+                ),
+                div(
+                    { className: "menu-option clickable gutter-tb", onClick: focusBatchDelete },
+                    translate("bulk_delete")
                 ),
                 installApp 
                     ? div(

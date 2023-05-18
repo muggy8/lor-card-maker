@@ -51,6 +51,7 @@ const lang = {
         "edit": "Edit",
         "batch_export": "Batch Card Export",
         "batch_delete": "Batch Card Delete",
+        "bulk_delete": "Bulk Card Delete",
         "export_save": "Export Save Data",
         "import_save": "Import Save Data",
         "report_bug": "Report Bug",
@@ -123,6 +124,7 @@ const lang = {
         "default_bg_show": "Show Default Background",
         "default_bg_hide": "Hide Default Background",
         "insert_icon_instruction": "Right-Click or Long-Press to insert icons",
+        "confirm_delete": "Are you sure youw ant to delete this card?",
 
         "attune": "Attune",
         "attach": "Attach",
