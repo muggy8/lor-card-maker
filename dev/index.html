@@ -207,11 +207,14 @@
 						return module.default
 					})
 					.catch(function(error) {
-						console.error('Service worker registration failed, error:', error);
+						console.error('Service worker registration failed, error:', {error});
 						document.body.classList.remove("loading")
 						document.body.classList.add("error")
 					});
 			}
+			
+			
+			/**/
 		</script>
 	</head>
 	<body class="loading">

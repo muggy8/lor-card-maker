@@ -5,7 +5,6 @@ import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import { getBackup, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
-import { usePWAInstall } from '/cdn/react-use-pwa-install'
 import useToggle from "/Utils/use-toggle.js"
 import { stringToBlob } from "/Components/export.js"
 import BatchDelete from "/Views/batch-delete.js"
@@ -41,8 +40,6 @@ function SidebarComponent(){
     }, [opened])
 
     const bugReportlink = useRef()
-
-    const installApp = usePWAInstall()
 
     const exportData = useCallback(async ()=>{
         const backup = await getBackup()
@@ -214,13 +211,6 @@ function SidebarComponent(){
                     { className: "menu-option clickable gutter-tb", onClick: focusBatchDelete },
                     translate("bulk_delete")
                 ),
-                installApp 
-                    ? div(
-                        { className: "menu-option clickable gutter-tb", onClick: installApp },
-                        translate("install_app")
-                    )
-                    : undefined
-                ,
                 div(
                     { className: "menu-option clickable gutter-tb", onClick: exportData },
                     translate("export_save")
