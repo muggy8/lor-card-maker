@@ -1,4 +1,4 @@
-import factory, { div, label, strong, small } from "/Utils/elements.js"
+import factory, { div, label, strong, small, fragment } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useRef, useEffect, useContext } from "/cdn/react"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
@@ -49,6 +49,9 @@ function EditEffectComponent(props){
 			updateEditingSelection({
 				node: selectedNode,
 				offset: editingRange.focusOffset,
+				selectedText: selectedNode instanceof Text && editingRange.focusOffset !== editingRange.anchorOffset
+					? selectedNode.textContent.substring(editingRange.anchorOffset, editingRange.focusOffset)
+					: undefined
 			})
 		}
 
@@ -69,6 +72,38 @@ function EditEffectComponent(props){
 
 		updateValue()
 	}, [updateValue])
+
+	const insertOrangeWord = useCallback((wordToInsert)=>{
+		if (!editingSelection){
+			return
+		}
+
+		wordToInsert = wordToInsert.trim()
+
+		const alreadyInList = props.orangeWords.reduce((assumption, existingWord)=>{
+			return assumption || existingWord === wordToInsert
+		}, false)
+
+		if (!alreadyInList){
+			props.updateOrangeWords([...props.orangeWords, wordToInsert])
+		}
+	}, [editingSelection, props.orangeWords, props.updateOrangeWords])
+
+	const insertBlueeWord = useCallback((wordToInsert)=>{
+		if (!editingSelection){
+			return
+		}
+
+		wordToInsert = wordToInsert.trim()
+
+		const alreadyInList = props.blueWords.reduce((assumption, existingWord)=>{
+			return assumption || existingWord === wordToInsert
+		}, false)
+
+		if (!alreadyInList){
+			props.updateBlueWords([...props.blueWords, wordToInsert])
+		}
+	}, [editingSelection, props.blueWords, props.updateBlueWords])
 
 	const insertKeyword = useCallback((keywordName)=>{
 		if (!editingSelection){
@@ -140,19 +175,28 @@ function EditEffectComponent(props){
 		onInput(ev)
 		updateMenuOpen(false)
 	}, [onInput])
+
+	const onInputCallback = useRef()
+	onInputCallback.current = onInput
 	useEffect(()=>{
 		function closeMenu (){
 			updateMenuOpen(false)
 		}
 
+		function selectionChangeed (){
+			onInputCallback.current && onInputCallback.current()
+		}
+
 		document.addEventListener('scroll', closeMenu)
 		window.addEventListener('resize', closeMenu)
 		document.addEventListener('click', closeMenu)
+		document.addEventListener("selectionchange", selectionChangeed)
 
 		return function(){
 			document.removeEventListener('scroll', closeMenu)
 			window.removeEventListener('resize', closeMenu)
 			document.removeEventListener('click', closeMenu)
+			document.removeEventListener("selectionchange", selectionChangeed)
 		}
 	}, [])
 
@@ -191,6 +235,25 @@ function EditEffectComponent(props){
 				...menuProps,
 				visible: menuOpen,
 			},
+			editingSelection && editingSelection.selectedText
+				? fragment(
+					contextMenuItem(
+						{
+							onClick: ()=>insertOrangeWord(editingSelection.selectedText),
+							className: "orange-text"
+						},
+						editingSelection.selectedText
+					),
+					contextMenuItem(
+						{
+							onClick: ()=>insertBlueeWord(editingSelection.selectedText),
+							className: "blue-text"
+						},
+						editingSelection.selectedText
+					),
+				)
+				: undefined
+			,
 			Object.keys(keywords)
 				.filter((keywordName)=>{
 					return keywords[keywordName].length

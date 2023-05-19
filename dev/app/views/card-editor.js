@@ -348,6 +348,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 						updateValue: cardDataUpdaters.effect,
                         orangeWords: card.orangeWords,
                         updateOrangeWords: cardDataUpdaters.orangeWords,
+                        blueWords: card.blueWords,
+                        updateBlueWords: cardDataUpdaters.blueWords,
 						label: translate("effect")
 					})
                     : undefined
@@ -358,6 +360,8 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 						updateValue: cardDataUpdaters.lvup,
                         orangeWords: card.orangeWords,
                         updateOrangeWords: cardDataUpdaters.orangeWords,
+                        blueWords: card.blueWords,
+                        updateBlueWords: cardDataUpdaters.blueWords,
 						label: translate("lv_up")
 					})
                     : undefined

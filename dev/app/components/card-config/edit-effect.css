@@ -60,7 +60,7 @@
 }
  */
 
- .edit-effect .contextmenu {
+.edit-effect .contextmenu {
     font-size: 1.25em;
     max-height: 33vh;
     overflow-y: auto;
@@ -91,6 +91,13 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
+}
+
+.edit-effect .contextmenu .orange-text {
+    color: var(--effect-orange-text);
+}
+.edit-effect .contextmenu .blue-text {
+    color: var(--effect-blue-text);
 }
 
 .edit-effect img.keyword-img {
