@@ -4,10 +4,9 @@ const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	target: "es2015",
+	// target: "es2015",
 	"no-dts": true,
-	pin: "v122",
-	// bundle: true,
+	pin: "121",
 }
 
 if (indexUrl.includes("localhost")){
@@ -535,7 +534,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 	try{
 		let res = await fetch(req)
 
-		if (!res.ok){
+		if (!res.ok || res.status >= 300 || res.status < 200){
 			return cachedAsset
 		}
 
