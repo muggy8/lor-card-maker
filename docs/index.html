@@ -92,6 +92,10 @@
 						const clearCacheLink = container.appendChild(document.createElement("a"))
 						clearCacheLink.classList.add("clickable")
 						clearCacheLink.addEventListener("click", ()=>{
+							document.body.classList.add("loading")
+							document.body.classList.remove("error")
+							document.body.removeChild(container)
+
 							fetch("/pseudo-api/clear-cache/")
 								.then(()=>document.location.reload())
 						})
