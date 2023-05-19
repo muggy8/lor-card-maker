@@ -231,12 +231,18 @@
 							JSON.stringify({
 								message: error.message,
 								stack: error.stack,
+								fileName: error.fileName,
+								columnNumber: error.columnNumber,
+								lineNumber: error.lineNumber,
 							}, null, "\t")
 						))
 
 						const clearCacheLink = container.appendChild(document.createElement("a"))
 						clearCacheLink.classList.add("clickable")
-						clearCacheLink.href = "/pseudo-api/clear-cache/"
+						clearCacheLink.addEventListener("click", ()=>{
+							fetch("/pseudo-api/clear-cache/")
+								.then(()=>document.location.reload())
+						})
 
 						const clearCacheText = clearCacheLink.appendChild(document.createElement("div"))
 						clearCacheText.classList.add("flex")
