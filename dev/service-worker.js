@@ -438,23 +438,18 @@ async function clearReactCache(req, path){
 	let reactStorage = await caches.open(CACHE_NAME)
 	let cachedRequests = await reactStorage.keys()
 
-	let cachedValues = await Promise.all(
+	let deleteJobs = await Promise.all(
 		cachedRequests.map(async req=>{
-			return {
-				req,
-				res: await reactStorage.match(req),
+			let res = await reactStorage.match(req)
+			let contentType = res.headers.get("Content-Type")
+
+			if (contentType && contentType.includes("html")) {
+				return
 			}
+
+			return reactStorage.delete(req.url)
 		})
 	)
-
-	let deleteJobs = cachedValues.map(value=>{
-		let contentType = value.res.headers.get("Content-Type")
-		if (contentType && contentType.includes("html")) {
-			return
-		}
-
-		return reactStorage.delete(value.req.url)
-	})
 
 	await Promise.all(deleteJobs)
 
