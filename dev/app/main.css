@@ -201,3 +201,14 @@ img, svg {
 	}
 }
 	
+/* code for error state */
+.error-box {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.error-box pre.error-body {
+	overflow: auto;
+	background-color: var(--rgb-light);
+}

@@ -107,6 +107,7 @@ const cardDataPath = "pseudo-api/card/"
 const settingsPath = "pseudo-api/settings/"
 const backupPath = "pseudo-api/backup/"
 const gameDataListPath = "pseudo-api/game-data/card-list/"
+const clearCachePath = "pseudo-api/clear-cache/"
 const ritoUrl = "pvp.net"
 
 function parseValue(val){
@@ -200,6 +201,10 @@ self.addEventListener("fetch", function(ev){
 				}
 				else if (filePathRelativeToURLRoot.includes(backupPath)){
 					ev.respondWith(getBackupData(ev.request, filePathRelativeToURLRoot))
+					responded = true
+				}
+				else if (filePathRelativeToURLRoot.includes(clearCachePath)){
+					ev.respondWith(clearReactCache(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
 			}
@@ -426,6 +431,34 @@ async function deleteSavedCard(req, path){
     'Content-Type': 'application/json',
     "status" : 200
   })
+}
+
+
+async function clearReactCache(req, path){
+	let reactStorage = await caches.open(CACHE_NAME)
+	let cachedRequests = await reactStorage.keys()
+
+	let cachedValues = await Promise.all(
+		cachedRequests.map(async req=>{
+			return {
+				req,
+				res: await reactStorage.match(req),
+			}
+		})
+	)
+
+	let deleteJobs = cachedValues.map(value=>{
+		let contentType = value.res.headers.get("Content-Type")
+		if (contentType && contentType.includes("html")) {
+			return
+		}
+
+		return reactStorage.delete(value.req.url)
+	})
+
+	await Promise.all(deleteJobs)
+
+	return Response.redirect(indexUrl, 302)
 }
 
 function remapUrl(relativePath){
