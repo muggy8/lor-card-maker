@@ -1,6 +1,7 @@
-import factory, { div, label, strong, InputRange } from "/Utils/elements.js"
+import factory, { div, label, strong } from "/Utils/elements.js"
 import { useCallback } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
+import InputRange from "/Components/range-input.js"
 
 function EditShadeComponent(props){
     // const onChange = useCallback(ev=>{
@@ -19,12 +20,6 @@ function EditShadeComponent(props){
 
         return callbackCollector
     }, {})
-
-    const updateGradientLocation = useCallback(({max, min})=>{
-        updaters.gradientLocation([min, max])
-    }, [updaters.gradientLocation])
-
-    const [min, max] = gradientLocation
 
     return div(
         { className: "box gutter-b-2" },
@@ -46,8 +41,8 @@ function EditShadeComponent(props){
                     {
                         formatLabel: value => `${decimalLimit(value * 100)}%`,
                         value: darkness,
-                        minValue: 0,
-                        maxValue: 1,
+                        min: 0,
+                        max: 1,
                         step: 0.01,
                         onChange: updaters.darkness,
                     }
@@ -67,8 +62,8 @@ function EditShadeComponent(props){
                     {
                         formatLabel: value => `${decimalLimit(value)}px`,
                         value: blur,
-                        minValue: 0,
-                        maxValue: 40,
+                        min: 0,
+                        max: 40,
                         step: 0.1,
                         onChange: updaters.blur,
                     }
@@ -87,11 +82,11 @@ function EditShadeComponent(props){
                 InputRange(
                     {
                         formatLabel: value => `${decimalLimit(value)}%`,
-                        value: {min, max},
-                        minValue: 0,
-                        maxValue: 100,
+                        value: gradientLocation,
+                        min: 0,
+                        max: 100,
                         step: 0.1,
-                        onChange: updateGradientLocation,
+                        onChange: updaters.gradientLocation,
                     }
                 )
             )

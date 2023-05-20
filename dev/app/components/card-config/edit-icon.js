@@ -1,4 +1,4 @@
-import factory, { div, label, strong, button, InputRange, fragment, select as normalSelect, option as normalOption } from "/Utils/elements.js"
+import factory, { div, label, strong, button, fragment, select as normalSelect, option as normalOption } from "/Utils/elements.js"
 import reactSelect, { components  } from '/cdn/react-select';
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useEffect, useContext, createElement } from "/cdn/react"
@@ -15,6 +15,7 @@ import { Globals } from "/Views/index.js"
 import useToggle from "/Utils/use-toggle.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import editRarity from "./edit-rarity.js";
+import InputRange from "/Components/range-input.js"
 
 loadCss("/Components/card-config/edit-icon.css")
 
@@ -609,8 +610,8 @@ function iconEditorComponent(props){
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
                                                 value: saturation,
-                                                minValue: 0,
-                                                maxValue: 5,
+                                                min: 0,
+                                                max: 5,
                                                 step: 0.01,
                                                 onChange: updateSaturation,
                                             }
@@ -630,8 +631,8 @@ function iconEditorComponent(props){
                                             {
                                                 formatLabel: value => `${decimalLimit(value)}deg`,
                                                 value: hue,
-                                                minValue: 0,
-                                                maxValue: 360,
+                                                min: 0,
+                                                max: 360,
                                                 step: 1,
                                                 onChange: updateHue,
                                             }
@@ -651,8 +652,8 @@ function iconEditorComponent(props){
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
                                                 value: brightness,
-                                                minValue: 0,
-                                                maxValue: 2,
+                                                min: 0,
+                                                max: 2,
                                                 step: 0.01,
                                                 onChange: updateBrightness,
                                             }
@@ -672,8 +673,8 @@ function iconEditorComponent(props){
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
                                                 value: contrast,
-                                                minValue: 0,
-                                                maxValue: 5,
+                                                min: 0,
+                                                max: 5,
                                                 step: 0.01,
                                                 onChange: udpateContrast,
                                             }
@@ -693,8 +694,8 @@ function iconEditorComponent(props){
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
                                                 value: sepia,
-                                                minValue: 0,
-                                                maxValue: 1,
+                                                min: 0,
+                                                max: 1,
                                                 step: 0.01,
                                                 onChange: updateSepia,
                                             }
