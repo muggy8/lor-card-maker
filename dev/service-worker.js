@@ -45,8 +45,8 @@ const pathMap = {
 			url: "https://esm.sh/gesto@1.13.3",
 			query: esmshQueryConfigs,
 		},
-		"react-input-range": {
-			url: "https://esm.sh/react-input-range@1.3.0",
+		"react-range": {
+			url: "https://esm.sh/react-range@1.8.14",
 			query: esmshQueryConfigs,
 		},
 		"react-contextmenu": {
