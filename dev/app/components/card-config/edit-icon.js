@@ -69,9 +69,9 @@ function iconEditorComponent(props){
     const globals = useContext(Globals)
 
     const [hue, updateHue] = useState(0)
-    const [contrast, udpateContrast] = useState(1)
+    const [contrast, udpateContrast] = useState(1.5)
     const [saturation, updateSaturation] = useState(0)
-    const [brightness, updateBrightness] = useState(1)
+    const [brightness, updateBrightness] = useState(0.65)
     const [sepia, updateSepia] = useState(1)
 
     const [selected, updateSelected] = useState(null)
@@ -82,9 +82,9 @@ function iconEditorComponent(props){
         }
         datauri(selected.icon).then(updateIconUri)
         updateHue(0)
-        udpateContrast(1)
+        udpateContrast(1.5)
         updateSaturation(0)
-        updateBrightness(1)
+        updateBrightness(0.65)
         updateSepia(1)
     }, [selected])
 
@@ -600,12 +600,12 @@ function iconEditorComponent(props){
                                 label(
                                     { className: "box gutter-trbl-.5 flex-s" },
                                     div(
-                                        { className: "box-4" },
+                                        { className: "box-4 flex vcenter gutter-t" },
                                         translate("saturation"),
                                         ":",
                                     ),
                                     div(
-                                        { className: "grow gutter-tb" },
+                                        { className: "grow gutter-t" },
                                         InputRange(
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
@@ -621,12 +621,12 @@ function iconEditorComponent(props){
                                 label(
                                     { className: "box gutter-trbl-.5 flex-s" },
                                     div(
-                                        { className: "box-4" },
+                                        { className: "box-4 flex vcenter gutter-t" },
                                         translate("hue_rotation"),
                                         ":",
                                     ),
                                     div(
-                                        { className: "grow gutter-tb" },
+                                        { className: "grow gutter-t" },
                                         InputRange(
                                             {
                                                 formatLabel: value => `${decimalLimit(value)}deg`,
@@ -642,12 +642,12 @@ function iconEditorComponent(props){
                                 label(
                                     { className: "box gutter-trbl-.5 flex-s" },
                                     div(
-                                        { className: "box-4" },
+                                        { className: "box-4 flex vcenter gutter-t" },
                                         translate("brightness"),
                                         ":",
                                     ),
                                     div(
-                                        { className: "grow gutter-tb" },
+                                        { className: "grow gutter-t" },
                                         InputRange(
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
@@ -663,12 +663,12 @@ function iconEditorComponent(props){
                                 label(
                                     { className: "box gutter-trbl-.5 flex-s" },
                                     div(
-                                        { className: "box-4" },
+                                        { className: "box-4 flex vcenter gutter-t" },
                                         translate("contrast"),
                                         ":",
                                     ),
                                     div(
-                                        { className: "grow gutter-tb" },
+                                        { className: "grow gutter-t" },
                                         InputRange(
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
@@ -684,12 +684,12 @@ function iconEditorComponent(props){
                                 label(
                                     { className: "box gutter-trbl-.5 flex-s" },
                                     div(
-                                        { className: "box-4" },
+                                        { className: "box-4 flex vcenter gutter-t" },
                                         translate("sepia"),
                                         ":",
                                     ),
                                     div(
-                                        { className: "grow gutter-tb" },
+                                        { className: "grow gutter-t" },
                                         InputRange(
                                             {
                                                 formatLabel: value => `${decimalLimit(value*100)}%`,
