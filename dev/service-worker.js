@@ -524,30 +524,34 @@ async function intelegentFetch(req, justUseTheCache = false){
 		}
 	}
 
+	let cachedContents
 	if (cachedAsset = await storage.match(req)){
 		let cachedEtag = cachedAsset.headers.get("etag")
 		let cachedLastMod = cachedAsset.headers.get("last-modified")
+		cachedContents = await cachedAsset.clone().text()
 
-		let remoteHeaders
-		try{
-			remoteHeaders = await fetch(req, {
-				method: "HEAD",
-			})
-		}
-		catch(uwu){
-			console.warn(uwu)
-			return cachedAsset
-		}
-
-		if (remoteHeaders && remoteHeaders.headers){
-			if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+		if (cachedContents){
+			let remoteHeaders
+			try{
+				remoteHeaders = await fetch(req, {
+					method: "HEAD",
+				})
+			}
+			catch(uwu){
+				console.warn(uwu)
 				return cachedAsset
 			}
-			if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
-				return cachedAsset
+
+			if (remoteHeaders && remoteHeaders.headers){
+				if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+					return cachedAsset
+				}
+				if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
+					return cachedAsset
+				}
 			}
 		}
-		console.log("asset needs refreshing", req)
+		// console.log("asset needs refreshing", req)
 
 	}
 
@@ -556,6 +560,12 @@ async function intelegentFetch(req, justUseTheCache = false){
 
 		if (!res.ok || res.status >= 300 || res.status < 200){
 			return cachedAsset
+		}
+
+		let resContent = await res.clone().text()
+
+		if (!resContent && cachedContents){
+			return cachedAsset 
 		}
 
 		await storage.put(req, res.clone())
