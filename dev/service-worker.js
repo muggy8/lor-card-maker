@@ -511,6 +511,83 @@ function wait(ms){
 	return new Promise(accept=>setTimeout(accept, ms))
 }
 
+
+class LinkedList{
+	constructor(){
+		this.start = undefined
+		this.end = undefined
+		this.length = 0
+	}
+	get first(){
+		return this.start
+	}
+	get last(){
+		return this.end
+	}
+	set first(value){
+		return this.start = value
+	}
+	set last(value){
+		return this.end = value
+	}
+	add(item){
+		const actualItem = createLinkedItem(this, item)
+
+		if (!this.start){
+			this.start = actualItem
+		}
+		if (!this.end){
+			this.end = actualItem
+		}
+		else{
+			actualItem.prev = this.end
+			this.end.next = actualItem
+			this.end = actualItem
+		}
+		this.length++
+		return actualItem
+	}
+}
+
+function createLinkedItem(homelist, data = {}){
+	let item
+	if (typeof data !== "object"){
+		item = Object.create({data})
+	}
+	else{
+		item = Object.create(data)
+	}
+	
+	item.next = undefined
+	item.prev = undefined
+
+	item.get = function(propName){
+		return data[propName]
+	}
+
+	item.drop = function(){
+		if (item.next){
+			item.next.prev = item.prev
+		}
+
+		if (item.prev){
+			item.prev.next = item.next
+		}
+
+		if (homelist.start === item){
+			homelist.start = item.next
+		}
+
+		if (homelist.end === item){
+			homelist.end = item.prev
+		}
+
+		homelist.length--
+	}
+	return item
+}
+
+const currentlyOngoingCalls = new LinkedList()
 async function intelegentFetch(req, justUseTheCache = false){
 	let requestedPath = req.url || req
 	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
@@ -542,9 +619,13 @@ async function intelegentFetch(req, justUseTheCache = false){
 				attempts++
 				let waitMs = attempts * 200
 				try{
-					remoteHeaders = await fetch(req, {
+					console.log(`HEAD ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
+					let fetchAttempt = fetch(req, {
 						method: "HEAD",
 					})
+					let fetchLink = currentlyOngoingCalls.add(fetchAttempt)
+					remoteHeaders = await fetchAttempt
+					fetchLink.drop()
 				}
 				catch(uwu){
 					remoteHeaders = undefined
@@ -583,7 +664,11 @@ async function intelegentFetch(req, justUseTheCache = false){
 		fetchAttempts++
 		let waitMs = fetchAttempts * 200
 		try{
-			fetchedAsset = await fetch(req)
+			console.log(`GET ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
+			let fetchAttempt = fetch(req)
+			let fetchLink = currentlyOngoingCalls.add(fetchAttempt)
+			fetchedAsset = await fetchAttempt
+			fetchLink.drop()
 		} 
 		catch(err){
 			fetchedAsset = undefined
