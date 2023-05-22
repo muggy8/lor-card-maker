@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/muggy8/lor-card-maker#readme",
   "devDependencies": {
+    "express": "^4.17.1",
     "gulp": "^4.0.2",
     "gulp-async-replace": "^1.0.0",
     "gulp-clean-css": "^4.3.0",
@@ -27,10 +28,8 @@
     "gulp-jsonminify": "^1.1.0",
     "gulp-terser": "^1.4.0",
     "gulp-uglify": "^3.0.2",
-    "terser": "^5.15.1",
-
-    "yargs": "^17.3.1",
     "open": "^8.4.0",
-    "express": "^4.17.1"
+    "terser": "^5.15.1",
+    "yargs": "^17.3.1"
   }
 }

@@ -507,7 +507,8 @@ function walkPathMap(pathArray, currentPathMap){
 	return walkPathMap(remainingPatSegment, currentPathReference)
 }
 
-async function intelegentFetch(req, justUseTheCache = false){
+const maxRetry = 5
+async function intelegentFetch(req, justUseTheCache = false, retryCount = 0){
 	let requestedPath = req.url || req
 	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
 		return fetch(req)
@@ -541,6 +542,13 @@ async function intelegentFetch(req, justUseTheCache = false){
 				console.warn(uwu)
 				return cachedAsset
 			}
+			
+			if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
+				if (retryCount < maxRetry){
+					await new Promise(accept=>setTimeout(accept, 200*(retryCount + 1)))
+					return intelegentFetch(req, justUseTheCache, retryCount + 1)
+				}
+			}
 
 			if (remoteHeaders && remoteHeaders.headers){
 				if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
@@ -565,6 +573,11 @@ async function intelegentFetch(req, justUseTheCache = false){
 		let resContent = await res.clone().text()
 
 		if (!resContent && cachedContents){
+			if (retryCount < maxRetry){
+				await new Promise(accept=>setTimeout(accept, 200*(retryCount + 1)))
+				return intelegentFetch(req, justUseTheCache, retryCount + 1)
+			}
+			
 			return cachedAsset 
 		}
 
