@@ -535,7 +535,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 		cachedContents = await cachedAsset.clone().text()
 
 		if (cachedContents){
-			let remoteHeaders, attempts = 0, maxAttempts = 4
+			let remoteHeaders, attempts = 0, maxAttempts = 2
 			// we get 3 tries to get the headers. if we dont then we assume the server's dead and just serve up the cache
 			
 			while (!remoteHeaders || attempts < maxAttempts){
@@ -578,7 +578,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 
 	// the only way we get here is if the remote server is working and we need to update our cache or we dont actually have anything cached and we need to get it from the server.
 
-	let fetchedAsset, fetchAttempts = 0, fetchMaxAttempts = 4
+	let fetchedAsset, fetchAttempts = 0, fetchMaxAttempts = 3
 	while(!fetchedAsset && fetchAttempts < fetchMaxAttempts){
 		fetchAttempts++
 		let waitMs = fetchAttempts * 200
