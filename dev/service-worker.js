@@ -629,8 +629,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 				}
 				catch(uwu){
 					remoteHeaders = undefined
-					await wait(waitMs)
-					continue
+					return cachedAsset // error means that the network is down so we just go with the cache
 				}
 				
 				if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
