@@ -507,8 +507,11 @@ function walkPathMap(pathArray, currentPathMap){
 	return walkPathMap(remainingPatSegment, currentPathReference)
 }
 
-const maxRetry = 5
-async function intelegentFetch(req, justUseTheCache = false, retryCount = 0){
+function wait(ms){
+	return new Promise(accept=>setTimeout(accept, ms))
+}
+
+async function intelegentFetch(req, justUseTheCache = false){
 	let requestedPath = req.url || req
 	if (requestedPath.includes("://") && !requestedPath.startsWith("http")){
 		return fetch(req)
@@ -532,61 +535,82 @@ async function intelegentFetch(req, justUseTheCache = false, retryCount = 0){
 		cachedContents = await cachedAsset.clone().text()
 
 		if (cachedContents){
-			let remoteHeaders
-			try{
-				remoteHeaders = await fetch(req, {
-					method: "HEAD",
-				})
-			}
-			catch(uwu){
-				console.warn(uwu)
-				return cachedAsset
-			}
+			let remoteHeaders, attempts = 0, maxAttempts = 5
+			// we get 5 tries to get the headers. if we dont then we assume the server's dead and just serve up the cache
 			
-			if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
-				if (retryCount < maxRetry){
-					await new Promise(accept=>setTimeout(accept, 200*(retryCount + 1)))
-					return intelegentFetch(req, justUseTheCache, retryCount + 1)
+			while (!remoteHeaders || attempts < maxAttempts){
+				attempts++
+				let waitMs = attempts * 200
+				try{
+					remoteHeaders = await fetch(req, {
+						method: "HEAD",
+					})
 				}
+				catch(uwu){
+					console.warn(uwu)
+					remoteHeaders = undefined
+					await wait(waitMs)
+					continue
+				}
+				
+				if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
+					await wait(waitMs)
+					continue
+				}
+	
+				if (remoteHeaders && remoteHeaders.headers){
+					if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+						return cachedAsset
+					}
+					if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
+						return cachedAsset
+					}
+				}
+				await wait(waitMs)
 			}
 
-			if (remoteHeaders && remoteHeaders.headers){
-				if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
-					return cachedAsset
-				}
-				if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
-					return cachedAsset
-				}
+			if (attempts >= maxAttempts){
+				// the only way this is true is if the remote server failed. at this point, we just use the cache.
+				return cachedAsset
 			}
 		}
 		// console.log("asset needs refreshing", req)
-
 	}
 
-	try{
-		let res = await fetch(req)
+	// the only way we get here is if the remote server is working and we need to update our cache or we dont actually have anything cached and we need to get it from the server.
 
-		if (!res.ok || res.status >= 300 || res.status < 200){
-			return cachedAsset
+	let fetchedAsset, fetchAttempts = 0, fetchMaxAttempts = 5
+	while(!fetchedAsset && fetchAttempts < fetchMaxAttempts){
+		fetchAttempts++
+		let waitMs = fetchAttempts * 200
+		try{
+			fetchedAsset = await fetch(req)
+		} 
+		catch(err){
+			fetchedAsset = undefined
+			await wait(waitMs)
+			continue
+		}
+		
+		if (!fetchedAsset.ok || fetchedAsset.status >= 300 || fetchedAsset.status < 200){
+			fetchedAsset = undefined
+			await wait(waitMs)
+			continue
 		}
 
-		let resContent = await res.clone().text()
+		let resContent = await fetchedAsset.clone().text()
 
-		if (!resContent && cachedContents){
-			if (retryCount < maxRetry){
-				await new Promise(accept=>setTimeout(accept, 200*(retryCount + 1)))
-				return intelegentFetch(req, justUseTheCache, retryCount + 1)
-			}
-			
-			return cachedAsset 
+		if (!resContent){
+			fetchedAsset = undefined
+			await wait(waitMs)
+			continue
 		}
 
-		await storage.put(req, res.clone())
-		return res
+		await storage.put(req, fetchedAsset.clone())
+		return fetchedAsset
 	}
-	catch(err){
-		return cachedAsset
-	}
+	// alright we've had our attempt at getting the app from the server. if we still haven't gotten anything back at this point, the server's rejecting us and we can only throw an error back at the user.
+	return fetchedAsset || cachedAsset
 }
 
 async function migrateDataFromVersion1To2(){
