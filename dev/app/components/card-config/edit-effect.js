@@ -264,10 +264,11 @@ function EditEffectComponent(props){
 						{
 							key: keywordName,
 							onClick: ()=>insertKeyword(keywordName),
-							className: "flex vend"
 						},
-						KeywordIcon({name: keywordName}),
-						translate(keywordName)
+						div({ className: "flex vend" }, 
+							KeywordIcon({name: keywordName}),
+							translate(keywordName)
+						),
 					)
 				})
 			,
