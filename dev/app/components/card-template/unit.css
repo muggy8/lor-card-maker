@@ -82,12 +82,18 @@
 
 .unit .clan {
     width: 360px;
-    height: 84px;
+    min-height: 84px;
     left: 160px;
     top: 14px;
+    flex-direction: column;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-repeat: no-repeat;
+    background-position: center center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-size: 360px 100%;
 }
 
 .unit.landmark .clan {

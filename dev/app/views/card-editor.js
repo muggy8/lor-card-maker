@@ -387,7 +387,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 canShow("clan", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
-                        EditName({
+                        EditColorText({
                             label: translate("clan"),
                             value: card.clan,
                             updateValue: cardDataUpdaters.clan

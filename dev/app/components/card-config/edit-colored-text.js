@@ -32,7 +32,7 @@ function EditColorTextComponent(props){
                         },
                         className: "gutter-trbl-.5 grow"
                     },
-                    translate("add_mention")
+                    "+1"
                 )
             )
         ),

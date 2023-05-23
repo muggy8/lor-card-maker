@@ -22,7 +22,7 @@ import deckIcon from "/Components/deck/deck-icon.js"
 const sharedDefaultCardData = {
     name: "",
     mana: 0,
-    clan: "",
+    clan: [],
     art: "",
     id: "",
     faction: [],

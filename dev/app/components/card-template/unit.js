@@ -1,5 +1,5 @@
 import factory, { div } from "/Utils/elements.js"
-import { Component, createRef } from "/cdn/react"
+import { Component, createRef, useRef } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import KeywordRenderer from "/Components/card-template/keyword-renderer.js"
 import ArtRenderer from "/Components/card-template/image-render.js"
@@ -11,6 +11,7 @@ import datauri from "/Utils/datauri.js"
 import { defaultShade } from "/Views/list.js"
 import debounce from "/Utils/debounce-function.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
+import useEffectDebounce from "/Utils/use-debounce-effect.js"
 
 const cssLoaded = loadCss("/Components/card-template/unit.css")
 
@@ -353,7 +354,7 @@ export class UnitRendererComponent extends Component {
                         : undefined
                     ,
 
-                    this.props.clan
+                    this.props.clan && this.props.clan.length
                         ? div(
                             {
                                 className: "clan",
@@ -363,13 +364,14 @@ export class UnitRendererComponent extends Component {
                                         : "none"
                                 }
                             },
-                            div(
-                                {
-                                    ref: this.clanRef,
-                                    className: "card-text-universe-condensed text-area fitty-nowrap"
-                                },
-                                this.props.clan
-                            ),
+                            this.props.clan.map(clanText=>AutoFitClanText({key: clanText}, clanText)),
+                            // div(
+                            //     {
+                            //         ref: this.clanRef,
+                            //         className: "card-text-universe-condensed text-area fitty-nowrap"
+                            //     },
+                            //     this.props.clan
+                            // ),
                         )
                         : undefined
                     ,
@@ -410,5 +412,21 @@ export class UnitRendererComponent extends Component {
         )
     }
 }
+
+export function AutoFitClanTextComponent(props){
+
+    const autoFitRef = useRef()
+
+    useEffectDebounce(()=>{
+        scaleFontSize(autoFitRef.current, 40, 16)
+    }, 200, [props.children])
+
+    return div(
+        { className: "card-text-universe-condensed text-area fitty-nowrap", ref: autoFitRef },
+        props.children
+    )
+}
+
+export const AutoFitClanText = factory(AutoFitClanTextComponent)
 
 export default factory(UnitRendererComponent, cssLoaded)
