@@ -95,6 +95,7 @@ self.addEventListener("install", function(ev){
 			intelegentFetch(indexUrl)
 		])
 		.then(migrateDataFromVersion1To2)
+		.then(migrateDataToMultiSubtype)
     )
 })
 
@@ -754,6 +755,52 @@ async function migrateDataFromVersion1To2(){
 	})
 
 	await Promise.all(convertTasks)
+}
+
+async function migrateDataToMultiSubtype(){
+	console.log("migrating to multi subtype")
+
+	let cache = await caches.open(cacheLocation)
+	let cachedRequests = await cache.keys()
+	let idList = cachedRequests.filter(req=>{
+		return req.url.includes(cardDataPath)
+	})
+	.map(req=>{
+		let [_, id] = req.url.match(cardIdFinderRegex)
+
+		return id
+	})
+
+	let idListToDataListTasks = idList.map(async id=>{
+		let cardData = await getSavedCard(undefined, cardDataPath + id).then(res=>res.json())
+		cardData.id = id
+		return cardData
+	})
+
+	let savedCards = await Promise.all(idListToDataListTasks)
+
+	let updateDataTask = savedCards.map(savedCard=>{
+		if (Object.prototype.hasOwnProperty.call(savedCard, "clan")){
+			if (Array.isArray(savedCard.clan)){
+				return
+			}
+
+			if (savedCard.clan){
+				savedCard.clan = [savedCard.clan]
+			}
+			else{
+				savedCard.clan = []
+			}
+
+			let updatedSaveResponse = new Response(JSON.stringify(savedCard), {
+				'Content-Type': 'application/json',
+				"status" : 200
+			})
+			return cache.put(cardDataPath + savedCard.id, updatedSaveResponse.clone())
+		}
+	})
+
+	return Promise.all(updateDataTask)
 }
 
 async function fetchWithTimeout(resource, options = {}) {
