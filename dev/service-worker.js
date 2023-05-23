@@ -4,9 +4,15 @@ const urlRoot = location.origin + "/"
 const CACHE_NAME = "react-cache"
 
 const esmshQueryConfigs = {
-	target: "es2021",
+	target: "es2015",
 	"no-dts": true,
 	pin: "122",
+}
+
+let devLog = ()=>{}
+if (indexUrl.includes("localhost")){
+	esmshQueryConfigs.dev = true
+	devLog = console.log
 }
 
 const pathMap = {
@@ -82,7 +88,7 @@ const pathMap = {
 }
 
 self.addEventListener("install", function(ev){
-	// console.log("begin install", ev, location)
+	devLog("begin install", ev, location)
     ev.waitUntil(
 		Promise.all([
 			self.skipWaiting(),
@@ -93,7 +99,7 @@ self.addEventListener("install", function(ev){
 })
 
 self.addEventListener("activate", function(ev){
-    // console.log("activate", ev)
+    devLog("activate", ev)
     ev.waitUntil(
         clients.claim()
     )
@@ -162,7 +168,7 @@ self.addEventListener("fetch", function(ev){
 
 	const fetchUrl = remapUrl(filePathRelativeToURLRoot)
 
-	// console.log({indexUrl, urlRoot, filePathRelativeToURLRoot, filePathRelativeToInstallPath, fetchUrl})
+	devLog({indexUrl, urlRoot, filePathRelativeToURLRoot, filePathRelativeToInstallPath, fetchUrl})
 
     if (fetchUrl){
 		if (filePathRelativeToURLRoot.startsWith("pseudo-api")){
@@ -619,7 +625,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 				attempts++
 				let waitMs = attempts * 200
 				try{
-					console.log(`HEAD ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
+					devLog(`HEAD ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
 					let fetchAttempt = fetch(req, {
 						method: "HEAD",
 					})
@@ -653,7 +659,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 				return cachedAsset
 			}
 		}
-		// console.log("asset needs refreshing", req)
+		devLog("asset needs refreshing", req)
 	}
 
 	// the only way we get here is if the remote server is working and we need to update our cache or we dont actually have anything cached and we need to get it from the server.
@@ -663,7 +669,7 @@ async function intelegentFetch(req, justUseTheCache = false){
 		fetchAttempts++
 		let waitMs = fetchAttempts * 200
 		try{
-			console.log(`GET ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
+			devLog(`GET ${requestedPath}: there are currently ${currentlyOngoingCalls.length} other ongoing other fetches`)
 			let fetchAttempt = fetch(req)
 			let fetchLink = currentlyOngoingCalls.add(fetchAttempt)
 			fetchedAsset = await fetchAttempt
