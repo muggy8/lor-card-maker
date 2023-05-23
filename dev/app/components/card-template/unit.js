@@ -47,7 +47,6 @@ export class UnitRendererComponent extends Component {
         this.cardTextWrapperRef = createRef()
         const concurrencyManager = concurrencyManagerFactory()
 
-        this.fitClan = debounce(()=>this.clanRef.current && scaleFontSize(this.clanRef.current, 40, 16))
         this.fitName = debounce(()=>{
             this.nameRef.current && concurrencyManager.concurrent(()=>scaleFontSize(this.nameRef.current, 70, 16))
         })
@@ -103,14 +102,12 @@ export class UnitRendererComponent extends Component {
 
     componentDidMount(){
         const {
-            fitClan,
             fitCost,
             fitPower,
             fitHealth,
             fitName,
         } = this
 
-        fitClan()
         fitCost()
         fitPower()
         fitHealth()
@@ -158,7 +155,6 @@ export class UnitRendererComponent extends Component {
         } = this.props
 
         const {
-            fitClan,
             fitCost,
             fitPower,
             fitHealth,
@@ -174,7 +170,6 @@ export class UnitRendererComponent extends Component {
             previousProps.lvup !== lvup 
         )
         
-        ;((previousProps.clan !== clan) || frameLoaded) && fitClan()
         ;((previousProps.cost !== cost) || frameLoaded) && fitCost()
         ;((previousProps.power !== power) || frameLoaded) && fitPower()
         ;((previousProps.health !== health) || frameLoaded) && fitHealth()

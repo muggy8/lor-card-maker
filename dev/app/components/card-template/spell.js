@@ -13,6 +13,7 @@ import { speedOptions } from "/Components/card-config/edit-speed.js"
 import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
+import { AutoFitClanText } from "/Components/card-template/unit.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -128,13 +129,6 @@ function SpellComponent(props){
         }
         concurrencyManager.current.concurrent(()=>scaleFontSize(nameRef.current, 70, 16))
     }, 200, [props.name, !!frameUri])
-
-    useEffectDebounce(()=>{
-        if (!frameUri){
-            return
-        }
-        scaleFontSize(clanRef.current, 40, 16)
-    }, 200, [props.clan, !!frameUri])
 
     useEffectDebounce(()=>{
         if (!frameUri){
@@ -343,7 +337,7 @@ function SpellComponent(props){
                     )
                     : undefined
                 ,
-                props.clan
+                props.clan && props.clan.length
                     ? div(
                         {
                             className: "clan",
@@ -351,13 +345,14 @@ function SpellComponent(props){
                                 backgroundImage: typingUri ? `url(${typingUri})` : "none"
                             }
                         },
-                        div(
-                            {
-                                ref: clanRef,
-                                className: "card-text-universe-condensed text-area fitty-nowrap"
-                            },
-                            props.clan
-                        ),
+                        props.clan.map(clanText=>AutoFitClanText({key: clanText}, clanText)),
+                        // div(
+                        //     {
+                        //         ref: clanRef,
+                        //         className: "card-text-universe-condensed text-area fitty-nowrap"
+                        //     },
+                        //     props.clan
+                        // ),
                     )
                     : undefined
                 ,
