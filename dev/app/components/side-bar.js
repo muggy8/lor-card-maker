@@ -119,6 +119,23 @@ function SidebarComponent(){
         // step 2: get v2 data
         const v2DataToImport = loadedData.cards ? loadedData.cards.filter(cardData=>cardData.dataVersion === 2) : [] 
 
+        v2DataToImport.forEach(cardToImport=>{
+            if (!Object.prototype.hasOwnProperty.call(cardToImport, "clan")){
+                return
+            }
+
+            if (Array.isArray(cardToImport.clan)){
+				return
+			}
+
+			if (cardToImport.clan){
+				cardToImport.clan = [cardToImport.clan]
+			}
+			else{
+				cardToImport.clan = []
+			}
+        })
+
         // step 3: merge the updated v1 data and the v2 data
         const allDataToImport = [...v1DataToImport, ...v2DataToImport]
 

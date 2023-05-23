@@ -346,19 +346,12 @@ function SpellComponent(props){
                             }
                         },
                         props.clan.map(clanText=>AutoFitClanText({key: clanText}, clanText)),
-                        // div(
-                        //     {
-                        //         ref: clanRef,
-                        //         className: "card-text-universe-condensed text-area fitty-nowrap"
-                        //     },
-                        //     props.clan
-                        // ),
                     )
                     : undefined
                 ,
                 props.rarity && props.rarity !== "gemless" && props.rarity !== "none"
                     ? div({
-                        className: `${props.rarity || 'no'} rarity ${props.clan ? "with-clan" : ""}`,
+                        className: `${props.rarity || 'no'} rarity ${props.clan && props.clan.length ? "with-clan" : ""}`,
                         style: {
                             backgroundImage: rarityGemUri ? `url(${rarityGemUri})` : "none"
                         },

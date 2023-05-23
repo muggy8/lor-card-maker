@@ -1,3 +1,5 @@
+import { saveCard } from "/Utils/service"
+
 const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
 const indexUrl = location.origin + swFolder
 const urlRoot = location.origin + "/"
@@ -780,24 +782,26 @@ async function migrateDataToMultiSubtype(){
 	let savedCards = await Promise.all(idListToDataListTasks)
 
 	let updateDataTask = savedCards.map(savedCard=>{
-		if (Object.prototype.hasOwnProperty.call(savedCard, "clan")){
-			if (Array.isArray(savedCard.clan)){
-				return
-			}
-
-			if (savedCard.clan){
-				savedCard.clan = [savedCard.clan]
-			}
-			else{
-				savedCard.clan = []
-			}
-
-			let updatedSaveResponse = new Response(JSON.stringify(savedCard), {
-				'Content-Type': 'application/json',
-				"status" : 200
-			})
-			return cache.put(cardDataPath + savedCard.id, updatedSaveResponse.clone())
+		if (!Object.prototype.hasOwnProperty.call(savedCard, "clan")){
+			return
 		}
+
+		if (Array.isArray(savedCard.clan)){
+			return
+		}
+
+		if (savedCard.clan){
+			savedCard.clan = [savedCard.clan]
+		}
+		else{
+			savedCard.clan = []
+		}
+
+		let updatedSaveResponse = new Response(JSON.stringify(savedCard), {
+			'Content-Type': 'application/json',
+			"status" : 200
+		})
+		return cache.put(cardDataPath + savedCard.id, updatedSaveResponse.clone())
 	})
 
 	return Promise.all(updateDataTask)
