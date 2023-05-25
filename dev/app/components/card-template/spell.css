@@ -113,10 +113,10 @@
 }
 
 .spell .clan {
-    width: 360px;
-    min-height: 84px;
-    left: 160px;
-    bottom: 37px;
+    width: 268px;
+    min-height: 69px;
+    left: 206px;
+    bottom: 45px;
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -125,7 +125,7 @@
     background-position: center center;
     padding-top: 1em;
     padding-bottom: 1em;
-    background-size: 360px 100%;
+    background-size: 100% 100%;
 }
 
 .spell .clan .text-area {

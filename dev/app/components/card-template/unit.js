@@ -29,7 +29,7 @@ export class UnitRendererComponent extends Component {
 
     cardFrame = "/Assets/champion/frame1.png"
 
-    clanFrame = "/Assets/champion/typing.png"
+    clanFrame = "/Assets/champion/typing-2.png"
 
     regionPosition = "champion"
 

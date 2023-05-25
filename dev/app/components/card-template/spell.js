@@ -72,7 +72,7 @@ function SpellComponent(props){
     }, [])
 
     const typingUri = useAssetCache(updateTypingUri=>{
-        datauri("/Assets/landmark/typing.png").then(updateTypingUri)
+        datauri("/Assets/landmark/typing-2.png").then(updateTypingUri)
     }, [])
 
     const frameUri = useAssetCache(updateFrameUri=>{

@@ -6,7 +6,7 @@ class LandmarkComponent extends UnitRendererComponent {
 
     cardFrame = "/Assets/landmark/frame.png"
     
-    clanFrame = "/Assets/landmark/typing.png"
+    clanFrame = "/Assets/landmark/typing-2.png"
 
     regionPosition = "landmark"
 
