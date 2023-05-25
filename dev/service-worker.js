@@ -1,5 +1,3 @@
-import { saveCard } from "/Utils/service"
-
 const swFolder = location.pathname.replace(/[^\/]+\.js$/, "")
 const indexUrl = location.origin + swFolder
 const urlRoot = location.origin + "/"
@@ -618,13 +616,16 @@ async function intelegentFetch(req, justUseTheCache = false){
 	if (cachedAsset = await storage.match(req)){
 		let cachedEtag = cachedAsset.headers.get("etag")
 		let cachedLastMod = cachedAsset.headers.get("last-modified")
+		let cachedLength = cachedAsset.headers.get("Content-Length")
 		cachedContents = await cachedAsset.clone().text()
 
 		if (cachedContents){
 			let remoteHeaders, attempts = 0, maxAttempts = 2
 			// we get 3 tries to get the headers. if we dont then we assume the server's dead and just serve up the cache
 			
-			while (!remoteHeaders || attempts < maxAttempts){
+			devLog(`Execution for ${requestedPath}: Start HEAD loop`)
+
+			while (!remoteHeaders && attempts < maxAttempts){
 				attempts++
 				let waitMs = attempts * 200
 				try{
@@ -637,11 +638,13 @@ async function intelegentFetch(req, justUseTheCache = false){
 					fetchLink.drop()
 				}
 				catch(uwu){
+					devLog(`Execution for ${requestedPath}: Exit HEAD on error`)
 					remoteHeaders = undefined
 					return cachedAsset // error means that the network is down so we just go with the cache
 				}
 				
 				if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
+					devLog(`Execution for ${requestedPath}: Retry HEAD on bad status`)
 					remoteHeaders = undefined
 					await wait(waitMs)
 					continue
@@ -649,18 +652,26 @@ async function intelegentFetch(req, justUseTheCache = false){
 	
 				if (remoteHeaders && remoteHeaders.headers){
 					if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+						devLog(`Execution for ${requestedPath}: Exit HEAD on etag equivilance`)
 						return cachedAsset
 					}
 					if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
+						devLog(`Execution for ${requestedPath}: Exit HEAD on last-modified equivilance`)
 						return cachedAsset
 					}
 				}
 			}
 
+			devLog(`Execution for ${requestedPath}: End HEAD loop`)
+
+
 			if (attempts >= maxAttempts){
 				// the only way this is true is if the remote server failed. at this point, we just use the cache.
+				devLog(`Execution for ${requestedPath}: Exit HEAD on max-attempt reached`, {attempts, maxAttempts})
 				return cachedAsset
 			}
+
+			devLog(`Execution for ${requestedPath}: Passed attempts check`)
 		}
 		devLog("asset needs refreshing", req)
 	}
