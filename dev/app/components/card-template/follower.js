@@ -6,7 +6,7 @@ class Champion2Component extends UnitRendererComponent {
     
     cardFrame = "/Assets/follower/frame.png"
 
-    clanFrame = "/Assets/follower/typing.png"
+    clanFrame = "/Assets/follower/typing-2.png"
 
     regionPosition = "follower"
 

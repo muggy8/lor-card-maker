@@ -81,15 +81,11 @@
 }
 
 .unit .clan {
-    width: 360px;
-    min-height: 84px;
-    left: 160px;
-    top: 14px;
-
     width: 268px;
     min-height: 69px;
     left: 206px;
-    top: 22px;
+    top: 56px;
+    transform: translate(0, -50%);
 
     flex-direction: column;
     display: flex;
@@ -103,7 +99,7 @@
 }
 
 .unit.landmark .clan {
-    top: 22px;
+    top: 61px;
 }
 
 .unit .clan .text-area {
