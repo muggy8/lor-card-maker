@@ -359,7 +359,13 @@ export class UnitRendererComponent extends Component {
                                         : "none"
                                 }
                             },
-                            this.props.clan.map(clanText=>AutoFitClanText({key: clanText}, clanText)),
+                            this.props.clan.map((clanText, index)=>AutoFitClanText(
+                                {
+                                    key: index, 
+                                    multiple: this.props.clan.length > 1
+                                }, 
+                                clanText
+                            )),
                             // div(
                             //     {
                             //         ref: this.clanRef,
@@ -413,8 +419,10 @@ export function AutoFitClanTextComponent(props){
     const autoFitRef = useRef()
 
     useEffectDebounce(()=>{
-        scaleFontSize(autoFitRef.current, 40, 16)
-    }, 200, [props.children])
+        let max = props.multiple ? 32 : 40
+        let min = 16
+        scaleFontSize(autoFitRef.current, max, min)
+    }, 200, [props.children, props.multiple])
 
     return div(
         { className: "card-text-universe-condensed text-area fitty-nowrap", ref: autoFitRef },

@@ -49,6 +49,12 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
             (async ()=>{
                 // perform binary search for the perfect font size
                 let upperbound = max, lowerBound = min, checkSize = currentFontSize
+                if (checkSize > upperbound){
+                    checkSize = upperbound
+                }
+                else if (checkSize < lowerBound){
+                    checkSize = lowerBound
+                }
     
                 while(upperbound - lowerBound > 0.5){
                     element.style.fontSize = `${checkSize + 0.5}px`

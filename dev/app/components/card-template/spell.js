@@ -345,7 +345,13 @@ function SpellComponent(props){
                                 backgroundImage: typingUri ? `url(${typingUri})` : "none"
                             }
                         },
-                        props.clan.map(clanText=>AutoFitClanText({key: clanText}, clanText)),
+                        props.clan.map((clanText, index)=>AutoFitClanText(
+                            {
+                                key: index,
+                                multiple: props.clan.length > 1
+                            }, 
+                            clanText
+                        )),
                     )
                     : undefined
                 ,
