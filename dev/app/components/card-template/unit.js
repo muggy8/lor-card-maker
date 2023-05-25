@@ -419,7 +419,7 @@ export function AutoFitClanTextComponent(props){
     const autoFitRef = useRef()
 
     useEffectDebounce(()=>{
-        let max = props.multiple ? 32 : 40
+        let max = 32
         let min = 16
         scaleFontSize(autoFitRef.current, max, min)
     }, 200, [props.children, props.multiple])
