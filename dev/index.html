@@ -146,12 +146,14 @@
 
 		</style>
 		<script defer type="module">
+			console.log("start")
 			if ('serviceWorker' in navigator) {
+				console.log("starting app load")
 				navigator.serviceWorker.register('./service-worker.js', {
 					scope: document.location.pathname,
 				})
 					.then(async function(registration) {
-						// console.log('Registration successful:', registration)
+						console.log('Registration successful:', registration)
 						
 						try {
 							// check for worker update because we dont want to load anything until the worker is known to be the latest worker.
@@ -184,6 +186,7 @@
 					})
 					.then(async function(){
 						// at this point, we know that the service worker has been registered and is active. that means we can use ESM to import our main app and we'll let the service worker figure out how to fulfill the import requests
+						console.log('Registration check')
 						const indexUrl = "/App/index.js"
 						for (let i = 0; i < 3; i++){
 							try {
@@ -202,12 +205,13 @@
 						// window.document.location.reload()
 					})
 					.then(async (url)=>{
+						console.error('Service worker registration ok. Attempting to load app')
 						const module = await import(url)
 						// console.log(module.default)
 						return module.default
 					})
 					.catch(function(error) {
-						console.error('Service worker registration failed, error:', {error});
+						console.error('Service worker registration failed, error:', {error})
 						document.body.classList.remove("loading")
 						document.body.classList.add("error")
 

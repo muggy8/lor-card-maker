@@ -45,7 +45,7 @@ export default async function(card, svgRef, globalState){
             img.src = uri
         })
 
-        context.drawImage(bitmap, 0, 0)
+        context.drawImage(bitmap, 0, 0, width, height)
         const imgBlob = await offscreen.convertToBlob({
             type: `image/${globalState.state.settings.exportFormat}`,
             quality: 0.8,
@@ -54,7 +54,7 @@ export default async function(card, svgRef, globalState){
         var reader = new FileReader();
         reader.readAsDataURL(imgBlob); 
         reader.onloadend = function() {
-            var base64data = reader.result;                
+            var base64data = reader.result
             return openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
         }
     }
