@@ -1,5 +1,5 @@
 import factory, { div, strong, button, nav, section, label } from "/Utils/elements.js"
-import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement, useMemo } from "/cdn/react"
+import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import { isMobile } from '/cdn/react-device-detect'
 
@@ -588,7 +588,7 @@ function deckBuilderComponenet(){
 
 	// functionality for management of the decklist
 	const selectedCards = useRef(new Map())
-	const sortRenderedDeckToDisplayOrder = useCallback(()=>{
+	const updateRenderedDeck = useCallback(()=>{
 		const renderedDeck = []
 		selectedCards.current.forEach((value)=>renderedDeck.push(value))
 		renderedDeck.sort((a,b)=>{
@@ -603,8 +603,7 @@ function deckBuilderComponenet(){
 		})
 		patchDeck({cards: renderedDeck})
 	}, [patchDeck])
-	const addCardRef = useRef()
-	const addCard = addCardRef.current = useCallback(card=>{
+	const addCard = useCallback(card=>{
 		const cardId = card.id || card.cardCode || card.url
 
 		let existingData = selectedCards.current.get(cardId)
@@ -619,10 +618,9 @@ function deckBuilderComponenet(){
 
 		existingData.count ++ // we dont limit it at 3 because it's possible that somehow, the user wishes to put 4+ of the same card into the deck cuz PoC or some silly origin passive or something
 
-		sortRenderedDeckToDisplayOrder()
-	}, [sortRenderedDeckToDisplayOrder])
-	const removeCardRef = useRef()
-	const removeCard = removeCardRef.current = useCallback(card=>{
+		updateRenderedDeck()
+	}, [updateRenderedDeck])
+	const removeCard = useCallback(card=>{
 		const cardId = card.id || card.cardCode || card.url
 
 		let existingData = selectedCards.current.get(cardId)
@@ -637,8 +635,8 @@ function deckBuilderComponenet(){
 		if (existingData.count < 1){
 			selectedCards.current.delete(cardId)
 		}
-		sortRenderedDeckToDisplayOrder()
-	}, [sortRenderedDeckToDisplayOrder])
+		updateRenderedDeck()
+	}, [updateRenderedDeck])
 
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
@@ -727,57 +725,6 @@ function deckBuilderComponenet(){
 		saveCard(newId, deck).then(doneSaving, doneSaving)
 		patchDeck({id: newId})
 	}, [!canSave || isSaving, deck, patchDeck])
-
-	// cache rendered list since it gets really silly when the we need to re-render the list limit after the user interacts with the UI
-	const displayedRitoCardsList = useMemo(()=>{
-		console.log("calculating rito list", displayedRitoCards.map(card=>card.cardCode).join(","))
-		return listLimit(
-			{ defaultSize: 24 },
-			(displayedRitoCards || []).map(card=>card
-				? div(
-					{ className: "flex gutter-b", key: card.cardCode },
-
-					cardName({ card, className: "box-9" }, card.name),
-
-					div(
-						{ className: "box-3 flex no-wrap" },
-						button({ className: "grow gutter-trbl-.5", onClick: ()=>addCardRef.current(card) }, 
-							div({ className: "icon plus" })
-						),
-						div({ className: "gutter-rl-.25" }),
-						button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCardRef.current(card) }, 
-							div({ className: "icon minus" })
-						),
-					),
-				)
-				:undefined
-			)
-		)
-	}, [(displayedRitoCards || []).map(card=>card.cardCode).join(",")])
-
-	const displayedCustomCardsList = useMemo(()=>listLimit(
-		{ defaultSize: 24 },
-		(displayedCustomCards || []).map(card=>card
-			? div(
-				{ className: "flex gutter-b", key: card.id },
-
-				cardName({ card, className: "box-9" }, card.name),
-
-				div(
-					{ className: "box-3 flex no-wrap" },
-					button({ className: "grow gutter-trbl-.5", onClick: ()=>addCardRef.current(card) }, 
-						div({ className: "icon plus" })
-					),
-					div({ className: "gutter-rl-.25" }),
-					button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCardRef.current(card) }, 
-						div({ className: "icon minus" })
-					),
-				),
-			)
-			:undefined
-		)
-	), [(displayedCustomCards || []).map(card=>card.id).join(",")])
-
 
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
@@ -905,7 +852,28 @@ function deckBuilderComponenet(){
 						div(
 							{ className: "card-name-list" },
 
-							displayedRitoCardsList,
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedRitoCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.cardCode },
+	
+										cardName({ card, className: "box-9" }, card.name),
+	
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+												div({ className: "icon plus" })
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+												div({ className: "icon minus" })
+											),
+										),
+									)
+									:undefined
+								)
+							),
 	
 							!ritoCards || !ritoCards.length 
 								? div(
@@ -943,8 +911,28 @@ function deckBuilderComponenet(){
 
 						div(
 							{ className: "card-name-list" },
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedCustomCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.id },
 
-							displayedCustomCardsList
+										cardName({ card, className: "box-9" }, card.name),
+
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(card) }, 
+												div({ className: "icon plus" })
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(card) }, 
+												div({ className: "icon minus" })
+											),
+										),
+									)
+									:undefined
+								)
+							)
 						),
 					)
 					: undefined
