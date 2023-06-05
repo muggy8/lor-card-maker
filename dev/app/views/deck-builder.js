@@ -729,28 +729,31 @@ function deckBuilderComponenet(){
 	}, [!canSave || isSaving, deck, patchDeck])
 
 	// cache rendered list since it gets really silly when the we need to re-render the list limit after the user interacts with the UI
-	const displayedRitoCardsList = useMemo(()=>listLimit(
-		{ defaultSize: 24 },
-		(displayedRitoCards || []).map(card=>card
-			? div(
-				{ className: "flex gutter-b", key: card.cardCode },
+	const displayedRitoCardsList = useMemo(()=>{
+		console.log("calculating rito list", displayedRitoCards.map(card=>card.cardCode).join(","))
+		return listLimit(
+			{ defaultSize: 24 },
+			(displayedRitoCards || []).map(card=>card
+				? div(
+					{ className: "flex gutter-b", key: card.cardCode },
 
-				cardName({ card, className: "box-9" }, card.name),
+					cardName({ card, className: "box-9" }, card.name),
 
-				div(
-					{ className: "box-3 flex no-wrap" },
-					button({ className: "grow gutter-trbl-.5", onClick: ()=>addCardRef.current(card) }, 
-						div({ className: "icon plus" })
+					div(
+						{ className: "box-3 flex no-wrap" },
+						button({ className: "grow gutter-trbl-.5", onClick: ()=>addCardRef.current(card) }, 
+							div({ className: "icon plus" })
+						),
+						div({ className: "gutter-rl-.25" }),
+						button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCardRef.current(card) }, 
+							div({ className: "icon minus" })
+						),
 					),
-					div({ className: "gutter-rl-.25" }),
-					button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCardRef.current(card) }, 
-						div({ className: "icon minus" })
-					),
-				),
+				)
+				:undefined
 			)
-			:undefined
 		)
-	), [(displayedRitoCards || []).map(card=>card.cardCode).join(",")])
+	}, [(displayedRitoCards || []).map(card=>card.cardCode).join(",")])
 
 	const displayedCustomCardsList = useMemo(()=>listLimit(
 		{ defaultSize: 24 },

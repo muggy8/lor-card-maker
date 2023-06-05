@@ -1,5 +1,5 @@
 import factory, { div, label, strong, input, nav, button } from "/Utils/elements.js"
-import { useCallback, useState, useEffect, useRef, useMemo } from "/cdn/react"
+import { useCallback, useState, useEffect, useRef } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import useToggle from "/Utils/use-toggle.js"
@@ -90,8 +90,7 @@ function editAssociatedCardsComponent(props){
     }, [searchCustomTerm, customCards])
 
     // stuff related to managing the associated cards
-    const associatedCardRef = useRef()
-    const associatedCard = associatedCardRef.current = useCallback((card)=>{
+    const associatedCard = useCallback((card)=>{
         const storedData = {
             id: card.id,
             cardCode: card.cardCode,
@@ -127,45 +126,6 @@ function editAssociatedCardsComponent(props){
 
         updateAssociatedCardsData(displayData)
     }, [props.value, customCards, ritoCards], [])
-
-    // cache list limit stuff since it'll re-render on each interaction otherwise
-    const displayedCustomCardsList = useMemo(()=>listLimit(
-        { defaultSize: 24 },
-        (displayedCustomCards || []).map(card=>card
-            ? div(
-                { className: "flex gutter-b", key: card.id },
-
-                cardName({ card, className: "box-9" }, card.name),
-
-                div(
-                    { className: "box-3 flex no-wrap" },
-                    button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCardRef.current(card) }, 
-                        div({ className: "icon link" })
-                    ),
-                ),
-            )
-            :undefined
-        )
-    ), [(displayedCustomCards || []).map(card=>card.id).join()])
-
-    const displayedRitoCardsList = useMemo(()=>listLimit(
-        { defaultSize: 24 },
-        (displayedRitoCards || []).map(card=>card
-            ? div(
-                { className: "flex gutter-b", key: card.cardCode },
-
-                cardName({ card, className: "box-9" }, card.name),
-
-                div(
-                    { className: "box-3 flex no-wrap" },
-                    button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCardRef.current(card) }, 
-                        div({ className: "icon link" })
-                    ),
-                ),
-            )
-            :undefined
-        )
-    ), [(displayedRitoCards || []).map(card=>card.cardCode).join()])
 
     return div(
         { className: "associated-cards" },
@@ -214,7 +174,26 @@ function editAssociatedCardsComponent(props){
 					? div(
 						{ className: "gutter-rl" },
 
-						div(displayedCustomCardsList),
+						div(
+							listLimit(
+								{ defaultSize: 24 },
+								(displayedCustomCards || []).map(card=>card
+									? div(
+										{ className: "flex gutter-b", key: card.id },
+
+										cardName({ card, className: "box-9" }, card.name),
+
+										div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
+                                                div({ className: "icon link" })
+											),
+										),
+									)
+									:undefined
+								)
+							)
+						),
 					)
 					: undefined
 				,
@@ -225,7 +204,24 @@ function editAssociatedCardsComponent(props){
 
                         div(
 
-                            displayedRitoCardsList,
+                            listLimit(
+                                { defaultSize: 24 },
+                                (displayedRitoCards || []).map(card=>card
+                                    ? div(
+                                        { className: "flex gutter-b", key: card.cardCode },
+
+                                        cardName({ card, className: "box-9" }, card.name),
+
+                                        div(
+											{ className: "box-3 flex no-wrap" },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>associatedCard(card) }, 
+												div({ className: "icon link" })
+											),
+										),
+                                    )
+                                    :undefined
+                                )
+                            ),
 
                             !ritoCards || !ritoCards.length 
                                 ? div(
