@@ -85,7 +85,7 @@
     min-height: 69px;
     left: 206px;
     top: 56px;
-    transform: translate(0, -50%);
+    transform: translate(0, max(-50%, -56px));
 
     flex-direction: column;
     display: flex;
@@ -100,6 +100,8 @@
 
 .unit.landmark .clan {
     top: 61px;
+    transform: translate(0, max(-50%, -61px));
+
 }
 
 .unit .clan .text-area {
