@@ -226,6 +226,7 @@ function ListComponent(){
         div(
             { className: "gutter-trbl-.5 flex",},
             listLimit(
+                { autoResetLimit: true },
                 types.map((type)=>{
                     const labelName = translate("new_label", {
                         cardType: translate(type.labelKey),

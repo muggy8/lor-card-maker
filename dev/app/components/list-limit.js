@@ -13,8 +13,8 @@ function ListLimitComponent(props){
 
     const children = useAssetCache(updateCache=>{
         updateCache(props.children.flat())
-        updateLimit(props.defaultSize || 12)
-    }, [props.children], [])
+        props.autoResetLimit && updateLimit(props.defaultSize || 12)
+    }, [props.children, props.autoResetLimit], [])
 
     const loadMoreWhenCloserThanThisToTheBottomOfPage = useRef()
     loadMoreWhenCloserThanThisToTheBottomOfPage.current = props.bottomOffset || 200
