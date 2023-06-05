@@ -53,7 +53,7 @@ function EditKeywordComponent(props){
                 })
 
                 return div(
-					{ className: "box-3 flex vhcenter", key: keywordName },
+					{ className: "box-s-3 box-l-2 flex vhcenter", key: keywordName },
 	                KeywordImageCheck({
 	                    isChecked,
 	                    onClick: ()=>{
@@ -69,7 +69,7 @@ function EditKeywordComponent(props){
                 })
 
                 return div(
-					{ className: "box-3 flex vhcenter", key: customKeyword.id },
+					{ className: "box-s-3 box-l-2 flex vhcenter", key: customKeyword.id },
 	                KeywordImageCheck({
 	                    keywordName: customKeyword.name,
                         icons: customKeyword.icons,
