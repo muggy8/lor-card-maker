@@ -1,5 +1,5 @@
 import factory, { div, button, strong, input, section } from "/Utils/elements.js"
-import { useContext, useState, useMemo } from "/cdn/react"
+import { useContext, useState, useCallback, useMemo } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -12,8 +12,6 @@ import useToggle from "/Utils/use-toggle.js"
 const cssLoaded = loadCss("/Views/batch-delete.css")
 
 function BatchDeleteComponent(props){
-    const globalState = useContext(Globals)
-
     const translate = useLang()
     const [refetch, refreshCardData] = useToggle(false)
 
@@ -75,9 +73,18 @@ function BatchDeleteComponent(props){
 }
 
 export function ConfirmDeleteWrapperComponent(props){
-    const [showConfirmOverlay, updateShowCondirmOverlay] = useState(false)
+    const [showConfirmOverlay, updateShowConfirmOverlay] = useState(false)
 
     const translate = useLang()
+
+    const [deleteConfirmed, updateDeleteConfirmed] = useState(false)
+    const confirmDelete = useCallback(()=>{
+        updateShowConfirmOverlay(false)
+        if (props.onConfirm){
+            updateDeleteConfirmed(true)
+            props.onConfirm()
+        }
+    }, [props.onConfirm, updateDeleteConfirmed, updateShowConfirmOverlay])
 
     return div(
         {
@@ -92,12 +99,12 @@ export function ConfirmDeleteWrapperComponent(props){
                     div(
                         { className: "flex gutter-t-1" },
                         button(
-                            { className: "grow gutter-trbl-0.5 flex vhcenter", onClick: props.onConfirm}, 
+                            { className: "grow gutter-trbl-0.5 flex vhcenter", onClick: confirmDelete}, 
                             strong(translate("yes")),
                         ),
                         div({ className: "gutter-rl-.5 gutter-tb-1.5" }),
                         button(
-                            { className: "grow gutter-trbl-0.5 flex vhcenter", onClick: ()=>updateShowCondirmOverlay(false) }, 
+                            { className: "grow gutter-trbl-0.5 flex vhcenter", onClick: ()=>updateShowConfirmOverlay(false) }, 
                             strong(translate("no")),                    )
                     ),
                 )
@@ -105,11 +112,14 @@ export function ConfirmDeleteWrapperComponent(props){
             : div(
                 { 
                     className: "confirm-overlay delete-icon gutter-trbl-1 flex vhcenter",
-                    onClick: ()=>{
-                        updateShowCondirmOverlay(true)
-                    }
+                    onClick: deleteConfirmed
+                        ? undefined
+                        : ()=>updateShowConfirmOverlay(true)
                 },
-                div( {className: "icon multiply"} ),
+                div( {className: `icon ${ deleteConfirmed 
+                    ? "loading"
+                    : "multiply"
+                }` } ),
             )
     )
 }
