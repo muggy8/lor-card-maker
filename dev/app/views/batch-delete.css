@@ -1,3 +1,8 @@
+#bulk-delete {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
 #bulk-delete .confirm-overlay {
     position: absolute;
     width: 100%;
