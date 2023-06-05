@@ -145,7 +145,7 @@ function BatchExportComponent(){
         },
         div(
             { 
-                className: "export-preview gutter-t-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", 
+                className: "export-preview gutter-t-2 box-xs-12 box-s-8 box-m-6", 
                 style: { paddingBottom: previewHeight + "px"}
             },
             div(
@@ -199,7 +199,7 @@ function BatchExportComponent(){
             )
         ),
         div(
-            { className: "export-selection gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4" },
+            { className: "export-selection gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6" },
             div(
                 { className: "flex hcenter" },
                 strong( translate("select_exports") )

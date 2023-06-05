@@ -153,7 +153,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         return section(
             { id: "card-editor", className: "flex hcenter" },
             div(
-                { className: "card-preview gutter-t-2 box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4", style: { paddingBottom: previewHeight + "px"}},
+                { className: "card-preview gutter-t-2 box-xs-12 box-s-8 box-m-6", style: { paddingBottom: previewHeight + "px"}},
                 div(
                     {className: "preview-content", ref: fixedDisplayRef, style: {
                         width: useableWidth + "px"
@@ -231,7 +231,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                 ),
             ),
             div(
-                { className: "card-configs gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6 box-l-5 box-xl-4" },
+                { className: "card-configs gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6" },
                 canShow("name", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},

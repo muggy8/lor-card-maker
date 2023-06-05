@@ -48,7 +48,7 @@ function BatchDeleteComponent(props){
     return section(
         { id: "bulk-delete" },
         div(
-            { className: "flex gutter-rbl" },
+            { className: "flex gutter-trbl" },
             div(
                 { className: "flex grow gutter-r" },
                 input({ 
