@@ -35,6 +35,20 @@ function EditKeywordComponent(props){
 
     const [expanded, toggleExpanded, setExpanded] = useToggle(false)
 
+    const [scrollTopWhenKeywordsOpened, updateScrollTopWhenKeywordsOpened] = useState(0)
+    useEffect(()=>{
+        if (expanded){
+            updateScrollTopWhenKeywordsOpened(document.documentElement.scrollTop)
+        }
+        else{
+            window.scrollTo({
+                top: scrollTopWhenKeywordsOpened,
+                left: 0,
+                behavior: "smooth",
+            })
+        }
+    }, [expanded, scrollTopWhenKeywordsOpened, updateScrollTopWhenKeywordsOpened])
+
     return div(
         div(
             { onClick: toggleExpanded, className: "flex clickable" },

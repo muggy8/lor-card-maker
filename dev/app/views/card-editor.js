@@ -311,6 +311,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? div(
                         {className: "gutter-b-2"},
                         EditArt({
+                            label: translate("card_art"),
                             value: card.art,
                             updateValue: cardDataUpdaters.art,
                         })
