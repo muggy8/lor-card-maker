@@ -1,11 +1,10 @@
-import factory, { label, div, strong } from "/Utils/elements.js"
+import factory, { label, div, strong, button } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useRef, useContext } from "/cdn/react"
+import { useCallback, useState, useContext, useEffect } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
 import { Globals } from "/Views/index.js"
 import useToggle from "/Utils/use-toggle.js"
-import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 
 function EditKeywordComponent(props){
     const translate = useLang()
@@ -34,17 +33,80 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    const [expanded, toggleExpanded] = useToggle(true)
+    const [expanded, toggleExpanded, setExpanded] = useToggle(false)
 
-    return label(
+    return div(
         div(
             { onClick: toggleExpanded, className: "flex clickable" },
             div(
                 { className: "grow" },
-                strong(translate("keyword"))
+                label(
+                    strong(translate("keyword"))
+                )
             ),
-            div({ className: `icon animated ${expanded ? "multiply" : "chevron-down"}` })
         ),
+
+        div(
+            { className: "gutter-b-2" },
+            (props.value || []).map(keyword=>{
+                if (typeof keyword === "string"){
+                    const keywordName = keyword
+                    return div(
+                        { className: "flex no-wrap gutter-t-.5", key: keywordName },
+                        div(
+                            { className: "grow flex start" },
+                            KeywordImageCheck({
+                                keywordName,
+                                isChecked: true,
+                                size: "large",
+                            }),
+                        ),
+                        button(
+                            {
+                                className: "gutter-trbl-.5",
+                                onClick: ()=>toggleKeyword(keywordName)
+                            },
+                            div({ className: "icon multiply" })
+                        )
+                    )
+                }
+                else if (typeof keyword === "object"){
+                    const customKeyword = keyword
+
+                    return div(
+                        { className: "flex no-wrap gutter-t-.5", key: customKeyword.id },
+                        div(
+                            { className: "grow flex start" },
+                            KeywordImageCheck({
+                                keywordName: customKeyword.name,
+                                icons: customKeyword.icons,
+                                isChecked: true,
+                                size: "large",
+                            }),
+                        ),
+                        button(
+                            {
+                                className: "gutter-trbl-.5",
+                                onClick: ()=>toggleCustomKeyword(customKeyword)
+                            },
+                            div({ className: "icon multiply" })
+                        )
+                    )
+                }
+            })
+        ),
+
+        div(
+            { className: "flex" },
+            button(
+                { 
+                    className: "grow gutter-trbl-.5", 
+                    onClick: toggleExpanded
+                },
+                expanded ? translate("hide_keyword_list") : translate("add_keyword")
+            )
+        ),
+
         div(
             { className: `flex gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
             Object.keys(keywords).map(keywordName=>{
@@ -53,7 +115,7 @@ function EditKeywordComponent(props){
                 })
 
                 return div(
-					{ className: "box-s-3 box-l-2 flex vhcenter", key: keywordName },
+					{ className: "box-xs-3 box-l-2 flex vhcenter", key: keywordName },
 	                KeywordImageCheck({
 	                    isChecked,
 	                    onClick: ()=>{
@@ -69,17 +131,25 @@ function EditKeywordComponent(props){
                 })
 
                 return div(
-					{ className: "box-s-3 box-l-2 flex vhcenter", key: customKeyword.id },
+					{ className: "box-xs-3 box-l-2 flex vhcenter", key: customKeyword.id },
 	                KeywordImageCheck({
 	                    keywordName: customKeyword.name,
                         icons: customKeyword.icons,
                         isChecked,
-                        onClick: ()=>{
-                            toggleCustomKeyword(customKeyword)
-                        }
+                        onClick: ()=>toggleCustomKeyword(customKeyword)
 	                })
                 )
-            })
+            }),
+            div(
+                { className: "flex box-12" },
+                button(
+                    { 
+                        className: "grow gutter-trbl-.5", 
+                        onClick: ()=>setExpanded(false)
+                    },
+                    translate("hide_keyword_list")
+                )
+            ),
         )
     )
 }
@@ -101,7 +171,7 @@ function KeywordImageCheckComponent(props){
             dimensions,
             Keyword({
                 name: props.keywordName,
-                size: "small",
+                size: props.size || "small",
                 icons: props.icons,
                 onDimension: updateDimensions
             })

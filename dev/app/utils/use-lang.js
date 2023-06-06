@@ -89,6 +89,8 @@ const lang = {
         "key_text_mentioned": "Key Text Used in Effect",
         "key_text_example": "(Strike, Round Start, etc)",
         "add_mention": "+1 Mention",
+        "add_keyword": "Add Keyword",
+        "hide_keyword_list": "Minimize Keyword List",
         "card_art": "Card Art",
         "upload_image": "Upload Image",
         "or_enter_image_url": "or enter image URL",
