@@ -17,4 +17,12 @@
 #bulk-delete .delete-icon {
     font-size: 6em;
     color: var(--color-primary);
+    filter: opacity(40%);
+    will-change: filter;
+    transition: filter 0.2s;
+}
+#bulk-delete .delete-icon:focus, 
+#bulk-delete .delete-icon:active, 
+#bulk-delete .delete-icon:hover {
+    filter: opacity(100%);
 }
