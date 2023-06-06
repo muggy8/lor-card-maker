@@ -331,14 +331,11 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     : undefined
                 ,
                 canShow("shade", defaultCardData)
-                    ? div(
-                        {className: "gutter-b-2"},
-                        EditShade({
-                            label: translate("card_art"),
-                            value: card.shade || defaultShade,
-                            updateValue: cardDataUpdaters.shade,
-                        })
-                    )
+                    ? EditShade({
+                        label: translate("card_art"),
+                        value: card.shade || defaultShade,
+                        updateValue: cardDataUpdaters.shade,
+                    })
                     : undefined
                 ,
                 canShow("rarity", defaultCardData)

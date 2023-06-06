@@ -1,7 +1,9 @@
-import factory, { div, label, strong } from "/Utils/elements.js"
-import { useCallback } from "/cdn/react"
+import factory, { div, label, strong, button } from "/Utils/elements.js"
+import { useCallback, useEffect, useRef } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import InputRange from "/Components/range-input.js"
+import useToggle from "/Utils/use-toggle.js"
+import { isMobile } from '/cdn/react-device-detect'
 
 function EditShadeComponent(props){
     // const onChange = useCallback(ev=>{
@@ -20,6 +22,23 @@ function EditShadeComponent(props){
 
         return callbackCollector
     }, {})
+
+    const doNothing = useCallback(()=>{}, [])
+
+    const [allowShadeEdit, toggleAllowShadeEdit, setAllowShadeEdit] = useToggle(!isMobile)
+
+    useEffect(()=>{
+        function onMobileLockShadeOnScroll(){
+            if (!isMobile){
+                return
+            }
+
+            setAllowShadeEdit(false)
+        }
+        window.addEventListener("scroll", onMobileLockShadeOnScroll)
+
+        return ()=>window.removeEventListener("scroll", onMobileLockShadeOnScroll)
+    }, [])
 
     return div(
         { className: "box gutter-b-2" },
@@ -44,7 +63,7 @@ function EditShadeComponent(props){
                         min: 0,
                         max: 1,
                         step: 0.01,
-                        onChange: updaters.darkness,
+                        onChange: allowShadeEdit ? updaters.darkness : doNothing,
                     }
                 )
             )
@@ -65,7 +84,7 @@ function EditShadeComponent(props){
                         min: 0,
                         max: 40,
                         step: 0.1,
-                        onChange: updaters.blur,
+                        onChange: allowShadeEdit ? updaters.blur : doNothing,
                     }
                 )
             )
@@ -86,11 +105,23 @@ function EditShadeComponent(props){
                         min: 0,
                         max: 100,
                         step: 0.1,
-                        onChange: updaters.gradientLocation,
+                        onChange: allowShadeEdit ? updaters.gradientLocation : doNothing,
                     }
                 )
             )
         ),
+        isMobile 
+            ? label(
+                { className: "flex gutter-trbl-.5" },
+                button(
+                    { className: "gutter-trbl-.5 grow", onClick: toggleAllowShadeEdit },
+                    allowShadeEdit
+                        ? translate("lock_shade_movement")
+                        : translate("unlock_shade_movement")
+                )
+            )
+            : undefined
+        
     )
 }
 

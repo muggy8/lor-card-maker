@@ -123,6 +123,8 @@ const lang = {
         "speed": "Speed",
         "unlock_art_movement": "🔒 Unlock Art Movement",
         "lock_art_movement": "🔓 Lock Art Movement",
+        "unlock_shade_movement": "🔒 Unlock Artwork Shade Adjustments",
+        "lock_shade_movement": "🔓 Lock Artwork Shade Adjustments",
         "default_bg_show": "Show Default Background",
         "default_bg_hide": "Hide Default Background",
         "insert_icon_instruction": "Right-Click or Long-Press to insert icons",
