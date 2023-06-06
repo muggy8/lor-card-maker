@@ -1,6 +1,6 @@
 .edit-effect .textarea {
     min-height: 5em;
-    background-color: rgba(var(--rgb-white), 0.6);
+    /* background-color: rgba(var(--rgb-white), 0.6); */
     border-radius: 0.25em;
     border: solid 1px var(--color-border);
 

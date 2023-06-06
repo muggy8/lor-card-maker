@@ -29,6 +29,18 @@ svg, html {
 	--effect-white-text: #fff;
 }
 
+input, textarea, button, select, .textarea {
+	color: var(--color-text);
+	background-color: var(--color-bg);
+	border-color: var(--color-border);
+}
+
+button, select {
+	border-radius: 0.2em;
+	background-color: var(--color-light);
+	border-color: var(--color-dark);
+}
+
 .card-text-universe {
 	font-family: UniversforRiotGamesRegular;
 }
