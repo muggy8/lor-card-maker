@@ -119,7 +119,7 @@ function SidebarComponent(){
         // step 2: get v2 data
         const v2DataToImport = loadedData.cards ? loadedData.cards.filter(cardData=>cardData.dataVersion === 2) : [] 
 
-        v2DataToImport.forEach(cardToImport=>{
+        ;[...v1DataToImport, ...v2DataToImport].forEach(cardToImport=>{
             if (!Object.prototype.hasOwnProperty.call(cardToImport, "clan")){
                 return
             }
