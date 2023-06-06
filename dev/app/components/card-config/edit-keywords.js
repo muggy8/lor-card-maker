@@ -1,4 +1,4 @@
-import factory, { label, div, strong, button } from "/Utils/elements.js"
+import factory, { label, div, strong, button, input } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback, useState, useContext, useEffect } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
@@ -33,9 +33,14 @@ function EditKeywordComponent(props){
         props.updateValue(toggledOnState)
     }, [props.value, props.updateValue])
 
-    const [expanded, toggleExpanded, setExpanded] = useToggle(false)
+    const [keywordToSearchFor, updateKeywordtoSearchFor] = useState("")
+    const updateKeywordtoSearchForEvent = useCallback(ev=>{
+        updateKeywordtoSearchFor((ev.target.value || "").toLowerCase())
+    }, [updateKeywordtoSearchFor])
 
+    const [expanded, toggleExpanded, setExpanded] = useToggle(false)
     const [scrollTopWhenKeywordsOpened, updateScrollTopWhenKeywordsOpened] = useState(0)
+
     useEffect(()=>{
         if (expanded){
             updateScrollTopWhenKeywordsOpened(document.documentElement.scrollTop)
@@ -46,8 +51,10 @@ function EditKeywordComponent(props){
                 left: 0,
                 behavior: "smooth",
             })
+            updateKeywordtoSearchFor("")
         }
-    }, [expanded, scrollTopWhenKeywordsOpened, updateScrollTopWhenKeywordsOpened])
+    }, [expanded, scrollTopWhenKeywordsOpened, updateScrollTopWhenKeywordsOpened, updateKeywordtoSearchFor])
+
 
     return div(
         div(
@@ -122,14 +129,35 @@ function EditKeywordComponent(props){
         ),
 
         div(
-            { className: `flex gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
+            { className: `flex hcenter gutter-b-2 accordian ${expanded ? "expanded" : ""}` },
+
+            div(
+                { className: "flex box-12 gutter-tb-.5" },
+                input({
+                    value: keywordToSearchFor,
+                    onChange: updateKeywordtoSearchForEvent,
+                    type: "search",
+                    placeholder: translate("search"),
+                    className: "grow gutter-trbl-.5",
+                }),
+                div({ className: "gutter-r-.5" }),
+                button(
+                    { className: "gutter-tb-0.5 gutter-rl flex vhcenter", onClick: ()=>updateKeywordtoSearchFor("") }, 
+                    div({ className: "icon multiply" }),
+                )
+            ),
+
             Object.keys(keywords).map(keywordName=>{
+                if (keywordToSearchFor && !keywordName.toLowerCase().includes(keywordToSearchFor)){
+                    return
+                }
+
                 const isChecked = props.value.some(checkedValue=>{
                     return checkedValue === keywordName
                 })
 
                 return div(
-					{ className: "box-xs-3 box-l-2 flex vhcenter", key: keywordName },
+					{ className: "box-xs-4 box-m-3 box-l-2 flex vhcenter", key: keywordName },
 	                KeywordImageCheck({
 	                    isChecked,
 	                    onClick: ()=>{
@@ -138,14 +166,18 @@ function EditKeywordComponent(props){
 	                    keywordName,
 	                })
                 )
-            }),
+            }).filter(item=>!!item),
             customKeywords.map(customKeyword=>{
+                if (keywordToSearchFor && !customKeyword.name.toLowerCase().includes(keywordToSearchFor)){
+                    return
+                }
+
                 const isChecked = props.value.some(checkedValue=>{
                     return checkedValue.id === customKeyword.id
                 })
 
                 return div(
-					{ className: "box-xs-3 box-l-2 flex vhcenter", key: customKeyword.id },
+					{ className: "box-xs-4 box-m-3 box-l-2 flex vhcenter", key: customKeyword.id },
 	                KeywordImageCheck({
 	                    keywordName: customKeyword.name,
                         icons: customKeyword.icons,
@@ -153,9 +185,9 @@ function EditKeywordComponent(props){
                         onClick: ()=>toggleCustomKeyword(customKeyword)
 	                })
                 )
-            }),
+            }).filter(item=>!!item),
             div(
-                { className: "flex box-12" },
+                { className: "flex box-12 gutter-t-.5" },
                 button(
                     { 
                         className: "grow gutter-trbl-.5", 

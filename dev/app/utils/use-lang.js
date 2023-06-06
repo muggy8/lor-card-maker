@@ -77,7 +77,7 @@ const lang = {
         "health": "Health",
         "name": "Name",
         "artist": "Artist",
-        "clan": "Sub-Type (Celestial, Dragon, etc)",
+        "clan": "Sub-Type (Cultist, Dragon, etc)",
         "effect": "Effect",
         "key_symbol_effect": "Key Symobols to insert into effect text",
         "lv_up": "Level Up Condition",

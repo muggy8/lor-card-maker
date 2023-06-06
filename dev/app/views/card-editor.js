@@ -275,6 +275,18 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
+                
+                canShow("clan", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditColorText({
+                            label: translate("clan"),
+                            value: card.clan,
+                            updateValue: cardDataUpdaters.clan
+                        })
+                    )
+                    : undefined
+                ,
                 canShow("speed", defaultCardData)
                     ? EditSpeed({
 						value: card.speed,
@@ -383,17 +395,6 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 						value: card.orangeWords,
 						updateValue: cardDataUpdaters.orangeWords
 					})
-                    : undefined
-                ,
-                canShow("clan", defaultCardData)
-                    ? div(
-                        {className: "gutter-b-2"},
-                        EditColorText({
-                            label: translate("clan"),
-                            value: card.clan,
-                            updateValue: cardDataUpdaters.clan
-                        })
-                    )
                     : undefined
                 ,
                 canShow("associatedCards", defaultCardData)
