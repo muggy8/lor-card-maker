@@ -314,7 +314,7 @@ function SpellComponent(props){
                     },
                 ),
                 div(
-                    { className: "cost fitty-nowrap card-text-bold", ref: costRef},
+                    { className: "cost fitty-nowrap card-text-bold card-text-outline", ref: costRef},
                     props.mana,
                 ),
                 props.faction && props.faction.length
@@ -366,14 +366,14 @@ function SpellComponent(props){
                 ,
                 typeof props.power === "number"
                     ? div(
-                        { className: "power fitty-nowrap card-text-bold", ref: powerRef },
+                        { className: "power fitty-nowrap card-text-bold card-text-outline", ref: powerRef },
                         props.power || 0
                     )
                     : undefined
                 ,
                 typeof props.health === "number"
                     ? div(
-                        { className: "health fitty-nowrap card-text-bold", ref: healthRef },
+                        { className: "health fitty-nowrap card-text-bold card-text-outline", ref: healthRef },
                         props.health || 0
                     )
                     : undefined
@@ -384,7 +384,7 @@ function SpellComponent(props){
 
                     props.name
                         ? div(
-                            { className: "name fitty-wrap card-text-bold", ref: nameRef },
+                            { className: "name fitty-wrap card-text-bold card-text-outline", ref: nameRef },
                             props.name
                         )
                         : undefined

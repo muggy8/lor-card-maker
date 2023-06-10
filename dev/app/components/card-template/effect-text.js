@@ -161,7 +161,7 @@ function reactifyEffectText(text, blueWords, orangeWords, customKeywords){
             }
 
             for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, span({ className: "blue-word" }, word))
+                splitUpText.splice(i, 0, span({ className: "blue-word card-text-no-outline" }, word))
             }
 
             return splitUpText
@@ -184,7 +184,7 @@ function reactifyEffectText(text, blueWords, orangeWords, customKeywords){
             }
 
             for(let i = splitUpText.length - 1; i; i--){
-                splitUpText.splice(i, 0, span({ className: "orange-word" }, word))
+                splitUpText.splice(i, 0, span({ className: "orange-word card-text-no-outline" }, word))
             }
 
             return splitUpText
@@ -306,7 +306,7 @@ function EffectTextComponent(props){
     }
 
     return div(
-        { className: "card-effects-wrapper" },
+        { className: "card-effects-wrapper card-text-outline" },
 
         effectText 
             ? effectDiv 

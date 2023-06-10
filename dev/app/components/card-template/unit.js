@@ -278,7 +278,7 @@ export class UnitRendererComponent extends Component {
 
                         this.props.name
                             ? div(
-                                { className: "name fitty-wrap card-text-bold", ref: this.nameRef },
+                                { className: "name fitty-wrap card-text-bold card-text-outline", ref: this.nameRef },
                                 this.props.name
                             )
                             : undefined
@@ -319,7 +319,7 @@ export class UnitRendererComponent extends Component {
                     ),
 
                     div(
-                        { className: "cost fitty-nowrap card-text-bold", ref: this.costRef },
+                        { className: "cost fitty-nowrap card-text-bold card-text-outline", ref: this.costRef },
                         this.props.mana,
                     ),
 
@@ -379,7 +379,7 @@ export class UnitRendererComponent extends Component {
 
                     typeof this.props.power !== "undefined"
                         ? div(
-                            { className: "power fitty-nowrap card-text-bold", ref: this.powerRef },
+                            { className: "power fitty-nowrap card-text-bold card-text-outline", ref: this.powerRef },
                             this.props.power
                         )
                         : undefined
@@ -387,7 +387,7 @@ export class UnitRendererComponent extends Component {
 
                     typeof this.props.health !== "undefined"
                         ? div(
-                            { className: "health fitty-nowrap card-text-bold", ref: this.healthRef },
+                            { className: "health fitty-nowrap card-text-bold card-text-outline", ref: this.healthRef },
                             this.props.health
                         )
                         : undefined
@@ -425,7 +425,7 @@ export function AutoFitClanTextComponent(props){
     }, 200, [props.children, props.multiple])
 
     return div(
-        { className: "card-text-universe-condensed text-area fitty-nowrap", ref: autoFitRef },
+        { className: "card-text-universe-condensed card-text-outline text-area fitty-nowrap", ref: autoFitRef },
         props.children
     )
 }

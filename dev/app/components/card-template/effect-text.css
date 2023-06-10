@@ -25,9 +25,11 @@
 
 .effect-text .blue-word {
     color: var(--effect-blue-text);
+    --text-outline: var(--effect-blue-text);
 }
 .effect-text .orange-word {
     color: var(--effect-orange-text);
+    --text-outline: var(--effect-orange-text);
 }
 .effect-text.level-color {
     color: #d6946b;

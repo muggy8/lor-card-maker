@@ -114,7 +114,7 @@ function KeywordRendererComponent(props){
             )),
             size !== "small" || (!iconsUri.length && !icons.length)
                 ? div(
-                    { className: "keyword-text card-text-bold" },
+                    { className: "keyword-text card-text-bold card-text-outline" },
                     translate(name),
                 )
                 : undefined

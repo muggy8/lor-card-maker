@@ -24,9 +24,15 @@
 }
 
 svg, html {
-	--effect-blue-text: #49a0f8;
-	--effect-orange-text: #fad65a;
+	/* --effect-blue-text: #49a0f8; */
+	--effect-blue-text: hsl(210, 93%, 63%);
+	--effect-blue-text-outline: hsla(210, 93%, 63%, 0.7);
+	/* --effect-orange-text: #fad65a; */
+	--effect-orange-text: hsl(47, 94%, 67%);
+	--effect-orange-text-outline: hsla(47, 94%, 67%, 0.7);
 	--effect-white-text: #fff;
+	--effect-white-text-outline: #000;
+	--text-outline: var(--effect-white-text-outline);
 }
 
 input, textarea, button, select, .textarea {
@@ -53,6 +59,16 @@ button, select {
 }
 .card-text {
 	font-family: BeaufortforLOLRegular;
+}
+.card-text-outline {
+	-webkit-text-stroke-color: var(--text-outline);
+	-webkit-text-stroke-width: 0.0275em;
+	text-stroke-color: var(--text-outline);
+	text-stroke-width: 0.0275emem;
+}
+.card-text-no-outline {
+	-webkit-text-stroke-width: 0;
+	text-stroke-width: 0;
 }
 
 * {
