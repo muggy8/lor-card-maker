@@ -306,7 +306,7 @@ function EffectTextComponent(props){
     }
 
     return div(
-        { className: "card-effects-wrapper card-text-outline" },
+        { className: "card-effects-wrapper" },
 
         effectText 
             ? effectDiv 
