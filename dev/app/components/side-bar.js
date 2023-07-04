@@ -256,6 +256,16 @@ function SidebarComponent(){
                         target: "_blank"
                     })
                 ),
+                label(
+                    { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
+                    translate("join_discord"),
+                    a({
+                        ref: bugReportlink,
+                        href: "https://discord.gg/tKScJa6u6m",
+                        className: "hide",
+                        target: "_blank"
+                    })
+                ),
             )
         )
     )
