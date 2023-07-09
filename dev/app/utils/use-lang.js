@@ -130,6 +130,9 @@ const lang = {
         "insert_icon_instruction": "Right-Click or Long-Press to insert icons",
         "confirm_delete": "Are you sure youw ant to delete this card?",
         "join_discord": "Join Discord Server",
+        "on": "On",
+        "off": "Off",
+        "low_specs_mode": "Low Specs Device Mode",
 
         "attune": "Attune",
         "attach": "Attach",

@@ -2,7 +2,8 @@ import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
 import setImmediateBatch from "/Utils/set-immediate-batch.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
-import { useEffect } from "/cdn/react"
+import { useEffect, useContext } from "/cdn/react"
+import { Globals } from "/Views/index.js"
 
 const cssLoaded = loadCss("/Components/card-template/image-render.css")
 
@@ -111,9 +112,28 @@ async function replicateArtFallback({ image, width, height }){
 
 let replicationCache = {}
 const workerContentsPromise = fetch("/Components/card-template/image-render-worker.js").then(res=>res.text())
-function getReplicateImage(url){
+function getReplicateImage(url, skipOptimizations = false){
     if (replicationCache[url]){
         return replicationCache[url]
+    }
+
+    if (skipOptimizations){
+        return getDimensions(url)
+            .then(async results=>{
+                const assetBlob = await fetch(url).then(res=>res.blob())
+                const assetBitmap = await createImageBitmap(assetBlob)
+                const blob = await replicateArtFallback({
+                    width: results.width,
+                    height: results.height,
+                    image: assetBitmap
+                })
+                const b64 = await blobToBase64(blob)
+                return {
+                    width: results.width,
+                    height: results.height,
+                    b64,
+                }
+            })
     }
 
     let replicationCalculationWorker
@@ -163,9 +183,11 @@ function getReplicateImage(url){
 
 function ArtComponent(props){
     const { url } = props
+    const globalState = useContext(Globals)
+
 
     const replicatedArt = useAssetCache(updateReplicatedArt=>{
-        url && getReplicateImage(url).then(updateReplicatedArt)
+        url && getReplicateImage(url, globalState.state.settings.lowSpecsMode === true).then(updateReplicatedArt)
     }, [url], {})
 
     useEffect(()=>{

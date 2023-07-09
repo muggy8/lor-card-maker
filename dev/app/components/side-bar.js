@@ -246,6 +246,29 @@ function SidebarComponent(){
                         : undefined
                     ,
                 ),
+                div(
+                    { className: "menu-option clickable gutter-tb", onClick: ()=>{} },
+                    div(translate("low_specs_mode")),
+                    select(
+                        {
+                            value: globalState.state.settings.lowSpecsMode || 0,
+                            onChange: ev=>globalState.patchSettings({lowSpecsMode: !!parseInt(ev.target.value)}),
+                            className: "select-theme gutter-rl-1 gutter-tb-.5"
+                        },
+                        option(
+                            {
+                                value: 1
+                            },
+                            translate("on")
+                        ),
+                        option(
+                            {
+                                value: 0
+                            },
+                            translate("off")
+                        ),
+                    ),
+                ),
                 label(
                     { className: "menu-option clickable gutter-tb", onClick: ()=>bugReportlink.current.click() },
                     translate("report_bug"),
