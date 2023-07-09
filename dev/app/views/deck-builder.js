@@ -106,6 +106,7 @@ function deckBuilderComponenet(){
 
 	const translate = useLang()
 	const globalState = useContext(Globals)
+	const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 	const globalStateRef = useRef()
 	globalStateRef.current = globalState
 
@@ -854,7 +855,7 @@ function deckBuilderComponenet(){
 							{ className: "card-name-list" },
 
 							listLimit(
-								{ defaultSize: 24 },
+								{ defaultSize: lowSpecsMode ? 8 : 24 },
 								(displayedRitoCards || []).map(card=>card
 									? div(
 										{ className: "flex gutter-b", key: card.cardCode },
@@ -913,7 +914,7 @@ function deckBuilderComponenet(){
 						div(
 							{ className: "card-name-list" },
 							listLimit(
-								{ defaultSize: 24 },
+								{ defaultSize: lowSpecsMode ? 8 : 24 },
 								(displayedCustomCards || []).map(card=>card
 									? div(
 										{ className: "flex gutter-b", key: card.id },

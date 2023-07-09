@@ -14,6 +14,9 @@ const cssLoaded = loadCss("/Views/batch-delete.css")
 function BatchDeleteComponent(props){
     const translate = useLang()
     const [refetch, refreshCardData] = useToggle(false)
+    
+    const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     const savedCards = useAssetCache(updateSavedCards=>{
         getCardList({include: "deck"}).then(updateSavedCards)
@@ -67,7 +70,7 @@ function BatchDeleteComponent(props){
 
         div(
             { className: "gutter-trbl-.5 flex",},
-            listLimit(renderedItems),
+            listLimit({ defaultSize: lowSpecsMode ? 6 : undefined }, renderedItems),
         )
     )
 }

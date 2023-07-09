@@ -247,9 +247,9 @@ function SidebarComponent(){
                         : undefined
                     ,
                 ),
-                div(
+                label(
                     { className: "menu-option clickable gutter-tb", onClick: ()=>{} },
-                    div(translate("low_specs_mode")),
+                    div( translate("low_specs_mode") ),
                     select(
                         {
                             value: globalState.state.settings.lowSpecsMode || 0,

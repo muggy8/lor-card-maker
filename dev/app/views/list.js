@@ -190,6 +190,7 @@ const cssLoaded = loadCss("/Views/list.css")
 
 function ListComponent(){
     const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     const translate = useLang()
 
@@ -226,7 +227,7 @@ function ListComponent(){
         div(
             { className: "gutter-trbl-.5 flex",},
             listLimit(
-                { autoResetLimit: true },
+                { defaultSize: lowSpecsMode ? 4 : undefined },
                 types.map((type)=>{
                     const labelName = translate("new_label", {
                         cardType: translate(type.labelKey),

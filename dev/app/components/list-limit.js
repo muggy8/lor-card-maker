@@ -35,12 +35,17 @@ function ListLimitComponent(props){
             const bottomOfWindow = window.innerHeight + window.scrollY
 
             if ((loadMoreWhenCloserThanThisToTheBottomOfPage.current + bottomOfWindow) >= heightOfPage){
+                console.log({currentLimit, currentListLength})
                 if (currentLimit.current < currentListLength.current){
                     const newLimit = Math.min(currentLimit.current + (props.defaultSize || 8), currentListLength.current)
                     updateLimit(newLimit)
+                    // since we have updated the limit we should fire the event again just to make sure that we don't need to extend it again.
+                    setTimeout(onScroll, 200)
                 }
             }
         }, 100)
+
+        onScroll()
 
         window.addEventListener("scroll", onScroll)
 

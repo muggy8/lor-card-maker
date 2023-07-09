@@ -22,6 +22,7 @@ function BatchExportComponent(){
     const translate = useLang()
 
     const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
     const globalStateRef = useRef()
     globalStateRef.current = globalState
 
@@ -208,6 +209,7 @@ function BatchExportComponent(){
             div(
                 { className: "gutter-trbl-.5 flex",},
                 listLimit(
+                    { defaultSize: lowSpecsMode ? 6 : undefined },
                     savedCards.map((cardData)=>{
                         const renderingComponent = typeToComponent(cardData.type)
                         if (!renderingComponent){

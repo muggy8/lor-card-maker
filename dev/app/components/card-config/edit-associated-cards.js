@@ -180,7 +180,7 @@ function editAssociatedCardsComponent(props){
 
 						div(
 							listLimit(
-								{ defaultSize: 24 },
+								{ defaultSize: lowSpecsMode ? 8 : 24 },
 								(displayedCustomCards || []).map(card=>card
 									? div(
 										{ className: "flex gutter-b", key: card.id },
@@ -209,7 +209,7 @@ function editAssociatedCardsComponent(props){
                         div(
 
                             listLimit(
-                                { defaultSize: 24 },
+                                { defaultSize: lowSpecsMode ? 8 : 24 },
                                 (displayedRitoCards || []).map(card=>card
                                     ? div(
                                         { className: "flex gutter-b", key: card.cardCode },
