@@ -33,6 +33,8 @@
 }
 .low-spec-mode .side-bar {
     transition: none;
+    backdrop-filter: none;
+    background-color: rgba(var(--rgb-light), 0.8);
 }
 
 .side-bar .menu-contents {

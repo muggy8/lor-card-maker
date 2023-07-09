@@ -34,6 +34,10 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2em);
     mask-image: linear-gradient(to bottom, transparent 0, black 2em);
 }
+.low-spec-mode #batch-exporter .export-selection {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
 #batch-exporter .export-selection::before {
     position: absolute;
     display: block;

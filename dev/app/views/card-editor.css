@@ -49,6 +49,10 @@
     -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 2em);
     mask-image: linear-gradient(to bottom, transparent 0, black 2em);
 }
+.low-spec-mode #card-editor .card-configs::before {
+    -webkit-mask-image:none;
+    mask-image: none;
+}
 
 #card-editor input,
 #card-editor textarea,
