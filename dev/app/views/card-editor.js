@@ -411,7 +411,9 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         )
     }
 
-    return factory(component, cssLoaded)
+    const componentFactory = factory(component, cssLoaded)
+    componentFactory.defaultCardData = defaultCardData
+    return componentFactory
 }
 
 export async function openUri(base64ImageData, fileName = "export.png") {

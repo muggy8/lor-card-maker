@@ -115,6 +115,28 @@ const types = [
         ),
     },
     {
+        component: Spell,
+        labelKey: "equipment",
+        editor: CardEditorFactory(
+            Spell,
+            {
+                ...sharedDefaultCardData,
+                power: null,
+                health: null,
+                speed: "equipment",
+                power: 0,
+                health: 0,
+                rarity: "",
+                keywords: ["equipment"],
+                type: "spell",
+                power: null,
+                health: null,
+                mana: "",
+                lvup: "",
+            }
+        ),
+    },
+    {
         component: Follower,
         labelKey: "follower",
         editor: CardEditorFactory(
@@ -247,6 +269,7 @@ function ListComponent(){
                             }
                         },
                         type.component({
+                            ...type.editor.defaultCardData,
                             name: labelName
                         })
                     )
