@@ -129,7 +129,7 @@ const types = [
                 type: "spell",
                 power: 0,
                 health: 0,
-                mana: "",
+                mana: 0,
                 lvup: "",
             }
         ),
@@ -168,7 +168,6 @@ const types = [
     {
         component: Keyword,
         labelKey: "keyword",
-        // beta: true,
         editor: CardEditorFactory(
             Keyword,
             {
