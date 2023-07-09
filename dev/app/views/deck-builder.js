@@ -164,10 +164,11 @@ function deckBuilderComponenet(){
 
 		function checkAllowGoBack(){
 			if (document.documentElement.scrollTop > 100){
+				const lowSpecsMode = globalStateRef.current.state.settings.lowSpecsMode === true
 				setImmediate(()=>window.scroll({
 					top: -document.documentElement.scrollTop,
 					left: 0,
-					behavior: "smooth",
+					behavior: lowSpecsMode ? "instant" :"smooth",
 				}))
 				return false
 			}

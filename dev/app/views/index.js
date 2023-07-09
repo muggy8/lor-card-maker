@@ -121,7 +121,15 @@ function App (props) {
         const bannerHeightWithUnits = (globalState.bannerHeight || 0) + "px"
         props.root.style.setProperty("padding-top", bannerHeightWithUnits)
         props.root.style.setProperty("--banner-height", bannerHeightWithUnits)
-    }, [globalState.bannerHeight, props.root])
+
+        if (globalState.settings.lowSpecsMode === true && !document.documentElement.classList.contains("low-spec-mode")){
+            document.documentElement.classList.add("low-spec-mode")
+        }
+        else if (globalState.settings.lowSpecsMode !== true && document.documentElement.classList.contains("low-spec-mode")){
+            document.documentElement.classList.remove("low-spec-mode")
+        }
+
+    }, [globalState.bannerHeight, props.root, globalState.settings.lowSpecsMode])
 
     return createElement(
         Globals.Provider,

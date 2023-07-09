@@ -11,6 +11,9 @@
     will-change: background-color;
     transition: background-color 0.5s;
 }
+.low-spec-mode .side-bar-backdrop {
+    transition: none;
+}
 
 .side-bar {
     position: fixed;
@@ -27,6 +30,9 @@
     will-change: transform;
     transition: transform 0.5s;
     /* overflow-y: auto; */
+}
+.low-spec-mode .side-bar {
+    transition: none;
 }
 
 .side-bar .menu-contents {
@@ -53,6 +59,9 @@
     transform: translate(0, 0);
     will-change: transform;
     transition: transform 0.5s;
+}
+.low-spec-mode .side-bar .menu-icon {
+    transition: none;
 }
 
 .side-bar .menu-icon *,

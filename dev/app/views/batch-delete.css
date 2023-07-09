@@ -11,6 +11,9 @@
     transition: background-color 0.5s;
     will-change: background-color;
 }
+.low-spec-mode #bulk-delete .confirm-overlay {
+    transition: none;
+}
 #bulk-delete .confirm-overlay.active {
     background-color: rgba(var(--rgb-light), 0.4);
 }
@@ -20,6 +23,9 @@
     filter: opacity(40%);
     will-change: filter;
     transition: filter 0.2s;
+}
+.low-spec-mode #bulk-delete .delete-icon {
+    transition: none;
 }
 #bulk-delete .delete-icon:focus, 
 #bulk-delete .delete-icon:active, 

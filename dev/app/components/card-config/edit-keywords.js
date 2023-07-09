@@ -1,6 +1,6 @@
 import factory, { label, div, strong, button, input } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback, useState, useContext, useEffect } from "/cdn/react"
+import { useCallback, useState, useContext, useEffect, useRef } from "/cdn/react"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import Keyword, { keywords } from "/Components/card-template/keyword-renderer.js"
 import { Globals } from "/Views/index.js"
@@ -8,7 +8,10 @@ import useToggle from "/Utils/use-toggle.js"
 
 function EditKeywordComponent(props){
     const translate = useLang()
-    const { customKeywords } = useContext(Globals)
+    const globalState = useContext(Globals)
+    const globalStateRef = useRef()
+    globalStateRef.current = globalState
+    const { customKeywords } = globalState
 
     const toggleKeyword = useCallback((keywordName)=>{
         const keywordIndex = props.value.indexOf(keywordName)
@@ -46,10 +49,12 @@ function EditKeywordComponent(props){
             updateScrollTopWhenKeywordsOpened(document.documentElement.scrollTop)
         }
         else{
+            const lowSpecsMode = globalStateRef.current.state.settings.lowSpecsMode === true
+
             window.scrollTo({
                 top: scrollTopWhenKeywordsOpened,
                 left: 0,
-                behavior: "smooth",
+                behavior: lowSpecsMode ? "instant" : "smooth",
             })
             updateKeywordtoSearchFor("")
         }

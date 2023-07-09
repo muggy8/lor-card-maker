@@ -19,6 +19,10 @@
     background-color: rgba(var(--rgb-bg), 80%);
 }
 
+.low-spec-mode .filter-slider .options {
+    transition: none;
+}
+
 .filter-slider.expanded .options {
     max-height: calc( calc(100vh - var(--banner-height)) - var(--flex-box-gutter));
     transition-timing-function: ease-in;

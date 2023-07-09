@@ -10,6 +10,9 @@
     transition-timing-function: ease-in-out;
     transition-delay: 0.5s;
 }
+.low-spec-mode #deck-builder .deck-preview {
+    transition: none;
+}
 
 #deck-builder .card-list-options, #deck-builder .card-name-list, #deck-builder .about-deck-uilder  {
     background-color: rgba(var(--rgb-bg), 80%);
@@ -40,6 +43,9 @@
     transition: padding-bottom 1s;
     transition-timing-function: ease-in-out;
     transition-delay: 0.5s;
+}
+.low-spec-mode #deck-builder .export-preview {
+    transition: none;
 }
 
 #deck-builder .preview-content {
