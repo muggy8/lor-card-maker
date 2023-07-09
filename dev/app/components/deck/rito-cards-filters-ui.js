@@ -16,6 +16,7 @@ const cssLoaded = linkAsset("/Components/deck/rito-cards-filters-ui.css")
 function filterRitoCardListConfigurationComponent (props){
     const translate = useLang()
 	const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 	const globalStateRef = useRef()
 	globalStateRef.current = globalState    
     
@@ -54,7 +55,10 @@ function filterRitoCardListConfigurationComponent (props){
             div({ className: "grow clickable gutter-rl-.5", onClick: toggleExpanded }, 
                 strong(translate("filter"))
             ),
-            div({className: "icon clickable animated " + (expanded ? "minus" : "menu"), onClick: toggleExpanded }),
+            div({
+                className: `icon clickable ${lowSpecsMode ? "" : "animated"} ${expanded ? "minus" : "menu"}`, 
+                onClick: toggleExpanded 
+            }),
         ),
         div({ className: "options" },
             div({ className: "gutter-rbl-.5" },

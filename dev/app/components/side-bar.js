@@ -28,6 +28,7 @@ function SidebarComponent(){
     const translate = useLang()
 
     const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     useEffect(()=>{
         document.body.classList.remove(...document.body.classList)
@@ -172,7 +173,7 @@ function SidebarComponent(){
                     className: "menu-icon flex vhcenter",
                     onClick: toggleOpened
                 },
-                div({className: "icon animated clickable " + (opened ? "multiply" : "menu") }),
+                div({className: `icon clickable ${lowSpecsMode ? "" : "animated"} ${opened ? "multiply" : "menu"}` }),
             ),
             div(
                 { className: "menu-contents gutter-tb-2" },

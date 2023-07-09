@@ -1,5 +1,6 @@
 import factory, { div, label, strong, input, nav, button } from "/Utils/elements.js"
-import { useCallback, useState, useEffect, useRef } from "/cdn/react"
+import { useCallback, useState, useEffect, useRef, useContext } from "/cdn/react"
+import { Globals } from "/Views/index.js"
 import useLang from "/Utils/use-lang.js"
 import loadCss from "/Utils/load-css.js"
 import useToggle from "/Utils/use-toggle.js"
@@ -15,6 +16,9 @@ const cssLoaded = loadCss("/Components/card-config/edit-associated-cards.css")
 function editAssociatedCardsComponent(props){
 
     const translate = useLang()
+
+    const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     const [expanded, toggleExpanded] = useToggle(false)
 
@@ -135,7 +139,7 @@ function editAssociatedCardsComponent(props){
                 { className: "grow" },
                 strong(props.label)
             ),
-            div({ className: `icon animated ${expanded ? "multiply" : "chevron-down"}` })
+            div({ className: `icon ${lowSpecsMode ? "" : "animated"} ${expanded ? "multiply" : "chevron-down"}` })
         ),
         div(
             { className: `gutter-b-2 accordian ${expanded ? "expanded" : ""}` },

@@ -185,7 +185,6 @@ function ArtComponent(props){
     const { url } = props
     const globalState = useContext(Globals)
 
-
     const replicatedArt = useAssetCache(updateReplicatedArt=>{
         url && getReplicateImage(url, globalState.state.settings.lowSpecsMode === true).then(updateReplicatedArt)
     }, [url], {})

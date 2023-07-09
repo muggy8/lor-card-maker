@@ -14,6 +14,7 @@ import linkAsset from "/Utils/load-css.js";
 function customCardsFiltersComponent(props){
     const translate = useLang()
 	const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 	const globalStateRef = useRef()
 	globalStateRef.current = globalState
 
@@ -52,7 +53,10 @@ function customCardsFiltersComponent(props){
             div({ className: "grow clickable gutter-rl-.5", onClick: toggleExpanded }, 
                 strong(translate("filter"))
             ),
-            div({className: "icon clickable animated " + (expanded ? "minus" : "menu"), onClick: toggleExpanded }),
+            div({
+                className: `icon clickable ${lowSpecsMode ? "" : "animated"} ${expanded ? "minus" : "menu"}`, 
+                onClick: toggleExpanded 
+            }),
         ),
 
         div({ className: "options" },

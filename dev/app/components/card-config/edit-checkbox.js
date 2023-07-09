@@ -1,7 +1,11 @@
 import factory, { div, label, strong, input } from "/Utils/elements.js"
-import { useCallback } from "/cdn/react"
+import { useCallback, useContext } from "/cdn/react"
+import { Globals } from "/Views/index.js"
 
 function EditCheckboxComponent(props){
+    const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
+
     const toggleCheckbox = useCallback((ev)=>{
         props.updateValue && props.updateValue(!props.value)
     }, [props.updateValue, props.value])
@@ -9,7 +13,7 @@ function EditCheckboxComponent(props){
     return label(
         { className: "flex box clickable no-wrap", onClick: toggleCheckbox },
         div(
-            {className: `animated icon checkbox ${props.value ? "checked" : "" }`},
+            {className: `icon ${ lowSpecsMode ? "" : "animated"} checkbox ${ props.value ? "checked" : "" }`},
         ),
         props.label 
             ? div(
