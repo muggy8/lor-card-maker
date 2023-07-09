@@ -26,7 +26,16 @@ function ListLimitComponent(props){
     currentListLength.current = children.length
 
     useEffect(()=>{
-        const onScroll = debounceFunction(()=>{
+        const onScroll = debounceFunction((recurrsionCount)=>{
+            if (typeof recurrsionCount === "number"){
+                if (recurrsionCount > 10){
+                    return
+                }
+            }
+            else{
+                recurrsionCount = 0
+            }
+
             const body = document.body,
                 html = document.documentElement
 
@@ -35,12 +44,11 @@ function ListLimitComponent(props){
             const bottomOfWindow = window.innerHeight + window.scrollY
 
             if ((loadMoreWhenCloserThanThisToTheBottomOfPage.current + bottomOfWindow) >= heightOfPage){
-                console.log({currentLimit, currentListLength})
                 if (currentLimit.current < currentListLength.current){
                     const newLimit = Math.min(currentLimit.current + (props.defaultSize || 8), currentListLength.current)
                     updateLimit(newLimit)
                     // since we have updated the limit we should fire the event again just to make sure that we don't need to extend it again.
-                    setTimeout(onScroll, 200)
+                    setTimeout(()=>onScroll(recurrsionCount + 1), 200)
                 }
             }
         }, 100)
