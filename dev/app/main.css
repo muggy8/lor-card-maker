@@ -199,8 +199,10 @@ img, svg {
   	animation-duration: 0.5s;
 	animation-iteration-count: 1;
 }
+.low-spec-mode .accordian,
 .low-spec-mode .accordian.expanded {
 	transition: none;
+	animation: none;
 }
 
 @keyframes slide-down {
