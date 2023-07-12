@@ -15,7 +15,7 @@ export default async function(card, svgRef, globalState){
                 accept(reader.result);       
             }
         })        
-        return openUri(b64, `${(card.name || "export").toUpperCase()}.json`)
+        return openUri(b64, `${(card.fileName || card.name || "export").toUpperCase()}.json`)
     }
     else if (globalState.state.settings.exportFormat === "svg") {
         const uri = await saveSvgAsPng.svgAsDataUri(svgRef, {
@@ -23,7 +23,7 @@ export default async function(card, svgRef, globalState){
             width,
             height,
         })
-        return openUri(uri, `${(card.name || "export").toUpperCase()}.svg`)
+        return openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.svg`)
     }
     else {
         // convert the value to the right format
@@ -34,7 +34,7 @@ export default async function(card, svgRef, globalState){
         })
 
         if (!globalState.state.settings.exportFormat || globalState.state.settings.exportFormat === "png"){
-            return  openUri(uri, `${(card.name || "export").toUpperCase()}.png`)
+            return  openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.png`)
         }
 
         const offscreen = new OffscreenCanvas(width, height);
@@ -55,7 +55,7 @@ export default async function(card, svgRef, globalState){
         reader.readAsDataURL(imgBlob); 
         reader.onloadend = function() {
             var base64data = reader.result
-            return openUri(base64data, `${(card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
+            return openUri(base64data, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
         }
     }
 }

@@ -241,5 +241,6 @@ const lang = {
         "relic": "Relic",
         "item": "Item",
         "power": "Power",
+        "file_name": "File Name",
     }
 }

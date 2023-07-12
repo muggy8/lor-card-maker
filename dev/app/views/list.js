@@ -33,6 +33,7 @@ const sharedDefaultCardData = {
     dataVersion: 2,
     transform: {x: 0, y: 0, scale: 1},
     associatedCards: [],
+    fileName: "",
 }
 
 const shade = {
@@ -173,6 +174,7 @@ const types = [
             {
                 id: "",
                 name: "",
+                fileName: "",
                 type: "keyword",
                 effect: "",
                 blueWords: [],

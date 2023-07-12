@@ -21,6 +21,7 @@ import editArt from "/Components/card-config/edit-art.js"
 import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.js"
 import exportFromApp from "/Components/export.js"
 import EditCheckbox from "/Components/card-config/edit-checkbox.js"
+import EditFileName from "/Components/card-config/edit-file-name.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -100,6 +101,7 @@ const defaultDeck = {
 	showDeckStats: true,
 	includeAssociated: false,
 	dataVersion: 2,
+	fileName: "",
 }
 
 function deckBuilderComponenet(){
@@ -126,6 +128,10 @@ function deckBuilderComponenet(){
 	
 	const updateDeckName = useCallback(name=>{
 		patchDeck({ name })
+	}, [patchDeck])
+	
+	const updateFileName = useCallback(fileName=>{
+		patchDeck({ fileName })
 	}, [patchDeck])
 
 	const toggleDeckDeets = useCallback(()=>{
@@ -953,6 +959,16 @@ function deckBuilderComponenet(){
 									label: translate("deck_name"),
 									value: deck.name,
 									updateValue: updateDeckName,
+								}),
+							),
+
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+								EditFileName({
+									label: translate("file_name"),
+									value: deck.fileName,
+									updateValue: updateFileName,
+									placeholder: deck.name,
 								}),
 							),
 

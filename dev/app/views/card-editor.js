@@ -23,6 +23,7 @@ import { defaultShade } from "/Views/list.js"
 import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
 import exportFromApp from "/Components/export.js"
+import editFileName from "/Components/card-config/edit-file-name.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -240,6 +241,18 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             label: translate("name"),
                             value: card.name,
                             updateValue: cardDataUpdaters.name
+                        })
+                    )
+                    : undefined
+                ,
+                canShow("fileName", defaultCardData)
+                    ? div(
+                        {className: "flex hcenter gutter-b-2"},
+                        editFileName({
+                            label: translate("file_name"),
+                            value: card.fileName,
+                            placeholder: card.name,
+                            updateValue: cardDataUpdaters.fileName
                         })
                     )
                     : undefined
