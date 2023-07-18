@@ -137,6 +137,7 @@ const lang = {
         "attune": "Attune",
         "attach": "Attach",
         "augment": "Augment",
+        "brash": "Brash",
         "fleeting": "Fleeting",
         "scout": "Scout",
         "barrier": "Barrier",
