@@ -42,7 +42,18 @@ function BatchDeleteComponent(props){
                     deleteCard(cardData.id).then(refreshCardData)
                 }
             },
-            renderingComponent(cardData)
+            (()=>{
+                try {
+                    return renderingComponent(cardData)
+                }
+                catch(err){
+                    return renderingComponent({ 
+                        name: translate('error_loading_card', {
+                            cardName: cardData.name,
+                        }) 
+                    })
+                }
+            })(),
         )
     }).filter(item=>!!item), [savedCards, searchTerm, refreshCardData])
 

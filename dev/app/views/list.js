@@ -295,7 +295,18 @@ function ListComponent(){
                                 globalState.patchState({cardId: cardData.id})
                             }
                         },
-                        renderingComponent(cardData)
+                        (()=>{
+                            try {
+                                return renderingComponent(cardData)
+                            }
+                            catch(err){
+                                return renderingComponent({ 
+                                    name: translate('error_loading_card', {
+                                        cardName: cardData.name,
+                                    }) 
+                                })
+                            }
+                        })(),
                     )
                 }).filter(item=>!!item),
             ),

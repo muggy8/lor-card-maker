@@ -14,6 +14,7 @@ import listLimit from "/Components/list-limit.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { isMobile } from '/cdn/react-device-detect'
 import exportFromApp from "/Components/export.js"
+import svgWrap from "/Components/card-template/svg-wrap"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
@@ -232,7 +233,18 @@ function BatchExportComponent(){
                                     forceRerender()
                                 }
                             },
-                            renderingComponent(cardData)
+                            (()=>{
+                                try {
+                                    return renderingComponent(cardData)
+                                }
+                                catch(err){
+                                    return renderingComponent({ 
+                                        name: translate('error_loading_card', {
+                                            cardName: cardData.name,
+                                        }) 
+                                    })
+                                }
+                            })(),
                         )
                     })
                 ),
