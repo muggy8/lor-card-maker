@@ -14,7 +14,7 @@ import listLimit from "/Components/list-limit.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import { isMobile } from '/cdn/react-device-detect'
 import exportFromApp from "/Components/export.js"
-import svgWrap from "/Components/card-template/svg-wrap"
+import svgWrap from "/Components/card-template/svg-wrap.js"
 
 const cssLoaded = loadCss("/Views/batch-export.css")
 
