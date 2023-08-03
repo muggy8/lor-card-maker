@@ -233,6 +233,9 @@ self.addEventListener("fetch", function(ev){
 				if (fetchUrl.includes("LoR_DD")){
 					ev.respondWith(fetch(fetchUrl))
 				}
+				else if (filePathRelativeToInstallPath === "backup/"){
+					ev.respondWith(getBackupData(ev.request, filePathRelativeToURLRoot))
+				}
 				else{
 					ev.respondWith(intelegentFetch(filePathRelativeToInstallPath))
 				}
