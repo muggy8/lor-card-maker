@@ -24,6 +24,7 @@ import useToggle from "/Utils/use-toggle.js"
 import debounceFunction from "/Utils/debounce-function.js"
 import exportFromApp from "/Components/export.js"
 import editFileName from "/Components/card-config/edit-file-name.js"
+import EditColor from "/Components/card-config/edit-color.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -350,6 +351,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         value: card.shade || defaultShade,
                         updateValue: cardDataUpdaters.shade,
                     })
+                    : undefined
+                ,
+                canShow("textBgColor", defaultCardData)
+                    ? div(
+                        { className: "gutter-b-2" }, 
+                        EditColor({
+                            label: translate("background_color"),
+                            value: card.textBgColor,
+                            updateValue: cardDataUpdaters.textBgColor,
+                        }),
+                    )
                     : undefined
                 ,
                 canShow("rarity", defaultCardData)

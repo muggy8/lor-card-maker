@@ -110,6 +110,7 @@ const types = [
                 type: "spell",
                 power: null,
                 health: null,
+                textBgColor: null,
                 mana: "",
                 lvup: "",
             }
@@ -130,6 +131,7 @@ const types = [
                 type: "spell",
                 power: 0,
                 health: 0,
+                textBgColor: null,
                 mana: 0,
                 lvup: "",
             }
