@@ -1,6 +1,6 @@
 import factory, { div, strong, label, button } from "/Utils/elements.js"
 import { ChromePicker } from "/cdn/react-color"
-import { useState, useContext } from "/cdn/react"
+import { useState, useContext, useEffect } from "/cdn/react"
 import useLang from "/Utils/use-lang.js"
 import { Globals } from "/Views/index.js"
 import useToggle from "/Utils/use-toggle.js"
@@ -14,6 +14,9 @@ function EditColorComponent(props){
     const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     const [color, updateColor] = useState("#FFF")
+    useEffect(()=>{
+        props.value && updateColor(props.value)
+    }, [props.value])
     const [expanded, toggleExpanded] = useToggle(false)
 
 
@@ -39,7 +42,9 @@ function EditColorComponent(props){
                 {
                     width: "100%",
                     color,
-                    onChange: (color)=>updateColor(color.hex)
+                    disableAlpha: true,
+                    onChange: updateColor,
+                    onChangeComplete: color=>console.log(color) + (props.updateValue && props.updateValue(color.hex))
                 }
             )
         )

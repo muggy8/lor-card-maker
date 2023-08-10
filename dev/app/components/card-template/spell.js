@@ -53,6 +53,10 @@ function SpellComponent(props){
     }, [])
 
     const imageAvgColor = useAssetCacheDebounced(updateImageAvgColor=>{
+        if (props.textBgColor) {
+            return updateImageAvgColor(props.textBgColor)
+        }
+
         const imageUrl = props.art || "/Assets/spell/backdrop.png"
 
         fac.getColorAsync(imageUrl)
@@ -60,7 +64,7 @@ function SpellComponent(props){
                 updateImageAvgColor(color.hex)
             })
             .catch(console.warn)
-    }, 200, [props.art], "var(--color-dark, #777777)")
+    }, 200, [props.textBgColor || props.art], "var(--color-dark, #777777)")
 
     // manage the assets and convert them from URL form to base 64 form to make exporting easier
     const backgroundUri = useAssetCache(updateBackgroundUri=>{
