@@ -9,9 +9,9 @@ function EditColorTextComponent(props){
 
     return div(
         div(
-            { className: "flex-m" },
+            { className: "flex-m no-wrap" },
             label(
-                { className: "box gutter-b-.5" },
+                { className: "box flex vcenter" },
                 div(
                     strong(
                         props.label
@@ -21,6 +21,7 @@ function EditColorTextComponent(props){
                     props.subLabel
                 )
             ),
+            div({ className: "gutter-b-.5" }), // this is needed to not take up horizontal space but provide padding and spacing in mobile vertical stack mode
             div(
                 {className: "flex gutter-l-.5"},
                 button(

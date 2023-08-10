@@ -136,10 +136,13 @@ function editAssociatedCardsComponent(props){
         label(
             { onClick: toggleExpanded, className: "flex clickable" },
             div(
-                { className: "grow" },
+                { className: "grow flex vcenter" },
                 strong(props.label)
             ),
-            div({ className: `icon ${lowSpecsMode ? "" : "animated"} ${expanded ? "multiply" : "chevron-down"}` })
+            button(
+                { className: "gutter-trbl-.5 flex vcenter" },
+                div({ className: `icon ${lowSpecsMode ? "" : "animated"} ${expanded ? "multiply" : "chevron-down"}` })
+            ),
         ),
         div(
             { className: `gutter-b-2 accordian ${expanded ? "expanded" : ""}` },

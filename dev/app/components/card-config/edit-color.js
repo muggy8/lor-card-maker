@@ -1,23 +1,47 @@
-import factory, { div, label, strong, input } from "/Utils/elements.js"
-import { useCallback } from "/cdn/react"
+import factory, { div, strong, label, button } from "/Utils/elements.js"
+import { ChromePicker } from "/cdn/react-color"
+import { useState, useContext } from "/cdn/react"
+import useLang from "/Utils/use-lang.js"
+import { Globals } from "/Views/index.js"
+import useToggle from "/Utils/use-toggle.js"
+
+const chromePicker = factory(ChromePicker)
 
 function EditColorComponent(props){
-    const onChange = useCallback((ev)=>{
-        props.updateValue && props.updateValue(ev.target.value)
-    }, [props.updateValue])
 
-    return label(
+    const translate = useLang()
+    const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
+
+    const [color, updateColor] = useState("#FFF")
+    const [expanded, toggleExpanded] = useToggle(false)
+
+
+    return div(
         { className: "box" },
-        props.label 
-            ? div(
-                { className: "gutter-b-.5" },
-                strong(props.label)
-            )
-            : undefined
-        ,
+        label(
+            { className: "gutter-b flex clickable", onClick: toggleExpanded },
+            div(
+                { className: "grow flex vcenter" },
+                props.label 
+                    ? strong(props.label)
+                    : strong(translate("color"))
+                ,
+            ),
+            button(
+                { className: "gutter-trbl-.5 flex vcenter" },
+                div({ className: `icon ${lowSpecsMode ? "" : "animated"} ${expanded ? "multiply" : "chevron-down"}` })
+            ),
+        ),
         div(
-            {className: "flex gutter-rl-.5"},
-            "placeholder"
+            {className: `flex gutter-rl-.5 accordian ${expanded ? "expanded" : ""}`},
+            chromePicker(
+                {
+                    width: "100%",
+                    color,
+                    onChange: (color)=>updateColor(color.hex)
+                }
+            )
         )
     )
 }

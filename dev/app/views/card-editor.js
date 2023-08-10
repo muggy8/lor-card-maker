@@ -357,7 +357,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     ? div(
                         { className: "gutter-b-2" }, 
                         EditColor({
-                            label: translate("background_color"),
+                            label: translate("text_background_color"),
                             value: card.textBgColor,
                             updateValue: cardDataUpdaters.textBgColor,
                         }),

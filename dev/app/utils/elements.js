@@ -1,6 +1,6 @@
 import factory from "/Utils/element-factory.js"
 import React from "/cdn/react"
-import { Range } from "/cdn/react-range";
+import { Range } from "/cdn/react-range"
 import ReactMarkdown from "/cdn/react-markdown"
 import loadCss from "/Utils/load-css.js"
 export default factory

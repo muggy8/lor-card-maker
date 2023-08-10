@@ -73,7 +73,7 @@ function EditKeywordComponent(props){
         ),
 
         div(
-            { className: "gutter-b-2" },
+            { className: "gutter-b" },
             (props.value || []).map(keyword=>{
                 if (typeof keyword === "string"){
                     const keywordName = keyword
