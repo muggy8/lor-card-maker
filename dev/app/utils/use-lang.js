@@ -135,6 +135,8 @@ const lang = {
         "on": "On",
         "off": "Off",
         "low_specs_mode": "Low Specs Device Mode",
+        "reset_default": "Reset To Default",
+        "calculate_based_on_art": "Calculate Based On Card Art",
 
         "attune": "Attune",
         "attach": "Attach",

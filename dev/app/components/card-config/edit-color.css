@@ -1,0 +1,3 @@
+#color-edit .color-select-input input {
+    background-color: var(--selected-color);
+}

@@ -360,6 +360,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             label: translate("text_background_color"),
                             value: card.textBgColor,
                             updateValue: cardDataUpdaters.textBgColor,
+                            cardArt: card.art
                         }),
                     )
                     : undefined
