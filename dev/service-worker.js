@@ -241,14 +241,24 @@ self.addEventListener("fetch", function(ev){
 					ev.respondWith(getBackupData(ev.request, filePathRelativeToURLRoot))
 				}
 				else{
-					ev.respondWith(intelegentFetch(filePathRelativeToInstallPath))
+					ev.respondWith(
+						intelegentFetch(
+							filePathRelativeToInstallPath,
+							filePathRelativeToInstallPath.startsWith(`https://esm.sh/`) && filePathRelativeToInstallPath.includes(`/${esmshQueryConfigs.target}/`)
+						)
+					)
 				}
 			}
 			else if (fetchUrl.includes("LoR_DD")){
 				ev.respondWith(fetch(fetchUrl))
 			}
 			else{
-				ev.respondWith(intelegentFetch(fetchUrl, filePathRelativeToURLRoot.startsWith("cdn")))
+				ev.respondWith(
+					intelegentFetch(
+						fetchUrl, 
+						filePathRelativeToURLRoot.startsWith("cdn")
+					)
+				)
 			}
 
 		}
@@ -623,16 +633,16 @@ async function intelegentFetch(req, justUseTheCache = false){
 	if (cachedAsset = await storage.match(req)){
 		let cachedEtag = cachedAsset.headers.get("etag")
 		let cachedLastMod = cachedAsset.headers.get("last-modified")
-		let cachedLength = cachedAsset.headers.get("Content-Length")
+		let cachedDate = cachedAsset.headers.get("Date")
 		cachedContents = await cachedAsset.clone().text()
 
 		if (cachedContents){
-			let remoteHeaders, attempts = 0, maxAttempts = 2
+			let headResponse, attempts = 0, maxAttempts = 2
 			// we get 3 tries to get the headers. if we dont then we assume the server's dead and just serve up the cache
 			
 			devLog(`Execution for ${requestedPath}: Start HEAD loop`)
 
-			while (!remoteHeaders && attempts < maxAttempts){
+			while (!headResponse && attempts < maxAttempts){
 				attempts++
 				let waitMs = attempts * 200
 				try{
@@ -641,35 +651,54 @@ async function intelegentFetch(req, justUseTheCache = false){
 						method: "HEAD",
 					})
 					let fetchLink = currentlyOngoingCalls.add(fetchAttempt)
-					remoteHeaders = await fetchAttempt
+					headResponse = await fetchAttempt
 					fetchLink.drop()
 				}
 				catch(uwu){
 					devLog(`Execution for ${requestedPath}: Exit HEAD on error`)
-					remoteHeaders = undefined
+					headResponse = undefined
 					return cachedAsset // error means that the network is down so we just go with the cache
 				}
 				
-				if (!remoteHeaders.ok || remoteHeaders.status >= 300 || remoteHeaders.status < 200){
+				if (!headResponse.ok || headResponse.status >= 300 || headResponse.status < 200){
 					devLog(`Execution for ${requestedPath}: Retry HEAD on bad status`)
-					remoteHeaders = undefined
+					headResponse = undefined
 					await wait(waitMs)
 					continue
 				}
 	
-				if (remoteHeaders && remoteHeaders.headers){
-					if (cachedEtag && remoteHeaders.headers.get("etag") === cachedEtag){
+				if (headResponse && headResponse.headers){
+					if (cachedEtag && headResponse.headers.get("etag") === cachedEtag){
 						devLog(`Execution for ${requestedPath}: Exit HEAD on etag equivilance`)
 						return cachedAsset
 					}
-					if (cachedLastMod && remoteHeaders.headers.get("last-modified") === cachedLastMod){
+					if (cachedLastMod && headResponse.headers.get("last-modified") === cachedLastMod){
 						devLog(`Execution for ${requestedPath}: Exit HEAD on last-modified equivilance`)
 						return cachedAsset
 					}
+					if (cachedDate && headResponse.headers.get("Date") === cachedDate){
+						devLog(`Execution for ${requestedPath}: Exit HEAD on Date equivilance`)
+						return cachedAsset
+					}
+					devLog(`Execution for ${requestedPath}: HEAD Header Data:`, {
+						etag: headResponse.headers.get("etag"),
+						"last-modified": headResponse.headers.get("last-modified"),
+						"date": headResponse.headers.get("date"),
+					})
+					headResponse.headers.forEach((val, key)=>{
+						devLog(`Execution for ${requestedPath}: HEAD Header ${key}: ${val}`)
+					})
+				}
+				else{
+					devLog(`Execution for ${requestedPath}: Retry HEAD on lack of header response`)
 				}
 			}
 
-			devLog(`Execution for ${requestedPath}: End HEAD loop`)
+			devLog(`Execution for ${requestedPath}: End HEAD loop.`, {
+				cachedEtag,
+				cachedLastMod,
+				cachedDate
+			})
 
 
 			if (attempts >= maxAttempts){
