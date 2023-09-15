@@ -57,6 +57,7 @@ export const keywords = {
     // "impact": ["impactn.png"],
     "imbue": ["imbue.png"],
     "brash": ["brash.png"],
+    "elementalskill": ["elementalskill.png"],
 }
 
 function KeywordRendererComponent(props){

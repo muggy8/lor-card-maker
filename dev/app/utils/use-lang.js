@@ -180,6 +180,7 @@ const lang = {
         "silence": "Silence",
         "trigger": "Trigger",
         "imbue": "Imbue",
+        "elementalskill": "Elemental Skill",
 
         "oled": "Black",
         "dark": "Dark",
