@@ -181,6 +181,7 @@ const lang = {
         "trigger": "Trigger",
         "imbue": "Imbue",
         "elementalskill": "Elemental Skill",
+        "elemental": "Elemental",
 
         "oled": "Black",
         "dark": "Dark",

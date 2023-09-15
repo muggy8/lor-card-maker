@@ -14,6 +14,7 @@ import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 import { AutoFitClanText } from "/Components/card-template/unit.js"
+import useLang from "/Utils/use-lang.js"
 
 const cssLoaded = loadCss("/Components/card-template/spell.css")
 
@@ -45,6 +46,7 @@ function generateCleanedKeywordSet(keywords, speed){
 const fac = new FastAverageColor()
 function SpellComponent(props){
     const globalState = useContext(Globals)
+    const translate = useLang()
 
     // figure out the background and stuff so we can have a color for the card text back
     const concurrencyManager = useRef()
@@ -230,6 +232,27 @@ function SpellComponent(props){
         else{
             props.cardDataUpdaters.power(null)
             props.cardDataUpdaters.health(null)
+        }
+
+        const elementalText = translate("elemental")
+        const elementalTextIndex = props.clan.indexOf(elementalText)
+        if (speed === "elementalskill"){
+            if (elementalTextIndex < 0){
+                props.cardDataUpdaters.clan([
+                    translate("elemental"),
+                    ...props.clan
+                ])
+            }
+        }
+        else{
+            if (elementalTextIndex > -1){
+                props.clan.splice(
+                    elementalTextIndex,
+                    1
+                )
+                
+                props.cardDataUpdaters.clan(props.clan)
+            }
         }
 
         props.cardDataUpdaters.keywords(cleanKeywords)

@@ -53,4 +53,5 @@
     font-size: 48px;
     color: var(--effect-orange-text);
     transform: translateY(-2px);
+    white-space: nowrap;
 }

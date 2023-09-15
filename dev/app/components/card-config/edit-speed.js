@@ -12,6 +12,7 @@ export const speedOptions = [
     "focus",
     "equipment",
     "skill",
+    "elementalskill",
 ]
 
 function EditSpeedComponent(props){
