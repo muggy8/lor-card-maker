@@ -24,7 +24,7 @@
 }
 
 .keyword-wrapper .contents {
-    min-width: 192.85px;
+    /* min-width: 192.85px; */
     height: 98.8px;
     /* background-image: url(/Assets/keyword/keywordmiddle.png); */
     display: inline-flex;
@@ -37,8 +37,8 @@
 }
 
 .keyword-wrapper .contents .keyword-icon {
-    width: 57px;
-    height: 57px;
+    width: 52px;
+    height: 52px;
     background-position: center;
     background-size: contain;
     background-repeat: no-repeat;

@@ -5,6 +5,7 @@ import { useRef, useLayoutEffect, useState, useEffect } from "/cdn/react"
 // import setImmediate from "/Utils/set-immediate-batch.js"
 import datauri from "/Utils/datauri.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
+import trimTransparent from "/Utils/trim-transparent.js"
 
 const cssLoaded = loadCss("/Components/card-template/keyword-renderer.css")
 
@@ -60,6 +61,32 @@ export const keywords = {
     "elementalskill": ["elementalskill.png"],
 }
 
+const trimmedIconCache = {}
+
+function trimBase64StingIcons (iconsB64){
+    const trimIconsTask = iconsB64.map(iconB64=>{
+        if (trimmedIconCache[iconB64]){
+            return trimmedIconCache[iconB64]
+        }
+
+        return trimmedIconCache[iconB64] = fetch(iconB64)
+            .then(res=>res.blob())
+            .then(createImageBitmap)
+            .then(iconBitmap=>{
+                const transparentTrimmedCanvas = trimTransparent(iconBitmap)
+                return transparentTrimmedCanvas.convertToBlob()
+            })
+            .then(trimmedIconImageBlob=>{
+                return new Promise(accept=>{
+                    const reader = new FileReader()
+                    reader.onloadend = () => accept(reader.result)
+                    reader.readAsDataURL(trimmedIconImageBlob)
+                  })
+            })
+    })
+    return Promise.all(trimIconsTask)
+}
+
 function KeywordRendererComponent(props){
     const { name, size } = props
     const icons = keywords[name] || []
@@ -80,11 +107,14 @@ function KeywordRendererComponent(props){
 
     const iconsUri = useAssetCache(updateIconsUri=>{
         if (props.icons){
-            updateIconsUri(props.icons)
+            trimBase64StingIcons(props.icons)
+                .then(updateIconsUri)
         }
         else if (icons && icons.length){
             const iconsFetch = icons.map(iconFile=>datauri(`/Assets/keyword/${iconFile}`))
-            Promise.all(iconsFetch).then(updateIconsUri)
+            Promise.all(iconsFetch)
+                .then(trimBase64StingIcons)
+                .then(updateIconsUri)
         }
     }, [props.icons], [])
 
