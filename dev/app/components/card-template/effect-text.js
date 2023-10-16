@@ -24,11 +24,19 @@ function nextTick(){
     return new Promise(accept=>setImmediate(accept))
 }
 
+function nextFrame(){
+    return new Promise(accept=>requestAnimationFrame(accept))
+}
+
+function nextAction(lowPowerMode){
+    return lowPowerMode ? nextFrame() : nextTick()
+}
+
 const currentlyRunningScalingTasks = new Map()
 
 export async function scaleFontSize(element, max = 36, min = effectTextSize){
     if (!element){
-        return nextTick()
+        return nextAction(scaleFontSize.lowPowerMode)
     }
 
     const alreadyExistingTask = currentlyRunningScalingTasks.get(element)
@@ -58,11 +66,11 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
     
                 while(upperbound - lowerBound > 0.5){
                     element.style.fontSize = `${checkSize + 0.5}px`
-                    await nextTick()
+                    await nextAction(scaleFontSize.lowPowerMode)
                     const overflowAtNextIncriment = isOverflown(element)
             
                     element.style.fontSize = `${checkSize}px`
-                    await nextTick()
+                    await nextAction(scaleFontSize.lowPowerMode)
                     const overflowAtCurrentFontsize = isOverflown(element)
             
                     if (!overflowAtCurrentFontsize && overflowAtNextIncriment){

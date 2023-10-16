@@ -3,6 +3,7 @@ import factory from "/Utils/elements.js"
 import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
 import { getSettings, saveSettings, getCardList } from "/Utils/service.js"
+import { scaleFontSize } from "/Components/card-template/effect-text.js"
 
 export const Globals = createContext({
     lang: "en",
@@ -19,6 +20,10 @@ function App (props) {
         defaultBg: true,
         settings: {}
     })
+
+    useEffect(()=>{
+        scaleFontSize.lowSpecsMode = !!globalState.settings.lowSpecsMode
+    }, [globalState.settings.lowSpecsMode])
 
     let accumulatedUpdateState = {...globalState}
     const patchGlboalState = useCallback((newState)=>{
