@@ -11,7 +11,7 @@ import { InlineIcon } from "/Components/card-template/effect-text.js"
 import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
-import { Globals } from "/Views/index.js"
+// import { Globals } from "/Views/index.js"
 import useAssetCache from "/Utils/use-asset-cache.js";
 import InputRange from "/Components/range-input.js"
 import editRarityPoc from "./edit-rarity-poc.js";
@@ -65,7 +65,7 @@ function iconEditorComponent(props){
 
     const translate = useLang()
 
-    const globals = useContext(Globals)
+    // const globals = useContext(Globals)
 
     const [hue, updateHue] = useState(0)
     const [contrast, udpateContrast] = useState(1.5)
@@ -485,19 +485,6 @@ function iconEditorComponent(props){
                             ),
                         ),
 
-                        div(
-                            { className: "flex gutter-t-.5" },
-                            button(
-                                { className: "box gutter-trbl-1", onClick: useUploadedIcon, [uploadReady ? "" : "disabled" ]: true },
-                                uploadReady ? translate("use_icon") : div({className: "icon loading"})
-                            ),
-                            div({ className: "gutter-r-.5" }),
-                            button(
-                                { className: "gutter-trbl-1", onClick: cancelUpload},
-                                translate("cancel")
-                            )
-                        ),
-
                         pocPowerFrame 
                             ? div(
                                 { className: "gutter-tb" },
@@ -536,6 +523,19 @@ function iconEditorComponent(props){
                             ) 
                             : undefined 
                         ,
+
+                        div(
+                            { className: "flex gutter-t-.5" },
+                            button(
+                                { className: "box gutter-trbl-1", onClick: useUploadedIcon, [uploadReady ? "" : "disabled" ]: true },
+                                uploadReady ? translate("use_icon") : div({className: "icon loading"})
+                            ),
+                            div({ className: "gutter-r-.5" }),
+                            button(
+                                { className: "gutter-trbl-1", onClick: cancelUpload},
+                                translate("cancel")
+                            )
+                        ),
                     )
                     : undefined
                 ,
