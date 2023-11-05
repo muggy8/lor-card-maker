@@ -12,10 +12,9 @@ import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
-import useToggle from "/Utils/use-toggle.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
-import editRarity from "./edit-rarity.js";
 import InputRange from "/Components/range-input.js"
+import editRarityPoc from "./edit-rarity-poc.js";
 
 loadCss("/Components/card-config/edit-icon.css")
 
@@ -175,7 +174,7 @@ function iconEditorComponent(props){
     }, [])
     const [
         pocPowerFrame, pocPowerFrameCover, 
-        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing,
+        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing, pocPowerSpecialRing,
         pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
 
         pocRelicFrame,
@@ -192,6 +191,7 @@ function iconEditorComponent(props){
             datauri("/Assets/keyword/poc-frame-overlay-rare.png"),
             datauri("/Assets/keyword/poc-frame-overlay-epic.png"),
             datauri("/Assets/keyword/poc-frame-overlay-legendary.png"),
+            datauri("/Assets/keyword/poc-frame-overlay-special.png"),
             
             datauri("/Assets/keyword/poc-common.png"),
             datauri("/Assets/keyword/poc-rare.png"),
@@ -239,19 +239,20 @@ function iconEditorComponent(props){
                                 (pocRarity === "common" && pocPowerCommonRing) ||
                                 (pocRarity === "rare" && pocPowerRareRing) ||
                                 (pocRarity === "epic" && pocPowerEpicRing) ||
-                                (pocRarity === "champion" && pocPowerLegendaryRing) ||
+                                (pocRarity === "legendary" && pocPowerLegendaryRing) ||
+                                (pocRarity === "special" && pocPowerSpecialRing) ||
                                 ""
                             })`
                         }
                     }),
                     div({
-                        className: "poc-icon poc-gem",
+                        className: `poc-icon poc-gem poc-gem-${pocRarity}`,
                         style: {
                             backgroundImage: `url(${
                                 (pocRarity === "common" && pocCommonGem) ||
                                 (pocRarity === "rare" && pocRareGem) ||
                                 (pocRarity === "epic" && pocEpicGem) ||
-                                (pocRarity === "champion" && pocLegendaryGem) ||
+                                (pocRarity === "legendary" && pocLegendaryGem) ||
                                 (pocRarity === "special" && pocSpecialGem) ||
                                 ""
                             })`
@@ -264,7 +265,7 @@ function iconEditorComponent(props){
     }, [
         pocRarity,
         pocPowerFrame, pocPowerFrameCover, 
-        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing,
+        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing, pocPowerSpecialRing,
         pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
     ])
 
@@ -278,7 +279,7 @@ function iconEditorComponent(props){
                             (pocRarity === "common" && pocRelicCommonRing) ||
                             (pocRarity === "rare" && pocRelicRareRing) ||
                             (pocRarity === "epic" && pocRelicEpicRing) ||
-                            (pocRarity === "champion" && pocRelicLegendaryRing) ||
+                            (pocRarity === "legendary" && pocRelicLegendaryRing) ||
                             (pocRarity === "special" && pocRelicSpecialRing) ||
                             ""
                         })`
@@ -294,13 +295,13 @@ function iconEditorComponent(props){
             }),
             pocRarity
                 ? div({
-                    className: "poc-icon poc-gem relic",
+                    className: `poc-icon poc-gem poc-gem-${pocRarity} relic`,
                     style: {
                         backgroundImage: `url(${
                             (pocRarity === "common" && pocCommonGem) ||
                             (pocRarity === "rare" && pocRareGem) ||
                             (pocRarity === "epic" && pocEpicGem) ||
-                            (pocRarity === "champion" && pocLegendaryGem) ||
+                            (pocRarity === "legendary" && pocLegendaryGem) ||
                             (pocRarity === "special" && pocSpecialGem) ||
                             ""
                         })`
@@ -332,20 +333,20 @@ function iconEditorComponent(props){
                                 (pocRarity === "common" && pocItemCommonRing) ||
                                 (pocRarity === "rare" && pocItemRareRing) ||
                                 (pocRarity === "epic" && pocItemEpicRing) ||
-                                (pocRarity === "champion" && pocItemLegendaryRing) ||
+                                (pocRarity === "legendary" && pocItemLegendaryRing) ||
                                 (pocRarity === "special" && pocItemSpecialRing) ||
                                 ""
                             })`
                         }
                     }),
                     div({
-                        className: "poc-icon poc-gem item",
+                        className: `poc-icon poc-gem poc-gem-${pocRarity} item`,
                         style: {
                             backgroundImage: `url(${
                                 (pocRarity === "common" && pocCommonGem) ||
                                 (pocRarity === "rare" && pocRareGem) ||
                                 (pocRarity === "epic" && pocEpicGem) ||
-                                (pocRarity === "champion" && pocLegendaryGem) ||
+                                (pocRarity === "legendary" && pocLegendaryGem) ||
                                 (pocRarity === "special" && pocSpecialGem) ||
                                 ""
                             })`
@@ -528,7 +529,7 @@ function iconEditorComponent(props){
 
                         pocMode 
                             ? fragment(
-                                editRarity({
+                                editRarityPoc({
                                     value: pocRarity,
                                     updateValue: updatePocRarity,
                                 })

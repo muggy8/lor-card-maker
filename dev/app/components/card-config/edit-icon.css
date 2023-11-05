@@ -109,6 +109,12 @@
 .poc-icon.poc-gem.relic {
     background-position-y: 96%;
 }
+.poc-icon.poc-gem.poc-gem-special.relic {
+    background-position-y: 96%;
+}
 .poc-icon.poc-gem.item {
     background-position-y: 102%;
+}
+.poc-icon.poc-gem.poc-gem-special.item {
+    background-position-y: 100%;
 }
