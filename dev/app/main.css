@@ -31,7 +31,7 @@ svg, html {
 	--effect-orange-text: hsl(47, 94%, 67%);
 	--effect-orange-text-outline: hsla(47, 94%, 67%, 0.7);
 	--effect-white-text: #fff;
-	--effect-white-text-outline: #000;
+	--effect-white-text-outline: #444;
 	--text-outline: var(--effect-white-text-outline);
 }
 
