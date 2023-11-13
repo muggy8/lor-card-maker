@@ -86,6 +86,9 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
                         checkSize = avg(upperbound, lowerBound)
                     }
                 }
+
+                await nextAction(scaleFontSize.lowPowerMode)
+                element.style.fontSize = `${Math.floor(checkSize)}px`
     
                 accept()
             })()
