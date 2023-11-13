@@ -63,6 +63,13 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
                 else if (checkSize < lowerBound){
                     checkSize = lowerBound
                 }
+
+                async function finish(){
+                    await nextAction(scaleFontSize.lowPowerMode)
+                    element.style.fontSize = `${Math.floor(checkSize)}px`
+                    
+                    return accept()
+                }
     
                 while(upperbound - lowerBound > 0.5){
                     element.style.fontSize = `${checkSize + 0.5}px`
@@ -74,7 +81,7 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
                     const overflowAtCurrentFontsize = isOverflown(element)
             
                     if (!overflowAtCurrentFontsize && overflowAtNextIncriment){
-                        return accept()
+                        return finish()
                     }
             
                     if (overflowAtCurrentFontsize){
@@ -87,10 +94,7 @@ export async function scaleFontSize(element, max = 36, min = effectTextSize){
                     }
                 }
 
-                await nextAction(scaleFontSize.lowPowerMode)
-                element.style.fontSize = `${Math.floor(checkSize)}px`
-    
-                accept()
+                return finish()
             })()
         })
     }
