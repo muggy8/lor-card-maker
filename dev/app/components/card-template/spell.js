@@ -394,14 +394,14 @@ function SpellComponent(props){
                 typeof props.power === "number"
                     ? div(
                         { className: "power fitty-nowrap card-text-bold card-text-outline", ref: powerRef },
-                        props.power || 0
+                        ((props.power && (props.power > 0)) ? "+" : "") + (props.power || 0)
                     )
                     : undefined
                 ,
                 typeof props.health === "number"
                     ? div(
                         { className: "health fitty-nowrap card-text-bold card-text-outline", ref: healthRef },
-                        props.health || 0
+                        ((props.health && (props.health > 0)) ? "+" : "") + (props.health || 0)
                     )
                     : undefined
                 ,
