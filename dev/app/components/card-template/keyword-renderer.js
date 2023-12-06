@@ -53,12 +53,14 @@ export const keywords = {
     "immobile": [ "cantattack.png", "cantblock.png" ],
     "trap": [],
     "boon": [],
-    "silence": ["silence.png"],
-    "trigger": ["trigger.png"],
+    "silence": [ "silence.png" ],
+    "trigger": [ "trigger.png" ],
     // "impact": ["impactn.png"],
-    "imbue": ["imbue.png"],
-    "brash": ["brash.png"],
-    "elementalskill": ["elementalskill.png"],
+    "imbue": [ "imbue.png" ],
+    "brash": [ "brash.png" ],
+    "elementalskill": ["elementalskill.png" ],
+    "curse": [ "curse.png" ],
+    "deathless": ["deathless.png" ],
 }
 
 const trimmedIconCache = {}

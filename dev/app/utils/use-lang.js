@@ -182,6 +182,8 @@ const lang = {
         "imbue": "Imbue",
         "elementalskill": "Elemental Skill",
         "elemental": "Elemental",
+        "deathless": "Deathless",
+        "curse": "Curse",
 
         "oled": "Black",
         "dark": "Dark",
