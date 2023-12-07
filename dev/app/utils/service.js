@@ -111,6 +111,58 @@ export async function getLatestRitoData(query = {}){
 	return coreData
 }
 
+export async function getRitoPoCItemRelicData(query = {}){
+	return fetch("/pseudo-api/game-data/poc-item-relic-list/" + createQueryString(query)).then(res=>res.json())
+}
+
+export function patchRitoPocItemRelic(updatedData){
+	return new Promise((accept, reject)=>{
+		patchManager.sequential(async ()=>{
+			const currentData = await getRitoPoCItemRelicData()
+			const newData = {
+				...currentData,
+				...updatedData,
+			}
+
+			return fetch("/pseudo-api/game-data/poc-item-relic-list/", {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(newData)
+			}).then(accept, reject)
+		})
+	})
+}
+
+export async function getLatestPoCData(query = {}){
+	query.t = Date.now()
+	const queryString = createQueryString(query)
+
+	const itemDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/items-en_us.json" + queryString
+	const relicDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/relics-en_us.json" + queryString
+
+	const [itemData, relicData] = await Promise.all([
+		fetch(itemDataUrl).then(res=>res.json()),
+		fetch(relicDataUrl).then(res=>res.json()),
+	])
+
+	Array.prototype.forEach.call(itemData, item=>{
+		item.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/en_us/${item.itemCode}.png${queryString}`
+		item.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/en_us/${item.itemCode}-full.png${queryString}`
+	})
+
+	Array.prototype.forEach.call(relicData, relic=>{
+		relic.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}.png${queryString}`
+		relic.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}-full.png${queryString}`
+	})
+
+	return {
+		items: itemData,
+		relics: relicData,
+	}
+}
+
 const ritoCardImageCache = {}
 export function getRitoCardImage(setCode, cardCode, query = {}){
 	if (ritoCardImageCache[setCode] && ritoCardImageCache[setCode][cardCode]){

@@ -118,6 +118,7 @@ const cardDataPath = "pseudo-api/card/"
 const settingsPath = "pseudo-api/settings/"
 const backupPath = "pseudo-api/backup/"
 const gameDataListPath = "pseudo-api/game-data/card-list/"
+const gameDataPoCItemRelicPath = "pseudo-api/game-data/poc-item-relic-list/"
 const clearCachePath = "pseudo-api/clear-cache/"
 const ritoUrl = "pvp.net"
 
@@ -188,7 +189,7 @@ self.addEventListener("fetch", function(ev){
 					ev.respondWith(saveSettings(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
-				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
+				else if (filePathRelativeToURLRoot.includes(gameDataListPath) || filePathRelativeToURLRoot.includes(gameDataPoCItemRelicPath)){
 					ev.respondWith(saveRitoCardList(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
@@ -206,7 +207,7 @@ self.addEventListener("fetch", function(ev){
 					ev.respondWith(getSettings(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
-				else if (filePathRelativeToURLRoot.includes(gameDataListPath)){
+				else if (filePathRelativeToURLRoot.includes(gameDataListPath) || filePathRelativeToURLRoot.includes(gameDataPoCItemRelicPath)){
 					ev.respondWith(getRitoCardList(ev.request, filePathRelativeToURLRoot))
 					responded = true
 				}
