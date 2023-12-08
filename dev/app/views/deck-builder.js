@@ -1,6 +1,6 @@
 import factory, { div, strong, button, nav, section, label } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
-import { getRitoCards, patchRitoCards, getLatestRitoData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
+import { getRitoCards, patchRitoCards, getLatestRitoData, getRitoPoCItemRelic, patchRitoPocItemRelic, getLatestPoCItemRelicData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import { isMobile } from '/cdn/react-device-detect'
 
 import loadCss from "/Utils/load-css.js"
@@ -100,6 +100,8 @@ const defaultDeck = {
 	name: "",
 	showDeckStats: true,
 	includeAssociated: false,
+	showPocItems: false,
+	showAssociatedCards: false,
 	dataVersion: 2,
 	fileName: "",
 }
@@ -141,6 +143,10 @@ function deckBuilderComponenet(){
 	const toggleIncludeAssociatedCards = useCallback(()=>{
 		patchDeck({ includeAssociated: !deck.includeAssociated })
 	}, [patchDeck, deck.includeAssociated])
+
+	const toggleShowPocItems = useCallback(()=>{
+		patchDeck({ showPocItems: !deck.showPocItems })
+	}, [patchDeck, deck.showPocItems])
 
 	const deckCardsListOrder = useAssetCache(updateList=>{
 		const listOrder = [
@@ -646,6 +652,37 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
 
+	// functionality for managing the PoC related stuff of the decklist.
+	const chooseSticker = useCallback(card=>{}, [])
+	const addSticker = useCallback((card, sticker)=>{
+		const cardId = card.id || card.cardCode || card.url
+
+		let existingData = selectedCards.current.get(cardId)
+
+		if (!existingData){
+			return
+		}
+
+		if (!existingData.stickers){
+			existingData.stickers = []
+		}
+
+		existingData.stickers.push(sticker)
+
+		updateRenderedDeck()
+	}, [updateRenderedDeck])
+	const removeSticker = useCallback((card, sticker)=>{
+		const cardId = card.id || card.cardCode || card.url
+
+		let existingData = selectedCards.current.get(cardId)
+
+		if (!existingData || !existingData.stickers){
+			return
+		}
+
+		updateRenderedDeck()
+	}, [updateRenderedDeck])
+
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
     const [useableWidth, updateUseableWidth] = useState(0)
@@ -733,6 +770,8 @@ function deckBuilderComponenet(){
 		saveCard(newId, deck).then(doneSaving, doneSaving)
 		patchDeck({id: newId})
 	}, [!canSave || isSaving, deck, patchDeck])
+
+	console.log(deckCardsListOrder)
 
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
@@ -1001,29 +1040,46 @@ function deckBuilderComponenet(){
 									updateValue: toggleIncludeAssociatedCards
 								}),
 							),
+							
+							div(
+								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+								EditCheckbox({
+									label: translate("show_poc_items"),
+									value: deck.showPocItems, 
+									updateValue: toggleShowPocItems
+								}),
+							),
 
 							(deckCardsListOrder || []).map(cardMeta=>cardMeta
-								? div(
-									{ className: "flex gutter-b", key: cardMeta.card.id || cardMeta.card.cardCode || cardMeta.card.url },
-
-									isExternalImage(cardMeta.card) 
-										? div(
-											{ className: "box-9 gutter-rl" },
-											ExternalCustomCard(cardMeta.card)
-										)
-										: cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name)
-									,
-
+								? div( {className: deck.showPocItems ? "gutter-b" : "gutter-b-.5", key: cardMeta.card.id || cardMeta.card.cardCode || cardMeta.card.url },
 									div(
-										{ className: `box-3 flex no-wrap ${ isExternalImage(cardMeta.card) ? "vcenter" : "" }` },
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
-											div({ className: "icon plus" })
-										),
-										div({ className: "gutter-rl-.25" }),
-										button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
-											div({ className: "icon minus" })
+										{ className: "flex gutter-b-.5"},
+
+										isExternalImage(cardMeta.card) 
+											? div(
+												{ className: "box-9 gutter-rl" },
+												ExternalCustomCard(cardMeta.card)
+											)
+											: cardName({ card: cardMeta.card, className: "box-9" }, cardMeta.card.name)
+										,
+
+										div(
+											{ className: `box-3 flex no-wrap ${ isExternalImage(cardMeta.card) ? "vcenter" : "" }` },
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>addCard(cardMeta.card) }, 
+												div({ className: "icon plus" })
+											),
+											div({ className: "gutter-rl-.25" }),
+											button({ className: "grow gutter-trbl-.5", onClick: ()=>removeCard(cardMeta.card) }, 
+												div({ className: "icon minus" })
+											),
 										),
 									),
+									deck.showPocItems 
+										? div(
+											{ className: "flex" },
+
+										) 
+										: undefined
 								)
 								:undefined
 							)

@@ -111,14 +111,14 @@ export async function getLatestRitoData(query = {}){
 	return coreData
 }
 
-export async function getRitoPoCItemRelicData(query = {}){
+export async function getRitoPoCItemRelic(query = {}){
 	return fetch("/pseudo-api/game-data/poc-item-relic-list/" + createQueryString(query)).then(res=>res.json())
 }
 
 export function patchRitoPocItemRelic(updatedData){
 	return new Promise((accept, reject)=>{
 		patchManager.sequential(async ()=>{
-			const currentData = await getRitoPoCItemRelicData()
+			const currentData = await getRitoPoCItemRelic()
 			const newData = {
 				...currentData,
 				...updatedData,
@@ -135,7 +135,7 @@ export function patchRitoPocItemRelic(updatedData){
 	})
 }
 
-export async function getLatestPoCData(query = {}){
+export async function getLatestPoCItemRelicData(query = {}){
 	query.t = Date.now()
 	const queryString = createQueryString(query)
 

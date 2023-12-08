@@ -220,6 +220,7 @@ const lang = {
         "official_cards": "Official Cards",
         "custom_cards": "Custom Cards",
         "currently_selected_cards": "Current Deck",
+        "show_poc_items": "Show PoC Item Slots",
         "deck_size": "Deck Size",
         "deck": "Deck",
         "deck_name": "Deck Name",
