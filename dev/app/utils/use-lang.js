@@ -130,7 +130,7 @@ const lang = {
         "default_bg_show": "Show Default Background",
         "default_bg_hide": "Hide Default Background",
         "insert_icon_instruction": "Right-Click or Long-Press to insert icons",
-        "confirm_delete": "Are you sure youw ant to delete this card?",
+        "confirm_delete": "Are you sure you want to delete this card?",
         "join_discord": "Join Discord Server",
         "on": "On",
         "off": "Off",

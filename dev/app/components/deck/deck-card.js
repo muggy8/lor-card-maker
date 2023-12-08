@@ -39,6 +39,10 @@ function deckCardComponent(props){
         }
         else {
             getCard(props.card.id).then(card=>{
+                if (!Object.keys(card).length){
+                    // if we cant find the card via our fake api. it's likely because the card got deleted so we'll just use the saved version as backup
+                    card = props.card
+                }
                 const cardSvg = InDeckCustomCard(card)
                 const cardShadow = InDeckCustomCard({
                     ...card,

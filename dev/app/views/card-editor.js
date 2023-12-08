@@ -185,6 +185,9 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                                 {
                                     className: `gutter-trbl-.5 ${card.id ? undefined : "hide"}` ,
                                     onClick: ()=>{
+                                        if (!confirm(translate("confirm_delete"))){
+                                            return
+                                        }
                                         deleteCard(card.id).then(()=>{
                                             document.location.reload()
                                         })
