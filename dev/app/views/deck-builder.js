@@ -1,7 +1,6 @@
 import factory, { div, strong, button, nav, section, label, fragment, img } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getRitoPoCItemRelic, patchRitoPocItemRelic, getLatestPoCItemRelicData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
-import { isMobile } from '/cdn/react-device-detect'
 
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
@@ -13,7 +12,6 @@ import deckView from "/Components/deck/deck-view.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import customCardsFiltersUi from "/Components/deck/custom-cards-filters-ui.js"
 import debounceFunction from "/Utils/debounce-function.js"
-import saveSvgAsPng from "/cdn/save-svg-as-png"
 import { svgRefference } from "/Views/card-editor.js"
 import { Globals } from "/Views/index.js"
 import editName from "/Components/card-config/edit-name.js"
@@ -23,6 +21,9 @@ import exportFromApp from "/Components/export.js"
 import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 import EditFileName from "/Components/card-config/edit-file-name.js"
 import datauri from "/Utils/datauri.js"
+import reactModal from "/cdn/react-modal"
+
+const modal = factory(reactModal)
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -653,25 +654,49 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
 
+	// functionality for getting all the PoC stuff to show properly
+	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState([])
+	useEffect(()=>{
+		getRitoPoCItemRelic().then(updateRitoPoCItemReics)
+	}, [])
+
+	const [ritoPoCLoading, updateRitoPoCLoading] = useState(false)
+	const refreshRitoPocItemRelics = useCallback(()=>{
+		if (ritoPoCLoading){
+            return
+        }
+		updateRitoPoCLoading(true)
+		getLatestPoCItemRelicData().then(async ritoPocData => {
+			await patchRitoPocItemRelic(ritoPocData)
+			updateRitoPoCItemReics(ritoPocData)
+			updateRitoPoCLoading(false)
+		})
+	}, [ritoPoCLoading])
+
 	// functionality for managing the PoC related stuff of the decklist.
-	const chooseSticker = useCallback(card=>{}, [])
-	const addSticker = useCallback((card, sticker)=>{
-		const cardId = card.id || card.cardCode || card.url
-
-		let existingData = selectedCards.current.get(cardId)
-
-		if (!existingData){
-			return
-		}
-
-		if (!existingData.stickers){
-			existingData.stickers = []
-		}
-
-		existingData.stickers.push(sticker)
-
-		updateRenderedDeck()
-	}, [updateRenderedDeck])
+	const [showPoCStickerModal, updateShowPoCStickerModal] = useState(false)
+	const [addSticker, updateAddSticker] = useState()
+	const chooseSticker = useCallback(card=>{
+		updateAddSticker((sticker)=>{
+			const cardId = card.id || card.cardCode || card.url
+	
+			let existingData = selectedCards.current.get(cardId)
+	
+			if (!existingData){
+				return
+			}
+	
+			if (!existingData.stickers){
+				existingData.stickers = []
+			}
+	
+			existingData.stickers.push(sticker)
+	
+			updateRenderedDeck()
+			updateShowPoCStickerModal(false)
+		})
+		updateShowPoCStickerModal(true)
+	}, [])
 	const removeSticker = useCallback((card, sticker)=>{
 		const cardId = card.id || card.cardCode || card.url
 
@@ -1086,8 +1111,9 @@ function deckBuilderComponenet(){
 											div(
 												{ className: "flex" },
 												img({
-													className: "box-2",
-													src: stickerSlotUri
+													className: "box-2 clickable",
+													src: stickerSlotUri,
+													onClick: chooseSticker
 												})
 											)
 										) 
@@ -1121,6 +1147,18 @@ function deckBuilderComponenet(){
 					: undefined
 				,
 			),
+		),
+		modal(
+			{
+				isOpen: showPoCStickerModal,
+				contentLabel: "Select PoC Items or Relics",
+				className: "poc-item-relic-modal",
+           		overlayClassName: "poc-item-relic-overlay",
+				shouldCloseOnOverlayClick: true,
+				onRequestClose: ()=>updateShowPoCStickerModal(false),
+				ariaHideApp: false,
+			},
+			
 		)
 	)
 }

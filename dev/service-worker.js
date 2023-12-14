@@ -67,6 +67,10 @@ const pathMap = {
 			url: "https://esm.sh/react-select@5.6.0",
 			query: esmshQueryConfigs,
 		},
+		"react-modal": {
+			url: "https://esm.sh/react-modal@3.16.1",
+			query: esmshQueryConfigs,
+		},
 		"usecontextmenu-react": {
 			url: "https://esm.sh/usecontextmenu-react@1.0.3",
 			query: esmshQueryConfigs,
