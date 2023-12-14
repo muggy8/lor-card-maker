@@ -19,7 +19,6 @@
 }
 
 #deck-builder .card-list-options .tab-header {
-    border: solid 1px var(--color-clear);
     border-bottom: solid 1px var(--color-border);
 }
 

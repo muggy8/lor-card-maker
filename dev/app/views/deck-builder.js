@@ -1,4 +1,4 @@
-import factory, { div, strong, button, nav, section, label } from "/Utils/elements.js"
+import factory, { div, strong, button, nav, section, label, fragment, img } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData, getRitoPoCItemRelic, patchRitoPocItemRelic, getLatestPoCItemRelicData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
 import { isMobile } from '/cdn/react-device-detect'
@@ -22,6 +22,7 @@ import { ExternalCustomCard, isExternalImage } from "/Components/deck/deck-card.
 import exportFromApp from "/Components/export.js"
 import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 import EditFileName from "/Components/card-config/edit-file-name.js"
+import datauri from "/Utils/datauri.js"
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
 
@@ -682,6 +683,9 @@ function deckBuilderComponenet(){
 
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
+	const stickerSlotUri = useAssetCache(updateStickerSlotUri=>{
+		datauri("/Assets/poc/empty-sticker-epic.png").then(updateStickerSlotUri)
+	}, [])
 
 	// copy paste more code for managing the preview view
 	const fixedDisplayRef = useRef()
@@ -770,8 +774,6 @@ function deckBuilderComponenet(){
 		saveCard(newId, deck).then(doneSaving, doneSaving)
 		patchDeck({id: newId})
 	}, [!canSave || isSaving, deck, patchDeck])
-
-	console.log(deckCardsListOrder)
 
 	return section(
 		{ id: "deck-builder", className: "flex hcenter gutter-t-2" },
@@ -1080,9 +1082,14 @@ function deckBuilderComponenet(){
 										),
 									),
 									deck.showPocItems 
-										? div(
-											{ className: "flex" },
-
+										? fragment(
+											div(
+												{ className: "flex" },
+												img({
+													className: "box-2",
+													src: stickerSlotUri
+												})
+											)
 										) 
 										: undefined
 								)

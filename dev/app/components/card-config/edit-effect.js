@@ -226,7 +226,7 @@ function EditEffectComponent(props){
 					onContextMenu: (...args)=>{
 						onContextMenu(...args)
 						updateMenuOpen(true)
-					}
+					},
 				}),
 			),
         ),
