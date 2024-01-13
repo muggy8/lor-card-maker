@@ -22,6 +22,7 @@ import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 import EditFileName from "/Components/card-config/edit-file-name.js"
 import datauri from "/Utils/datauri.js"
 import reactModal from "/cdn/react-modal"
+import pocRelicItemSelectionModalIcon from "/Components/deck/poc-relic-item-selection-modal-icon.js"
 
 const modal = factory(reactModal)
 
@@ -655,7 +656,7 @@ function deckBuilderComponenet(){
 	}, [updateRenderedDeck])
 
 	// functionality for getting all the PoC stuff to show properly
-	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState([])
+	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState({items: [], relics: []})
 	useEffect(()=>{
 		getRitoPoCItemRelic().then(updateRitoPoCItemReics)
 	}, [])
@@ -1152,13 +1153,51 @@ function deckBuilderComponenet(){
 			{
 				isOpen: showPoCStickerModal,
 				contentLabel: "Select PoC Items or Relics",
-				className: "poc-item-relic-modal",
+				className: "poc-item-relic-modal gutter-trbl",
            		overlayClassName: "poc-item-relic-overlay",
 				shouldCloseOnOverlayClick: true,
 				onRequestClose: ()=>updateShowPoCStickerModal(false),
 				ariaHideApp: false,
 			},
-			
+			// ritoPocItemRelics.map(),
+			div(
+				{ className: "flex gutter-b" },
+				button(
+					{ 
+						className: "gutter-trbl-.5 grow",
+						onClick: refreshRitoPocItemRelics
+					},
+					ritoPocItemRelics.relics.length || ritoPocItemRelics.items.length
+						? translate("refresh_rito_data")
+						: translate("load_rito_data")
+				)
+			),
+			ritoPocItemRelics.relics.length
+				? div(
+					div({ className: "text-center gutter-t gutter-b-.5" },
+						strong(
+							translate("relic")
+						)
+					),
+					div({ className: "flex" }, 
+						ritoPocItemRelics.relics.map(relic=>pocRelicItemSelectionModalIcon({ ...relic, key: relic.relicCode }))
+					),
+				)
+				: undefined
+			,
+			ritoPocItemRelics.items.length
+				? div(
+					div({ className: "text-center gutter-t gutter-b-.5" },
+						strong(
+							translate("item")
+						)
+					),
+					div({ className: "flex" }, 
+						ritoPocItemRelics.items.map(item=>pocRelicItemSelectionModalIcon({ ...item, key: item.itemCode }))
+					),
+				)
+				: undefined
+			,
 		)
 	)
 }

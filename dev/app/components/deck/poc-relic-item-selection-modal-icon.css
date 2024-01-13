@@ -1,0 +1,28 @@
+.poc-relic-item-selection-modal-icon-box.loading {
+    position: relative;
+}
+
+.poc-relic-item-selection-modal-icon-box.loading.square::before {
+    display: block;
+    content: " ";
+    padding-bottom: 100%
+}
+.poc-relic-item-selection-modal-icon-box.loading.rectangle::before {
+    display: block;
+    content: " ";
+    padding-bottom: 45%
+}
+
+.poc-relic-item-selection-modal-icon-box .loading-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+}
+
+.poc-relic-item-selection-modal-icon-box.image-background {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
