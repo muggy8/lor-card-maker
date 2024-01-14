@@ -698,7 +698,7 @@ function deckBuilderComponenet(){
 		})
 		updateShowPoCStickerModal(true)
 	}, [updateRenderedDeck])
-	const removeSticker = useCallback((card, sticker)=>{
+	const removeSticker = useCallback((card, stickerIndex)=>{
 		const cardId = card.id || card.cardCode || card.url
 
 		let existingData = selectedCards.current.get(cardId)
@@ -706,6 +706,8 @@ function deckBuilderComponenet(){
 		if (!existingData || !existingData.stickers){
 			return
 		}
+
+		existingData.stickers.splice(stickerIndex, 1)
 
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
@@ -1112,12 +1114,19 @@ function deckBuilderComponenet(){
 											div(
 												{ className: "flex" },
 												cardMeta.stickers
-													? Array.prototype.map.call(cardMeta.stickers, (sticker)=>div(
+													? Array.prototype.map.call(cardMeta.stickers, (sticker, index)=>div(
 														{ 
-															className: "box-2",
-															key: sticker.itemCode,
+															className: "box-2 text-center",
+															key: sticker.itemCode || sticker.relicCode,
 														},
-														RelicItemRitoIcon(sticker)
+														RelicItemRitoIcon(sticker),
+														button(
+															{ 
+																className: "gutter-trbl-.5 clickable",
+																onClick: ()=>removeSticker(cardMeta.card, index)
+															},
+															div({ className: "icon multiply" })
+														)
 													))
 													: undefined
 												,

@@ -5,15 +5,11 @@
     position: relative;
 }
 
-.poc-relic-item-selection-modal-icon-box.square::before {
-    display: block;
-    content: " ";
-    padding-bottom: 100%
+.poc-relic-item-selection-modal-icon-box.square {
+    padding-top: 100%
 }
-.poc-relic-item-selection-modal-icon-box.rectangle::before {
-    display: block;
-    content: " ";
-    padding-bottom: 45%
+.poc-relic-item-selection-modal-icon-box.rectangle {
+    padding-top: 45%
 }
 
 .poc-relic-item-selection-modal-icon-box .loading-placeholder {

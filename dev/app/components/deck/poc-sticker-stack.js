@@ -20,7 +20,10 @@ function pocStickerStack(props){
                 width: 256,
                 height: props.stickers.length * 256,
             },
-            props.stickers.map(sticker=>RelicItemRitoIcon(sticker))            
+            props.stickers.map(sticker=>RelicItemRitoIcon({
+                ...sticker,
+                key: sticker.itemCode || sticker.relicCode,
+            }))
         )
     )
 }
