@@ -22,7 +22,7 @@ import EditCheckbox from "/Components/card-config/edit-checkbox.js"
 import EditFileName from "/Components/card-config/edit-file-name.js"
 import datauri from "/Utils/datauri.js"
 import reactModal from "/cdn/react-modal"
-import pocRelicItemSelectionModalIcon from "/Components/deck/poc-relic-item-selection-modal-icon.js"
+import pocRelicItemSelectionModalIcon, { RelicItemRitoIcon } from "/Components/deck/poc-relic-item-selection-modal-icon.js"
 
 const modal = factory(reactModal)
 
@@ -676,9 +676,9 @@ function deckBuilderComponenet(){
 
 	// functionality for managing the PoC related stuff of the decklist.
 	const [showPoCStickerModal, updateShowPoCStickerModal] = useState(false)
-	const [addSticker, updateAddSticker] = useState()
+	const [addSticker, updateAddSticker] = useState(()=>console.log) // a callback to add the sticker. this changes each time the modal is opened.
 	const chooseSticker = useCallback(card=>{
-		updateAddSticker((sticker)=>{
+		updateAddSticker(()=>(sticker)=>{ // react allows updating the value of a state with a function that gets called. in order to store a function in the state, we need to create a function that returns a function.
 			const cardId = card.id || card.cardCode || card.url
 	
 			let existingData = selectedCards.current.get(cardId)
@@ -697,7 +697,7 @@ function deckBuilderComponenet(){
 			updateShowPoCStickerModal(false)
 		})
 		updateShowPoCStickerModal(true)
-	}, [])
+	}, [updateRenderedDeck])
 	const removeSticker = useCallback((card, sticker)=>{
 		const cardId = card.id || card.cardCode || card.url
 
@@ -1111,11 +1111,24 @@ function deckBuilderComponenet(){
 										? fragment(
 											div(
 												{ className: "flex" },
-												img({
-													className: "box-2 clickable",
-													src: stickerSlotUri,
-													onClick: chooseSticker
-												})
+												cardMeta.stickers
+													? Array.prototype.map.call(cardMeta.stickers, (sticker)=>div(
+														{ 
+															className: "box-2",
+															key: sticker.itemCode,
+														},
+														RelicItemRitoIcon(sticker)
+													))
+													: undefined
+												,
+												div(
+													{ className: "box-2 clickable", }, 
+													RelicItemRitoIcon({
+														url: stickerSlotUri,
+														urlFull: stickerSlotUri,
+														onClick: ()=>chooseSticker(cardMeta.card)
+													})
+												)
 											)
 										) 
 										: undefined
@@ -1180,7 +1193,13 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPocItemRelics.relics.map(relic=>pocRelicItemSelectionModalIcon({ ...relic, key: relic.relicCode }))
+						ritoPocItemRelics.relics.map(relic=>(
+							pocRelicItemSelectionModalIcon({ 
+								...relic, 
+								onClick: ()=>addSticker(relic),
+								key: relic.relicCode,
+							})
+						))
 					),
 				)
 				: undefined
@@ -1193,7 +1212,13 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPocItemRelics.items.map(item=>pocRelicItemSelectionModalIcon({ ...item, key: item.itemCode }))
+						ritoPocItemRelics.items.map(item=>(
+							pocRelicItemSelectionModalIcon({ 
+								...item, 
+								onClick: ()=>addSticker(item),
+								key: item.itemCode,
+							})
+						))
 					),
 				)
 				: undefined

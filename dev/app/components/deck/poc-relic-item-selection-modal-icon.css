@@ -1,13 +1,16 @@
+.poc-relic-item-selection-modal-icon-box {
+    width: 100%;
+}
 .poc-relic-item-selection-modal-icon-box.loading {
     position: relative;
 }
 
-.poc-relic-item-selection-modal-icon-box.loading.square::before {
+.poc-relic-item-selection-modal-icon-box.square::before {
     display: block;
     content: " ";
     padding-bottom: 100%
 }
-.poc-relic-item-selection-modal-icon-box.loading.rectangle::before {
+.poc-relic-item-selection-modal-icon-box.rectangle::before {
     display: block;
     content: " ";
     padding-bottom: 45%

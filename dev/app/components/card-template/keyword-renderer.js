@@ -65,26 +65,30 @@ export const keywords = {
 
 const trimmedIconCache = {}
 
-function trimBase64StingIcons (iconsB64){
-    const trimIconsTask = iconsB64.map(iconB64=>{
-        if (trimmedIconCache[iconB64]){
-            return trimmedIconCache[iconB64]
-        }
+export function trimBase64StingIcon (iconB64){
+    if (trimmedIconCache[iconB64]){
+        return trimmedIconCache[iconB64]
+    }
 
-        return trimmedIconCache[iconB64] = fetch(iconB64)
-            .then(res=>res.blob())
-            .then(createImageBitmap)
-            .then(iconBitmap=>{
-                const transparentTrimmedCanvas = trimTransparent(iconBitmap)
-                return transparentTrimmedCanvas.convertToBlob()
-            })
-            .then(trimmedIconImageBlob=>{
-                return new Promise(accept=>{
-                    const reader = new FileReader()
-                    reader.onloadend = () => accept(reader.result)
-                    reader.readAsDataURL(trimmedIconImageBlob)
-                  })
-            })
+    return trimmedIconCache[iconB64] = fetch(iconB64)
+        .then(res=>res.blob())
+        .then(createImageBitmap)
+        .then(iconBitmap=>{
+            const transparentTrimmedCanvas = trimTransparent(iconBitmap)
+            return transparentTrimmedCanvas.convertToBlob()
+        })
+        .then(trimmedIconImageBlob=>{
+            return new Promise(accept=>{
+                const reader = new FileReader()
+                reader.onloadend = () => accept(reader.result)
+                reader.readAsDataURL(trimmedIconImageBlob)
+              })
+        })
+}
+
+export function trimBase64StingIcons (iconsB64){
+    const trimIconsTask = iconsB64.map(iconB64=>{
+        return trimBase64StingIcon(iconB64)
     })
     return Promise.all(trimIconsTask)
 }
