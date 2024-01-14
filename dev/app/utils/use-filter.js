@@ -9,6 +9,7 @@ export default function useFilter(defaultFilters){
 	const patchFilters = useCallback((patch)=>{
 		unpatchedUpdates = mergeDeep(unpatchedUpdates, patch)
 		const newState = mergeDeep({}, filters, unpatchedUpdates )
+		removeUndefined(newState)
 		updateFilters(newState)
 	}, [filters])
 
@@ -91,4 +92,32 @@ export function mergeDeep(target, ...sources) {
 	}
 
 	return mergeDeep(target, ...sources);
+}
+
+/**
+ * removes any undefined properties from objects.
+ * @param target
+ */
+export function removeUndefined(target){
+	if (Array.isArray(target)){
+		for(let i = target.length - 1; i >= 0; i--){
+			let item = target[i]
+			if (typeof item === "undefined"){
+				target.splice(i, 1)
+			}
+			else{
+				removeUndefined(item)
+			}
+		}
+	}
+	else if (typeof target === "object"){
+		Object.keys(target).forEach(prop=>{
+			if (typeof target[prop] === "undefined"){
+				delete target[prop]
+			}
+			else{
+				removeUndefined(target[prop])
+			}
+		})
+	}
 }

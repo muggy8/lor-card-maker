@@ -148,7 +148,6 @@ function filterRitoCardListConfigurationComponent (props){
                         label: translate("region"),
                         value: props.selectedFilters.regionRefs && props.selectedFilters.regionRefs.value || [],
                         onChange: selected=>{
-                            console.log(selected)
                             props.updateSelectedFilter("regionRefs", { value: selected })
                         },
                         options: props.filterOptions.regionRefs,
