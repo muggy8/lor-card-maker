@@ -658,7 +658,7 @@ function deckBuilderComponenet(){
 	// functionality for getting all the PoC stuff to show properly
 	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState({items: [], relics: []})
 	useEffect(()=>{
-		getRitoPoCItemRelic().then(updateRitoPoCItemReics)
+		getRitoPoCItemRelic({}, {items: [], relics: []}).then(updateRitoPoCItemReics)
 	}, [])
 
 	const [ritoPoCLoading, updateRitoPoCLoading] = useState(false)

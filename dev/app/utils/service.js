@@ -1,3 +1,4 @@
+import { mergeDeep } from "./use-filter.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 
 function createQueryString (query){
@@ -111,8 +112,10 @@ export async function getLatestRitoData(query = {}){
 	return coreData
 }
 
-export async function getRitoPoCItemRelic(query = {}){
-	return fetch("/pseudo-api/game-data/poc-item-relic-list/" + createQueryString(query)).then(res=>res.json())
+export async function getRitoPoCItemRelic(query = {}, baseValue){
+	return fetch("/pseudo-api/game-data/poc-item-relic-list/" + createQueryString(query))
+		.then(res=>res.json())
+		.then(relicItemData=>mergeDeep(baseValue, relicItemData))
 }
 
 export function patchRitoPocItemRelic(updatedData){
