@@ -10,13 +10,14 @@
 }
 
 .in-deck-card-stack {
-    padding-left: 100px;
+    padding-right: 100px;
     padding-top: 100px;
 }
 
 .in-deck-card-stack-sizer {
     position: relative;
     width: 100%;
+    padding-top: calc(calc(1024 / 680) * 100%);
 }
 
 .shadow-card, .real-card  {
@@ -28,4 +29,17 @@
 
 .shadow-card .loading-shade {
     color: var(--color-clear);
+}
+
+.in-deck-card-stack-sizer .stickers {
+    position: absolute;
+    bottom: 160px;
+    right: -40px;
+    width: 120px;
+    height: 540px;
+}
+
+.in-deck-card-stack-sizer .stickers.spell {
+    bottom: 120px;
+    height: 280px;
 }

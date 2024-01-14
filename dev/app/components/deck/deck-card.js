@@ -1,5 +1,5 @@
 import svgWrap from "/Components/card-template/svg-wrap.js";
-import { createElement } from "/cdn/react"
+import { useState } from "/cdn/react"
 import { isRitoCard } from "./card-name.js";
 import factory, { div } from "/Utils/elements.js";
 import { getRitoCardImage, getCard } from "/Utils/service.js";
@@ -18,6 +18,7 @@ export function isExternalImage(card){
 
 function deckCardComponent(props){
 
+    const [cardUsesSpellFrame, updateCardUsesSpellFrame] = useState(false)
     const [cardSvg, cardShadow, shadowList] = useAssetCache(setCache=>{
         const shadowList = [] // set up the shadow list early because it'll be used by both branches down the line
 
@@ -31,11 +32,20 @@ function deckCardComponent(props){
             const cardSvg = InDeckRitoCard(props.card)
             const cardShadow = cardSvg
             setCache([cardSvg, cardShadow, shadowList])
+
+            updateCardUsesSpellFrame(
+                props.card.type === "Spell" ||
+                props.card.type === "spell" ||
+                props.card.type === "Equipment" ||
+                props.card.type === "equipment"
+            )
         }
         else if (isExternalImage(props.card)){
             const cardSvg = ExternalCustomCard(props.card)
             const cardShadow = cardSvg
             setCache([cardSvg, cardShadow, shadowList])
+
+            updateCardUsesSpellFrame(true)
         }
         else {
             getCard(props.card.id).then(card=>{
@@ -43,6 +53,7 @@ function deckCardComponent(props){
                     // if we cant find the card via our fake api. it's likely because the card got deleted so we'll just use the saved version as backup
                     card = props.card
                 }
+
                 const cardSvg = InDeckCustomCard(card)
                 const cardShadow = InDeckCustomCard({
                     ...card,
@@ -54,6 +65,10 @@ function deckCardComponent(props){
                     keywords: emptyArray,
                 })
                 setCache([cardSvg, cardShadow, shadowList])
+                updateCardUsesSpellFrame(
+                    props.card.type === "Spell" ||
+                    props.card.type === "spell"
+                )
             })
         }
         
@@ -61,7 +76,15 @@ function deckCardComponent(props){
 
     const isCustomKeyword = props.card.type === "keyword"
 
-    const isSingularMode = isCustomKeyword || props.single  
+    const isSingularMode = isCustomKeyword || props.single
+
+    // const cardUsesSpellFrame = useAssetCache(setCardUsesSpellFrame=>{
+    //     if (isExternalImage(props.card)){
+    //         return setCardUsesSpellFrame(true)
+    //     }
+
+    //     setCardUsesSpellFrame(false)
+    // }, [props.card], false)
 
     return isSingularMode
         ? cardSvg
@@ -82,7 +105,7 @@ function deckCardComponent(props){
                             className: "shadow-card",
                             style: {
                                 transform: `translate(${
-                                    -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
+                                    Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
                                 }px, ${
                                     -Math.min( 50, 100 / ( (props.count - 1) || 1) ) * (index + 1)
                                 }px)`,
@@ -93,6 +116,8 @@ function deckCardComponent(props){
                     : undefined
                 ,
                 div({ className: "real-card" }, cardSvg),
+
+                div({ className: `stickers ${cardUsesSpellFrame ? "spell" : "" }` })
             ),
         )
 
