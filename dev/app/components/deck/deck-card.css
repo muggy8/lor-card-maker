@@ -34,9 +34,16 @@
 .in-deck-card-stack-sizer .stickers {
     position: absolute;
     bottom: 160px;
-    right: -40px;
-    width: 120px;
+    right: -64px;
+    width: 180px;
     height: 540px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.in-deck-card-stack-sizer .stickers > * {
+    max-height: 100%;
 }
 
 .in-deck-card-stack-sizer .stickers.spell {

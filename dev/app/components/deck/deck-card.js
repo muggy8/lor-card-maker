@@ -7,6 +7,7 @@ import linkAsset from "/Utils/load-css.js";
 import { typeToComponent } from "/Views/list.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import datauri from "/Utils/datauri.js"
+import pocStickerStack from "./poc-sticker-stack.js";
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
@@ -78,14 +79,6 @@ function deckCardComponent(props){
 
     const isSingularMode = isCustomKeyword || props.single
 
-    // const cardUsesSpellFrame = useAssetCache(setCardUsesSpellFrame=>{
-    //     if (isExternalImage(props.card)){
-    //         return setCardUsesSpellFrame(true)
-    //     }
-
-    //     setCardUsesSpellFrame(false)
-    // }, [props.card], false)
-
     return isSingularMode
         ? cardSvg
         : div(
@@ -117,7 +110,15 @@ function deckCardComponent(props){
                 ,
                 div({ className: "real-card" }, cardSvg),
 
-                div({ className: `stickers ${cardUsesSpellFrame ? "spell" : "" }` })
+                props.stickers
+                    ? div(
+                        { className: `stickers ${cardUsesSpellFrame ? "spell" : "" }` },
+                        pocStickerStack({
+                            stickers: props.stickers
+                        }),
+                    )
+                    : undefined
+                ,
             ),
         )
 
