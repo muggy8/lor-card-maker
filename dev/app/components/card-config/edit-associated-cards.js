@@ -32,7 +32,7 @@ function editAssociatedCardsComponent(props){
 		getRitoCards().then(ritoData=>{
             let ritoCards
 			updateRitoCards(ritoCards = getRitoCardsFromDataDump(ritoData))
-            Array.prototype.forEach.call(ritoCards, card=>{
+            Array.prototype.forEach.call(ritoCards || [], card=>{
                 if (!card){
                     return
                 }
