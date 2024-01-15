@@ -31,32 +31,13 @@ export default async function(card, svgRef, globalState){
             excludeUnusedCss: true,
             width,
             height,
+            encoderType: `image/${globalState.state.settings.exportFormat}`,
+            excludeUnusedCss: true,
         })
 
-        if (!globalState.state.settings.exportFormat || globalState.state.settings.exportFormat === "png"){
-            return  openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.png`)
-        }
-
-        const offscreen = new OffscreenCanvas(width, height);
-        const context = offscreen.getContext("2d")
-        const bitmap = await new Promise(accept=>{
-            const img = new Image(width, height)
-            img.onload = ()=>accept(img)
-            img.src = uri
-        })
-
-        context.drawImage(bitmap, 0, 0, width, height)
-        const imgBlob = await offscreen.convertToBlob({
-            type: `image/${globalState.state.settings.exportFormat}`,
-            quality: 0.8,
-        })
-
-        var reader = new FileReader();
-        reader.readAsDataURL(imgBlob); 
-        reader.onloadend = function() {
-            var base64data = reader.result
-            return openUri(base64data, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
-        }
+        console.log("uri created")
+        
+        return openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
     }
 }
 
