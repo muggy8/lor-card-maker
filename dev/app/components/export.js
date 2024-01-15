@@ -7,7 +7,7 @@ export default async function(card, svgRef, globalState){
     if (globalState.state.settings.exportFormat === "json"){
         // just dump out the value
         const json = JSON.stringify(card, null, "\t")
-        const jsonBlob = stringToBlob(json)
+        const jsonBlob = jsonToBlob(json)
         const b64 = await new Promise(accept=>{
             var reader = new FileReader();
             reader.readAsDataURL(jsonBlob); 
@@ -34,14 +34,12 @@ export default async function(card, svgRef, globalState){
             encoderType: `image/${globalState.state.settings.exportFormat}`,
             excludeUnusedCss: true,
         })
-
-        console.log("uri created")
         
         return openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
     }
 }
 
-export function stringToBlob(str){
+export function jsonToBlob(str){
     const bytes = new TextEncoder().encode(str);
     const blob = new Blob([bytes], {
         type: "application/json;charset=utf-8"

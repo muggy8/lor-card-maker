@@ -6,7 +6,7 @@ import useLang from "/Utils/use-lang.js"
 import { getBackup, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
 import useToggle from "/Utils/use-toggle.js"
-import { stringToBlob } from "/Components/export.js"
+import { jsonToBlob } from "/Components/export.js"
 import BatchDelete from "/Views/batch-delete.js"
 
 
@@ -47,7 +47,7 @@ function SidebarComponent(){
 
         const output = JSON.stringify(backup)
 
-        downloadFile(stringToBlob(output), "card-data.json")
+        downloadFile(jsonToBlob(output), "card-data.json")
     }, [])
 
     const [isImporting, _toggleIsImporting, setIsImporting] = useToggle(false)
