@@ -35,7 +35,7 @@ export default async function(card, svgRef, globalState){
             excludeUnusedCss: true,
         })
         
-        return openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat}`)
+        return openUri(uri, `${(card.fileName || card.name || "export").toUpperCase()}.${globalState.state.settings.exportFormat || 'png'}`)
     }
 }
 
