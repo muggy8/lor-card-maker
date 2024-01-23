@@ -155,14 +155,47 @@ export async function getLatestPoCItemRelicData(query = {}){
 		item.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/en_us/${item.itemCode}-full.png${queryString}`
 	})
 
+	Array.prototype.sort.call(itemData, sortSticker)
+
 	Array.prototype.forEach.call(relicData, relic=>{
 		relic.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}.png${queryString}`
 		relic.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}-full.png${queryString}`
 	})
 
+	Array.prototype.sort.call(relicData, sortSticker)
+
 	return {
 		items: itemData,
 		relics: relicData,
+	}
+
+	function sortSticker(itemA, itemB){
+		return (getRarityPoints(itemA.rarityRef) - getRarityPoints(itemB.rarityRef)) || itemA.name.localeCompare(itemB.name)
+	}
+
+	function getRarityPoints(rarity){
+		switch(rarity){
+			case "common":
+			case "Common":
+			case "COMMON":
+				return 1
+			case "rare":
+			case "Rare":
+			case "RARE":
+				return 2
+			case "epic": 
+			case "Epic": 
+			case "EPIC": 
+				return 3
+			case "legendary":
+			case "Legendary":
+			case "LEGENDARY":
+			case "champion":
+			case "Champion":
+			case "CHAMPION":
+				return 4
+			default: return Infinity
+		}
 	}
 }
 
