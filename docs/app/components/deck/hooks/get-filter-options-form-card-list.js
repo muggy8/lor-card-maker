@@ -1,0 +1,1 @@
+export default function e(e){const r=e.reduce(((e,r)=>r?(Object.keys(r).forEach((c=>{e[c]=e[c]||new Map;const t=r[c];Array.isArray(t)?t.forEach((r=>{e[c].set(r,!0)})):e[c].set(t,!0)})),e):e),{});return Object.keys(r).forEach((e=>{const c=r[e];r[e]=[],c.forEach(((c,t)=>{r[e].push(t)}))})),r}
