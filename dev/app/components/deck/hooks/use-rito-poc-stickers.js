@@ -8,10 +8,6 @@ export default function useRitoPocStickers(){
 	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState({items: [], relics: []})
 	useEffect(()=>{
 		getRitoPoCItemRelic({}, {items: [], relics: []})
-            .then(res=>{
-                console.log(res)
-                return res
-            })
             .then(updateRitoPoCItemReics)
 	}, [])
 
@@ -45,7 +41,7 @@ export default function useRitoPocStickers(){
                 return descriptionRaw.toLowerCase().includes(userSelectedDescription .toLowerCase())
             }
         },
-        rarityRef: {
+        rarity: {
             filter: (userSelectedRarities, rarity)=>{
                 if (!userSelectedRarities || !userSelectedRarities.length){
                     return true
@@ -94,7 +90,7 @@ export default function useRitoPocStickers(){
                 return descriptionRaw.toLowerCase().includes(userSelectedDescription .toLowerCase())
             }
         },
-        rarityRef: {
+        rarity: {
             filter: (userSelectedRarities, rarity)=>{
                 if (!userSelectedRarities || !userSelectedRarities.length){
                     return true
@@ -126,12 +122,12 @@ export default function useRitoPocStickers(){
         patchRelicFilters(patch)
     }, [patchRelicFilters])
 
-    const patchFilters = useCallback(()=>{
+    const patchFilters = useCallback(function(){
         patchItemFilters.call(this, ...arguments)
         patchRelicFilters.call(this, ...arguments)
     }, [patchItemFilters, patchRelicFilters])
     
-    const patchFilter = useCallback(()=>{
+    const patchFilter = useCallback(function(){
         patchItemFilter.call(this, ...arguments)
         patchRelicFilter.call(this, ...arguments)
     }, [patchItemFilter, patchRelicFilter])
@@ -139,6 +135,10 @@ export default function useRitoPocStickers(){
     const filterOptions = useMemo(()=>{
         return mergeDeep({}, itemsFilterOption, relicsFilterOption)
     }, [itemsFilterOption, relicsFilterOption])
+
+    const currentFilters = useMemo(()=>{
+        return mergeDeep({}, currentItemFilters, currentRelicFilters)
+    }, [currentItemFilters, currentRelicFilters])
 
     return {
         item: {
@@ -159,10 +159,7 @@ export default function useRitoPocStickers(){
         },
         refreshList: refreshRitoPocItemRelics,
         loading: ritoPoCLoading,
-        currentFilters: {
-            ...currentItemFilters,
-            ...currentRelicFilters,
-        },
+        currentFilters,
         patchFilter,
         patchFilters,
         filterOptions,

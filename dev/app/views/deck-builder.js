@@ -536,7 +536,7 @@ function deckBuilderComponenet(){
 							{ className: "card-name-list" },
 							listLimit(
 								{ defaultSize: lowSpecsMode ? 8 : 24 },
-								(customCardList.cardList || []).map(card=>card
+								(customCardList.filteredCardList || []).map(card=>card
 									? div(
 										{ className: "flex gutter-b", key: card.id },
 
@@ -735,6 +735,17 @@ function deckBuilderComponenet(){
 						: translate("load_rito_data")
 				)
 			),
+			ritoPoCStickers.relic.list.length || ritoPoCStickers.item.list.length 
+				? ritoCardsFiltersUi({
+					refreshRitoData: ritoPoCStickers.refreshList,
+					refreshRitoLoading: ritoPoCStickers.loading,
+					filterOptions: ritoPoCStickers.filterOptions,
+					updateSelectedFilters: ritoPoCStickers.patchFilters,
+					updateSelectedFilter: ritoPoCStickers.patchFilter,
+					selectedFilters: ritoPoCStickers.currentFilters
+				})
+				: undefined
+			,
 			ritoPoCStickers.relic.list.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
@@ -743,7 +754,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-					ritoPoCStickers.relic.list.map(relic=>(
+					ritoPoCStickers.relic.filteredList.map(relic=>(
 							pocRelicItemSelectionModalIcon({ 
 								...relic, 
 								onClick: ()=>addSticker(relic),
@@ -754,7 +765,7 @@ function deckBuilderComponenet(){
 				)
 				: undefined
 			,
-			ritoPoCStickers.item.list.length
+			ritoPoCStickers.item.filteredList.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
