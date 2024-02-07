@@ -730,12 +730,12 @@ function deckBuilderComponenet(){
 						className: "gutter-trbl-.5 grow",
 						onClick: ritoPoCStickers.refreshList
 					},
-					ritoPoCStickers.relics.length || ritoPoCStickers.items.length
+					ritoPoCStickers.relic.list.length || ritoPoCStickers.item.list.length
 						? translate("refresh_rito_data")
 						: translate("load_rito_data")
 				)
 			),
-			ritoPoCStickers.relics.length
+			ritoPoCStickers.relic.list.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
@@ -743,7 +743,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-					ritoPoCStickers.relics.map(relic=>(
+					ritoPoCStickers.relic.list.map(relic=>(
 							pocRelicItemSelectionModalIcon({ 
 								...relic, 
 								onClick: ()=>addSticker(relic),
@@ -754,7 +754,7 @@ function deckBuilderComponenet(){
 				)
 				: undefined
 			,
-			ritoPoCStickers.items.length
+			ritoPoCStickers.item.list.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
@@ -762,7 +762,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPoCStickers.items.map(item=>(
+						ritoPoCStickers.item.list.map(item=>(
 							pocRelicItemSelectionModalIcon({ 
 								...item, 
 								onClick: ()=>addSticker(item),
