@@ -23,45 +23,11 @@ import EditFileName from "/Components/card-config/edit-file-name.js"
 import datauri from "/Utils/datauri.js"
 import reactModal from "/cdn/react-modal"
 import pocRelicItemSelectionModalIcon, { RelicItemRitoIcon } from "/Components/deck/poc-relic-item-selection-modal-icon.js"
+import useFilterableRitoCardList from "/Components/deck/hooks/use-filterable-rito-card-list.js"
 
 const modal = factory(reactModal)
 
 const cssLoaded = loadCss("/Views/deck-builder.css")
-
-export function getRitoCardsFromDataDump({sets}){
-	if (!sets){
-		return
-	}
-
-	const cards = sets.map(expantion=>expantion.data).flat()
-	cards.sort((a,b)=>{
-		if (a.supertype.toLowerCase() === "champion" && b.supertype.toLowerCase() !== "champion"){
-			return -1
-		}
-		if (a.supertype.toLowerCase() !== "champion" && b.supertype.toLowerCase() === "champion"){
-			return 1
-		}
-
-		const costDiff = a.cost - b.cost
-		if (costDiff){
-			return costDiff
-		}
-
-		const collectableDiff = b.collectible - a.collectible
-		if (collectableDiff){
-			return collectableDiff
-		}
-
-		const nameDif = a.name.localeCompare(b.name)
-		if (nameDif){
-			return nameDif
-		}
-
-		return 0
-	})
-
-	return cards
-}
 
 function getOptionsFromCardsList(cardList){
 	const options = cardList.reduce((variationCollector, card)=>{
@@ -219,6 +185,9 @@ function deckBuilderComponenet(){
 		window.addEventListener("resize", reCacheHeight)
 		return ()=>window.removeEventListener("resize", reCacheHeight)
 	}, [])
+
+	// some data for the future
+	const knownCards = useRef({})
 
 	// stuff we'll need for custom cards
 	const customCards = useAssetCache(updateCustomcards=>{
@@ -413,195 +382,7 @@ function deckBuilderComponenet(){
 		// console.log(trueOptions, displayedCustomCards)
 	}, [customCards, displayedCustomCards], {})
 
-	// some data for the future
-	const knownCards = useRef({})
-
-	// rito cards shinanagas because shinangas
-	const [ritoCards, updateRitoCards] = useState()
-	useEffect(()=>{
-		getRitoCards().then(ritoData=>{
-			let ritoCards
-			updateRitoCards(ritoCards = getRitoCardsFromDataDump(ritoData))
-			ritoCards.forEach(card=>{
-				if (!card){
-					return
-				}
-
-				knownCards.current[card.cardCode] = card
-			})
-		})
-	}, [])
-
-	const [ritoLoading, updateRitoLoading] = useState(false)
-	const loadRitoData = useCallback(()=>{
-		if (ritoLoading){
-            return
-        }
-		updateRitoLoading(true)
-		getLatestRitoData().then(async ritoData => {
-			await patchRitoCards(ritoData)
-			updateRitoCards(getRitoCardsFromDataDump(ritoData))
-			updateRitoLoading(false)
-		})
-	}, [ritoLoading])
-
-	const [displayedRitoCards, updateRitoCardSource, currentRitoCardsFilters, patchRitoCardsFilters] = useFilter({
-		collectible: {
-			value: true,
-			filter: (userSelectedCollectable, collectible)=>{
-				return collectible === userSelectedCollectable
-			}
-		},
-		name: {
-			filter: (userSelectedName, name)=>{
-				if (!userSelectedName){
-					return true
-				}
-				return name.toLowerCase().includes(userSelectedName.toLowerCase())
-			}
-		},
-		descriptionRaw: {
-			filter: (userSelectedDescription, descriptionRaw, cardData)=>{
-				if (!userSelectedDescription){
-					return true
-				}
-				return descriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
-					|| cardData.levelupDescriptionRaw.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
-					|| cardData.description.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
-					|| cardData.levelupDescription.toLowerCase().includes(userSelectedDescription.toLowerCase()) 
-			}
-		},
-		subtypes: {
-			filter: (userSelectedSubtype, subtypes)=>{
-				if (!userSelectedSubtype){
-					return true
-				}
-				return Array.prototype.some.call(subtypes, subtypeName=>{
-					return subtypeName.toLowerCase().includes(userSelectedSubtype.toLowerCase())
-				})
-			}
-		},
-		type: {
-			filter: (userSelectedTypes, type)=>{
-				if (!userSelectedTypes || !userSelectedTypes.length){
-					return true
-				}
-				return userSelectedTypes.includes(type)
-			}
-		},
-		set: {
-			filter: (userSelectedSets, set)=>{
-				if (!userSelectedSets || !userSelectedSets.length){
-					return true
-				}
-				return userSelectedSets.includes(set)
-			}
-		},
-		keywords: {
-			filter: (userSelectedKeywords, keywords)=>{
-				if (!userSelectedKeywords || !userSelectedKeywords.length){
-					return true
-				}
-				return keywords.some(keywordOnCard=>userSelectedKeywords.includes(keywordOnCard))
-			}
-		},
-		rarity: {
-			filter: (userSelectedRarities, rarity)=>{
-				if (!userSelectedRarities || !userSelectedRarities.length){
-					return true
-				}
-				return userSelectedRarities.includes(rarity)
-			}
-		},
-		regionRefs: {
-			filter: (userSelectedRegions, cardRegions)=>{
-				if (!userSelectedRegions || !userSelectedRegions.length){
-					return true
-				}
-				return userSelectedRegions.some(userSelectedRegion=>cardRegions.includes(userSelectedRegion))
-			}
-		},
-		spellSpeed: {
-			filter: (userSelectedSpellSpeeds, spellSpeed)=>{
-				if (!userSelectedSpellSpeeds || !userSelectedSpellSpeeds.length){
-					return true
-				}
-				return userSelectedSpellSpeeds.includes(spellSpeed)
-			}
-		},
-		cost: {
-			filter: (userSelectedCostRange, cost)=>{
-				if (!userSelectedCostRange || !userSelectedCostRange.length){
-					return true
-				}
-
-				const [min, max] = userSelectedCostRange
-
-				return cost <= max && cost >= min
-			}
-		},
-		attack: {
-			filter: (userSelectedAtttackRange, attack, card)=>{
-				if (!userSelectedAtttackRange || !userSelectedAtttackRange.length){
-					return true
-				}
-
-				if ((card.type || "").toLowerCase() !== "unit"){
-					return false
-				}
-
-				const [min, max] = userSelectedAtttackRange
-
-				return attack <= max && attack >= min
-			}
-		},
-		health: {
-			filter: (userSelectedHealthRange, health, card)=>{
-				if (!userSelectedHealthRange || !userSelectedHealthRange.length){
-					return true
-				}
-
-				if ((card.type || "").toLowerCase() !== "unit"){
-					return false
-				}
-
-				const [min, max] = userSelectedHealthRange
-
-				return health <= max && health >= min
-			}
-		},
-	})
-
-	useEffect(()=>{
-		if (!ritoCards || !ritoCards.length){
-			return updateRitoCardSource([])
-		}
-
-		updateRitoCardSource(ritoCards)
-	}, [ritoCards])
-
-	const patchRitocardsFilter = useCallback((filterToPatch, patchSettings)=>{
-		const patch = {}
-		patch[filterToPatch] = patchSettings
-		patchRitoCardsFilters(patch)
-	}, [patchRitoCardsFilters])
-
-	const ritoCardsFilterOptions = useAssetCache(updateFilterOptions=>{
-		if (!ritoCards || !ritoCards.length || !displayedRitoCards || !displayedRitoCards.length){
-			return
-		}
-
-		const baseOptions = getOptionsFromCardsList(ritoCards)
-		baseOptions.set.sort((a,b)=>a.localeCompare(b))
-		const filteredResultsOptions = getOptionsFromCardsList(displayedRitoCards)
-		const trueOptions = {
-			...baseOptions,
-			keywords: filteredResultsOptions.keywords,
-		}
-
-		updateFilterOptions(trueOptions)
-		// console.log(trueOptions, displayedRitoCards)
-	}, [ritoCards, displayedRitoCards], {})
+	const ritoCardList = useFilterableRitoCardList(knownCards)
 
 	// functionality for management of the decklist
 	const selectedCards = useRef(new Map())
@@ -923,12 +704,12 @@ function deckBuilderComponenet(){
 						{ className: "gutter-rl" },
 
 						ritoCardsFiltersUi({
-							refreshRitoData: loadRitoData,
-							refreshRitoLoading: ritoLoading,
-							filterOptions: ritoCardsFilterOptions,
-							updateSelectedFilters: patchRitoCardsFilters,
-							updateSelectedFilter: patchRitocardsFilter,
-							selectedFilters: currentRitoCardsFilters
+							refreshRitoData: ritoCardList.refreshList,
+							refreshRitoLoading: ritoCardList.loading,
+							filterOptions: ritoCardList.filterOptions,
+							updateSelectedFilters: ritoCardList.patchFilters,
+							updateSelectedFilter: ritoCardList.patchFilter,
+							selectedFilters: ritoCardList.currentFilters
 						}),
 
 						div(
@@ -936,7 +717,7 @@ function deckBuilderComponenet(){
 
 							listLimit(
 								{ defaultSize: lowSpecsMode ? 8 : 24 },
-								(displayedRitoCards || []).map(card=>card
+								(ritoCardList.filteredCardList || []).map(card=>card
 									? div(
 										{ className: "flex gutter-b", key: card.cardCode },
 	
@@ -957,15 +738,15 @@ function deckBuilderComponenet(){
 								)
 							),
 	
-							!ritoCards || !ritoCards.length 
+							!ritoCardList.cardList || !ritoCardList.cardList.length 
 								? div(
 									{ className: "flex" },
 									button(
 										{ 
-											onClick: loadRitoData,
+											onClick: ritoCardList.refreshList,
 											className: "gutter-trbl-.5 grow",
 										}, 
-										ritoLoading 
+										ritoCardList.loading 
 											? div({ className: "icon loading" })
 											: translate("load_rito_data")
 										,
