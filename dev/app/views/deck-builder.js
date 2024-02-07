@@ -1,7 +1,6 @@
 import factory, { div, strong, button, nav, section, label, fragment, img } from "/Utils/elements.js"
 import { useState, useCallback, useRef, useEffect, useContext, useLayoutEffect, createElement } from "/cdn/react"
-import { getRitoPoCItemRelic, patchRitoPocItemRelic, getLatestPoCItemRelicData, getCardList, getCard, saveCard, deleteCard } from "/Utils/service.js"
-
+import { getCard, saveCard, deleteCard } from "/Utils/service.js"
 import loadCss from "/Utils/load-css.js"
 import useLang from "/Utils/use-lang.js"
 import listLimit from "/Components/list-limit.js"
@@ -24,6 +23,7 @@ import reactModal from "/cdn/react-modal"
 import pocRelicItemSelectionModalIcon, { RelicItemRitoIcon } from "/Components/deck/poc-relic-item-selection-modal-icon.js"
 import useFilterableRitoCardList from "/Components/deck/hooks/use-filterable-rito-card-list.js"
 import useFilterableCustomCardList from "/Components/deck/hooks/use-filterable-custom-card-list.js"
+import useRitoPocStickers from "/Components/deck/hooks/use-rito-poc-stickers.js"
 
 const modal = factory(reactModal)
 
@@ -129,6 +129,7 @@ function deckBuilderComponenet(){
 	}, [])
 
 	// load pre-existing deck if we're loading into a new deck
+	const selectedCards = useRef(new Map())
 	useEffect(()=>{
 		globalState.state.cardId && getCard(globalState.state.cardId)
 			.then(deckData=>{
@@ -161,7 +162,6 @@ function deckBuilderComponenet(){
 	const ritoCardList = useFilterableRitoCardList(knownCards)
 
 	// functionality for management of the decklist
-	const selectedCards = useRef(new Map())
 	const updateRenderedDeck = useCallback(()=>{
 		const renderedDeck = []
 		selectedCards.current.forEach((value)=>renderedDeck.push(value))
@@ -212,24 +212,8 @@ function deckBuilderComponenet(){
 		updateRenderedDeck()
 	}, [updateRenderedDeck])
 
-	// functionality for getting all the PoC stuff to show properly
-	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState({items: [], relics: []})
-	useEffect(()=>{
-		getRitoPoCItemRelic({}, {items: [], relics: []}).then(updateRitoPoCItemReics)
-	}, [])
-
-	const [ritoPoCLoading, updateRitoPoCLoading] = useState(false)
-	const refreshRitoPocItemRelics = useCallback(()=>{
-		if (ritoPoCLoading){
-            return
-        }
-		updateRitoPoCLoading(true)
-		getLatestPoCItemRelicData().then(async ritoPocData => {
-			await patchRitoPocItemRelic(ritoPocData)
-			updateRitoPoCItemReics(ritoPocData)
-			updateRitoPoCLoading(false)
-		})
-	}, [ritoPoCLoading])
+	// data for poc stickers
+	const ritoPoCStickers = useRitoPocStickers()
 
 	// functionality for managing the PoC related stuff of the decklist.
 	const [showPoCStickerModal, updateShowPoCStickerModal] = useState(false)
@@ -744,14 +728,14 @@ function deckBuilderComponenet(){
 				button(
 					{ 
 						className: "gutter-trbl-.5 grow",
-						onClick: refreshRitoPocItemRelics
+						onClick: ritoPoCStickers.refreshList
 					},
-					ritoPocItemRelics.relics.length || ritoPocItemRelics.items.length
+					ritoPoCStickers.relics.length || ritoPoCStickers.items.length
 						? translate("refresh_rito_data")
 						: translate("load_rito_data")
 				)
 			),
-			ritoPocItemRelics.relics.length
+			ritoPoCStickers.relics.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
@@ -759,7 +743,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPocItemRelics.relics.map(relic=>(
+					ritoPoCStickers.relics.map(relic=>(
 							pocRelicItemSelectionModalIcon({ 
 								...relic, 
 								onClick: ()=>addSticker(relic),
@@ -770,7 +754,7 @@ function deckBuilderComponenet(){
 				)
 				: undefined
 			,
-			ritoPocItemRelics.items.length
+			ritoPoCStickers.items.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
@@ -778,7 +762,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPocItemRelics.items.map(item=>(
+						ritoPoCStickers.items.map(item=>(
 							pocRelicItemSelectionModalIcon({ 
 								...item, 
 								onClick: ()=>addSticker(item),
