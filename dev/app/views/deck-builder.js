@@ -746,7 +746,7 @@ function deckBuilderComponenet(){
 				})
 				: undefined
 			,
-			ritoPoCStickers.relic.list.length
+			ritoPoCStickers.relic.filteredList.length
 				? div(
 					div({ className: "text-center gutter-t gutter-b-.5" },
 						strong(
@@ -773,7 +773,7 @@ function deckBuilderComponenet(){
 						)
 					),
 					div({ className: "flex" }, 
-						ritoPoCStickers.item.list.map(item=>(
+						ritoPoCStickers.item.filteredList.map(item=>(
 							pocRelicItemSelectionModalIcon({ 
 								...item, 
 								onClick: ()=>addSticker(item),
