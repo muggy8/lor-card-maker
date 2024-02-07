@@ -723,18 +723,19 @@ function deckBuilderComponenet(){
 				ariaHideApp: false,
 			},
 			// ritoPocItemRelics.map(),
-			div(
-				{ className: "flex gutter-b" },
-				button(
-					{ 
-						className: "gutter-trbl-.5 grow",
-						onClick: ritoPoCStickers.refreshList
-					},
-					ritoPoCStickers.relic.list.length || ritoPoCStickers.item.list.length
-						? translate("refresh_rito_data")
-						: translate("load_rito_data")
+			ritoPoCStickers.relic.list.length || ritoPoCStickers.item.list.length 
+				? undefined
+				:div(
+					{ className: "flex gutter-b" },
+					button(
+						{ 
+							className: "gutter-trbl-.5 grow",
+							onClick: ritoPoCStickers.refreshList
+						},
+						translate("load_rito_data")
+					)
 				)
-			),
+			,
 			ritoPoCStickers.relic.list.length || ritoPoCStickers.item.list.length 
 				? ritoCardsFiltersUi({
 					refreshRitoData: ritoPoCStickers.refreshList,
