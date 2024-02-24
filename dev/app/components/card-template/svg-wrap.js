@@ -33,7 +33,7 @@ function SvgWrapComponent(props){
 
         const element = gestureReceiver.current
 
-        element.addEventListener("wheel", onWheel)
+        element.addEventListener("wheel", onWheel, { passive: false })
         updateCursor("grab")
 
         const gestureWatcher = new Gesto(element, {
@@ -76,9 +76,12 @@ function SvgWrapComponent(props){
 
         function onWheel(ev){
             ev.preventDefault()
+			ev.stopPropagation()
+			console.log(ev)
 
             lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * (1 + (ev.deltaY / 1000))
             transformCallback.current({...lastStoppedPosition.current})
+			return false
         }
     }, [!!props.onTransform, svgRef.current])
 
