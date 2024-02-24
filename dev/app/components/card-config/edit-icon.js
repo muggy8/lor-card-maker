@@ -81,10 +81,10 @@ function iconEditorComponent(props){
         }
         datauri(selected.icon).then(updateIconUri)
         updateHue(0)
-        udpateContrast(1.5)
+        udpateContrast(2)
         updateSaturation(0)
-        updateBrightness(0.65)
-        updateSepia(1)
+        updateBrightness(0.5)
+        updateSepia(0.65)
     }, [selected])
 
     const [teplatedSvgRef, updateTemplatedeSvgRef] = useState(null)
