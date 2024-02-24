@@ -1,8 +1,6 @@
 import factory, { div } from "/Utils/elements.js"
 import loadCss from "/Utils/load-css.js"
-import { createElement, useState, useCallback } from "/cdn/react"
-import { typeToComponent } from "/Views/list.js"
-import { svgRefference } from "/Views/card-editor.js"
+import { useState } from "/cdn/react"
 
 import SvgWrap from "/Components/card-template/svg-wrap.js"
 import deckCard from "./deck/deck-card.js"
@@ -140,27 +138,19 @@ function BatchRendererComponent(props){
 
     const {width, height, resolution} = calculateRowsAndColsForCardsRecursivelyWithCacheUse(cardsList)
 
-    const doNothing = useCallback(()=>{}, [])
-
     return SvgWrap(
         {width, height, loading: props.loading},
-        createElement(
-            svgRefference.Provider,
-            { value: { // replace teh svg ref so the stuff below dont ruin the fun for our exporter
-                current: null,
-                setRef: doNothing,
-            } },
-            div(
-                { className: "cards-grid" },
+        div(
+            { className: "cards-grid" },
 
-                props.cards.map((cardData)=>{
-                    return deckCard({
-                        key: cardData.id || cardData.cardCode || cardData.url,
-                        single: true,
-                        card: cardData
-                    })
-                }),
-            ),
+            props.cards.map((cardData)=>{
+                return deckCard({
+                    key: cardData.id || cardData.cardCode || cardData.url,
+                    single: true,
+                    card: cardData,
+                    isInclusion: true,
+                })
+            }),
         ),
     )
 }

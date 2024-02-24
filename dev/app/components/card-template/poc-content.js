@@ -71,6 +71,7 @@ function PoCContent(props){
             loading: !background || props.loading,
             onTransform: props.updateTransform, 
             ...(props.transform || {x: 0, y: 0, scale: 1}),
+            isInclusion: props.isInclusion,
         },
         background
             ? div(

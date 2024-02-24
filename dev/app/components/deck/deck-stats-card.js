@@ -93,6 +93,9 @@ function deckStatsCard(props){
         return null
     }
     return svgWrap(
+        {
+            isInclusion: props.isInclusion,
+        },
         div(
             { className: "deck-stats-card" },
             div(

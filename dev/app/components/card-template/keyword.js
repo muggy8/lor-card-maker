@@ -51,6 +51,7 @@ function KeywordComponent(props){
             width: 512,
             height: 512,
             loading: !frameUri,
+            isInclusion: props.isInclusion,
         },
         frameUri
             ? div(

@@ -4,7 +4,6 @@ import deckCard from "/Components/deck/deck-card.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import { calculateRowsAndColsForCardsRecursivelyWithCacheUse } from "/Components/batch-renderer.js";
 import svgWrap from "/Components/card-template/svg-wrap.js";
-import { svgRefference } from "/Views/card-editor.js";
 import linkAsset from "/Utils/load-css.js";
 import deckStatsCard from "./deck-stats-card.js";
 
@@ -41,38 +40,36 @@ function DeckViewComponent(props){
         console.log(props.cards)
     }, [props.cards, props.showAssociatedCards], [{}, []])
 
-    const doNothing = useCallback(()=>{}, [])
-
     return svgWrap(
-        { width: gridResolution.width, height: gridResolution.height, loading: props.loading },
+        { 
+            width: gridResolution.width, 
+            height: gridResolution.height, 
+            loading: props.loading,
+            isInclusion: props.isInclusion,
+        },
         div(
             { className: "svg-deck" },
-            createElement(
-                svgRefference.Provider,
-                { value: {
-                    current: null,
-                    setRef: doNothing,
-                } },
-                props.cards.map(deckCardProps=>{
-                    const cardId = deckCardProps.card.id || deckCardProps.card.cardCode || deckCardProps.card.url
-                    return deckCard({
-                        key: cardId,
-                        ...deckCardProps,
-                        gridColumns: gridResolution.cols,
-                        gridRows: gridResolution.rows,
-                        cardSize: gridResolution.resolution
-                    })
-                }),
-                props.cardStats 
-                    ? deckStatsCard({
-                        cards: props.cards
-                    })
-                    : undefined
-                ,
-                props.showAssociatedCards
-                    ? undefined
-                    : undefined
-            )
+            props.cards.map(deckCardProps=>{
+                const cardId = deckCardProps.card.id || deckCardProps.card.cardCode || deckCardProps.card.url
+                return deckCard({
+                    key: cardId,
+                    ...deckCardProps,
+                    gridColumns: gridResolution.cols,
+                    gridRows: gridResolution.rows,
+                    cardSize: gridResolution.resolution,
+                    isInclusion: true
+                })
+            }),
+            props.cardStats 
+                ? deckStatsCard({
+                    cards: props.cards,
+                    isInclusion: true,
+                })
+                : undefined
+            ,
+            props.showAssociatedCards
+                ? undefined
+                : undefined
         )
     )
 }

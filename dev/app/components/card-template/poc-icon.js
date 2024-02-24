@@ -12,7 +12,6 @@ import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 import { AutoFitClanText } from "/Components/card-template/unit.js"
-import { svgRefference } from "/Views/card-editor.js"
 
 import useLang from "/Utils/use-lang.js"
 

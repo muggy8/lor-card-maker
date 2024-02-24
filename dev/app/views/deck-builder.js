@@ -366,13 +366,13 @@ function deckBuilderComponenet(){
 						deckCardsToRender.reduce((sum, cardMetaData)=>sum+cardMetaData.count, 0)
 					),
 				),
-				createElement(
-					svgRefference.Provider,
-					{ value: {
-						current: svgRef,
-						setRef: updateSvgRef,
-					} },
-					div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
+				div({ className: "preview-height-limit flex vhcenter", style: { "--simple-stats-height": simpleDeckStatHeight + "px" } },
+					createElement(
+						svgRefference.Provider,
+						{ value: {
+							current: svgRef,
+							setRef: updateSvgRef,
+						} },
 						deckView({ 
 							cards: deckCardsToRender, 
 							loading: isExporting, 

@@ -30,7 +30,10 @@ function deckCardComponent(props){
         const currentCardIsRitoCard = isRitoCard(props.card) 
 
         if (currentCardIsRitoCard){
-            const cardSvg = InDeckRitoCard(props.card)
+            const cardSvg = InDeckRitoCard({
+                ...props.card,
+                isInclusion: props.isInclusion,
+            })
             const cardShadow = cardSvg
             setCache([cardSvg, cardShadow, shadowList])
 
@@ -42,7 +45,10 @@ function deckCardComponent(props){
             )
         }
         else if (isExternalImage(props.card)){
-            const cardSvg = ExternalCustomCard(props.card)
+            const cardSvg = ExternalCustomCard({
+                ...props.card,
+                isInclusion: props.isInclusion,
+            })
             const cardShadow = cardSvg
             setCache([cardSvg, cardShadow, shadowList])
 
@@ -55,7 +61,10 @@ function deckCardComponent(props){
                     card = props.card
                 }
 
-                const cardSvg = InDeckCustomCard(card)
+                const cardSvg = InDeckCustomCard({
+                    ...card,
+                    isInclusion: true,
+                })
                 const cardShadow = InDeckCustomCard({
                     ...card,
                     name: undefined,
@@ -64,6 +73,7 @@ function deckCardComponent(props){
                     effectText: "",
                     levelText: "",
                     keywords: emptyArray,
+                    isInclusion: props.isInclusion,
                 })
                 setCache([cardSvg, cardShadow, shadowList])
                 updateCardUsesSpellFrame(
@@ -135,7 +145,7 @@ function ritoCardRendererComponent(props){
     }, [cardId, cardSet])
 
     return svgWrap(
-        { loading: !cardImage },
+        { loading: !cardImage, isInclusion: props.isInclusion },
         !!cardImage 
             ? div({
                 className: "in-deck-rito-card",
@@ -154,7 +164,7 @@ function externalCustomCardComponent(props){
     }, [props.url])
 
     return svgWrap(
-        { loading: !cardImage },
+        { loading: !cardImage, isInclusion: props.isInclusion },
         !!cardImage 
             ? div({
                 className: "in-deck-rito-card",

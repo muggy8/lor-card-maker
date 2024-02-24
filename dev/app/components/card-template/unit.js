@@ -200,6 +200,7 @@ export class UnitRendererComponent extends Component {
                 loading: !this.state.frameUri || this.props.loading,
                 onTransform: this.props.updateTransform, 
                 ...(this.props.transform || {x: 0, y: 0, scale: 1}),
+                isInclusion: this.props.isInclusion,
             },
             this.state.frameUri 
                 ? div(

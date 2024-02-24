@@ -296,6 +296,7 @@ function SpellComponent(props){
             loading: !frameUri || props.loading,
             onTransform: props.updateTransform, 
             ...(props.transform || {x: 0, y: 0, scale: 1}),
+            isInclusion: props.isInclusion,
         },
         frameUri 
             ? div(
