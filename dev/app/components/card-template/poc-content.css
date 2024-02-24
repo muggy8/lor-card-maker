@@ -1,0 +1,14 @@
+.poc-content .background {
+    width: 680px;
+    height: 1024px;
+    background-size: 100% 95%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: bottom;
+}
+.poc-content .poc-content-icon {
+    width: 384px;
+    height: 384px;
+    margin-left: auto;
+    margin-right: auto;
+}

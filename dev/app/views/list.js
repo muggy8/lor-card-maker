@@ -18,6 +18,7 @@ import CardEditorFactory from "/Views/card-editor.js"
 import DeckBuilder from "/Views/deck-builder.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import deckIcon from "/Components/deck/deck-icon.js"
+import pocContent from "/Components/card-template/poc-content.js"
 
 const sharedDefaultCardData = {
     name: "",
@@ -192,7 +193,70 @@ const types = [
         labelKey: "deck",
         beta: true,
         editor: deckBuilder
-    }
+    },
+    {
+        component: pocContent,
+        labelKey: "poc_power",
+        editor: CardEditorFactory(
+            pocContent,
+            {
+                id: "",
+                name: "",
+                fileName: "",
+                type: "poc",
+                pocType: "power",
+                rarity: "",
+                effect: "",
+                blueWords: [],
+                orangeWords: [],
+                dataVersion: 2,
+                art: "",
+                transform: {x: 0, y: 0, scale: 1},
+            }
+        ),
+    },
+    {
+        component: pocContent,
+        labelKey: "poc_item",
+        editor: CardEditorFactory(
+            pocContent,
+            {
+                id: "",
+                name: "",
+                fileName: "",
+                type: "poc",
+                pocType: "item",
+                rarity: "",
+                effect: "",
+                blueWords: [],
+                orangeWords: [],
+                dataVersion: 2,
+                art: "",
+                transform: {x: 0, y: 0, scale: 1},
+            }
+        ),
+    },
+    {
+        component: pocContent,
+        labelKey: "poc_relic",
+        editor: CardEditorFactory(
+            pocContent,
+            {
+                id: "",
+                name: "",
+                fileName: "",
+                type: "poc",
+                pocType: "relic",
+                rarity: "",
+                effect: "",
+                blueWords: [],
+                orangeWords: [],
+                dataVersion: 2,
+                art: "",
+                transform: {x: 0, y: 0, scale: 1},
+            }
+        ),
+    },
 ]
 
 export function typeToComponent(type){
@@ -205,6 +269,7 @@ export function typeToComponent(type){
         case "spell": return Spell
         case "keyword": return Keyword
         case "deck": return deckIcon
+        case "poc": return pocContent
         default: return
     }
 }

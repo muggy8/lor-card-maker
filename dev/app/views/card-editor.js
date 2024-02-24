@@ -172,7 +172,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             cardRenderer({
                                 ...card,
                                 cardDataUpdaters,
-                                updateTransform: card.art && globalState.state.moveableArt ? cardDataUpdaters.transform : undefined,
+                                updateTransform: card.art && (globalState.state.moveableArt ? cardDataUpdaters.transform : undefined),
                                 loading: isExporting || isSaving,
                             }),
                         )

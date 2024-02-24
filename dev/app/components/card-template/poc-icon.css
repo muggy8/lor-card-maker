@@ -1,0 +1,22 @@
+.poc-icon-sticker {
+    position: relative;
+}
+.poc-icon-sticker::after {
+    position: relative;
+    width: 100%;
+    content: " ";
+    display: block;
+    padding-bottom: 100%;
+}
+.poc-icon-sticker .frame-overlay,
+.poc-icon-sticker .frame-overlay-cover,
+.poc-icon-sticker .frame-rarity {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
