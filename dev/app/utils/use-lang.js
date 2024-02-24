@@ -257,5 +257,6 @@ const lang = {
         "file_name": "File Name",
         "error": "Error",
         "error_loading_card": "Error Loading :cardName",
+        "type": "Type"
     }
 }

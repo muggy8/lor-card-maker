@@ -27,7 +27,7 @@ function EditRegionComponent(props){
             strong(translate("rarity"))
         ),
         div(
-            { className: "flex hcenter gutter-b-2 gutter-t-.5" },
+            { className: "flex hcenter gutter-b- gutter-t-.5" },
             rarityOptions.map(rarityName=>{
                 const isChecked = rarityName === props.value
 

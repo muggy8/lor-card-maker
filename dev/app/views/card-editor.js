@@ -7,6 +7,7 @@ import { getCard, saveCard, deleteCard } from "/Utils/service.js"
 import setImmediate from "/Utils/set-immediate-batch.js"
 
 import EditName from "/Components/card-config/edit-name.js"
+import EditPocType from "/Components/card-config/edit-poc-type.js"
 import EditNumber from "/Components/card-config/edit-number.js"
 import EditRegion from "/Components/card-config/edit-region.js"
 import EditRarity from "/Components/card-config/edit-rarity.js"
@@ -260,6 +261,13 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             updateValue: cardDataUpdaters.fileName
                         })
                     )
+                    : undefined
+                ,
+                canShow("pocType", defaultCardData)
+                    ? EditPocType({
+                        value: card.pocType,
+                        updateValue: cardDataUpdaters.pocType
+                    })
                     : undefined
                 ,
                 canShow("icons", defaultCardData)
