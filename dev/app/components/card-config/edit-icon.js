@@ -83,7 +83,7 @@ const iconPresetSettings = [
         hue: 20,
         contrast: 2.5,
         saturation: 4.25,
-        brightness: 0.57,
+        brightness: 0.7,
         sepia: 0.6,
     },
     { // ephemeral purple
