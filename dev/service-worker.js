@@ -365,6 +365,7 @@ const defaultIncludedTypes = [
 	"follower",
 	"spell",
 	"keyword",
+	"poc",
 ]
 Object.freeze(defaultIncludedTypes)
 async function getSavedCardList(req, path){
