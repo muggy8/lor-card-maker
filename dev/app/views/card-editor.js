@@ -10,6 +10,7 @@ import EditName from "/Components/card-config/edit-name.js"
 import EditNumber from "/Components/card-config/edit-number.js"
 import EditRegion from "/Components/card-config/edit-region.js"
 import EditRarity from "/Components/card-config/edit-rarity.js"
+import EditRarityPoc from "/Components/card-config/edit-rarity-poc.js"
 import EditKeywords from "/Components/card-config/edit-keywords.js"
 import EditEffect from "/Components/card-config/edit-effect.js"
 import EditSpeed from "/Components/card-config/edit-speed.js"
@@ -369,10 +370,16 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     : undefined
                 ,
                 canShow("rarity", defaultCardData)
-                    ? EditRarity({
-                        value: card.rarity,
-                        updateValue: cardDataUpdaters.rarity
-                    })
+                    ? (card.type === "poc" 
+                        ? EditRarityPoc({
+                            value: card.rarity,
+                            updateValue: cardDataUpdaters.rarity
+                        })
+                        : EditRarity({
+                            value: card.rarity,
+                            updateValue: cardDataUpdaters.rarity
+                        })
+                    )
                     : undefined
                 ,
                 canShow("keywords", defaultCardData)

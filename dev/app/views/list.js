@@ -214,6 +214,7 @@ const types = [
                 transform: {x: 0, y: 0, scale: 1},
             }
         ),
+        beta: true,
     },
     {
         component: pocContent,
@@ -235,6 +236,7 @@ const types = [
                 transform: {x: 0, y: 0, scale: 1},
             }
         ),
+        beta: true,
     },
     {
         component: pocContent,
@@ -256,6 +258,7 @@ const types = [
                 transform: {x: 0, y: 0, scale: 1},
             }
         ),
+        beta: true,
     },
 ]
 
