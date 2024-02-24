@@ -20,3 +20,61 @@
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.poc-icon-sticker .art {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.poc-icon-sticker.relic .art {
+    clip-path: polygon(
+        50% 5%,
+        88.5% 28%,
+        88.5% 72%,
+        50% 95%,
+        11.5% 72%,
+        11.5% 28%
+    );
+}
+
+.poc-icon-sticker.item .art {
+    clip-path: polygon(
+        50% 5%,
+        88.5% 28%,
+        88.5% 72%,
+        50% 95%,
+        11.5% 72%,
+        11.5% 28%
+    );
+}
+
+.poc-icon-sticker.power .art {
+    clip-path: polygon(
+        9.765625% 26.953125%, 
+        21.484375% 21.484375%, 
+        26.953125% 9.765625%, 
+
+        73.046875% 9.765625%, 
+        78.515625% 21.484375%, 
+        90.234375% 26.953125%, 
+        
+        90.234375% 73.046875%, 
+        78.515625% 78.515625%,
+        73.046875% 90.234375%,  
+
+        26.953125% 90.234375%,
+        21.484375% 78.515625%, 
+        9.765625% 73.046875%
+    );
+}
+
+.poc-icon-sticker .art .scale-adjuster {
+    position: absolute;
+    top: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    bottom: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    left: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    right: calc(50% - calc(50% * calc( 1/ var(--scale))));
+    transform: scale(var(--scale));
+    will-change: transform, top, bottom, left, right;
+}

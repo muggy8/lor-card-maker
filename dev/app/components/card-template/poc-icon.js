@@ -17,6 +17,11 @@ import useLang from "/Utils/use-lang.js"
 const cssLoaded = loadCss("/Components/card-template/poc-icon.css")
 
 function PoCIcon(props){
+    const globalState = useContext(Globals)
+
+    const backdropUri = useAssetCache(updateBackdropUri=>{
+        datauri("/Assets/spell/backdrop.png").then(updateBackdropUri)
+    }, [])
 
     const iconFrame = useAssetCache(updateFrameUri=>{
         switch(props.pocType){
@@ -140,7 +145,26 @@ function PoCIcon(props){
     }, [props.rarity])
 
     return div(
-        { className: `poc-icon-sticker ${props.className}` },
+        { className: `poc-icon-sticker ${props.pocType} ${props.className}` },
+        div(
+            {
+                className: "art",
+                style: {
+                    backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
+                        ? `url(${backdropUri})`
+                        : "none"
+                    ,
+                    "--scale": props.transform ? props.transform.scale : 1,
+                    "--left": props.transform ? props.transform.x : 0,
+                    "--top": props.transform ? props.transform.y : 0,
+                },
+            },
+            div(
+                {className: "scale-adjuster"},
+                ArtRenderer({ url: props.art })
+            )
+        ),
+
         iconFrame
             ? div(
                 { 
