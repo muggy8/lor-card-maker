@@ -152,6 +152,9 @@ function PoCIcon(props){
             width: 384,
             height: 384,
             isInclusion: props.isInclusion,
+            loading: props.loading,
+            onTransform: props.onTransform,
+            ...(props.transform || {x: 0, y: 0, scale: 1}),
         },
         div(
             { className: `poc-icon-sticker ${props.rarity} ${props.pocType}` },

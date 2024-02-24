@@ -63,7 +63,11 @@ function PoCContent(props){
     }, 100, [props.name, props.effect, props.pocType, props.rarity, props.showOnlyIcon, !!background])
 
     if (props.showOnlyIcon){
-        return pocIcon(props)
+        return pocIcon({
+            ...props,
+            onTransform: props.updateTransform,
+            loading: !background || props.loading
+        })
     }
 
     return SvgWrap(
