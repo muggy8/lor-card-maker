@@ -77,7 +77,9 @@ function deckCardComponent(props){
 
     const isCustomKeyword = props.card.type === "keyword"
 
-    const isSingularMode = isCustomKeyword || props.single
+    const isPocContent = props.card.type === "poc"
+
+    const isSingularMode = isCustomKeyword || isPocContent || props.single
 
     return isSingularMode
         ? cardSvg
