@@ -11,7 +11,7 @@ import { InlineIcon } from "/Components/card-template/effect-text.js"
 import svgWrap from "../card-template/svg-wrap.js";
 import { decimalLimit } from "/Components/card-config/edit-shade.js";
 import { svgRefference } from "/Views/card-editor.js"
-// import { Globals } from "/Views/index.js"
+import { Globals } from "/Views/index.js"
 import useAssetCache from "/Utils/use-asset-cache.js";
 import InputRange from "/Components/range-input.js"
 import editRarityPoc from "./edit-rarity-poc.js";
@@ -61,17 +61,69 @@ const pocModeOptions = [
     "item",
 ]
 
+const iconPresetSettings = [
+    { // challenger orange
+        id: "orange",
+        hue: 0,
+        contrast: 2,
+        saturation: 5,
+        brightness: 0.52,
+        sepia: 0.5,
+    },
+    { // life steal red
+        id: "red",
+        hue: 320,
+        contrast: 2,
+        saturation: 4.5,
+        brightness: 0.4,
+        sepia: 0.55,
+    },
+    { // barrier yellow
+        id: "yellow",
+        hue: 20,
+        contrast: 2.5,
+        saturation: 4.25,
+        brightness: 0.57,
+        sepia: 0.6,
+    },
+    { // ephemeral purple
+        id: "purple",
+        hue: 240,
+        contrast: 2.5,
+        saturation: 4,
+        brightness: 0.4,
+        sepia: 0.65,
+    },
+    { // capture blue
+        id: "blue",
+        hue: 137,
+        contrast: 1.5,
+        saturation: 5,
+        brightness: 0.6,
+        sepia: 0.6,
+    },
+    { // cant attack gray
+        id: "gray",
+        hue: 0,
+        contrast: 2,
+        saturation: 0.2,
+        brightness: 0.5,
+        sepia: 0.7,
+    },
+]
+
 function iconEditorComponent(props){
 
     const translate = useLang()
 
-    // const globals = useContext(Globals)
+    const globalState = useContext(Globals)
+    const lowSpecsMode = globalState.state.settings.lowSpecsMode === true
 
     const [hue, updateHue] = useState(0)
-    const [contrast, udpateContrast] = useState(1.5)
-    const [saturation, updateSaturation] = useState(0)
-    const [brightness, updateBrightness] = useState(0.65)
-    const [sepia, updateSepia] = useState(1)
+    const [contrast, udpateContrast] = useState(2)
+    const [saturation, updateSaturation] = useState(0.2)
+    const [brightness, updateBrightness] = useState(0.5)
+    const [sepia, updateSepia] = useState(0.7)
 
     const [selected, updateSelected] = useState(null)
     const [iconUri, updateIconUri] = useState("")
@@ -82,9 +134,9 @@ function iconEditorComponent(props){
         datauri(selected.icon).then(updateIconUri)
         updateHue(0)
         udpateContrast(2)
-        updateSaturation(0)
+        updateSaturation(0.2)
         updateBrightness(0.5)
-        updateSepia(0.65)
+        updateSepia(0.7)
     }, [selected])
 
     const [teplatedSvgRef, updateTemplatedeSvgRef] = useState(null)
@@ -158,11 +210,14 @@ function iconEditorComponent(props){
 
     }, [uploadedSvgRef, exportingUpload, props.value, uploadReady])
 
+    const [expandAdvanced, updateExpandAdvanced] = useState(false)
+    const toggleExpandAdvanced = useCallback(()=>updateExpandAdvanced(!expandAdvanced), [expandAdvanced, updateExpandAdvanced])
+
     return div(
         { className: "edit-icon box" },
 
         label(
-            div(
+            strong(
                 translate("keyword_icon"),
             ),
         ),
@@ -311,6 +366,12 @@ function iconEditorComponent(props){
 
                         iconUri
                             ? div(
+                                label(
+                                    { className: "gutter-t" },
+                                    strong(
+                                        translate("preview")
+                                    ),
+                                ),
                                 div(
                                     {
                                         className: "flex vhcenter gutter-t-.5",
@@ -322,122 +383,171 @@ function iconEditorComponent(props){
                                             setRef: updateTemplatedeSvgRef,
                                         } },
 
-                                        svgWrap(
-                                            { width: 128, height: 128, loading: exportingPremade },
-                                            div({
-                                                className: "custom-icon",
-                                                style: {
-                                                    backgroundImage: iconUri ? `url(${iconUri})` : undefined,
-                                                    filter: `brightness(${brightness}) sepia(${sepia}) saturate(${saturation}) hue-rotate(${hue}deg) contrast(${contrast})`,
-                                                },
+                                        customIconPreview({
+                                            iconUri,
+                                            brightness,
+                                            sepia,
+                                            saturation,
+                                            hue,
+                                            contrast,
+                                            loading: exportingPremade,
+                                        })
+                                    ),
+                                ),
+                                label(
+                                    { className: "box gutter-t" },
+                                    div(
+                                        { className: "box-4 flex vcenter gutter-t" },
+                                        strong(
+                                            translate("presets"),
+                                        )
+                                    ),
+                                    div(
+                                        { className: "flex gutter-trbl-.5" },
+                                        iconPresetSettings.map(preset=>div(
+                                            { 
+                                                key: preset.id, 
+                                                className: "box-2 clickable",
+                                                onClick: ()=>{
+                                                    updateHue(preset.hue)
+                                                    udpateContrast(preset.contrast)
+                                                    updateSaturation(preset.saturation)
+                                                    updateBrightness(preset.brightness)
+                                                    updateSepia(preset.sepia)
+                                                }
+                                            },
+                                            customIconPreview({
+                                                ...preset,
+                                                iconUri,
+                                                loading: exportingPremade,
                                             }),
-                                        )
+                                        ))
                                     ),
                                 ),
-                                label(
-                                    { className: "box gutter-trbl-.5 flex-s" },
+                                div(
+                                    { className: "flex clickable", onClick: toggleExpandAdvanced},
                                     div(
-                                        { className: "box-4 flex vcenter gutter-t" },
-                                        translate("saturation"),
-                                        ":",
-                                    ),
-                                    div(
-                                        { className: "grow gutter-t" },
-                                        InputRange(
-                                            {
-                                                formatLabel: value => `${decimalLimit(value*100)}%`,
-                                                value: saturation,
-                                                min: 0,
-                                                max: 5,
-                                                step: 0.01,
-                                                onChange: updateSaturation,
-                                            }
+                                        { className: "grow flex vcenter" },
+                                        label(
+                                            strong(
+                                                translate("advanced_color_settings")
+                                            )
                                         )
-                                    )
+                                    ),
+                                    button(
+                                        { className: "gutter-trbl-.5 flex vcenter" },
+                                        div({ className: `icon ${lowSpecsMode ? "" : "animated"} ${expandAdvanced ? "multiply" : "chevron-down"}` })
+                                    ),
                                 ),
-                                label(
-                                    { className: "box gutter-trbl-.5 flex-s" },
-                                    div(
-                                        { className: "box-4 flex vcenter gutter-t" },
-                                        translate("hue_rotation"),
-                                        ":",
-                                    ),
-                                    div(
-                                        { className: "grow gutter-t" },
-                                        InputRange(
-                                            {
-                                                formatLabel: value => `${decimalLimit(value)}deg`,
-                                                value: hue,
-                                                min: 0,
-                                                max: 360,
-                                                step: 1,
-                                                onChange: updateHue,
-                                            }
+                                div(
+                                    {
+                                        className: `accordian gutter-b-.5 ${expandAdvanced ? "expanded" : ""}`
+                                    },
+                                    label(
+                                        { className: "box gutter-trbl-.5 flex-s" },
+                                        div(
+                                            { className: "box-4 flex vcenter gutter-t" },
+                                            translate("saturation"),
+                                            ":",
+                                        ),
+                                        div(
+                                            { className: "grow gutter-t" },
+                                            InputRange(
+                                                {
+                                                    formatLabel: value => `${decimalLimit(value*100)}%`,
+                                                    value: saturation,
+                                                    min: 0,
+                                                    max: 5,
+                                                    step: 0.01,
+                                                    onChange: updateSaturation,
+                                                }
+                                            )
                                         )
-                                    )
-                                ),
-                                label(
-                                    { className: "box gutter-trbl-.5 flex-s" },
-                                    div(
-                                        { className: "box-4 flex vcenter gutter-t" },
-                                        translate("brightness"),
-                                        ":",
                                     ),
-                                    div(
-                                        { className: "grow gutter-t" },
-                                        InputRange(
-                                            {
-                                                formatLabel: value => `${decimalLimit(value*100)}%`,
-                                                value: brightness,
-                                                min: 0,
-                                                max: 2,
-                                                step: 0.01,
-                                                onChange: updateBrightness,
-                                            }
+                                    label(
+                                        { className: "box gutter-trbl-.5 flex-s" },
+                                        div(
+                                            { className: "box-4 flex vcenter gutter-t" },
+                                            translate("hue_rotation"),
+                                            ":",
+                                        ),
+                                        div(
+                                            { className: "grow gutter-t" },
+                                            InputRange(
+                                                {
+                                                    formatLabel: value => `${decimalLimit(value)}deg`,
+                                                    value: hue,
+                                                    min: 0,
+                                                    max: 360,
+                                                    step: 1,
+                                                    onChange: updateHue,
+                                                }
+                                            )
                                         )
-                                    )
-                                ),
-                                label(
-                                    { className: "box gutter-trbl-.5 flex-s" },
-                                    div(
-                                        { className: "box-4 flex vcenter gutter-t" },
-                                        translate("contrast"),
-                                        ":",
                                     ),
-                                    div(
-                                        { className: "grow gutter-t" },
-                                        InputRange(
-                                            {
-                                                formatLabel: value => `${decimalLimit(value*100)}%`,
-                                                value: contrast,
-                                                min: 0,
-                                                max: 5,
-                                                step: 0.01,
-                                                onChange: udpateContrast,
-                                            }
+                                    label(
+                                        { className: "box gutter-trbl-.5 flex-s" },
+                                        div(
+                                            { className: "box-4 flex vcenter gutter-t" },
+                                            translate("brightness"),
+                                            ":",
+                                        ),
+                                        div(
+                                            { className: "grow gutter-t" },
+                                            InputRange(
+                                                {
+                                                    formatLabel: value => `${decimalLimit(value*100)}%`,
+                                                    value: brightness,
+                                                    min: 0,
+                                                    max: 2,
+                                                    step: 0.01,
+                                                    onChange: updateBrightness,
+                                                }
+                                            )
                                         )
-                                    )
-                                ),
-                                label(
-                                    { className: "box gutter-trbl-.5 flex-s" },
-                                    div(
-                                        { className: "box-4 flex vcenter gutter-t" },
-                                        translate("sepia"),
-                                        ":",
                                     ),
-                                    div(
-                                        { className: "grow gutter-t" },
-                                        InputRange(
-                                            {
-                                                formatLabel: value => `${decimalLimit(value*100)}%`,
-                                                value: sepia,
-                                                min: 0,
-                                                max: 1,
-                                                step: 0.01,
-                                                onChange: updateSepia,
-                                            }
+                                    label(
+                                        { className: "box gutter-trbl-.5 flex-s" },
+                                        div(
+                                            { className: "box-4 flex vcenter gutter-t" },
+                                            translate("contrast"),
+                                            ":",
+                                        ),
+                                        div(
+                                            { className: "grow gutter-t" },
+                                            InputRange(
+                                                {
+                                                    formatLabel: value => `${decimalLimit(value*100)}%`,
+                                                    value: contrast,
+                                                    min: 0,
+                                                    max: 5,
+                                                    step: 0.01,
+                                                    onChange: udpateContrast,
+                                                }
+                                            )
                                         )
-                                    )
+                                    ),
+                                    label(
+                                        { className: "box gutter-trbl-.5 flex-s" },
+                                        div(
+                                            { className: "box-4 flex vcenter gutter-t" },
+                                            translate("sepia"),
+                                            ":",
+                                        ),
+                                        div(
+                                            { className: "grow gutter-t" },
+                                            InputRange(
+                                                {
+                                                    formatLabel: value => `${decimalLimit(value*100)}%`,
+                                                    value: sepia,
+                                                    min: 0,
+                                                    max: 1,
+                                                    step: 0.01,
+                                                    onChange: updateSepia,
+                                                }
+                                            )
+                                        )
+                                    ),
                                 ),
                                 div(
                                     { className: "flex gutter-t-.5" },
@@ -461,6 +571,28 @@ function iconEditorComponent(props){
             )
             : undefined
         ,
+    )
+}
+
+export function customIconPreview(props){
+    const {
+        iconUri,
+        brightness,
+        sepia,
+        saturation,
+        hue,
+        contrast,
+        loading,
+    } = props
+    return svgWrap(
+        { width: 128, height: 128, loading },
+        div({
+            className: "custom-icon",
+            style: {
+                backgroundImage: iconUri ? `url(${iconUri})` : undefined,
+                filter: `brightness(${brightness}) sepia(${sepia}) saturate(${saturation}) hue-rotate(${hue}deg) contrast(${contrast})`,
+            },
+        }),
     )
 }
 
