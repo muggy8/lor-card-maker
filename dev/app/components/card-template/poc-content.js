@@ -34,48 +34,36 @@ function PoCContent(props){
 
     const cardTextAreaRef = useRef()
     useEffectDebounce(()=>{
-		if (!background){
+		if (!background || props.showOnlyIcon){
 			return
 		}
         concurrencyManagerRef.current.sequential(()=>{
             return scaleFontSize(cardTextAreaRef.current)
         })
-    }, 300, [props.name, props.effect, props.pocType, props.rarity,, !!background])
+    }, 300, [props.name, props.effect, props.pocType, props.rarity, props.showOnlyIcon, !!background])
     
     const nameRef = useRef()
     useEffectDebounce(()=>{
-		if (!background){
+		if (!background || props.showOnlyIcon){
 			return
 		}
         concurrencyManagerRef.current.concurrent(()=>{
             return scaleFontSize(nameRef.current, 60, 16)
         })
-    }, 200, [props.name, props.effect, props.pocType, props.rarity, !!background])
+    }, 200, [props.name, props.effect, props.pocType, props.rarity, props.showOnlyIcon, !!background])
     
     const typeTextRef = useRef()
     useEffectDebounce(()=>{
-		if (!background){
+		if (!background || props.showOnlyIcon){
 			return
 		}
         concurrencyManagerRef.current.concurrent(()=>{
             return scaleFontSize(typeTextRef.current, 40, 16)
         })
-    }, 100, [props.name, props.effect, props.pocType, props.rarity,, !!background])
+    }, 100, [props.name, props.effect, props.pocType, props.rarity, props.showOnlyIcon, !!background])
 
     if (props.showOnlyIcon){
-        return SvgWrap(
-            {
-                loading: !background || props.loading,
-                onTransform: props.updateTransform, 
-                ...(props.transform || {x: 0, y: 0, scale: 1}),
-                width: 256,
-                height: 256,
-            },
-            pocIcon({
-                className: "poc-content icon-only",
-                ...props
-            }),
-        )
+        return pocIcon(props)
     }
 
     return SvgWrap(
@@ -97,7 +85,10 @@ function PoCContent(props){
 
                     div(
                         { className: "poc-content-icon" },
-                        pocIcon(props),
+                        pocIcon({
+                            ...props,
+                            isInclusion: true,
+                        }),
                     ),
 
                     div({

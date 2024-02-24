@@ -1,5 +1,7 @@
 .poc-icon-sticker {
     position: relative;
+    width: 384px;
+    height: 384px;
 }
 .poc-icon-sticker::after {
     position: relative;

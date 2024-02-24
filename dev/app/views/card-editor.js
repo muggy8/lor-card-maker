@@ -27,10 +27,7 @@ import debounceFunction from "/Utils/debounce-function.js"
 import exportFromApp from "/Components/export.js"
 import editFileName from "/Components/card-config/edit-file-name.js"
 import EditColor from "/Components/card-config/edit-color.js"
-import * as deviceStats from '/cdn/react-device-detect'
 import { isDesktop } from '/cdn/react-device-detect'
-
-console.log(deviceStats)
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -508,7 +505,7 @@ export async function openUri(base64ImageData, fileName = "export.png") {
         }
     )
 
-    if (isDesktop && !window.AndroidNativeInterface){
+    if (isDesktop && !window.AndroidNativeInterface && !location.origin.includes("localhost")){
         return saveBlob(blob, fileName)
     }
     else if ("share" in navigator && "canShare" in navigator && navigator.canShare({files: [shareFile]})){

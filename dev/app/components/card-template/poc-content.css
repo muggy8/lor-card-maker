@@ -50,6 +50,10 @@
     color: #9f9888;
 }
 
+.poc-content .type-text {
+    color: #9f9888;
+}
+
 .poc-content.common .type-text {
     color: #b7e87b;
 }
@@ -65,9 +69,4 @@
 }
 .poc-content.special .type-text {
     color: #74f9fb;
-}
-
-.poc-content.icon-only {
-    width: 256px;
-    height: 256px;
 }

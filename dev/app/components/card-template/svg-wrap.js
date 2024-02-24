@@ -8,8 +8,15 @@ import useAssetCache from "/Utils/use-asset-cache.js"
 
 const cssLoaded = loadCss("/Components/card-template/svg-wrap.css")
 
+const doNothing = ()=>{}
+
 function SvgWrapComponent(props){
-    const svgRef = useContext(svgRefference)
+    const globalSvgRef = useContext(svgRefference)
+	const dummySvgRef = useRef({
+		current: null,
+		setRef: doNothing,
+	})
+	const svgRef = props.isInclusion ? dummySvgRef.current : globalSvgRef
 
     const gestureReceiver = useRef()
 
