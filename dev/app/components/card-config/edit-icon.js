@@ -133,7 +133,6 @@ function iconEditorComponent(props){
             scale: 1,
         })
         uploadIsNotReady()
-        updatePocMode(false)
     }, [uploadedIcon])
 
     const cancelUpload = useCallback(()=>{
@@ -158,219 +157,6 @@ function iconEditorComponent(props){
         }, ()=>setExportingUpload(false))
 
     }, [uploadedSvgRef, exportingUpload, props.value, uploadReady])
-
-    // logic to do with the PoC icons 
-    const [pocMode, updatePocMode] = useState(false)
-    const selectPocMode = useCallback(ev=>{
-        const target = ev.target
-        const selectedOption = target[target.selectedIndex] 
-
-        if (selectedOption.value === "none"){
-            updatePocMode(false)
-        }
-        else{
-            updatePocMode(selectedOption.value)
-        }
-    }, [])
-    const [
-        pocPowerFrame, pocPowerFrameCover, 
-        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing, pocPowerSpecialRing,
-        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
-
-        pocRelicFrame,
-        pocRelicCommonRing, pocRelicRareRing, pocRelicEpicRing, pocRelicLegendaryRing, pocRelicSpecialRing,
-
-        pocItemFrame,
-        pocItemCommonRing, pocItemRareRing, pocItemEpicRing, pocItemLegendaryRing, pocItemSpecialRing,
-    ] = useAssetCache(updateCache=>{
-        Promise.all([
-            datauri("/Assets/keyword/poc-frame-overlay.png"),
-            datauri("/Assets/keyword/poc-frame-overlay-cover.png"),
-
-            datauri("/Assets/keyword/poc-frame-overlay-common.png"),
-            datauri("/Assets/keyword/poc-frame-overlay-rare.png"),
-            datauri("/Assets/keyword/poc-frame-overlay-epic.png"),
-            datauri("/Assets/keyword/poc-frame-overlay-legendary.png"),
-            datauri("/Assets/keyword/poc-frame-overlay-special.png"),
-            
-            datauri("/Assets/keyword/poc-common.png"),
-            datauri("/Assets/keyword/poc-rare.png"),
-            datauri("/Assets/keyword/poc-epic.png"),
-            datauri("/Assets/keyword/poc-legendary.png"),
-            datauri("/Assets/keyword/poc-special.png"),
-
-            datauri("/Assets/keyword/poc-relic-frame.png"),
-            datauri("/Assets/keyword/poc-relic-frame-overlay-common.png"),
-            datauri("/Assets/keyword/poc-relic-frame-overlay-rare.png"),
-            datauri("/Assets/keyword/poc-relic-frame-overlay-epic.png"),
-            datauri("/Assets/keyword/poc-relic-frame-overlay-legendary.png"),
-            datauri("/Assets/keyword/poc-relic-frame-overlay-special.png"),
-
-            datauri("/Assets/keyword/poc-item-frame.png"),
-            datauri("/Assets/keyword/poc-item-frame-overlay-common.png"),
-            datauri("/Assets/keyword/poc-item-frame-overlay-rare.png"),
-            datauri("/Assets/keyword/poc-item-frame-overlay-epic.png"),
-            datauri("/Assets/keyword/poc-item-frame-overlay-legendary.png"),
-            datauri("/Assets/keyword/poc-item-frame-overlay-special.png"),
-        ]).then(updateCache)
-    }, [], [])
-    const [pocRarity, updatePocRarity] = useState("")
-
-    const renderPoCPowerFrame = useCallback(()=>{
-        return fragment(
-            div({ 
-                className: "poc-icon poc-frame",
-                style: {
-                    backgroundImage: `url(${pocPowerFrame})`
-                }
-            }),
-            div({ 
-                className: "poc-icon poc-frame",
-                style: {
-                    backgroundImage: `url(${pocPowerFrameCover})`
-                }
-            }),
-            pocRarity 
-                ? fragment(
-                    div({ 
-                        className: "poc-icon poc-frame",
-                        style: {
-                            backgroundImage: `url(${
-                                (pocRarity === "common" && pocPowerCommonRing) ||
-                                (pocRarity === "rare" && pocPowerRareRing) ||
-                                (pocRarity === "epic" && pocPowerEpicRing) ||
-                                (pocRarity === "legendary" && pocPowerLegendaryRing) ||
-                                (pocRarity === "special" && pocPowerSpecialRing) ||
-                                ""
-                            })`
-                        }
-                    }),
-                    div({
-                        className: `poc-icon poc-gem poc-gem-${pocRarity}`,
-                        style: {
-                            backgroundImage: `url(${
-                                (pocRarity === "common" && pocCommonGem) ||
-                                (pocRarity === "rare" && pocRareGem) ||
-                                (pocRarity === "epic" && pocEpicGem) ||
-                                (pocRarity === "legendary" && pocLegendaryGem) ||
-                                (pocRarity === "special" && pocSpecialGem) ||
-                                ""
-                            })`
-                        },
-                    })
-                )
-                : undefined
-            ,
-        )
-    }, [
-        pocRarity,
-        pocPowerFrame, pocPowerFrameCover, 
-        pocPowerCommonRing, pocPowerRareRing, pocPowerEpicRing, pocPowerLegendaryRing, pocPowerSpecialRing,
-        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
-    ])
-
-    const renderPoCRelicFrame = useCallback(()=>{
-        return fragment(
-            pocRarity 
-                ? div({ 
-                    className: "poc-icon poc-frame",
-                    style: {
-                        backgroundImage: `url(${
-                            (pocRarity === "common" && pocRelicCommonRing) ||
-                            (pocRarity === "rare" && pocRelicRareRing) ||
-                            (pocRarity === "epic" && pocRelicEpicRing) ||
-                            (pocRarity === "legendary" && pocRelicLegendaryRing) ||
-                            (pocRarity === "special" && pocRelicSpecialRing) ||
-                            ""
-                        })`
-                    }
-                })
-                : undefined
-            ,
-            div({ 
-                className: "poc-icon poc-frame",
-                style: {
-                    backgroundImage: `url(${pocRelicFrame})`
-                }
-            }),
-            pocRarity
-                ? div({
-                    className: `poc-icon poc-gem poc-gem-${pocRarity} relic`,
-                    style: {
-                        backgroundImage: `url(${
-                            (pocRarity === "common" && pocCommonGem) ||
-                            (pocRarity === "rare" && pocRareGem) ||
-                            (pocRarity === "epic" && pocEpicGem) ||
-                            (pocRarity === "legendary" && pocLegendaryGem) ||
-                            (pocRarity === "special" && pocSpecialGem) ||
-                            ""
-                        })`
-                    },
-                })
-                : undefined
-        )
-    }, [
-        pocRarity,
-        pocRelicFrame,
-        pocRelicCommonRing, pocRelicRareRing, pocRelicEpicRing, pocRelicLegendaryRing, pocRelicSpecialRing,
-        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
-    ])
-
-    const renderPocItemFrame = useCallback(()=>{
-        return fragment(
-            div({ 
-                className: "poc-icon poc-frame",
-                style: {
-                    backgroundImage: `url(${pocItemFrame})`
-                }
-            }),
-            pocRarity 
-                ? fragment(
-                    div({ 
-                        className: "poc-icon poc-frame",
-                        style: {
-                            backgroundImage: `url(${
-                                (pocRarity === "common" && pocItemCommonRing) ||
-                                (pocRarity === "rare" && pocItemRareRing) ||
-                                (pocRarity === "epic" && pocItemEpicRing) ||
-                                (pocRarity === "legendary" && pocItemLegendaryRing) ||
-                                (pocRarity === "special" && pocItemSpecialRing) ||
-                                ""
-                            })`
-                        }
-                    }),
-                    div({
-                        className: `poc-icon poc-gem poc-gem-${pocRarity} item`,
-                        style: {
-                            backgroundImage: `url(${
-                                (pocRarity === "common" && pocCommonGem) ||
-                                (pocRarity === "rare" && pocRareGem) ||
-                                (pocRarity === "epic" && pocEpicGem) ||
-                                (pocRarity === "legendary" && pocLegendaryGem) ||
-                                (pocRarity === "special" && pocSpecialGem) ||
-                                ""
-                            })`
-                        },
-                    })
-                )
-                : undefined
-            ,
-        )
-    }, [
-        pocRarity,
-        pocItemFrame,
-        pocItemCommonRing, pocItemRareRing, pocItemEpicRing, pocItemLegendaryRing, pocItemSpecialRing,
-        pocCommonGem, pocRareGem, pocEpicGem, pocLegendaryGem, pocSpecialGem,
-    ])
-
-    const getPoCCropClassName = useCallback(()=>{
-        switch (pocMode){
-            case "power": return "poc-icon crop-power"
-            case "item": return "poc-icon crop-item"
-            case "relic": return "poc-icon crop-relic"
-            default: return ""
-        }
-    }, [pocMode])
 
     return div(
         { className: "edit-icon box" },
@@ -454,7 +240,7 @@ function iconEditorComponent(props){
                                     },
                                     div(
                                         {
-                                            className: `icon-svg-content ${ getPoCCropClassName() }`,
+                                            className: "icon-svg-content",
                                             style: {
                                                 "--scale": uploadTransform.scale,
                                                 "--left": uploadTransform.x,
@@ -466,68 +252,18 @@ function iconEditorComponent(props){
                                             ArtRenderer({ url: uploadedIcon, onImageChanged:uploadIsNowReady })
                                         )
                                     ),
-
-                                    pocMode === "power"
-                                        ? renderPoCPowerFrame()
-                                        : undefined
-                                    ,
-
-                                    pocMode === "relic"
-                                        ? renderPoCRelicFrame()
-                                        : undefined
-                                    ,
-
-                                    pocMode === "item"
-                                        ? renderPocItemFrame()
-                                        : undefined
-                                    ,
                                 )
                             ),
                         ),
 
-                        pocPowerFrame 
-                            ? div(
-                                { className: "gutter-tb" },
-                                label(
-                                    translate("poc_mode")
-                                ),
-                                div(
-                                    {
-                                        className: "gutter-t-.5 flex"
-                                    },
-                                    normalSelect({
-                                        onChange: selectPocMode,
-                                        className: "grow gutter-trbl",
-                                        value: pocMode ? pocMode : "none" 
-                                    }, pocModeOptions.map(key=>{
-                                        const optionProps = {
-                                            key,
-                                            value:key, 
-                                        }
-                                        return normalOption(
-                                            optionProps,
-                                            translate(key)
-                                        )
-                                    }))
-                                )
-                            )
-                            : undefined 
-                        ,
-
-                        pocMode 
-                            ? fragment(
-                                editRarityPoc({
-                                    value: pocRarity,
-                                    updateValue: updatePocRarity,
-                                })
-                            ) 
-                            : undefined 
-                        ,
-
                         div(
                             { className: "flex gutter-t-.5" },
                             button(
-                                { className: "box gutter-trbl-1", onClick: useUploadedIcon, [uploadReady ? "" : "disabled" ]: true },
+                                { className: "box gutter-trbl-1", onClick: useUploadedIcon, ...(
+                                    uploadReady
+                                        ? {}
+                                        : { disabled: true }
+                                ) },
                                 uploadReady ? translate("use_icon") : div({className: "icon loading"})
                             ),
                             div({ className: "gutter-r-.5" }),
