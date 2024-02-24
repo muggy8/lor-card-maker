@@ -36,7 +36,7 @@ const defaultDeck = {
 	name: "",
 	showDeckStats: true,
 	includeAssociated: false,
-	showPocItems: false,
+	showPocItems: true,
 	showAssociatedCards: false,
 	dataVersion: 2,
 	fileName: "",
