@@ -27,6 +27,10 @@ import debounceFunction from "/Utils/debounce-function.js"
 import exportFromApp from "/Components/export.js"
 import editFileName from "/Components/card-config/edit-file-name.js"
 import EditColor from "/Components/card-config/edit-color.js"
+import * as deviceStats from '/cdn/react-device-detect'
+import { isDesktop } from '/cdn/react-device-detect'
+
+console.log(deviceStats)
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
@@ -477,7 +481,10 @@ export async function openUri(base64ImageData, fileName = "export.png") {
         }
     )
 
-    if ("share" in navigator && "canShare" in navigator && navigator.canShare({files: [shareFile]})){
+    if (isDesktop && !window.AndroidNativeInterface){
+        return saveBlob(blob, fileName)
+    }
+    else if ("share" in navigator && "canShare" in navigator && navigator.canShare({files: [shareFile]})){
         navigator.share({
             files: [shareFile]
         })
@@ -526,6 +533,23 @@ export function dataURItoBlob(dataURI) {
   
     // write the ArrayBuffer to a blob, and you're done
     var blob = new Blob([ab], {type: mimeString});
-    return blob;
-  
+    return blob; 
+}
+
+export function saveBlob(blob, filename) {
+    console.log(blob, filename)
+    if (window.navigator.msSaveOrOpenBlob) {
+        window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else {
+        const a = document.createElement('a');
+        document.body.appendChild(a);
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = filename;
+        a.click();
+        setTimeout(() => {
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        }, 0)
+    }
 }

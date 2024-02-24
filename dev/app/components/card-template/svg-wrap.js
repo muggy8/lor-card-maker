@@ -77,7 +77,6 @@ function SvgWrapComponent(props){
         function onWheel(ev){
             ev.preventDefault()
 			ev.stopPropagation()
-			console.log(ev)
 
             lastStoppedPosition.current.scale = lastStoppedPosition.current.scale * (1 + (ev.deltaY / 1000))
             transformCallback.current({...lastStoppedPosition.current})
