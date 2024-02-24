@@ -23,6 +23,45 @@ function PoCContent(props){
         datauri("/Assets/keyword/frame.png").then(updateBackground)
     }, [])
 
+    const divisionUri = useAssetCache(updateDivisionUri=>{
+        datauri("/Assets/keyword/division.png").then(updateDivisionUri)
+    }, [])
+
+    const concurrencyManagerRef = useRef()
+    useEffect(()=>{
+		concurrencyManagerRef.current = concurrencyManagerFactory()
+	}, [])
+
+    const cardTextAreaRef = useRef()
+    useEffectDebounce(()=>{
+		if (!background){
+			return
+		}
+        concurrencyManagerRef.current.sequential(()=>{
+            return scaleFontSize(cardTextAreaRef.current)
+        })
+    }, 300, [props.name, props.effect, props.pocType, props.rarity,, !!background])
+    
+    const nameRef = useRef()
+    useEffectDebounce(()=>{
+		if (!background){
+			return
+		}
+        concurrencyManagerRef.current.concurrent(()=>{
+            return scaleFontSize(nameRef.current, 60, 16)
+        })
+    }, 200, [props.name, props.effect, props.pocType, props.rarity, !!background])
+    
+    const typeTextRef = useRef()
+    useEffectDebounce(()=>{
+		if (!background){
+			return
+		}
+        concurrencyManagerRef.current.concurrent(()=>{
+            return scaleFontSize(typeTextRef.current, 40, 16)
+        })
+    }, 100, [props.name, props.effect, props.pocType, props.rarity,, !!background])
+
     return SvgWrap(
         {
             loading: !background || props.loading,
@@ -39,10 +78,45 @@ function PoCContent(props){
                             backgroundImage: background ? `url(${background})` : "none"
                         }
                     },
+
                     pocIcon({
                         className: "poc-content-icon",
                         ...props
-                    })
+                    }),
+
+                    div({
+                        className: "division",
+                        style: {
+                            backgroundImage: divisionUri ? `url(${divisionUri})` : "none"
+                        },
+                    }),
+
+                    div(
+                        { className: "card-text-wrapper", ref: cardTextAreaRef },
+    
+                        props.name
+                            ? div(
+                                { className: "name fitty-wrap card-text-bold card-text-outline", ref: nameRef },
+                                props.name
+                            )
+                            : undefined
+                        ,
+
+
+                        div(
+                            div(
+                                { className: `type-text fitty-wrap card-text-outline ${props.rarity}`, ref: typeTextRef },
+                                `${props.rarity} ${props.pocType}`
+                            )
+                        ),
+    
+                        EffectText({
+                            blueWords: props.blueWords,
+                            orangeWords: props.orangeWords,
+                            className: "effect-container card-text-universe",
+                            effectText: props.effect
+                        })
+                    )
                 ),
             )
             : undefined
