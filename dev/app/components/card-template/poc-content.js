@@ -62,6 +62,22 @@ function PoCContent(props){
         })
     }, 100, [props.name, props.effect, props.pocType, props.rarity,, !!background])
 
+    if (props.showOnlyIcon){
+        return SvgWrap(
+            {
+                loading: !background || props.loading,
+                onTransform: props.updateTransform, 
+                ...(props.transform || {x: 0, y: 0, scale: 1}),
+                width: 256,
+                height: 256,
+            },
+            pocIcon({
+                className: "poc-content icon-only",
+                ...props
+            }),
+        )
+    }
+
     return SvgWrap(
         {
             loading: !background || props.loading,
@@ -79,10 +95,10 @@ function PoCContent(props){
                         }
                     },
 
-                    pocIcon({
-                        className: "poc-content-icon",
-                        ...props
-                    }),
+                    div(
+                        { className: "poc-content-icon" },
+                        pocIcon(props),
+                    ),
 
                     div({
                         className: "division",

@@ -137,6 +137,10 @@ const lang = {
         "low_specs_mode": "Low Specs Device Mode",
         "reset_default": "Reset To Default",
         "calculate_based_on_art": "Calculate Based On Card Art",
+        "presets": "Presets",
+        "advanced_color_settings": "Advanced Color Settings",
+        "preview": "Preview",
+        "icon_only": "Icon Only",
 
         "attune": "Attune",
         "attach": "Attach",
@@ -258,8 +262,5 @@ const lang = {
         "error": "Error",
         "error_loading_card": "Error Loading :cardName",
         "type": "Type",
-        "presets": "Presets",
-        "advanced_color_settings": "Advanced Color Settings",
-        "preview": "Preview",
     }
 }

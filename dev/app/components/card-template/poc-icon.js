@@ -1,5 +1,5 @@
 import factory, { div } from "/Utils/elements.js"
-import { useRef, useState, useEffect, useContext } from "/cdn/react"
+import { useRef, useState, useEffect, useContext, createElement } from "/cdn/react"
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
 import SvgWrap from "/Components/card-template/svg-wrap.js"
@@ -12,9 +12,13 @@ import useEffectDebounce from "/Utils/use-debounce-effect.js"
 import concurrencyManagerFactory from "/Utils/concurrency-manager.js"
 import useAssetCache, { useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
 import { AutoFitClanText } from "/Components/card-template/unit.js"
+import { svgRefference } from "/Views/card-editor.js"
+
 import useLang from "/Utils/use-lang.js"
 
 const cssLoaded = loadCss("/Components/card-template/poc-icon.css")
+
+function doNothing(){}
 
 function PoCIcon(props){
     const globalState = useContext(Globals)
@@ -144,71 +148,84 @@ function PoCIcon(props){
         }
     }, [props.rarity])
 
-    return div(
-        { className: `poc-icon-sticker ${props.rarity} ${props.pocType} ${props.className}` },
-        div(
+    return createElement(
+        svgRefference.Provider,
+        { value: {
+            current: null,
+            setRef: doNothing,
+        } },
+        SvgWrap(
             {
-                className: "art",
-                style: {
-                    backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
-                        ? `url(${backdropUri})`
-                        : "none"
-                    ,
-                    "--scale": props.transform ? props.transform.scale : 1,
-                    "--left": props.transform ? props.transform.x : 0,
-                    "--top": props.transform ? props.transform.y : 0,
-                },
+                width: 384,
+                height: 384,
             },
             div(
-                {className: "scale-adjuster"},
-                ArtRenderer({ url: props.art })
+                { className: `poc-icon-sticker ${props.rarity} ${props.pocType}` },
+                div(
+                    {
+                        className: "art",
+                        style: {
+                            backgroundImage: !props.art && globalState.state.defaultBg && backdropUri
+                                ? `url(${backdropUri})`
+                                : "none"
+                            ,
+                            "--scale": props.transform ? props.transform.scale : 1,
+                            "--left": props.transform ? props.transform.x : 0,
+                            "--top": props.transform ? props.transform.y : 0,
+                        },
+                    },
+                    div(
+                        {className: "scale-adjuster"},
+                        ArtRenderer({ url: props.art })
+                    )
+                ),
+        
+                iconFrame
+                    ? div(
+                        { 
+                            className: "frame-overlay", 
+                            style: {
+                                backgroundImage: `url(${iconFrame})`
+                            }
+                        }
+                    )
+                    : undefined
+                ,
+                iconFrameCover 
+                    ? div(
+                        { 
+                            className: "frame-overlay-cover",
+                            style: {
+                                backgroundImage: `url(${iconFrameCover})`
+                            }
+                        }
+                    )
+                    : undefined
+                ,
+                iconRarityFrame 
+                    ? div(
+                        { 
+                            className: "frame-rarity",
+                            style: {
+                                backgroundImage: `url(${iconRarityFrame})`
+                            }
+                        }
+                    )
+                    : undefined
+                ,
+                iconGem 
+                    ? div(
+                        { 
+                            className: "frame-rarity-gem",
+                            style: {
+                                backgroundImage: `url(${iconGem})`
+                            }
+                        }
+                    )
+                    : undefined
+                ,
             )
-        ),
-
-        iconFrame
-            ? div(
-                { 
-                    className: "frame-overlay", 
-                    style: {
-                        backgroundImage: `url(${iconFrame})`
-                    }
-                }
-            )
-            : undefined
-        ,
-        iconFrameCover 
-            ? div(
-                { 
-                    className: "frame-overlay-cover",
-                    style: {
-                        backgroundImage: `url(${iconFrameCover})`
-                    }
-                }
-            )
-            : undefined
-        ,
-        iconRarityFrame 
-            ? div(
-                { 
-                    className: "frame-rarity",
-                    style: {
-                        backgroundImage: `url(${iconRarityFrame})`
-                    }
-                }
-            )
-            : undefined
-        ,
-        iconGem 
-            ? div(
-                { 
-                    className: "frame-rarity-gem",
-                    style: {
-                        backgroundImage: `url(${iconGem})`
-                    }
-                }
-            )
-            : undefined
-        ,
+        )
     )
 }
 

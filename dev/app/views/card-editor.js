@@ -54,6 +54,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
         const globalStateRef = useRef()
         globalStateRef.current = globalState
 
+        // manage back button
         useEffect(()=>{
             const storedCallback = globalState.getAllowBack()
 
@@ -77,6 +78,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
+        // manage card data
         const [card, updateCard] = useState(defaultCardData)
         useEffect(()=>{
             globalState.state.cardId && getCard(globalState.state.cardId).then(updateCard)
@@ -107,6 +109,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             return updaterCollection
         }, {})
 
+        // manage export
         const [svgRef, updateSvgRef] = useState(null)
 
         const [isExporting, _toggleExporting, setExporting] = useToggle(false)
@@ -121,6 +124,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             exportFromApp(card, svgRef, globalState).then(()=>setExporting(false), (err)=>console.warn(err) + setExporting(false))
         }, [svgRef, isExporting, globalState, card])
 
+        // manage page layout 
         const fixedDisplayRef = useRef()
         const [useableWidth, updateUseableWidth] = useState(0)
         const [previewHeight, updatePreviewHeight] = useState(0)
@@ -153,11 +157,25 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             }
         }, [])
 
+        // manage card saving functionality
         const [canSave, _toggleCanSave, setCanSave] = useToggle(true)
         const [isSaving, _toggleIsSaving, setisSaving] = useToggle(false)
         useEffect(()=>{
             setCanSave(true)
         }, knownCardDataKeys.map(key=>card[key]))
+
+        // additional properties that are not saved in card data but will show up in card editor options list
+        const [showOnlyIcon, setShowOnlyIcon] = useState(false)
+
+        // set up additional props to be passed to the renderer.
+        const additionalRendererProps = {
+            cardDataUpdaters,
+            updateTransform: card.art && (globalState.state.moveableArt ? cardDataUpdaters.transform : undefined),
+            loading: isExporting || isSaving,
+        }
+        if (canShow("pocType", defaultCardData)){
+            additionalRendererProps.showOnlyIcon = showOnlyIcon
+        }
 
         return section(
             { id: "card-editor", className: "flex hcenter" },
@@ -177,9 +195,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                             } },
                             cardRenderer({
                                 ...card,
-                                cardDataUpdaters,
-                                updateTransform: card.art && (globalState.state.moveableArt ? cardDataUpdaters.transform : undefined),
-                                loading: isExporting || isSaving,
+                                ...additionalRendererProps,
                             }),
                         )
                     ),
@@ -272,6 +288,17 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         value: card.pocType,
                         updateValue: cardDataUpdaters.pocType
                     })
+                    : undefined
+                ,
+                canShow("pocType", defaultCardData)
+                    ? div(
+                        {className: "gutter-b-2"},
+                        EditCheckbox({
+                            label: translate("icon_only"),
+                            value: showOnlyIcon,
+                            updateValue: setShowOnlyIcon,
+                        })
+                    )
                     : undefined
                 ,
                 canShow("icons", defaultCardData)
