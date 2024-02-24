@@ -75,7 +75,7 @@ const iconPresetSettings = [
         hue: 320,
         contrast: 2,
         saturation: 4.5,
-        brightness: 0.4,
+        brightness: 0.47,
         sepia: 0.55,
     },
     { // barrier yellow
