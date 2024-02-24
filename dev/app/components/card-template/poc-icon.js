@@ -144,8 +144,10 @@ function PoCIcon(props){
         }
     }, [props.rarity])
 
+    console.log({iconGem})
+
     return div(
-        { className: `poc-icon-sticker ${props.pocType} ${props.className}` },
+        { className: `poc-icon-sticker ${props.rarity} ${props.pocType} ${props.className}` },
         div(
             {
                 className: "art",
