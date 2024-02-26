@@ -2,7 +2,7 @@ import factory, { label, div, strong, img } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
 import { useCallback } from "/cdn/react" 
 
-export const rarityOptions = [
+export const PoCRarityOptions = [
     "common",
     "rare",
     "epic",
@@ -12,6 +12,12 @@ export const rarityOptions = [
 
 function EditRegionComponent(props){
     const translate = useLang()
+
+    useEffect(()=>{
+        if (props.value === "champion"){
+            props.updateValue("legendary")
+        }
+    }, [props.value])
 
     const toggleRarity = useCallback((rarity)=>{
         if (props.value === rarity){
@@ -28,7 +34,7 @@ function EditRegionComponent(props){
         ),
         div(
             { className: "flex hcenter gutter-b- gutter-t-.5" },
-            rarityOptions.map(rarityName=>{
+            PoCRarityOptions.map(rarityName=>{
                 const isChecked = rarityName === props.value
 
                 return div(

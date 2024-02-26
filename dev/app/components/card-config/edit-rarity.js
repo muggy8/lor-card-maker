@@ -1,6 +1,6 @@
 import factory, { label, div, strong, img } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback } from "/cdn/react" 
+import { useCallback, useEffect } from "/cdn/react" 
 
 
 export const rarityOptions = [
@@ -12,6 +12,16 @@ export const rarityOptions = [
 
 function EditRegionComponent(props){
     const translate = useLang()
+
+    // if a PoC item is imported and the rarity is special or legendary, we gotta fix that shit.
+    useEffect(()=>{
+        if (props.value === "legendary"){
+            props.updateValue("champion")
+        }
+        else if (props.value === "special"){
+            props.updateValue("")
+        }
+    }, [props.value])
 
     const toggleRarity = useCallback((rarity)=>{
         if (props.value === rarity){
