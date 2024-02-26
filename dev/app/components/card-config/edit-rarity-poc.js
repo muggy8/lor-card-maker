@@ -1,6 +1,6 @@
 import factory, { label, div, strong, img } from "/Utils/elements.js"
 import useLang from "/Utils/use-lang.js"
-import { useCallback } from "/cdn/react" 
+import { useCallback, useEffect } from "/cdn/react" 
 
 export const PoCRarityOptions = [
     "common",

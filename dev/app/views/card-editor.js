@@ -281,7 +281,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                keyExists("id", card) && card.id
+                card.id || card.effect || card.lvup
                     ? undefined
                     : div(
                         {className: "flex hcenter gutter-b-2"},

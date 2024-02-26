@@ -22,7 +22,11 @@ function EditCloneExistingComponent(props){
 
     const utilizeCloneData = useCallback((dataToBeCloned)=>{
         Object.keys(dataToBeCloned).forEach(propertyToClone=>{
-            if (propertyToClone === "id"){
+            if (
+                propertyToClone === "id" || 
+                propertyToClone === "type"|| 
+                propertyToClone === "dataVersion"
+            ){
                 return
             }
             const propertyUpdater = props.cardDataUpdaters[propertyToClone]
