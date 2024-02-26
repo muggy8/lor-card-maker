@@ -28,10 +28,11 @@ import exportFromApp from "/Components/export.js"
 import editFileName from "/Components/card-config/edit-file-name.js"
 import EditColor from "/Components/card-config/edit-color.js"
 import { isDesktop } from '/cdn/react-device-detect'
+import EditCloneExisting from "/Components/card-config/edit-clone-existing.js"
 
 const cssLoaded = loadCss("/Views/card-editor.css")
 
-function canShow(ifKeyExists, inThisObject){
+function keyExists(ifKeyExists, inThisObject){
     return Object.hasOwnProperty.call(inThisObject, ifKeyExists)
 }
 
@@ -170,7 +171,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             updateTransform: card.art && (globalState.state.moveableArt ? cardDataUpdaters.transform : undefined),
             loading: isExporting || isSaving,
         }
-        if (canShow("pocType", defaultCardData)){
+        if (keyExists("pocType", defaultCardData)){
             additionalRendererProps.showOnlyIcon = showOnlyIcon
         }
 
@@ -257,7 +258,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
             ),
             div(
                 { className: "card-configs gutter-tb-4 gutter-rl box-xs-12 box-s-8 box-m-6" },
-                canShow("name", defaultCardData)
+                keyExists("name", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},
                         EditName({
@@ -268,7 +269,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("fileName", defaultCardData)
+                keyExists("fileName", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},
                         editFileName({
@@ -280,14 +281,23 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("pocType", defaultCardData)
+                keyExists("id", card) && card.id
+                    ? undefined
+                    : div(
+                        {className: "flex hcenter gutter-b-2"},
+                        EditCloneExisting({
+                            cardDataUpdaters,
+                        })
+                    )
+                ,
+                keyExists("pocType", defaultCardData)
                     ? EditPocType({
                         value: card.pocType,
                         updateValue: cardDataUpdaters.pocType
                     })
                     : undefined
                 ,
-                canShow("pocType", defaultCardData)
+                keyExists("pocType", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
                         EditCheckbox({
@@ -298,7 +308,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("icons", defaultCardData)
+                keyExists("icons", defaultCardData)
                     ? div(
                         {className: "flex hcenter gutter-b-2"},
                         EditIcon({
@@ -308,7 +318,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("largerIcon", defaultCardData)
+                keyExists("largerIcon", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
                         EditCheckbox({
@@ -319,7 +329,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("mana", defaultCardData)
+                keyExists("mana", defaultCardData)
                     ? div(
                         { className: "gutter-b-2" },
                         EditNumber({
@@ -331,7 +341,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     : undefined
                 ,
                 
-                canShow("clan", defaultCardData)
+                keyExists("clan", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
                         EditColorText({
@@ -342,14 +352,14 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("speed", defaultCardData)
+                keyExists("speed", defaultCardData)
                     ? EditSpeed({
 						value: card.speed,
 						updateValue: cardDataUpdaters.speed
 					})
                     : undefined
                 ,
-                canShow("power", defaultCardData) && canShow("health", defaultCardData) && card.power !== null && card.health !== null
+                keyExists("power", defaultCardData) && keyExists("health", defaultCardData) && card.power !== null && card.health !== null
                     ? div(
                         {className: "flex-l no-wrap"},
                         EditNumber({
@@ -367,14 +377,14 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("faction", defaultCardData)
+                keyExists("faction", defaultCardData)
                     ? EditRegion({
                         value: card.faction,
                         updateValue: cardDataUpdaters.faction,
                     })
                     : undefined
                 ,
-                canShow("art", defaultCardData)
+                keyExists("art", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
                         EditArt({
@@ -385,7 +395,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("shade", defaultCardData)
+                keyExists("shade", defaultCardData)
                     ? EditShade({
                         label: translate("card_art"),
                         value: card.shade || defaultShade,
@@ -393,7 +403,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     })
                     : undefined
                 ,
-                canShow("textBgColor", defaultCardData)
+                keyExists("textBgColor", defaultCardData)
                     ? div(
                         { className: "gutter-b-2" }, 
                         EditColor({
@@ -405,7 +415,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("rarity", defaultCardData)
+                keyExists("rarity", defaultCardData)
                     ? (card.type === "poc" 
                         ? EditRarityPoc({
                             value: card.rarity,
@@ -418,14 +428,14 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                     )
                     : undefined
                 ,
-                canShow("keywords", defaultCardData)
+                keyExists("keywords", defaultCardData)
                     ? EditKeywords({
 						value: card.keywords,
 						updateValue: cardDataUpdaters.keywords
 					})
                     : undefined
                 ,
-                canShow("effect", defaultCardData)
+                keyExists("effect", defaultCardData)
                     ? EditEffect({
 						value: card.effect,
 						updateValue: cardDataUpdaters.effect,
@@ -437,7 +447,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 					})
                     : undefined
                 ,
-                canShow("lvup", defaultCardData)
+                keyExists("lvup", defaultCardData)
                     ? EditEffect({
 						value: card.lvup,
 						updateValue: cardDataUpdaters.lvup,
@@ -449,7 +459,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 					})
                     : undefined
                 ,
-                canShow("blueWords", defaultCardData)
+                keyExists("blueWords", defaultCardData)
                     ? EditColorText({
 						label: translate("other_card_mentioned"),
 						subLabel: translate("other_card_example"),
@@ -458,7 +468,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 					})
                     : undefined
                 ,
-                canShow("orangeWords", defaultCardData)
+                keyExists("orangeWords", defaultCardData)
                     ? EditColorText({
 						label: translate("key_text_mentioned"),
 						subLabel: translate("key_text_example"),
@@ -467,7 +477,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
 					})
                     : undefined
                 ,
-                canShow("associatedCards", defaultCardData)
+                keyExists("associatedCards", defaultCardData)
                     ? div(
                         {className: "gutter-b-2"},
                         EditAssociatedCards({

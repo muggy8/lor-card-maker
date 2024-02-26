@@ -4,9 +4,12 @@ import useFilter from "/Utils/use-filter.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import getFilterOptionsFromCardsList from "/Components/deck/hooks/get-filter-options-form-card-list.js"
 
-export default function useFilterableCustomCardList(knownCards){
+export default function useFilterableCustomCardList(knownCards, configs = {}){
+    const exclude = Object.prototype.hasOwnProperty.call(configs, "exclude") ?  configs.exclude : ["deck"]
+    const include = Object.prototype.hasOwnProperty.call(configs, "include") ? configs.include : []
+
     const customCards = useAssetCache(updateCustomcards=>{
-        getCardList({exclude: ["deck"]}).then(customCards=>{
+        getCardList({exclude, include}).then(customCards=>{
             updateCustomcards(customCards)
             customCards.forEach(card=>{
                 if (!card || !card.id){

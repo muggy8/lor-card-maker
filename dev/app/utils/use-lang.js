@@ -262,5 +262,6 @@ const lang = {
         "error": "Error",
         "error_loading_card": "Error Loading :cardName",
         "type": "Type",
+        "clone": "Clone"
     }
 }

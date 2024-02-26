@@ -10,6 +10,9 @@ function createQueryString (query){
 	const queryParamPairs = []
 	queryProps.forEach(queryProp=>{
 		let queryValue = query[queryProp]
+		if (typeof queryValue === "undefined"){
+			return
+		}
 		Array.isArray(queryValue) && (queryValue = queryValue.join(","))
 		queryParamPairs.push([queryProp, queryValue].join("="))
 	})
