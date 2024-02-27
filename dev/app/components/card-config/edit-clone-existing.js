@@ -16,7 +16,7 @@ function EditCloneExistingComponent(props){
     const translate = useLang()
 
     const knownCards = useRef({})
-	const customCardList = useFilterableCustomCardList(knownCards, { exclude: undefined, include: ["deck"] })
+	const customCardList = useFilterableCustomCardList(knownCards, { exclude: props.exclude, include: props.include, only: props.only })
 
     const [cardSelectorModalOpen, toggleSelectorModalOpen, setSelectorModalOpen] = useToggle(false)
 
