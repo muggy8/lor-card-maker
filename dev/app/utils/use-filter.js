@@ -38,7 +38,10 @@ export default function useFilter(defaultFilters){
 						return
 					}
 
-					assumePassesFilter = assumePassesFilter && item[prop] && filterToCheckAgainst.filter(filterToCheckAgainst.value, item[prop], item)
+					assumePassesFilter = 
+						assumePassesFilter && 
+						Object.prototype.hasOwnProperty.call(item, prop) &&
+						filterToCheckAgainst.filter(filterToCheckAgainst.value, item[prop], item)
 
 				})
 
