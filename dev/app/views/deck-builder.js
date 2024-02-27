@@ -24,6 +24,7 @@ import pocRelicItemSelectionModalIcon, { RelicItemRitoIcon } from "/Components/d
 import useFilterableRitoCardList from "/Components/deck/hooks/use-filterable-rito-card-list.js"
 import useFilterableCustomCardList from "/Components/deck/hooks/use-filterable-custom-card-list.js"
 import useRitoPocStickers from "/Components/deck/hooks/use-rito-poc-stickers.js"
+import editCloneExisting from "/Components/card-config/edit-clone-existing.js"
 
 const modal = factory(reactModal)
 
@@ -145,6 +146,26 @@ function deckBuilderComponenet(){
 		}
 	}, [globalState.state.cardId])
 
+	// logic to do with importing data
+	const importExistingDeck = useCallback(importedData=>{
+		if (!importedData){
+			return
+		}
+		delete importedData.id
+		delete importedData.dataVersion
+		delete importedData.type
+		updateDeck({...deck, ...importedData})
+
+		selectedCards.current.clear()
+
+		importedData.cards && importedData.cards.forEach && importedData.cards.forEach(cardData=>{
+			const cardId = cardData.card.id || cardData.card.cardCode
+
+			selectedCards.current.set(cardId, cardData)
+		})
+	}, [])
+
+	// logic to do with the tabs
 	const [selectedTab, updateSelectedTab] = useState("rito")
 
 	const simpleDeckStatsRef = useRef()
@@ -586,6 +607,17 @@ function deckBuilderComponenet(){
 									placeholder: deck.name,
 								}),
 							),
+
+							typeof deck.id === "undefined" 
+								? div(
+									{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },
+									editCloneExisting({
+										updateAll: importExistingDeck,
+										only: "deck"
+									}),
+								)
+								: undefined
+							,
 
 							div(
 								{ className: "current-deck-input-fields gutter-rl-.5 gutter-b-1" },

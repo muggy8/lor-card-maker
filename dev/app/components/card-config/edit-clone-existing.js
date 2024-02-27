@@ -20,24 +20,32 @@ function EditCloneExistingComponent(props){
 
     const [cardSelectorModalOpen, toggleSelectorModalOpen, setSelectorModalOpen] = useToggle(false)
 
-    const utilizeCloneData = useCallback((dataToBeCloned)=>{
-        Object.keys(dataToBeCloned).forEach(propertyToClone=>{
-            if (
-                propertyToClone === "id" || 
-                propertyToClone === "type"|| 
-                propertyToClone === "dataVersion"
-            ){
-                return
-            }
-            const propertyUpdater = props.cardDataUpdaters[propertyToClone]
-            if (typeof propertyUpdater === "undefined"){
-                return
-            }
-
-            propertyUpdater(dataToBeCloned[propertyToClone])
-        })
+    const utilizeCloneData = useCallback(dataToBeCloned=>{
+        if (props.updateAll){
+            props.updateAll({
+                // make a new object so if if it's manupulate, the data wont be affected.
+                ...dataToBeCloned,
+            })
+        }
+        else if (props.cardDataUpdaters){
+            Object.keys(dataToBeCloned).forEach(propertyToClone=>{
+                if (
+                    propertyToClone === "id" || 
+                    propertyToClone === "type"|| 
+                    propertyToClone === "dataVersion"
+                ){
+                    return
+                }
+                const propertyUpdater = props.cardDataUpdaters[propertyToClone]
+                if (typeof propertyUpdater === "undefined"){
+                    return
+                }
+    
+                propertyUpdater(dataToBeCloned[propertyToClone])
+            })
+        }
         setSelectorModalOpen(false)
-    }, [props.cardDataUpdaters, setSelectorModalOpen])
+    }, [props.cardDataUpdaters, props.updateAll, setSelectorModalOpen])
 
     return label(
         { className: "box" },

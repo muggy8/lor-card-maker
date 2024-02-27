@@ -7,9 +7,10 @@ import getFilterOptionsFromCardsList from "/Components/deck/hooks/get-filter-opt
 export default function useFilterableCustomCardList(knownCards, configs = {}){
     const exclude = Object.prototype.hasOwnProperty.call(configs, "exclude") ?  configs.exclude : ["deck"]
     const include = Object.prototype.hasOwnProperty.call(configs, "include") ? configs.include : []
+    const only = Object.prototype.hasOwnProperty.call(configs, "only") ? configs.only : []
 
     const customCards = useAssetCache(updateCustomcards=>{
-        getCardList({exclude, include}).then(customCards=>{
+        getCardList({exclude, include, only}).then(customCards=>{
             updateCustomcards(customCards)
             customCards.forEach(card=>{
                 if (!card || !card.id){
