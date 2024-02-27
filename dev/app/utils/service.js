@@ -14,7 +14,7 @@ function createQueryString (query){
 			return
 		}
 		Array.isArray(queryValue) && (queryValue = queryValue.join(","))
-		queryParamPairs.push([queryProp, queryValue].join("="))
+		queryValue && queryParamPairs.push([queryProp, queryValue].join("="))
 	})
 
 	return "?" + queryParamPairs.join("&")
