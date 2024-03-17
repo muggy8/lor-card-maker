@@ -125,27 +125,51 @@ function PoCIcon(props){
     }, [props.pocType, props.rarity])
 
     const iconGem = useAssetCache(updaterRarityGem=>{
-        switch(props.rarity){
-            case "common": 
-                datauri("/Assets/poc/poc-common-gem.png").then(updaterRarityGem)
-                break
-            case "rare": 
-                datauri("/Assets/poc/poc-rare-gem.png").then(updaterRarityGem)
-                break
-            case "epic": 
-                datauri("/Assets/poc/poc-epic-gem.png").then(updaterRarityGem)
-                break
-            case "champion": 
-            case "legendary":
-                datauri("/Assets/poc/poc-legendary-gem.png").then(updaterRarityGem)
-                break 
-            case "special": 
-                datauri("/Assets/poc/poc-special-gem.png").then(updaterRarityGem)
-                break
-            default:
-                updaterRarityGem("")
+        if (props.pocType === "relic"){
+            switch(props.rarity){
+                case "common": 
+                    datauri("/Assets/poc/poc-common-relic-gem.png").then(updaterRarityGem)
+                    break
+                case "rare": 
+                    datauri("/Assets/poc/poc-rare-relic-gem.png").then(updaterRarityGem)
+                    break
+                case "epic": 
+                    datauri("/Assets/poc/poc-epic-relic-gem.png").then(updaterRarityGem)
+                    break
+                case "champion": 
+                case "legendary":
+                    datauri("/Assets/poc/poc-legendary-relic-gem.png").then(updaterRarityGem)
+                    break 
+                case "special": 
+                    datauri("/Assets/poc/poc-special-gem.png").then(updaterRarityGem)
+                    break
+                default:
+                    updaterRarityGem("")
+            }
         }
-    }, [props.rarity])
+        else{
+            switch(props.rarity){
+                case "common": 
+                    datauri("/Assets/poc/poc-common-gem.png").then(updaterRarityGem)
+                    break
+                case "rare": 
+                    datauri("/Assets/poc/poc-rare-gem.png").then(updaterRarityGem)
+                    break
+                case "epic": 
+                    datauri("/Assets/poc/poc-epic-gem.png").then(updaterRarityGem)
+                    break
+                case "champion": 
+                case "legendary":
+                    datauri("/Assets/poc/poc-legendary-gem.png").then(updaterRarityGem)
+                    break 
+                case "special": 
+                    datauri("/Assets/poc/poc-special-gem.png").then(updaterRarityGem)
+                    break
+                default:
+                    updaterRarityGem("")
+            }
+        }
+    }, [props.rarity, props.pocType])
 
     return SvgWrap(
         {
