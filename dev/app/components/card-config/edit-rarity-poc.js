@@ -46,7 +46,7 @@ function EditRegionComponent(props){
                         }
                     },
                     img({
-                        src: `/Assets/keyword/poc-${rarityName}.png`
+                        src: `/Assets/poc/poc-${rarityName}-gem.png`
                     })
                 )
             })

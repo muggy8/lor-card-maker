@@ -36,9 +36,6 @@ function EditSpeedComponent(props){
                             isChecked ? props.updateValue(undefined) : props.updateValue(speedName)
                         }
                     },
-                    //~ img({
-                        //~ src: `/Assets/keyword/${speedName}.png`
-                    //~ })
                     KeywordImageCheck({
 						isChecked,
 						keywordName: speedName,

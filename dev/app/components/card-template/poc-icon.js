@@ -29,14 +29,14 @@ function PoCIcon(props){
     const iconFrame = useAssetCache(updateFrameUri=>{
         switch(props.pocType){
             case "item":
-                datauri("/Assets/keyword/poc-item-frame.png").then(updateFrameUri)
+                datauri("/Assets/poc/poc-item-frame.png").then(updateFrameUri)
                 break
             case "relic":
-                datauri("/Assets/keyword/poc-relic-frame.png").then(updateFrameUri)
+                datauri("/Assets/poc/poc-relic-frame.png").then(updateFrameUri)
                 break
             case "power": 
             default: 
-                datauri("/Assets/keyword/poc-frame-overlay.png").then(updateFrameUri)
+                datauri("/Assets/poc/poc-frame-overlay.png").then(updateFrameUri)
         }
         
     }, [props.pocType])
@@ -49,7 +49,7 @@ function PoCIcon(props){
                 break
             case "power":
             default: 
-                datauri("/Assets/keyword/poc-frame-overlay-cover.png").then(updateFrameCoverUri)
+                datauri("/Assets/poc/poc-frame-overlay-cover.png").then(updateFrameCoverUri)
         }
     }, [props.pocType,])
 
@@ -58,68 +58,68 @@ function PoCIcon(props){
             case "item":
                 switch(props.rarity){
                     case "common": 
-                        datauri("/Assets/keyword/poc-item-frame-overlay-common.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-common.png").then(updateFrameRarityUri)
                         break
                     case "rare": 
-                        datauri("/Assets/keyword/poc-item-frame-overlay-rare.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-rare.png").then(updateFrameRarityUri)
                         break
                     case "epic": 
-                        datauri("/Assets/keyword/poc-item-frame-overlay-epic.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-epic.png").then(updateFrameRarityUri)
                         break
                     case "champion": 
                     case "legendary": 
-                        datauri("/Assets/keyword/poc-item-frame-overlay-legendary.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-legendary.png").then(updateFrameRarityUri)
                         break
                     case "special": 
-                        datauri("/Assets/keyword/poc-item-frame-overlay-special.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-special.png").then(updateFrameRarityUri)
                         break
                     default:
-                        datauri("/Assets/keyword/poc-item-frame-overlay-color.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-item-frame-overlay-color.png").then(updateFrameRarityUri)
                 }
                 break
             case "relic":
                 switch(props.rarity){
                     case "common": 
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-common.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-common.png").then(updateFrameRarityUri)
                         break
                     case "rare": 
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-rare.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-rare.png").then(updateFrameRarityUri)
                         break
                     case "epic": 
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-epic.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-epic.png").then(updateFrameRarityUri)
                         break
                     case "champion": 
                     case "legendary": 
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-legendary.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-legendary.png").then(updateFrameRarityUri)
                         break
                     case "special": 
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-special.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-special.png").then(updateFrameRarityUri)
                         break
                     default:  
-                        datauri("/Assets/keyword/poc-relic-frame-overlay-color.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-relic-frame-overlay-color.png").then(updateFrameRarityUri)
                 }
                 break
             case "power":
             default: 
                 switch(props.rarity){
                     case "common": 
-                        datauri("/Assets/keyword/poc-frame-overlay-common.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-frame-overlay-common.png").then(updateFrameRarityUri)
                         break
                     case "rare": 
-                        datauri("/Assets/keyword/poc-frame-overlay-rare.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-frame-overlay-rare.png").then(updateFrameRarityUri)
                         break
                     case "epic": 
-                        datauri("/Assets/keyword/poc-frame-overlay-epic.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-frame-overlay-epic.png").then(updateFrameRarityUri)
                         break
                     case "champion": 
                     case "legendary":
-                        datauri("/Assets/keyword/poc-frame-overlay-legendary.png").then(updateFrameRarityUri) 
+                        datauri("/Assets/poc/poc-frame-overlay-legendary.png").then(updateFrameRarityUri) 
                         break
                     case "special": 
-                        datauri("/Assets/keyword/poc-frame-overlay-special.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-frame-overlay-special.png").then(updateFrameRarityUri)
                         break
                     default:
-                        datauri("/Assets/keyword/poc-frame-overlay-color.png").then(updateFrameRarityUri)
+                        datauri("/Assets/poc/poc-frame-overlay-color.png").then(updateFrameRarityUri)
                 }
         }
     }, [props.pocType, props.rarity])
@@ -127,20 +127,20 @@ function PoCIcon(props){
     const iconGem = useAssetCache(updaterRarityGem=>{
         switch(props.rarity){
             case "common": 
-                datauri("/Assets/keyword/poc-common.png").then(updaterRarityGem)
+                datauri("/Assets/poc/poc-common-gem.png").then(updaterRarityGem)
                 break
             case "rare": 
-                datauri("/Assets/keyword/poc-rare.png").then(updaterRarityGem)
+                datauri("/Assets/poc/poc-rare-gem.png").then(updaterRarityGem)
                 break
             case "epic": 
-                datauri("/Assets/keyword/poc-epic.png").then(updaterRarityGem)
+                datauri("/Assets/poc/poc-epic-gem.png").then(updaterRarityGem)
                 break
             case "champion": 
             case "legendary":
-                datauri("/Assets/keyword/poc-legendary.png").then(updaterRarityGem)
+                datauri("/Assets/poc/poc-legendary-gem.png").then(updaterRarityGem)
                 break 
             case "special": 
-                datauri("/Assets/keyword/poc-special.png").then(updaterRarityGem)
+                datauri("/Assets/poc/poc-special-gem.png").then(updaterRarityGem)
                 break
             default:
                 updaterRarityGem("")
