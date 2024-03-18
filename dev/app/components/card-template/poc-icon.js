@@ -29,6 +29,8 @@ function PoCIcon(props){
     const iconFrame = useAssetCache(updateFrameUri=>{
         switch(props.pocType){
             case "item":
+                updateFrameUri("")
+                break
             case "relic":
                 datauri("/Assets/poc/poc-item-frame.png").then(updateFrameUri)
                 break
@@ -42,7 +44,7 @@ function PoCIcon(props){
     const iconFrameCover = useAssetCache(updateFrameCoverUri=>{
         switch(props.pocType){
             case "item":
-                updateFrameCoverUri("")
+                datauri("/Assets/poc/poc-item-frame.png").then(updateFrameCoverUri)
                 break
             case "relic":
                 datauri("/Assets/poc/poc-relic-frame.png").then(updateFrameCoverUri)
@@ -182,6 +184,18 @@ function PoCIcon(props){
         },
         div(
             { className: `poc-icon-sticker ${props.rarity} ${props.pocType}` },
+
+            iconFrame
+                ? div(
+                    { 
+                        className: "frame-overlay", 
+                        style: {
+                            backgroundImage: `url(${iconFrame})`
+                        }
+                    }
+                )
+                : undefined
+            ,
             div(
                 {
                     className: "art",
@@ -200,18 +214,6 @@ function PoCIcon(props){
                     ArtRenderer({ url: props.art })
                 )
             ),
-    
-            iconFrame
-                ? div(
-                    { 
-                        className: "frame-overlay", 
-                        style: {
-                            backgroundImage: `url(${iconFrame})`
-                        }
-                    }
-                )
-                : undefined
-            ,
             iconFrameCover 
                 ? div(
                     { 
