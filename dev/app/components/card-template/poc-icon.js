@@ -29,10 +29,8 @@ function PoCIcon(props){
     const iconFrame = useAssetCache(updateFrameUri=>{
         switch(props.pocType){
             case "item":
-                datauri("/Assets/poc/poc-item-frame.png").then(updateFrameUri)
-                break
             case "relic":
-                datauri("/Assets/poc/poc-relic-frame.png").then(updateFrameUri)
+                datauri("/Assets/poc/poc-item-frame.png").then(updateFrameUri)
                 break
             case "power": 
             default: 
@@ -44,8 +42,10 @@ function PoCIcon(props){
     const iconFrameCover = useAssetCache(updateFrameCoverUri=>{
         switch(props.pocType){
             case "item":
-            case "relic":
                 updateFrameCoverUri("")
+                break
+            case "relic":
+                datauri("/Assets/poc/poc-relic-frame.png").then(updateFrameCoverUri)
                 break
             case "power":
             default: 
