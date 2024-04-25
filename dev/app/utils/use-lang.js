@@ -188,6 +188,8 @@ const lang = {
         "elemental": "Elemental",
         "deathless": "Deathless",
         "curse": "Curse",
+        "spirit": "Spirit",
+        "gloom": "Gloom",
 
         "oled": "Black",
         "dark": "Dark",

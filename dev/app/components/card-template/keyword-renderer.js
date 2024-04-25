@@ -61,6 +61,8 @@ export const keywords = {
     "elementalskill": ["elementalskill.png" ],
     "curse": [ "curse.png" ],
     "deathless": ["deathless.png" ],
+    "spirit": ["spirit.png" ],
+    "gloom": ["gloom.png" ],
 }
 
 const trimmedIconCache = {}
