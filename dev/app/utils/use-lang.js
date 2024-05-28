@@ -190,6 +190,7 @@ const lang = {
         "curse": "Curse",
         "spirit": "Spirit",
         "gloom": "Gloom",
+        "sharpsight": "Sharpsight",
 
         "oled": "Black",
         "dark": "Dark",

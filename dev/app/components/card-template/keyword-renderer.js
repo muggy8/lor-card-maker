@@ -63,6 +63,7 @@ export const keywords = {
     "deathless": ["deathless.png" ],
     "spirit": ["spirit.png" ],
     "gloom": ["gloom.png" ],
+    "sharpsight": ["sharpsight.png" ],
 }
 
 const trimmedIconCache = {}
