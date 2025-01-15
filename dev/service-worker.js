@@ -6,7 +6,7 @@ const CACHE_NAME = "react-cache"
 const esmshQueryConfigs = {
 	target: "es2015",
 	"no-dts": true,
-	pin: "122",
+	pin: "v135",
 }
 
 let devLog = ()=>{}
@@ -18,14 +18,14 @@ if (indexUrl.includes("localhost")){
 const pathMap = {
 	cdn: {
 		react: {
-			url: "https://esm.sh/react@18.2.0",
+			url: "https://esm.sh/react@19.0.0",
 			query: esmshQueryConfigs,
 		},
 		"react-dom": {
-			url: "https://esm.sh/react-dom@18.2.0",
+			url: "https://esm.sh/react-dom@19.0.0",
 			query: {
 				...esmshQueryConfigs,
-				deps: "react@18.2.0"
+				deps: "react@19.0.0"
 			},
 		},
 		"flex-box": "https://cdn.jsdelivr.net/gh/muggy8/flex-box@d8439c58f20597e4fe891d01d6853bdcc78e82be",
@@ -68,7 +68,7 @@ const pathMap = {
 			query: esmshQueryConfigs,
 		},
 		"react-modal": {
-			url: "https://esm.sh/react-modal@3.16.1",
+			url: "https://esm.sh/react-modal@3.16.3",
 			query: esmshQueryConfigs,
 		},
 		"usecontextmenu-react": {
