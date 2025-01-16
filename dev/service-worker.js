@@ -52,7 +52,7 @@ const pathMap = {
 			query: esmshQueryConfigs,
 		},
 		"react-range": {
-			url: "https://esm.sh/react-range@1.8.14",
+			url: "https://esm.sh/react-range@1.10.0",
 			query: esmshQueryConfigs,
 		},
 		"react-contextmenu": {
@@ -64,7 +64,7 @@ const pathMap = {
 			query: esmshQueryConfigs,
 		},
 		"react-select": {
-			url: "https://esm.sh/react-select@5.6.0",
+			url: "https://esm.sh/react-select@5.9.0",
 			query: esmshQueryConfigs,
 		},
 		"react-modal": {
@@ -76,11 +76,11 @@ const pathMap = {
 			query: esmshQueryConfigs,
 		},
 		"react-device-detect": {
-			url: "https://esm.sh/react-device-detect@2.2.2",
+			url: "https://esm.sh/react-device-detect@2.2.3",
 			query: esmshQueryConfigs,
 		},
 		"react-markdown": {
-			url: "https://esm.sh/react-markdown@8.0.4",
+			url: "https://esm.sh/react-markdown@9.0.3",
 			query: esmshQueryConfigs,
 		},
 		"object-hash": {
