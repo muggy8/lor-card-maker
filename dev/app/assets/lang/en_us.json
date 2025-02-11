@@ -227,5 +227,21 @@
     "error": "Error",
     "error_loading_card": "Error Loading :cardName",
     "type": "Type",
-    "clone": "Clone"
+    "clone": "Clone",
+
+    "language": "Language",
+    "en_us": "English",
+    "de_de": "Deutsch",
+    "es_es": "español",
+    "es_mx": "español (México)",
+    "fr_fr": "français",
+    "it_it": "italiano",
+    "ja_jp": "日本語",
+    "ko_kr": "한국어",
+    "pl_pl": "polski",
+    "pt_br": "português (Brasil)",
+    "ru_ru": "русский",
+    "th_th": "ไทย",
+    "tr_tr": "Türkçe",
+    "zh_tw": "中文 ( 台灣 )"
 }

@@ -4,6 +4,7 @@ import List from "/Views/list.js"
 import {BannerBar, SideBar} from "/Components/index.js"
 import { getSettings, saveSettings, getCardList } from "/Utils/service.js"
 import { scaleFontSize } from "/Components/card-template/effect-text.js"
+import { SUPPORTED_LANGUAGES } from "/Utils/use-lang.js"
 
 export const Globals = createContext({
     lang: "en_us",
@@ -18,10 +19,11 @@ function App (props) {
     const [translations, setTranslations] = useState({})
 
     const [globalState, updateGlobalState] = useState({
-        lang: "en_us",
         view: List,
         defaultBg: true,
-        settings: {}
+        settings: {
+            lang: "en_us"
+        }
     })
 
     useEffect(()=>{
@@ -64,20 +66,10 @@ function App (props) {
 
             setTranslations(translationCollection)
         }
-        fetch("/Assets/lang/en_us.json").then(res=>res.json()).then(updateTranslations.bind(null, "en_us"))
-        fetch("/Assets/lang/de_de.json").then(res=>res.json()).then(updateTranslations.bind(null, "de_de"))
-        fetch("/Assets/lang/es_es.json").then(res=>res.json()).then(updateTranslations.bind(null, "es_es"))
-        fetch("/Assets/lang/es_mx.json").then(res=>res.json()).then(updateTranslations.bind(null, "es_mx"))
-        fetch("/Assets/lang/fr_fr.json").then(res=>res.json()).then(updateTranslations.bind(null, "fr_fr"))
-        fetch("/Assets/lang/it_it.json").then(res=>res.json()).then(updateTranslations.bind(null, "it_it"))
-        fetch("/Assets/lang/ja_jp.json").then(res=>res.json()).then(updateTranslations.bind(null, "ja_jp"))
-        fetch("/Assets/lang/ko_kr.json").then(res=>res.json()).then(updateTranslations.bind(null, "ko_kr"))
-        fetch("/Assets/lang/pl_pl.json").then(res=>res.json()).then(updateTranslations.bind(null, "pl_pl"))
-        fetch("/Assets/lang/pt_br.json").then(res=>res.json()).then(updateTranslations.bind(null, "pt_br"))
-        fetch("/Assets/lang/ru_ru.json").then(res=>res.json()).then(updateTranslations.bind(null, "ru_ru"))
-        fetch("/Assets/lang/th_th.json").then(res=>res.json()).then(updateTranslations.bind(null, "th_th"))
-        fetch("/Assets/lang/tr_tr.json").then(res=>res.json()).then(updateTranslations.bind(null, "tr_tr"))
-        fetch("/Assets/lang/zh_tw.json").then(res=>res.json()).then(updateTranslations.bind(null, "zh_tw"))
+
+        SUPPORTED_LANGUAGES.map(languageKey=>{
+            fetch(`/Assets/lang/${languageKey}.json`).then(res=>res.json()).then(updateTranslations.bind(null, languageKey))
+        })
     }, [setTranslations])
 
     useEffect(()=>{

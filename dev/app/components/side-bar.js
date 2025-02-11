@@ -2,7 +2,7 @@ import factory, { div, span, label, a, input, nav, select, option, fragment } fr
 import { useCallback, useState, useRef, useContext, useEffect } from "/cdn/react" 
 import { Globals } from "/Views/index.js"
 import loadCss from "/Utils/load-css.js"
-import useLang from "/Utils/use-lang.js"
+import useLang, { SUPPORTED_LANGUAGES } from "/Utils/use-lang.js"
 import { getBackup, saveCard } from "/Utils/service.js"
 import BatchExport from "/Views/batch-export.js"
 import useToggle from "/Utils/use-toggle.js"
@@ -195,6 +195,28 @@ function SidebarComponent(){
                                     value: className
                                 },
                                 translate(className)
+                            )
+                        })
+                    ),
+                ),
+                label(
+                    {
+                        className: "menu-option clickable gutter-tb",
+                    },
+                    div( translate("language") ),
+                    select(
+                        {
+                            value: globalState.state.settings.lang || "oled",
+                            onChange: ev=>globalState.patchSettings({lang: ev.target.value}),
+                            className: "select-theme gutter-rl-1 gutter-tb-.5"
+                        },
+                        SUPPORTED_LANGUAGES.map(languageKey=>{
+                            return option(
+                                {
+                                    key: languageKey,
+                                    value: languageKey
+                                },
+                                translate(languageKey)
                             )
                         })
                     ),
