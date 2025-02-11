@@ -225,8 +225,6 @@ export default function useFilterableRitoCardList(knownCards){
 			keywords: filteredResultsOptions.keywords,
 		}
 
-		console.log(trueOptions)
-
 		updateFilterOptions(trueOptions)
 	}, [ritoCards, displayedRitoCards], {})
 

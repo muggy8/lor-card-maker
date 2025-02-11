@@ -168,7 +168,6 @@ function filterRitoCardListConfigurationComponent (props){
 
                 props.filterOptions.rarityRef && props.filterOptions.rarityRef.length
                     ? checkbox({
-                        watt: console.log(props.selectedFilters),
                         label: translate("rarity"),
                         value: props.selectedFilters.rarityRef && props.selectedFilters.rarityRef.value || [],
                         onChange: selected=>{
