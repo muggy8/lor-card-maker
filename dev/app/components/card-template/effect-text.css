@@ -59,4 +59,8 @@
     background-image: linear-gradient(rgb(233, 201, 83), rgb(216, 159, 63));
     color: transparent;
     background-clip: text;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
