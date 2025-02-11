@@ -1,8 +1,9 @@
-import { useState, useCallback, useEffect } from "/cdn/react"
+import { useState, useCallback, useEffect, useContext } from "/cdn/react"
 import { getRitoCards, patchRitoCards, getLatestRitoData } from "/Utils/service.js"
 import useFilter from "/Utils/use-filter.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import getFilterOptionsFromCardsList from "/Components/deck/hooks/get-filter-options-form-card-list.js"
+import { Globals } from "/Views/index.js"
 
 export function getRitoCardsFromDataDump({sets}){
 	if (!sets){
@@ -11,10 +12,10 @@ export function getRitoCardsFromDataDump({sets}){
 
 	const cards = sets.map(expantion=>expantion.data).flat()
 	cards.sort((a,b)=>{
-		if (a.supertype.toLowerCase() === "champion" && b.supertype.toLowerCase() !== "champion"){
+		if (a.rarityRef.toLowerCase() === "champion" && b.rarityRef.toLowerCase() !== "champion"){
 			return -1
 		}
-		if (a.supertype.toLowerCase() !== "champion" && b.supertype.toLowerCase() === "champion"){
+		if (a.rarityRef.toLowerCase() !== "champion" && b.rarityRef.toLowerCase() === "champion"){
 			return 1
 		}
 
@@ -41,6 +42,8 @@ export function getRitoCardsFromDataDump({sets}){
 
 export default function useFilterableRitoCardList(knownCards){
     const [ritoCards, updateRitoCards] = useState()
+	const globalState = useContext(Globals)
+
 	useEffect(()=>{
 		getRitoCards().then(ritoData=>{
 			let ritoCards
@@ -61,7 +64,7 @@ export default function useFilterableRitoCardList(knownCards){
             return
         }
 		updateRitoLoading(true)
-		getLatestRitoData().then(async ritoData => {
+		getLatestRitoData({}, globalState.state.settings.lang).then(async ritoData => {
 			await patchRitoCards(ritoData)
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
 			updateRitoLoading(false)
@@ -128,12 +131,12 @@ export default function useFilterableRitoCardList(knownCards){
 				return keywords.some(keywordOnCard=>userSelectedKeywords.includes(keywordOnCard))
 			}
 		},
-		rarity: {
-			filter: (userSelectedRarities, rarity)=>{
+		rarityRef: {
+			filter: (userSelectedRarities, rarityRef)=>{
 				if (!userSelectedRarities || !userSelectedRarities.length){
 					return true
 				}
-				return userSelectedRarities.includes(rarity)
+				return userSelectedRarities.includes(rarityRef)
 			}
 		},
 		regionRefs: {
@@ -221,6 +224,8 @@ export default function useFilterableRitoCardList(knownCards){
 			...baseOptions,
 			keywords: filteredResultsOptions.keywords,
 		}
+
+		console.log(trueOptions)
 
 		updateFilterOptions(trueOptions)
 	}, [ritoCards, displayedRitoCards], {})

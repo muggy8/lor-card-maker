@@ -1,5 +1,5 @@
 import svgWrap from "/Components/card-template/svg-wrap.js";
-import { useState } from "/cdn/react"
+import { useState, useContext } from "/cdn/react"
 import { isRitoCard } from "./card-name.js";
 import factory, { div } from "/Utils/elements.js";
 import { getRitoCardImage, getCard } from "/Utils/service.js";
@@ -8,6 +8,7 @@ import { typeToComponent } from "/Views/list.js";
 import useAssetCache from "/Utils/use-asset-cache.js";
 import datauri from "/Utils/datauri.js"
 import pocStickerStack from "./poc-sticker-stack.js";
+import { Globals } from "/Views/index.js"
 
 const cssLoaded = linkAsset("/Components/deck/deck-card.css")
 
@@ -137,11 +138,12 @@ function deckCardComponent(props){
 }
 
 function ritoCardRendererComponent(props){
+    const globalState = useContext(Globals)
     const cardId = props.cardCode
     const cardSet = props.set
 
     const cardImage = useAssetCache(updateCardImage=>{
-        getRitoCardImage(cardSet, cardId).then(updateCardImage)
+        getRitoCardImage(cardSet, cardId, {}, globalState.state.settings.lang).then(updateCardImage)
     }, [cardId, cardSet])
 
     return svgWrap(

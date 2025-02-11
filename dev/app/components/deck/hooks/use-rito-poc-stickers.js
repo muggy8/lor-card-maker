@@ -1,11 +1,13 @@
 import { getRitoPoCItemRelic, patchRitoPocItemRelic, getLatestPoCItemRelicData } from "/Utils/service.js"
 import useAssetCache from "/Utils/use-asset-cache.js"
 import useFilter, { mergeDeep } from "/Utils/use-filter.js"
-import { useState, useCallback, useEffect, useMemo } from "/cdn/react"
+import { useState, useCallback, useEffect, useMemo, useContext } from "/cdn/react"
 import getFilterOptionsFromCardsList from "/Components/deck/hooks/get-filter-options-form-card-list.js"
+import { Globals } from "/Views/index.js"
 
 export default function useRitoPocStickers(){
 	const [ritoPocItemRelics, updateRitoPoCItemReics] = useState({items: [], relics: []})
+    const globalState = useContext(Globals)
 	useEffect(()=>{
 		getRitoPoCItemRelic({}, {items: [], relics: []})
             .then(updateRitoPoCItemReics)
@@ -17,7 +19,7 @@ export default function useRitoPocStickers(){
             return
         }
 		updateRitoPoCLoading(true)
-		getLatestPoCItemRelicData().then(async ritoPocData => {
+		getLatestPoCItemRelicData({}, globalState.state.settings.lang).then(async ritoPocData => {
 			await patchRitoPocItemRelic(ritoPocData)
 			updateRitoPoCItemReics(ritoPocData)
 			updateRitoPoCLoading(false)

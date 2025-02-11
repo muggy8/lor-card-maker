@@ -47,7 +47,7 @@ function editAssociatedCardsComponent(props){
             return
         }
 		updateRitoLoading(true)
-		getLatestRitoData().then(async ritoData => {
+		getLatestRitoData({}, globalState.state.settings.lang).then(async ritoData => {
 			await patchRitoCards(ritoData)
 			updateRitoCards(getRitoCardsFromDataDump(ritoData))
 			updateRitoLoading(false)

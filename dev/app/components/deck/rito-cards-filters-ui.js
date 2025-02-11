@@ -166,14 +166,15 @@ function filterRitoCardListConfigurationComponent (props){
                     : undefined
                 ,
 
-                props.filterOptions.rarity && props.filterOptions.rarity.length
+                props.filterOptions.rarityRef && props.filterOptions.rarityRef.length
                     ? checkbox({
+                        watt: console.log(props.selectedFilters),
                         label: translate("rarity"),
-                        value: props.selectedFilters.rarity && props.selectedFilters.rarity.value || [],
+                        value: props.selectedFilters.rarityRef && props.selectedFilters.rarityRef.value || [],
                         onChange: selected=>{
-                            props.updateSelectedFilter("rarity", { value: selected })
+                            props.updateSelectedFilter("rarityRef", { value: selected })
                         },
-                        options: props.filterOptions.rarity,
+                        options: props.filterOptions.rarityRef,
                         renderOption: (rarity, isChecked)=>{
                             if (rarity.toLowerCase() === "none"){
                                 return null
@@ -312,8 +313,9 @@ function filterRitoCardListConfigurationComponent (props){
 }
 
 function setIconCompoennt(props){
+    const globalState = useContext(Globals)
     const iconData = useAssetCache(updateCache=>{
-        props.set && getRitoSetIconData(props.set).then(updateCache)
+        props.set && getRitoSetIconData(props.set, {}, globalState.state.settings.lang).then(updateCache)
     }, [props.set])
 
     return !!iconData 

@@ -88,17 +88,17 @@ export function patchRitoCards(updatedData){
 	})
 }
 
-export async function getLatestRitoData(query = {}){
+export async function getLatestRitoData(query = {}, language="en_us"){
 	query.t = Date.now()
 	const queryString = createQueryString(query)
-	const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json" + queryString
+	const coreDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-${language}.json` + queryString
 
 	const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
 	const fetchJobs = coreData.sets.map(expantion=>{
 		const setNameLowerCase = expantion.nameRef.toLowerCase()
 
-		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-en_us.json${queryString}`
+		const expantionDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/data/${setNameLowerCase}-${language}.json${queryString}`
 
 		return fetch(expantionDataUrl)
 			.then(res=>res.json())
@@ -141,12 +141,12 @@ export function patchRitoPocItemRelic(updatedData){
 	})
 }
 
-export async function getLatestPoCItemRelicData(query = {}){
+export async function getLatestPoCItemRelicData(query = {}, language="en_us"){
 	query.t = Date.now()
 	const queryString = createQueryString(query)
 
-	const itemDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/items-en_us.json" + queryString
-	const relicDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/relics-en_us.json" + queryString
+	const itemDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/items-${language}.json` + queryString
+	const relicDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/data/relics-${language}.json` + queryString
 
 	const [itemData, relicData] = await Promise.all([
 		fetch(itemDataUrl).then(res=>res.json()),
@@ -154,15 +154,15 @@ export async function getLatestPoCItemRelicData(query = {}){
 	])
 
 	Array.prototype.forEach.call(itemData, item=>{
-		item.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/en_us/${item.itemCode}.png${queryString}`
-		item.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/en_us/${item.itemCode}-full.png${queryString}`
+		item.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/${language}/${item.itemCode}.png${queryString}`
+		item.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/items/${language}/${item.itemCode}-full.png${queryString}`
 	})
 
 	Array.prototype.sort.call(itemData, sortSticker)
 
 	Array.prototype.forEach.call(relicData, relic=>{
-		relic.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}.png${queryString}`
-		relic.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/en_us/${relic.relicCode}-full.png${queryString}`
+		relic.url = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/${language}/${relic.relicCode}.png${queryString}`
+		relic.urlFull = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_Adventure/img/relics/${language}/${relic.relicCode}-full.png${queryString}`
 	})
 
 	Array.prototype.sort.call(relicData, sortSticker)
@@ -203,7 +203,7 @@ export async function getLatestPoCItemRelicData(query = {}){
 }
 
 const ritoCardImageCache = {}
-export function getRitoCardImage(setCode, cardCode, query = {}){
+export function getRitoCardImage(setCode, cardCode, query = {}, language="en_us"){
 	if (ritoCardImageCache[setCode] && ritoCardImageCache[setCode][cardCode]){
 		return ritoCardImageCache[setCode][cardCode]
 	}
@@ -213,7 +213,7 @@ export function getRitoCardImage(setCode, cardCode, query = {}){
 	const setNameLowerCase = setCode.toLowerCase()
 	query.t = Date.now()
 
-	return ritoCardImageCache[setCode][cardCode] = fetch(`https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/img/cards/en_us/${cardCode}.png?${createQueryString(query)}`)
+	return ritoCardImageCache[setCode][cardCode] = fetch(`https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon_${setNameLowerCase}/img/cards/${language}/${cardCode}.png?${createQueryString(query)}`)
         .then(res=>res.blob())
         .then(blob=>{
             const reader = new FileReader()
@@ -227,7 +227,7 @@ export function getRitoCardImage(setCode, cardCode, query = {}){
 }
 
 const ritoSetIconCache = {}
-export function getRitoSetIconData(setId, query = {}){
+export function getRitoSetIconData(setId, query = {}, language="en_us"){
 	if (ritoSetIconCache[setId]){
 		return ritoSetIconCache[setId]
 	}
@@ -235,7 +235,7 @@ export function getRitoSetIconData(setId, query = {}){
 	query.t = Date.now()
 
 	return ritoSetIconCache[setId] = new Promise(async (accept, reject)=>{
-		const coreDataUrl = "https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-en_us.json" + createQueryString(query)
+		const coreDataUrl = `https://cdn.jsdelivr.net/gh/InFinity54/LoR_DDragon/core/data/globals-${language}.json` + createQueryString(query)
 		const coreData = await fetch(coreDataUrl).then(res=>res.json())
 
 		const selectedSetMetadata = Array.prototype.find.call(coreData.sets, setMetaData=>{
