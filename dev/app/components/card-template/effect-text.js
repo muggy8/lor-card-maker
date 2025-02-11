@@ -1,11 +1,13 @@
 import factory, { div, span } from "/Utils/elements.js"
 import { keywords } from "/Components/card-template/keyword-renderer.js"
-import React, { useContext } from "/cdn/react"
+import React, { useContext, useRef } from "/cdn/react"
 import setImmediate from "/Utils/set-immediate-batch.js"
 import loadCss from "/Utils/load-css.js"
+import useLang from "/Utils/use-lang.js"
 import datauri from "/Utils/datauri.js"
 import { Globals } from "/Views/index.js"
 import { useAssetCache, useAssetCacheDebounced } from "/Utils/use-asset-cache.js"
+import useEffectDebounce from "/Utils/use-debounce-effect.js"
 
 const cssLoaded = loadCss("/Components/card-template/effect-text.css")
 
@@ -276,6 +278,7 @@ function reactifyEffectText(text, blueWords, orangeWords, customKeywords){
 }
 
 function EffectTextComponent(props){
+    let translate = useLang()
     let effectText = props.effectText
     let levelText = props.levelText
     if ((effectText && typeof effectText !== "string") || (levelText && typeof levelText !== "string")){
@@ -305,6 +308,15 @@ function EffectTextComponent(props){
         updateLevelTextArray(contentArray)
     }, 200, [levelText, props.blueWords, props.orangeWords], [])
 
+    // size the lv up bar label which has text depending on the language the user selects
+    const levelUpLabelRef = useRef()
+    useEffectDebounce(() => {
+        if (!levelUpLabelRef.current) {
+            return
+        }
+        
+        scaleFontSize(levelUpLabelRef.current, 36, 24)
+    }, 150, [levelUpLabelRef.current])
 
     // get the art for the level up bar
     const levelupBarUri = useAssetCache(updateLevelupBarUri=>{
@@ -328,14 +340,19 @@ function EffectTextComponent(props){
             : undefined,
 
         levelText
-            ? div({
-                className: "level-bar",
-                style: {
-                    backgroundImage: levelupBarUri 
-                        ? `url(${levelupBarUri || ""})`
-                        : "none"
+            ? div(
+                {
+                    className: "level-bar",
+                    style: {
+                        backgroundImage: levelupBarUri 
+                            ? `url(${levelupBarUri || ""})`
+                            : "none"
+                    },
                 },
-            })
+                div({ className: "level-bar-label", ref: levelUpLabelRef },
+                    translate("lv_up")
+                ),
+            )
             : undefined
         ,
 

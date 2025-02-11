@@ -44,3 +44,19 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.card-effects-wrapper .level-bar .level-bar-label {
+    margin-left: auto;
+    margin-right: auto;
+    width: 170px;
+    height: 40px;
+    
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+    font-family: BeaufortforLOLBold;
+
+    background-image: linear-gradient(rgb(233, 201, 83), rgb(216, 159, 63));
+    color: transparent;
+    background-clip: text;
+}

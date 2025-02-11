@@ -108,7 +108,7 @@ function customCardsFiltersComponent(props){
                 
                 props.filterOptions.lvup && props.filterOptions.lvup.length
                     ? searchText({
-                        label: translate("lv_up"),
+                        label: translate("lv_up_cond"),
                         value: props.selectedFilters.lvup? props.selectedFilters.lvup.value : "",
                         onChange: value=>props.updateSelectedFilter("lvup", { value })
                     })

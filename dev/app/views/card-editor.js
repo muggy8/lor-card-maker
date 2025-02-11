@@ -455,7 +455,7 @@ export default function EditorViewFactory(cardRenderer, defaultCardData){
                         updateOrangeWords: cardDataUpdaters.orangeWords,
                         blueWords: card.blueWords,
                         updateBlueWords: cardDataUpdaters.blueWords,
-						label: translate("lv_up")
+						label: translate("lv_up_cond")
 					})
                     : undefined
                 ,
