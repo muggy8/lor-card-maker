@@ -17,6 +17,7 @@ export const regionOptions = [
     "void",
     "shurima",
     "runeterra",
+    "spiritblossom",
 ]
 
 function EditRegionComponent(props){
