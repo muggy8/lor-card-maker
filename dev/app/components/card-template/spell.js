@@ -342,8 +342,11 @@ function SpellComponent(props){
                     },
                 ),
                 div(
-                    { className: "cost fitty-nowrap card-text-bold card-text-outline", ref: costRef},
-                    props.mana,
+                    { className: "cost"},
+                    div(
+                        { className: "fitty-nowrap card-text-bold card-text-outline", ref: costRef},
+                        props.mana
+                    ),
                 ),
                 props.faction && props.faction.length
                     ? div(
@@ -394,15 +397,21 @@ function SpellComponent(props){
                 ,
                 typeof props.power === "number"
                     ? div(
-                        { className: "power fitty-nowrap card-text-bold card-text-outline", ref: powerRef },
-                        ((props.power && (props.power > 0)) ? "+" : "") + (props.power || 0)
+                        { className: "power" },
+                        div(
+                            { className: "fitty-nowrap card-text-bold card-text-outline", ref: powerRef },
+                            ((props.power && (props.power > 0)) ? "+" : "") + (props.power || 0)
+                        )
                     )
                     : undefined
                 ,
                 typeof props.health === "number"
                     ? div(
-                        { className: "health fitty-nowrap card-text-bold card-text-outline", ref: healthRef },
-                        ((props.health && (props.health > 0)) ? "+" : "") + (props.health || 0)
+                        { className: "health" },
+                        div(
+                            { className: "fitty-nowrap card-text-bold card-text-outline", ref: healthRef },
+                            ((props.health && (props.health > 0)) ? "+" : "") + (props.health || 0)
+                        )
                     )
                     : undefined
                 ,

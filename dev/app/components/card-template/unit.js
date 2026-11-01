@@ -320,8 +320,11 @@ export class UnitRendererComponent extends Component {
                     ),
 
                     div(
-                        { className: "cost fitty-nowrap card-text-bold card-text-outline", ref: this.costRef },
-                        this.props.mana,
+                        { className: "cost" },
+                        div(
+                            { className: "fitty-nowrap card-text-bold card-text-outline", ref: this.costRef },
+                            this.props.mana,
+                        )
                     ),
 
                     this.props.faction && this.props.faction.length
@@ -380,16 +383,22 @@ export class UnitRendererComponent extends Component {
 
                     typeof this.props.power !== "undefined"
                         ? div(
-                            { className: "power fitty-nowrap card-text-bold card-text-outline", ref: this.powerRef },
-                            this.props.power
+                            { className: "power" },
+                            div(
+                                { className: "fitty-nowrap card-text-bold card-text-outline", ref: this.powerRef },
+                                this.props.power
+                            )
                         )
                         : undefined
                     ,
 
                     typeof this.props.health !== "undefined"
                         ? div(
-                            { className: "health fitty-nowrap card-text-bold card-text-outline", ref: this.healthRef },
-                            this.props.health
+                            { className: "health" },
+                            div(
+                                { className: "fitty-nowrap card-text-bold card-text-outline", ref: this.healthRef },
+                                this.props.health
+                            )
                         )
                         : undefined
                     ,
